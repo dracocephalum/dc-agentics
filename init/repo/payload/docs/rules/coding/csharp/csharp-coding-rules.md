@@ -100,33 +100,9 @@ Metrics and spans:
 
 ## Entity Framework Core
 
-- **Enums are stored as strings, never numbers.** Configure it once for every
-  enum in `OnModelCreating`, so no property can be forgotten and no migration
-  silently gets an `int` column:
-
-      foreach (var property in modelBuilder.Model.GetEntityTypes()
-          .SelectMany(t => t.GetProperties())
-          .Where(p => p.ClrType.IsEnum || (Nullable.GetUnderlyingType(p.ClrType)?.IsEnum ?? false)))
-      {
-          property.SetProviderClrType(typeof(string));
-          if (property.GetMaxLength() is null)
-          {
-              property.SetMaxLength(64);
-          }
-      }
-
-  Without a length the column is `nvarchar(max)`. For an enum whose member
-  names exceed 64 characters, set the length on that property explicitly —
-  `.Property(o => o.Status).HasMaxLength(80)` — before or after the loop; the
-  guard means the loop never overwrites an explicit length.
-- **Same on the wire.** Register `JsonStringEnumConverter` globally so HTTP
-  payloads carry names, not numbers. Put `[EnumDataType(typeof(T))]` on
-  **request DTO** enum properties — it rejects undefined values such as `999`
-  during model validation. It has no effect on EF; do not put it on entities
-  for that purpose.
-- **`DateTimeOffset` on PostgreSQL:** Npgsql accepts only offset-zero values
-  for `timestamp with time zone`. Normalise with `.ToUniversalTime()` before
-  saving.
+For entities, `DbContext` configuration, and migrations — enum storage,
+`DateTimeOffset` on PostgreSQL, and the migration safety rules — follow
+[csharp-ef-core-rules.md](csharp-ef-core-rules.md).
 
 ## Conventions
 

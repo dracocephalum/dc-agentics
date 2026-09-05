@@ -29,6 +29,7 @@ user has given.
     .gitattributes               line-ending normalization  (dotnet new)
     .gitignore                   ignore rules               (dotnet new)
     Directory.Build.props        build defaults + StyleCop import
+    Directory.Build.targets      short commit hash + dirty marker in the informational version
     Directory.Packages.props     central package versions   (CPM only)
     Tests.props                  test-only packages (*.Tests projects)
     BannedSymbols.txt            banned APIs; inert until strict mode
@@ -41,9 +42,10 @@ user has given.
     stylecop.json                StyleCop settings
     docs/rules/                  exactly as in payload/docs/rules/
       dependencies.md
-      source-control/github-pull-requests.md
+      change-tracking/github.md
+      source-control/            source-control.md (rules), github.md (mechanics)
       coding/code-review.md
-      coding/csharp/             coding rules, unit-test rules, new-project, code-review
+      coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
       coding/markdown/markdown-review.md
     .claude/skills/
       project/SKILL.md           Claude Code shim: /project <kind> <name>
@@ -51,6 +53,7 @@ user has given.
       source-control/SKILL.md    Claude Code shim: /source-control start|commit|pr|setup
     .github/
       PULL_REQUEST_TEMPLATE.md   GitHub fills PR bodies from it
+      rulesets/protect-main.json default-branch ruleset: PR-only, squash, no force-push
     .markdownlint.yaml           markdown mechanics; the review checklist relies on it
     .serena/
       project.yml                Serena project config (auto; non-blocking)
@@ -168,9 +171,16 @@ spells this out.
 ### 2. Generate the build files
 
 Already at the target root after the payload copy: `Directory.Build.props`,
-`Directory.Packages.props`, `Tests.props`, `BannedSymbols.txt`, `nuget.config`.
-The props files reference each other by `$(MSBuildThisFileDirectory)` and must
-stay together.
+`Directory.Build.targets`, `Directory.Packages.props`, `Tests.props`,
+`BannedSymbols.txt`, `nuget.config`. The props files reference each other by
+`$(MSBuildThisFileDirectory)` and must stay together.
+
+`Directory.Build.targets` stamps every assembly's informational version with
+the short commit hash — `1.2.3+abcdef12`, `-dirty` when the tree is not clean —
+via `git describe` ahead of the SDK's own source-control step. Verified
+fail-safe: no repository or no commits build clean as `1.2.3`; no `git` on
+`PATH` leaves the SDK's full hash. Read it back from
+`AssemblyInformationalVersionAttribute`.
 
 `nuget.config` clears inherited package sources and maps every package to
 nuget.org. A private feed is added there, with its own package pattern — see
@@ -195,15 +205,10 @@ and restore fails without it.
 Both arrive with the payload copy. They are the SDK templates plus our
 additions, each carrying a baseline marker — see the drift check in step 0.5.
 
-| Source | Destination |
-|---|---|
-| `.gitignore` | `.gitignore` |
-| `.gitattributes` | `.gitattributes` |
-
 `.gitignore` already includes the local-config entries the official template
 omits (`*.local.json`, `.env`, and similar). Ignore entries must exist **before**
 the files they cover — ignoring an already-tracked file has no effect. See
-[`../security-reminders.md`](../security-reminders.md).
+[`payload/docs/rules/security-reminders.md`](payload/docs/rules/security-reminders.md).
 
 #### Why .gitattributes matters here
 
@@ -235,38 +240,14 @@ Never copy them into component folders.
 
 ### 3.6 Documentation and AGENTS.md
 
-Create `docs/rules/` in the target repository — in **both** modes — and copy the
-coding rules into it:
-
-| Source | Destination |
-|---|---|
-| `rules/**/*.md` | `docs/rules/**` — same subtree, markdown only |
-| `.github/PULL_REQUEST_TEMPLATE.md` | `.github/PULL_REQUEST_TEMPLATE.md` |
-| `.markdownlint.yaml` | `.markdownlint.yaml` |
-| `.claude/skills/**` (toolkit root) | `.claude/skills/**` |
-
-`docs/rules/` arrives with the payload copy exactly as it sits in
-`payload/docs/rules/`, so every relative link between rules files resolves
-identically in both places.
-
-A `SKILL.md` is a shim: frontmatter so Claude Code can list and invoke it, and
-a body that says which document under `docs/rules/` to follow. The document is
-the substance, and `AGENTS.md` already points every tool at it - so nothing
-else needs a copy of the shim. Each shim locates its document by
-repository-root-relative path with a toolkit fallback, which is why the same
-file works unchanged both here and in the toolkit.
-
-The rules files land side by side and link to each other by relative path; the
-unit-tests and new-project files link up to the root `AGENTS.md` as
-`../../AGENTS.md`. `AGENTS.md` gets a row for the coding rules and one for
-new-project; the unit-tests file is reached on demand through the coding-rules
-*Testing* section, so it does not load into every session.
-
-The skill is Claude Code-specific — it makes `/project <kind> <name>` and its
-natural-language equivalent follow
-`docs/rules/coding/csharp/csharp-new-project.md`. Other
-tools reach the same document through the `AGENTS.md` row. If the target team
-does not use Claude Code, skipping the skill loses nothing.
+`docs/rules/`, `.github/`, and `.markdownlint.yaml` arrive with the payload
+copy, in both modes, exactly as they sit in `payload/` — so every relative
+link between rules files resolves identically here and there. `.claude/skills/`
+is copied from the toolkit root: each `SKILL.md` is a shim — frontmatter so
+Claude Code can invoke it, and a pointer to its document under `docs/rules/`,
+located by repository-root-relative path with a toolkit fallback. The document
+is the substance and `AGENTS.md` points every tool at it, so a team without
+Claude Code loses nothing by skipping the shims.
 
 Then generate the repository's own `AGENTS.md` at its root from
 [`payload/AGENTS.template.md`](payload/AGENTS.template.md) — it arrived at the
@@ -286,25 +267,26 @@ target root with the copy; transform it in place:
 Then the repository's `README.md`, from `README.template.md` (it arrived at the
 target root with the copy) by the same transform: fill placeholders, keep the
 matching layout variant, delete the template comment. It is the human entry
-point; `AGENTS.md` is the agent's. In a monorepo, also give every category
-folder you create its map — `docs/templates/category-README.md` copied to
-`<category>/README.md` and filled. Component READMEs are produced by the
-new-project procedure when components are added.
+point; `AGENTS.md` is the agent's. The provenance block under its title takes
+three values the agent has and must not guess: the tool it runs in
+(`Claude Code`), the model identifier (`claude-fable-5-1` form), and the
+toolkit commit — `git -C <toolkit> rev-parse --short=12 HEAD`, with `-dirty`
+appended when `git -C <toolkit> status --porcelain` prints anything. That
+commit is what a future update of the repository diffs from. In a monorepo,
+also give every category folder you create its map —
+`docs/templates/category-README.md` copied to `<category>/README.md` and
+filled. Component READMEs come from the new-project procedure.
 
 Verify nothing was missed:
 
     grep -n "{{" <repo>/AGENTS.md <repo>/README.md      # must return nothing
     ls <repo>/README.template.md                           # must NOT exist
 
-The file is named `AGENTS.template.md` in this toolkit so it is not picked up as
-live agent instructions here. It lands as `AGENTS.md` in the target repository.
-
 #### Why the guideline rows are phrased as situations
 
-Each row in the **Agent guidelines** table says *when* it applies — "when you
-are writing, reviewing or refactoring C#" — not merely what the document is
-called. A list of filenames cannot be matched against a plain-language request;
-a list of situations can. Keep that phrasing when adding rows.
+Each row says *when* it applies — "when you are writing, reviewing or
+refactoring C#" — because a plain-language request can be matched against a
+situation and not against a filename. Keep that phrasing when adding rows.
 
 ### 3.7 Serena project config — automatic, non-blocking
 
@@ -358,18 +340,25 @@ judge until a project exists.
 ### 3.9 Merge settings — when the repository is on GitHub
 
 If a GitHub remote exists (or once it does), apply the merge behaviour the
-pull-request rules assume — squash only, delete the branch on merge:
+pull-request rules assume — squash only, delete the branch on merge — and,
+after the first push, the default-branch ruleset:
 
     gh repo edit --delete-branch-on-merge --enable-squash-merge --enable-merge-commit=false --enable-rebase-merge=false
+    gh api repos/<owner>/<name>/rulesets --input .github/rulesets/protect-main.json
+
+The ruleset is refused on a private repository under GitHub Free; that is the
+user's choice to make (Pro, public, or none), not a step to skip silently.
 
 Details and the verification query are in
-[`payload/docs/rules/change-tracking/github.md`](payload/docs/rules/change-tracking/github.md).
+[`payload/docs/rules/source-control/github.md`](payload/docs/rules/source-control/github.md).
 Skip, and say so, if there is no remote yet; `/source-control setup` does it
 later.
 
 ### 4. Security pass
 
-Walk [`../security-reminders.md`](../security-reminders.md). At minimum, before
+Walk [`security-reminders.md`](payload/docs/rules/security-reminders.md). It
+ships with the repository as `docs/rules/security-reminders.md`, so the review
+process holds later changes to the same standard. At minimum, before
 any first push, check the commit identity:
 
     git var GIT_AUTHOR_IDENT

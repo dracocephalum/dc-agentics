@@ -31,12 +31,10 @@ Serena keeps its per-project configuration in a `.serena/` folder inside the
 repository. That folder is configuration, not an environment — the interpreter
 and packages live in `uv`'s tool store, outside every repo.
 
-So, to the specific question — **a `.venv` at the repo root does not help
-Serena and is the wrong shape for it**; and the "global" system Python is the
-other wrong shape, because tools installed into it collide with each other over
-time. `uv tool` is the middle path: global availability, isolated environments.
-
-For a one-off run without installing: `uvx <tool>`.
+A repo-root `.venv` is the wrong shape for a tool, and so is the system
+Python, where tools collide over time; `uv tool` is the middle path — global
+availability, isolated environments. For a one-off run without installing:
+`uvx <tool>`.
 
 ### Agent scripts: `uv run` with inline metadata
 
@@ -59,11 +57,9 @@ lives in the repository; its environment never does** — which is what makes
 this the right shape for agent automation in a C# repository. `uv run --with
 <pkg> script.py` does the same for an ad-hoc dependency.
 
-Performance is not a concern: measured on Windows, the first run of a script
-depending on `httpx` took ~9 s (download and build), the second ~1 s, the
-third under 1 s. Wheels and built environments are cached in
-`%LOCALAPPDATA%\uv\cache` and shared between scripts with the same
-dependencies; the script's own folder stays untouched.
+Measured on Windows: the first run of a script depending on `httpx` took ~9 s,
+later runs ~1 s — environments are cached in `%LOCALAPPDATA%\uv\cache` and
+shared between scripts with the same dependencies.
 
 Executables from `uv tool install` land in `%USERPROFILE%\.local\bin`, which
 must be on `PATH` — `uv tool update-shell` adds it, and a console restart makes
@@ -83,15 +79,6 @@ describes that shape so the decision is already made when it is needed.
 Repo-level Python scripts that assist the build (a `scripts/` folder driven by
 `uv run`) are the one legitimate reason for a root-level `pyproject.toml` in a
 C# repository. Do not add one speculatively.
-
-## The short answer to "is `.venv` at the repo root the standard?"
-
-Yes — with one update. A per-project virtual environment named `.venv` at the
-project root is the convention: VS Code, PyCharm, `uv`, and `poetry` all
-auto-detect that exact name, and GitHub's reference `Python.gitignore` ignores
-it. What has changed is that **nobody creates or manages it by hand any more.**
-`uv` does, from a `pyproject.toml`, and what you commit is the recipe rather
-than the environment.
 
 ## Machine: `uv` manages Python itself
 
@@ -134,6 +121,11 @@ the environment directly, which is also what an agent should use so it never
 depends on shell state.
 
 ### Where `.venv` lives
+
+A `.venv` at the project root is the convention every tool auto-detects — VS
+Code, PyCharm, `uv`, `poetry`, GitHub's `Python.gitignore` — and nobody creates
+it by hand any more: `uv` does, from `pyproject.toml`; the recipe is committed,
+the environment is not.
 
 Same rule as a .NET solution: **one per component.** In a standalone repository
 that is the root. In a monorepo it is the component folder —

@@ -7,8 +7,7 @@ Applies when a developer machine needs source-control integration. Ask first:
 > Do you need source-control integration on this machine? Only **GitHub** is
 > supported at the moment.
 
-If no, stop here. Everything below is Windows; other platforms differ mainly in
-the agent and the `ssh` binary paths.
+If no, stop here.
 
 What this sets up: SSH for transport, **SSH commit signing** with the same key,
 `gh` for the API, and the Windows `ssh-agent` so a passphrase-protected key works
@@ -16,9 +15,9 @@ non-interactively — including for git commands an agent runs. Verified on
 Windows Server 2025 with Git 2.55, gh 2.100, Windows OpenSSH.
 
 Prerequisite: git identity set to the noreply form — see
-[`../security-reminders.md`](../security-reminders.md). The email in the key,
-the identity, and the GitHub account must all agree or commits show
-*Unverified*.
+[`security-reminders.md`](../repo/payload/docs/rules/security-reminders.md).
+The email in the key, the identity, and the GitHub account must all agree or
+commits show *Unverified*.
 
 ## Steps
 
@@ -99,7 +98,7 @@ the default login scopes cannot touch the signing-key list.
 
     C:\Windows\System32\OpenSSH\ssh-add.exe -l          # one ED25519 key listed
     C:\Windows\System32\OpenSSH\ssh.exe -T git@github.com   # "Hi <user>! ..."
-    gh auth status                                       # logged in, protocol ssh
+    gh auth status                                       # logged in; "Git operations protocol: ssh" - gh auth refresh can reset it to https
     gh ssh-key list                                      # the key twice: authentication AND signing
 
 Then, in any repository:
@@ -134,12 +133,11 @@ which is what proxies allow CONNECT to.
         IdentityFile ~/.ssh/id_ed25519
         ProxyCommand "C:\\Program Files\\Git\\mingw64\\bin\\connect.exe" %h %p
 
-Verified both ways on the same config: tunnelled with `HTTP_PROXY` set,
-direct with it unset, through `git ls-remote` as well as `ssh -T` — and again
-with outbound port 22 blocked by a firewall rule, where raw SSH was refused
-and this config, `gh`, and a real `git push` all still worked. This only takes
-effect because step 6 pointed git at Windows OpenSSH, which reads this file;
-Git-Bash `ssh` would need the same block but its own agent.
+Verified on this config: tunnelled with `HTTP_PROXY` set, direct with it
+unset, and with outbound port 22 blocked — `ssh -T`, `git ls-remote`, `gh`, and
+a real `git push` all worked. It takes effect because step 6 pointed git at
+Windows OpenSSH, which reads this file; Git-Bash `ssh` would need the same
+block but its own agent.
 
 Two notes: the `known_hosts` entry is for `[ssh.github.com]:443`, not
 `github.com` — expect one first-connection prompt or use
@@ -181,7 +179,10 @@ switching.
 
 Gives an agent API-level GitHub actions — issues, pull requests, code search —
 as MCP tools. `gh` already covers most of that from the shell, so this is
-optional.
+optional — **ask the user** at setup time and leave the decision with them.
+When it is connected, the toolkit's skills prefer it over `gh`; when it is
+not, everything works with `gh` alone. Whichever they choose, tell them the
+catch below before they spend time on the OAuth route.
 
 **The OAuth route does not work from Claude Code.** Registering the remote
 server plainly —

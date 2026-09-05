@@ -6,7 +6,7 @@ apply to test code as well; this file adds only what is specific to tests.
 ## Where tests live
 
 Layout, naming, and project wiring are defined in the repository's root
-the repository's root `AGENTS.md` — see *Repository layout*, *Conventions*, and
+`AGENTS.md` — see *Repository layout*, *Conventions*, and
 *Building and testing*. The short version:
 
 - `test/<Project>.Tests/` mirrors `src/<Project>/`. The namespace drops a

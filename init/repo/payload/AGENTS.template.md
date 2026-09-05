@@ -26,7 +26,7 @@ Primary framework: .NET. Namespace prefix: `{{PREFIX}}`.
 | `src/` | production code |
 | `test/` | test projects, one per project under test |
 | `docs/` | documentation |
-| `docs/rules/` | rules, mirroring the toolkit's `rules/` tree; referenced below |
+| `docs/rules/` | the rules this repository is held to; see *Agent guidelines* below |
 | `{{REPO_NAME}}.slnx` | the solution — this repository is a single component |
 
 <!-- ==== MONOREPO variant - delete if this is standalone ==== -->
@@ -46,17 +46,21 @@ category map before assuming a component does or does not exist.
 | `infrastructure/` | provisioning (Terraform and similar) |
 | `ui/` | front-end applications |
 | `docs/` | documentation |
-| `docs/rules/` | rules, mirroring the toolkit's `rules/` tree; referenced below |
+| `docs/rules/` | the rules this repository is held to; see *Agent guidelines* below |
 | `build/` | CI/CD pipeline definitions |
 
 <!-- ==== end variants ==== -->
 
 Build configuration lives **once, at the repository root** — `Directory.Build.props`,
-`Directory.Packages.props`, `Tests.props`, `StyleCop.props`, `stylecop.ruleset`,
-`stylecop.json`, `.editorconfig`. Every project inherits it.
+`Directory.Build.targets`, `Directory.Packages.props`, `Tests.props`,
+`StyleCop.props`, `stylecop.ruleset`, `stylecop.json`, `.editorconfig`. Every
+project inherits it. The targets file stamps every assembly's informational
+version with the short commit hash (`1.2.3+abcdef12`, `-dirty` when the tree
+is not clean); it never fails the build.
 
-Never add a `Directory.Build.props` or `Directory.Packages.props` inside a
-subfolder: resolution stops at the first file found walking upward, so a nested
+Never add a `Directory.Build.props`, `Directory.Build.targets`, or
+`Directory.Packages.props` inside a subfolder: resolution stops at the first
+file found walking upward, so a nested
 copy silently severs that subtree from central package management, StyleCop and
 warnings-as-errors — with a green build and no warning.
 
@@ -69,10 +73,12 @@ makes it selectable from a plain-language request.
 | When you are | Read |
 |---|---|
 | Writing, reviewing or refactoring C# in this repository | [`docs/rules/coding/csharp/csharp-coding-rules.md`](docs/rules/coding/csharp/csharp-coding-rules.md) |
+| Touching an entity, a `DbContext`, or a migration | [`docs/rules/coding/csharp/csharp-ef-core-rules.md`](docs/rules/coding/csharp/csharp-ef-core-rules.md) |
 | Adding a project, component, or test project | [`docs/rules/coding/csharp/csharp-new-project.md`](docs/rules/coding/csharp/csharp-new-project.md) |
+| Checking a change for secrets, personal data, or local paths — or anything before a first push | [`docs/rules/security-reminders.md`](docs/rules/security-reminders.md) |
 | Adding, upgrading, or replacing a package (any ecosystem) | [`docs/rules/dependencies.md`](docs/rules/dependencies.md) |
 | Starting work on a ticket, naming a branch, titling a PR, or setting merge behaviour | [`docs/rules/change-tracking/github.md`](docs/rules/change-tracking/github.md) |
-| Publishing the repository, committing, or opening / updating / merging a pull request | [`docs/rules/source-control/github-pull-requests.md`](docs/rules/source-control/github-pull-requests.md) |
+| Publishing the repository, committing, or opening / updating / merging a pull request | [`docs/rules/source-control/source-control.md`](docs/rules/source-control/source-control.md), then the host file it names |
 | Reviewing a pull request, a diff, or a set of changes | [`docs/rules/coding/code-review.md`](docs/rules/coding/code-review.md) — then the C# or markdown checklist it names |
 | Finding what exists — which component does what, where something lives | `README.md` here; in a monorepo, each category's `README.md` is the map of its components, and each component's `README.md` says how to run it |
 
@@ -102,43 +108,29 @@ is applied automatically by `Directory.Build.props`.
 
 ## Serena — use it when connected, fall back when not
 
-This repository is set up for [Serena](https://github.com/oraios/serena), a
-language-server-backed MCP server (`.serena/project.yml` at the root). Whether
-it is *available* depends on the machine, not the repository.
-
-**If the `serena` MCP server is connected:** call its `initial_instructions`
-tool once at the start of a coding task, then prefer its symbolic tools over
-text search and whole-file reads — `get_symbols_overview` before reading a
-file, `find_symbol` / `find_referencing_symbols` instead of grep for code,
-`replace_symbol_body` / `insert_after_symbol` for edits scoped to a symbol.
-The gain is precision and context budget: one method body instead of a
-400-line file, references from the compiler's view instead of a text match.
-
-**If it is not connected:** proceed with the ordinary file, search, and edit
-tools. Nothing in this repository depends on Serena; do not stop, install, or
-ask about it mid-task.
-
-Serena's C# language server needs a restored solution to resolve symbols well
-— `dotnet restore` first if references look incomplete.
+This repository carries a [Serena](https://github.com/oraios/serena) project
+file (`.serena/project.yml`); whether the server is available depends on the
+machine. **Connected:** call `initial_instructions` once per coding task, then
+prefer the symbolic tools — `get_symbols_overview` before reading a file,
+`find_symbol` / `find_referencing_symbols` over grep, `replace_symbol_body` /
+`insert_after_symbol` for symbol-scoped edits — one method body instead of a
+400-line file. **Not connected:** use the ordinary tools; do not stop, install,
+or ask about it mid-task. Its C# language server needs a restored solution —
+`dotnet restore` first if references look incomplete.
 
 ## Building and testing
 
     dotnet build <solution> --nologo -v:q
     dotnet test  <solution> --nologo
 
-**Keep build output out of context.** Always `--nologo -v:q`, then read the
-summary lines (`Build succeeded` / `error …` / `Passed!`). Never paste a full
-build log into the conversation; grep it for `error|warning|Passed|Failed`
-and report those. A verbose build log is the most expensive thing a session
-can read for the least information.
+**Keep build output out of context.** Always `--nologo -v:q`; grep the output
+for `error|warning|Passed|Failed` and report those lines, never a full log.
 
 **Warnings are errors.** StyleCop rules set to `Warning` fail the build; rules
 at `Info` never surface at build time and appear only in the editor.
 
-Test projects need no package references of their own — any project named
-`*.Tests` inherits the whole test stack from `Tests.props`. A test `.csproj`
-should contain only its `TargetFramework` and a `ProjectReference` to the code
-under test.
+A `*.Tests` project inherits the whole test stack from `Tests.props`; its
+`.csproj` holds only `TargetFramework` and a `ProjectReference`.
 
 Do not report work as complete until `dotnet build` and `dotnet test` both pass,
 and confirm the test count is what you expect — a misconfigured runner reports

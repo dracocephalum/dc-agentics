@@ -4,7 +4,8 @@ Applies after the general pass in [`../code-review.md`](../code-review.md).
 Every item here is something the build **cannot** catch — StyleCop, analyzers
 and warnings-as-errors already reject formatting, naming style, and the
 banned-API list. The authority for each item is
-[`csharp-coding-rules.md`](csharp-coding-rules.md) and
+[`csharp-coding-rules.md`](csharp-coding-rules.md),
+[`csharp-ef-core-rules.md`](csharp-ef-core-rules.md), and
 [`csharp-unit-tests-rules.md`](csharp-unit-tests-rules.md); cite the rule.
 
 | Smell in the diff | Rule | Label |
@@ -25,9 +26,20 @@ banned-API list. The authority for each item is
 | `throw new Exception(...)` or `catch (Exception)` swallowing | Design | `issue` |
 | Validation or not-found expressed as a throw where the component uses result records | Design | `suggestion` |
 | Entity or `DbSet` type crossing the API boundary | Design | `issue` |
-| Enum stored as `int` — new entity without the string convention | EF Core | `issue` |
+| Enum property without `.HasConversion<string>().HasMaxLength(…)` | EF Core, Model | `issue` |
+| New `DbContext` without a `ModelConventions.Check` test, or the check loosened to let a violation pass | EF Core, Model | `issue (blocking)` |
 | Query in a loop; `Include` missing where navigation is read | EF Core | `issue` |
 | `DateTimeOffset` with non-zero offset saved on PostgreSQL | EF Core | `issue (blocking)` |
+| `decimal` property named like a money amount without `HasPrecision(19, 4)` | EF Core, Model | `issue` |
+| `DeleteBehavior.Cascade` or `ClientCascade`; `ON UPDATE CASCADE` in a migration | EF Core, Model | `issue (blocking)` |
+| Composite or non-`Guid` primary key, or a key column not named `Id` | EF Core, Model | `issue` |
+| Plural table name; `HasDefaultSchema` missing or the schema not confirmed | EF Core, Model | `issue` |
+| Migration with `DropColumn`, `DropTable`, `RenameColumn`, or a narrowing `AlterColumn` | EF Core, Migrations | `issue (blocking)` — breaks the release still running |
+| `AddColumn` with `nullable: false` or `defaultValue:` on an existing table | EF Core, Migrations | `issue (blocking)` |
+| `CreateIndex` on an existing table without the online option and a confirmed row count | EF Core, Migrations | `issue` |
+| Index change generated as `DropIndex` + `CreateIndex` | EF Core, Migrations | `issue` — `DROP_EXISTING` or create-then-drop |
+| Migration or `ModelSnapshot` edited by hand; real connection string in a design-time factory | EF Core, Migrations | `issue (blocking)` |
+| `Database.Migrate()` at startup in a service that can run more than one instance | EF Core, Migrations | `issue` |
 | Scoped service injected into a singleton (captive dependency) | Design | `issue (blocking)` |
 | `IDisposable` created and not disposed / not `await using` | Design | `issue` |
 | Pattern (Strategy, Factory, Mediator) with one implementation | Design | `question` |
@@ -51,7 +63,8 @@ Project and packages:
 | Smell | Rule | Label |
 |---|---|---|
 | `Version="…"` on a `PackageReference` | central package management | `issue (blocking)` — fails restore |
-| New package not in `allowed-licenses.json` tiers | `dependencies.md` | `issue (blocking)` until reviewed |
+| New package not in `allowed-licenses.json` tiers | [`dependencies.md`](../../dependencies.md) | `issue (blocking)` until reviewed |
+| Package added without `nuget-license -t` passing on the whole graph | [`dependencies.md`](../../dependencies.md) | `issue (blocking)` |
 | `Directory.Build.props` or `Directory.Packages.props` below the root | layout | `issue (blocking)` — severs the subtree |
 | `.csproj` in `services/`, `jobs/`, `tools/` without `IsPackable=false` | layout | `todo` |
 | A root-level solution in a monorepo | layout | `issue` |

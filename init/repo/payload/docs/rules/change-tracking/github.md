@@ -60,7 +60,16 @@ The ticket number **leads**; the change type lives in the commits, not the
 branch. GitHub can create the branch linked to the issue, so the issue page
 shows the branch and the PR that follows:
 
-    gh issue develop 123 --name 123-billing-retry --base main --checkout
+    gh issue develop 123 --name 123-billing-retry --base main
+    git fetch origin 123-billing-retry
+    git switch 123-billing-retry
+
+Create and check out in two steps rather than with `--checkout`, which can
+fail on its own internal `git` call after the branch and the link already
+exist on GitHub — it did on the first run through this flow, leaving the work
+on `main`. The two-step form uses the same git configuration as every other
+command and is verifiable at each step (`gh issue develop --list 123` shows
+the link).
 
 The user may override the naming (an existing convention, a hotfix with no
 ticket); record the reason in the PR body.
@@ -73,30 +82,34 @@ ticket); record the reason in the PR body.
   squash commit stays scannable.
 - **Body**: from the template, and always `Closes #<ticket>` — GitHub closes
   the issue on merge and links the two permanently.
-- Everything else — size, drafts, review conduct, merge — is in
-  [`../source-control/github-pull-requests.md`](../source-control/github-pull-requests.md).
+- Everything else — size, drafts, review conduct, merge, repository
+  settings — is in
+  [`../source-control/source-control.md`](../source-control/source-control.md)
+  and its GitHub file.
 
 Note the trade-off, chosen deliberately: a leading `#123` is not what strict
 Conventional Commits parsers expect. This toolkit does not run one; if a
 repository adopts `commitlint` or similar, move the ticket to the end
 (`feat(billing): retry failed charges once (#123)`) and say so in `AGENTS.md`.
 
-## Repository settings — once, after the repository exists on GitHub
+## Reaching GitHub: an MCP server if present, `gh` otherwise
 
-Two behaviours are repository settings, not habits:
+Two ways an agent can act on GitHub, and the choice is made per session,
+not per repository:
 
-    gh repo edit --delete-branch-on-merge --enable-squash-merge \
-                 --enable-merge-commit=false --enable-rebase-merge=false
+- **A GitHub MCP server is connected** (its tools are listed in the session)
+  → prefer its tools for issues, pull requests, comments, and threads. They
+  return structured data and need no shell.
+- **No MCP server** → use `gh`, as in the tables below. This is the baseline
+  every machine set up by the toolkit has; nothing here depends on the MCP
+  server existing.
 
-- **Squash is the only merge method.** One conventional commit per PR on the
-  default branch, with the PR title as its message.
-- **The source branch is deleted on merge.** Branches are scaffolding; the PR
-  and the ticket are the record.
-
-Apply this as part of repository initialization when a GitHub remote exists,
-or the first time a pull request is opened. Verify:
-
-    gh repo view --json deleteBranchOnMerge,squashMergeAllowed,mergeCommitAllowed,rebaseMergeAllowed
+Whether to install the MCP server is the user's decision, made during machine
+setup — the toolkit's local guide asks, and records the known catch (the
+remote server's OAuth route does not work from Claude Code; it needs a
+personal access token in a header). Never install or authenticate it
+mid-task, and never mix the two routes for the same action; the confirmation
+rules apply equally to both.
 
 ## Review mechanics on GitHub
 

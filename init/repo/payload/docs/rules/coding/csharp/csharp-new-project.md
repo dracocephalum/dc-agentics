@@ -2,8 +2,8 @@
 
 Applies when adding a project — library, service, job, tool, or test project —
 to a repository that has already been initialized. Layout, naming, and the
-build configuration it inherits are defined in the root
-the repository's root `AGENTS.md`; this file is the procedure.
+build configuration it inherits are defined in the repository's root
+`AGENTS.md`; this file is the procedure.
 
 Never guess the namespace prefix. Take it from `AGENTS.md`.
 
@@ -16,8 +16,8 @@ Never guess the namespace prefix. Take it from `AGENTS.md`.
 | monorepo | a new component | `<category>/<kebab-name>/` — create `src/`, `test/`, and `<kebab-name>.slnx` there first | its own, new |
 
 Categories are `services/`, `libraries/`, `jobs/`, `tools/`. Never create a
-solution at a monorepo root, and never add `Directory.Build.props` or
-`Directory.Packages.props` below the root — see `AGENTS.md` for why.
+solution at a monorepo root, and never add a `Directory.Build.props`,
+`Directory.Build.targets`, or `Directory.Packages.props` below the root — see `AGENTS.md` for why.
 
 **Creating a category folder for the first time?** Give it its map:
 copy `docs/templates/category-README.md` to `<category>/README.md`, fill the

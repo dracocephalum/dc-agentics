@@ -1,0 +1,155 @@
+# Source control
+
+Applies when publishing a repository for the first time, creating a branch,
+writing commits, or opening, updating, or merging a change request — a pull
+request, a merge request, whatever the host calls it. This file is the rules;
+the host-specific mechanics are in the file the [Hosts](#hosts) section names.
+
+The standard, borrowed from Google's engineering practices: a change should be
+**small, described so a stranger understands what and why, and verified before
+anyone else spends time on it.**
+
+## A ticket first
+
+Every change is traceable to a ticket, and the ticket number leads — in the
+branch name and in the change-request title — so history, boards, and searches
+line up on one key. How a ticket is created and linked is the tracker's
+business: [`../change-tracking/github.md`](../change-tracking/github.md).
+
+## Branches
+
+- Name: `<ticket>-<kebab-topic>`, e.g. `123-billing-retry`. The change type
+  lives in the commits, not the branch name.
+- Branch from the default branch. Short-lived: a branch older than a few days
+  is a sign the change is too large — split it.
+- Never commit directly to the default branch.
+
+## Commits
+
+Conventional Commits, so history is scannable and release notes can be
+generated:
+
+    <type>(<scope>): <imperative summary, ≤ 72 chars>
+
+    <why, not what - the diff shows what>
+
+Types: `feat`, `fix`, `refactor`, `test`, `docs`, `build`, `ci`, `chore`,
+`perf`. `!` after the type marks a breaking change. The first line is a
+sentence a future developer reads in `git log --oneline` — "Fix bug" and "WIP"
+are not summaries.
+
+Commits are signed (the machine setup enforces this) and contain no secrets
+(the pre-commit hook enforces this). A commit that fails either is not fixed
+by `--no-verify`.
+
+## Size
+
+One concern per change request. As a guide, **under ~400 changed lines** of
+non-generated code; a reviewer's attention drops sharply past that and defects
+get through. If a change needs more, split it into a sequence — refactor
+first, behaviour second — and open them as separate, dependent requests.
+
+## Opening a change request
+
+Before opening:
+
+1. `dotnet build` and `dotnet test` green — the reviewer should never be the
+   one to discover a red build.
+2. The licence check passes (`docs/rules/dependencies.md`) if any package
+   changed.
+3. Read your own diff top to bottom as a reviewer would. Remove debug code,
+   stray files, unrelated formatting.
+4. The description still matches the code — descriptions written at the
+   start of a change drift by the end.
+
+Then:
+
+- **Title**: `#<ticket> <type>(<scope>): <summary>` — ticket first, then the
+  conventional summary, because squash-merge makes it the commit message.
+- **Body** follows the repository's change-request template. **Bullet
+  points, not paragraphs**: one bullet per change in behaviour or structure
+  under *What*; a **checklist** wherever the section is a list of actions —
+  what was verified, what a person must do at merge or deploy time. Link the
+  ticket with the tracker's closing keyword.
+- **A non-trivial change gets a *How*.** The approach and the reasoning
+  behind it, in the form that makes them easiest to grasp later — a list of
+  steps, a table of the options considered, a mermaid diagram of the flow.
+  It is written for the reader who opens this request in a year, person or
+  agent, and asks why it was done this way; the diff will not tell them.
+  Trivial changes skip it.
+- **The description scales with the diff.** Two sentences describe a
+  two-file change; they do not describe a large one. When a request is
+  legitimately large — a generated migration, a new component, a sequence
+  that could not be split — the description is what makes it reviewable:
+  bullets grouped by area, a reading order under *Notes for the reviewer*,
+  every manual step under *Actions*. A reviewer should be able to navigate
+  the diff from the description alone.
+- **Draft** until it is ready for review. A draft says "look if you like, do
+  not spend review effort yet."
+- Request reviewers explicitly; code owners are the default choice.
+
+## During review
+
+- Respond to every comment — a fix, a question, or a reasoned disagreement.
+  Silently pushing a change without answering leaves the reviewer guessing.
+- Push follow-up commits; do not rewrite history under a reviewer. Rebase
+  only to resolve conflicts, with `--force-with-lease`, and say so in a
+  comment.
+- Resolve a conversation only when its point is addressed, not to clear the
+  list.
+
+## Merging
+
+- **Squash, always**: one conventional commit per change request on the
+  default branch, title as the message. Merge commits and rebase-merge are
+  disabled at the repository level, not left to habit.
+- **The branch is deleted on merge** — also a repository setting.
+- The merge is the author's, after approval and green checks — not the
+  reviewer's.
+
+## Guardrails an agent must not skip
+
+State can be lost between steps — a long session, a compaction, a model
+switch. These checks cost nothing and catch the failure that follows:
+
+- **Confirm the branch before every commit.** `git branch --show-current`
+  must equal the branch you intend. A commit on the wrong branch is the most
+  common way a change ends up orphaned; verify, do not assume.
+- **Never run a side-effecting command to "diagnose".** Branch creation,
+  `git commit`, `git push`, and any host command that creates something all
+  change state. To inspect, use read-only commands (`git status`,
+  `git branch -vv`, `git log`, the host's `view` commands). A command run to
+  investigate a failure must not be able to cause a new one.
+- **After any branch switch, verify what is under you** before working:
+  `git log --oneline -3` should show the commits you expect. A branch that
+  unexpectedly sits at the base commit means the switch did not carry your
+  work.
+- **When recovering, inspect before you act.** `git branch -vv` and
+  `git log --graph --all` first; understand the divergence, then fix it. Bring
+  files across with `git checkout <branch> -- <path>` only after confirming
+  what that overwrites — it silently replaces the whole file.
+
+## For an agent
+
+- Open change requests as **drafts** unless told otherwise, and never merge.
+- Show the exact command before running anything that creates or changes
+  something on the host — a branch, a request, a setting — and write
+  multi-line bodies to a file first; bodies on the command line get mangled.
+- Do not force-push, rebase, or close a request that has review activity
+  without being asked.
+- The commit and push go through the signing and secret-scan setup as
+  configured; if either fails, report it — do not bypass.
+- Ask for what is missing — the ticket, the scope, the summary — rather than
+  inventing it.
+
+## Hosts
+
+The mechanics — publishing, the exact commands, repository settings — depend
+on where the repository lives:
+
+| Host | File |
+|---|---|
+| GitHub | [`github.md`](github.md) |
+
+Only GitHub today. For another host, add a sibling file here with the same
+sections, and a row above; do not generalise this file around it.

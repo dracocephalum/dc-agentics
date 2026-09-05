@@ -69,7 +69,7 @@ Git does not refuse to commit with no identity configured; it silently derives
 
 The noreply form keeps a real address out of public history. Details, and what
 to do if commits already carry the wrong identity, are in
-[`../security-reminders.md`](../security-reminders.md).
+[`../repo/payload/docs/rules/security-reminders.md`](../repo/payload/docs/rules/security-reminders.md).
 
 ## 1b. GitHub — optional, ask first
 
@@ -104,16 +104,12 @@ suppression is the token saver.
 
 ## 2b. Agent permission prompts — optional, user's call
 
-If Claude Code asks for permission on routine read-only commands, the built-in
-`/fewer-permission-prompts` skill scans recent sessions and writes an
-allow-list to the repository's `.claude/settings.json`, so those stop
-interrupting. Each prompt is a full round trip; a session that answers twenty
-of them has spent real budget on nothing.
-
-Whether to run it is the user's decision: some permission modes never prompt
-(auto mode), in which case there is nothing to gain, and an allow-list is a
-statement of trust that belongs to the person, not the agent. Mention it
-during setup; do not run it unasked.
+If Claude Code prompts for permission on routine read-only commands, the
+built-in `/fewer-permission-prompts` skill writes an allow-list to the
+repository's `.claude/settings.json` from recent sessions. Each prompt is a
+full round trip, so the saving is real — but an allow-list is a statement of
+trust that belongs to the person, and some permission modes never prompt.
+Mention it during setup; do not run it unasked.
 
 ## 3. Python — read `python.md` before touching anything
 

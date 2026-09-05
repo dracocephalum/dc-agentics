@@ -27,7 +27,7 @@ For any document an agent will act on:
 | **Commands were run**, not typed from memory | a snippet that has never executed is a liability |
 | **Links resolve** from the file's own directory | a dead link is a rule nobody reaches |
 | **No placeholders left** — `{{…}}`, `TBD`, `TODO`, `(path)` | a template that shipped unfilled |
-| **No local paths, personal data, or secrets** | `security-reminders` — it will be pushed |
+| **No local paths, personal data, or secrets** | [`security-reminders.md`](../../security-reminders.md) — it will be pushed |
 | **Portable shell** — POSIX `sh`, no GNU-only flags, no backslash paths | the reader may not be on Windows |
 | **Length is earned** | every always-loaded line costs every session; on-demand files may be longer |
 

@@ -21,11 +21,11 @@ them.
 | Set up a machine that is **not Windows** (Linux, macOS, FreeBSD) | [`init/local/platforms.md`](init/local/platforms.md) — untested, read first |
 | Add or upgrade a package; judge a licence | [`init/repo/payload/docs/rules/dependencies.md`](init/repo/payload/docs/rules/dependencies.md) |
 | Start work on a ticket, name a branch, title a PR, set merge behaviour (`/source-control`) | [`init/repo/payload/docs/rules/change-tracking/github.md`](init/repo/payload/docs/rules/change-tracking/github.md) |
-| Publish a repository (first push), commit, or open / update / merge a pull request | [`init/repo/payload/docs/rules/source-control/github-pull-requests.md`](init/repo/payload/docs/rules/source-control/github-pull-requests.md) |
+| Publish a repository (first push), commit, or open / update / merge a pull request | [`init/repo/payload/docs/rules/source-control/source-control.md`](init/repo/payload/docs/rules/source-control/source-control.md), then the host file it names |
 | Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`init/repo/payload/docs/rules/coding/code-review.md`](init/repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
 | Initialize / scaffold / set up a repo at a path | [`init/repo/README.md`](init/repo/README.md) |
 | Set up StyleCop, or choose relaxed vs strict | [`init/repo/stylecop.md`](init/repo/stylecop.md) |
-| Check privacy/security before a first push | [`init/security-reminders.md`](init/security-reminders.md) |
+| Check privacy/security before a first push | [`init/repo/payload/docs/rules/security-reminders.md`](init/repo/payload/docs/rules/security-reminders.md) |
 
 Supported frameworks today: **.NET (dotnet core)** only. For anything else, say
 so rather than improvising.
@@ -38,7 +38,6 @@ Three kinds of file, told apart by location:
     README.md  AGENTS.md  TODO.md  .gitignore  .gitattributes
     .markdownlint.yaml             one line: extends the payload copy (so it cannot drift)
     init/
-      security-reminders.md        privacy & data-security checklist
       local/                       developer-machine guides (Windows; platforms.md for the rest)
       repo/
         README.md                  repo initialization procedure
@@ -51,15 +50,16 @@ Three kinds of file, told apart by location:
       README.template.md           transformed at init (-> README.md); the human entry point
       .editorconfig  .gitignore  .gitattributes   (+ .original pristine baselines - never edit)
       stylecop.ruleset  stylecop.json  StyleCop.props
-      Directory.Build.props  Directory.Packages.props  Tests.props  BannedSymbols.txt
+      Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props  BannedSymbols.txt
       nuget.config  allowed-licenses.json  license-overrides.json
-      .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .markdownlint.yaml
+      .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
       docs/rules/                  every rules document, exactly where it lands
         dependencies.md
+        security-reminders.md      privacy & data-security checklist; the review's security pass
         change-tracking/github.md  ticket = issue; ticket-first branches and PR titles; merge settings; review mechanics
-        source-control/github-pull-requests.md
+        source-control/          source-control.md - the rules, host-neutral; github.md - the mechanics
         coding/code-review.md
-        coding/csharp/             coding rules, unit-test rules, new-project, code-review
+        coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
         coding/markdown/markdown-review.md
       docs/templates/              component-README.md, category-README.md - filled by /project
 
@@ -88,11 +88,13 @@ cannot be relative in both trees; those are plain text.
 
 This repo holds two kinds of content, and confusing them causes real damage:
 
-**Payload** — `init/`, `rules/`, `agents/`, boilerplates, examples. Written to be
-consumed in *someone else's* project, on an unknown machine. Must be portable and
+**Payload** — `init/repo/payload/` (an exact mirror of a target repository
+root) and the skill shims in `.claude/skills/`. Written to be consumed in
+*someone else's* project, on an unknown machine. Must be portable and
 self-contained.
 
-**Workspace** — this file, README, repo tooling and CI. Instructions for an agent
+**Workspace** — everything else: this file, `README.md`, `TODO.md`, the
+procedures under `init/`, and the repo tooling. Instructions for an agent
 working *on* dc-agentics itself.
 
 Before writing a file, decide which it is. A rule that reads naturally as advice
@@ -116,10 +118,10 @@ somewhere the surrounding context no longer holds.
   can be copied and validated; snippets rot.
 - **A skill is a shim; the document is the substance.** `SKILL.md` carries
   frontmatter for discovery and a body that names which document to follow -
-  it never contains the procedure. The document lives under `rules/` here and
-  at `docs/rules/` in initialized repositories -
-  `payload/docs/rules/` is that mirror, and `AGENTS.md` points every tool
-  at it; the shim only adds `/name` invocation in Claude Code. There is one copy:
+  it never contains the procedure. The document lives at
+  `init/repo/payload/docs/rules/` here and lands at `docs/rules/` in
+  initialized repositories, and `AGENTS.md` points every tool at it; the shim
+  only adds `/name` invocation in Claude Code. There is one copy:
   `.claude/skills/<name>/SKILL.md`, live here and copied to a target's
   `.claude/skills/` at init - the one thing shipped from outside `payload/`.
   It locates its document by repository-root-relative path with a toolkit
@@ -129,6 +131,13 @@ somewhere the surrounding context no longer holds.
   the macOS/FreeBSD equivalents, no backslash paths. The payload is verified on
   Windows only; a snippet that is portable by construction is the only one that
   does not need a machine we do not have. See `init/local/platforms.md`.
+- **Writing files from a shell: no backslashes in heredocs.** The shell tool
+  pre-processes the command text: a `\\` arrives as a single backslash, a line
+  ending in a backslash joins the next, and a batch of several quoted heredocs
+  containing one such line failed to parse and ran nothing — observed on
+  Windows, 2026-09-05. The markdown here has such lines (the `gh repo edit`
+  continuation). Use the editor tools for any file that contains a backslash
+  and for multi-file writes; keep shell heredocs to one per call.
 
 ## Publishing constraints
 
