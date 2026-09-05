@@ -5,15 +5,6 @@ close it, so it can be picked up cold.
 
 ## Decisions pending
 
-- [ ] **Licence for this repository.** No `LICENSE` file yet. The wrinkle: the
-      payload is copied into other repositories, so whatever the toolkit
-      carries lands there too. Options on the table: MIT throughout, or
-      Apache-2.0 for the toolkit with `init/repo/payload/` and
-      `.claude/skills/` additionally offered under 0BSD so initialized
-      repositories owe no notice. Close by: the user's choice, a root
-      `LICENSE`, a *Licensing* section in `README.md` stating the payload
-      terms, and the licence name in the repository settings. Note the quoted
-      Google engineering-practices text is CC-BY 3.0 either way.
 - [ ] **Projects board automation.** Merging #2 closed issue #1 but left its
       card *In Progress*; the agent moved it by hand. Close by one of: enable
       the board's built-in "item closed → Done" workflow (web UI, once), or

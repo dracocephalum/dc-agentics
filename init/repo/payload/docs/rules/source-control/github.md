@@ -77,10 +77,18 @@ Two of the merge rules are repository settings, not habits:
 - **The source branch is deleted on merge.** Branches are scaffolding; the PR
   and the ticket are the record.
 
-Apply this as part of repository initialization when a GitHub remote exists,
-or the first time a pull request is opened. Verify:
+The squash commit's message is a third setting, and it matters: by default
+GitHub takes it from the PR title only when the PR has several commits, and
+from the commit message when it has one — so a single-commit PR silently
+loses the ticket-first title. Pin it:
+
+    gh api -X PATCH repos/<owner>/<name> -f squash_merge_commit_title=PR_TITLE -f squash_merge_commit_message=PR_BODY
+
+Apply all of this as part of repository initialization when a GitHub remote
+exists, or the first time a pull request is opened. Verify:
 
     gh repo view --json deleteBranchOnMerge,squashMergeAllowed,mergeCommitAllowed,rebaseMergeAllowed
+    gh api repos/<owner>/<name> --jq '"\(.squash_merge_commit_title) \(.squash_merge_commit_message)"'   # PR_TITLE PR_BODY
 
 **Protect the default branch.** Nothing reaches `main` except a squash-merged
 pull request: no direct push, no force-push, no deletion, every review thread
