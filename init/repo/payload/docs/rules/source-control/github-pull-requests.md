@@ -129,9 +129,18 @@ Then:
 
 - **Title** is `#<ticket> <type>(<scope>): <summary>` — ticket first, then
   the conventional summary, because squash-merge makes it the commit message.
-- **Body** follows `.github/PULL_REQUEST_TEMPLATE.md` (GitHub fills it in):
-  what, why, how it was verified, risks and rollback, links. `Closes #<n>`
-  links and auto-closes the issue.
+- **Body** follows `.github/PULL_REQUEST_TEMPLATE.md` (GitHub fills it in).
+  **Bullet points, not paragraphs**: one bullet per change in behaviour or
+  structure under *What*; a **checklist** wherever the section is a list of
+  actions — what was verified, what a person must do at merge or deploy
+  time. `Closes #<n>` links and auto-closes the issue.
+- **The description scales with the diff.** Two sentences describe a
+  two-file change; they do not describe a large one. When a PR is
+  legitimately large — a generated migration, a new component, a sequence
+  that could not be split — the description is what makes it reviewable:
+  bullets grouped by area, a reading order under *Notes for the reviewer*,
+  every manual step under *Actions*. A reviewer should be able to navigate
+  the diff from the description alone.
 - **Draft** until it is ready for review — `gh pr create --draft`. A draft
   says "look if you like, do not spend review effort yet."
 - Request reviewers explicitly; code owners are the default choice.
