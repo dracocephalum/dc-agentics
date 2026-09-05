@@ -6,8 +6,9 @@
 
 # {{REPO_NAME}}
 
-> Initialized with <https://github.com/dracocephalum/dc-agentics>.\
-> {{AGENT_TOOL}} · {{MODEL}} · dc-agentics@{{TOOLKIT_COMMIT}}
+> Initialized with <https://github.com/dracocephalum/dc-agentics>. The
+> choices made, and the toolkit commit, are in
+> [`.dc-agentics.yaml`](.dc-agentics.yaml); open items are in [`TODO.md`](TODO.md).
 
 {{ONE_LINE_PURPOSE}}
 

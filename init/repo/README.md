@@ -8,24 +8,33 @@ other framework, stop and say so rather than improvising.
 
 ## Confirm before doing anything
 
-Ask only for what is not already stated in the request; do not re-ask what the
-user has given.
+Ask once, in one message, for everything that has no default and is not
+already in the request; never re-ask what the user has given. Everything with
+a default is applied without asking and reported in the closing summary
+(step 6), which also says where each value lives so it can be changed. A
+default the user may well want to revisit — the licence, the mode — is a line
+in that summary and, where it is a real decision, an entry in the target's
+`TODO.md`; it is not a question up front.
 
 | Input | Default if unstated |
 |---|---|
 | Repository root path | *required — never guess* |
 | Layout mode | ask — `standalone` or `monorepo`, see [`layout.md`](layout.md) |
 | Namespace prefix | ask — e.g. `Contoso`; never invent one |
-| Primary framework | ask; only .NET is supported today |
+| One-line purpose | ask — lands in `AGENTS.md` and `README.md`; never invent one |
+| Primary framework | .NET; the only one supported today, so it is not a question |
 | StyleCop mode | relaxed |
 | Central package management | on |
-| Licence | ask — `none`, `Apache-2.0`, or `MIT`; and the copyright holder (step 3.10) |
+| Source-control mode | `local` — `auto`, `local`, or `manual`; step 3.11 |
+| Licence | `none` — recorded, summarised, and left as a decision in `TODO.md`; step 3.10 |
 
 ## What ends up in the repository root
 
     AGENTS.md                    generated from AGENTS.template.md
     LICENSE, NOTICE              only if the user chose a licence (step 3.10)
     README.md                    generated from README.template.md; human entry point
+    .dc-agentics.yaml            settings agents read: source-control mode, every init choice, toolkit commit (step 3.11)
+    TODO.md                      open items; init writes anything unresolved here (step 3.11)
     docs/templates/              component-README.md, category-README.md — used by /project
     .editorconfig                editor conventions (root = true)
     .gitattributes               line-ending normalization  (dotnet new)
@@ -269,13 +278,10 @@ target root with the copy; transform it in place:
 Then the repository's `README.md`, from `README.template.md` (it arrived at the
 target root with the copy) by the same transform: fill placeholders, keep the
 matching layout variant, delete the template comment. It is the human entry
-point; `AGENTS.md` is the agent's. The provenance block under its title takes
-three values the agent has and must not guess: the tool it runs in
-(`Claude Code`), the model identifier (`claude-fable-5-1` form), and the
-toolkit commit — `git -C <toolkit> rev-parse --short=12 HEAD`, with `-dirty`
-appended when `git -C <toolkit> status --porcelain` prints anything. That
-commit is what a future update of the repository diffs from. In a monorepo,
-also give every category folder you create its map —
+point; `AGENTS.md` is the agent's. The line under its title points at
+`.dc-agentics.yaml` for provenance and choices (step 3.11) and at `TODO.md`
+for open items; it has no placeholders of its own. In a monorepo, also give
+every category folder you create its map —
 `docs/templates/category-README.md` copied to `<category>/README.md` and
 filled. Component READMEs come from the new-project procedure.
 
@@ -313,8 +319,10 @@ covers the per-machine files in the meantime).
 
 **This step never blocks initialization.** If `serena` is not on `PATH`, is
 not installed, or the command fails for any reason: report it in one line —
-`Serena project config skipped: <reason>` — and continue with step 4. Do not
-install Serena, do not modify `PATH`, do not ask the user mid-procedure. The
+`Serena project config skipped: <reason>` — add the same line under
+*Initialization* in the target's `TODO.md` with the command to run, and
+continue with step 4. Do not install Serena, do not modify `PATH`, do not ask
+the user mid-procedure. The
 generated `AGENTS.md` already tells agents to fall back when Serena is absent,
 so nothing downstream depends on this file existing.
 
@@ -350,23 +358,28 @@ after the first push, the default-branch ruleset:
     gh api repos/<owner>/<name>/rulesets --input .github/rulesets/protect-main.json
 
 The ruleset is refused on a private repository under GitHub Free; that is the
-user's choice to make (Pro, public, or none), not a step to skip silently.
+user's choice to make (Pro, public, or none), not a step to skip silently —
+it goes under *Decisions pending* in the target's `TODO.md` with the three
+options and the command to run once one is taken.
 
 Details and the verification query are in
 [`payload/docs/rules/source-control/github.md`](payload/docs/rules/source-control/github.md).
-Skip, and say so, if there is no remote yet; `/source-control setup` does it
-later.
+If there is no remote yet, skip, say so, and add an *Initialization* entry to
+`TODO.md` naming the three commands; `/source-control setup` runs them later.
 
-### 3.10 Licence — ask, never assume
+### 3.10 Licence — default `none`, never assumed
 
 A repository with no `LICENSE` file is all rights reserved, which is the
 normal state of a private company repository; a repository meant to be shared
-gets one. Ask two things:
+gets one. Unless the request names a licence, apply `none`: record it in
+`.dc-agentics.yaml`, add *Choose a licence* under *Decisions pending* in the
+target's `TODO.md` with the two options below, and flag it in the closing
+summary. When the user has chosen, two things are needed:
 
-1. **Which licence.** Offer `Apache-2.0` (patent grant, trademark clause,
+1. **Which licence.** `Apache-2.0` (patent grant, trademark clause,
    contribution terms — the default for anything shared) or `MIT` (shorter;
    attribution only). Anything else is the user's own choice, fetched the
-   same way. `none` is a valid answer and is recorded as such.
+   same way.
 2. **The copyright holder** — the legal owner of the work: the person's name,
    or the company when the work is made for it. A GitHub handle is acceptable
    for a personal project; a legal name is what a notice is for. Never guess,
@@ -385,6 +398,38 @@ the payload is offered under 0BSD.
 Verify: `gh repo view --json licenseInfo` reports the chosen licence once the
 file is on the default branch — GitHub detects it from the verbatim text, so
 an edited Apache text shows as *Other*.
+
+### 3.11 Settings file and TODO
+
+`.dc-agentics.yaml` and `TODO.md` arrive with the payload copy. The settings
+file is what agents read before any source-control action and what a future
+update of the repository diffs from; every choice made above is recorded in
+it, so fill it last, when the choices are final.
+
+Fill every quoted double-brace placeholder in `.dc-agentics.yaml`; the
+unquoted values are defaults, already correct unless a step above changed
+them (`stylecop`, `central-package-management`, `source-control.mode`). Three
+values are the agent's own and must not be guessed: the tool it runs in
+(`Claude Code`), the model identifier (`claude-fable-5-1` form), and the
+toolkit commit — `git -C <toolkit> rev-parse --short=12 HEAD`, with `-dirty`
+appended when `git -C <toolkit> status --porcelain` prints anything. `date`
+is today, `yyyy-mm-dd`.
+
+`source-control.mode` is `local` unless the user asked for another: the
+agent edits and commits locally on its own and asks before anything reaches
+the host. `auto` and `manual` are described in the file and defined in
+[`source-control.md`](payload/docs/rules/source-control/source-control.md).
+
+Then `TODO.md`: by now the steps above have added their entries — a skipped
+Serena config, a refused or not-yet-applicable ruleset, the licence decision.
+Anything else that was not finished, could not be verified, or was left for
+a person goes in the same way, each entry with what would close it. Remove
+an empty section; keep the file even when both are empty, because it is
+where every later agent puts what it leaves open.
+
+Verify:
+
+    grep -n "{{" <repo>/.dc-agentics.yaml                 # must return nothing
 
 ### 4. Security pass
 
@@ -421,6 +466,27 @@ Exit code 0 is the pass. A non-zero exit lists the offending packages; a `Url`
 in the licence column means an old package with no SPDX metadata — resolve it
 per [`payload/docs/rules/dependencies.md`](payload/docs/rules/dependencies.md), never by widening
 the allow-list.
+
+### 6. Closing summary
+
+The last message of the procedure is a table of every value the repository
+now carries — asked or defaulted — and where it lives, so nothing applied
+silently stays silent:
+
+| Setting | Value | Source | Change it in |
+|---|---|---|---|
+| Layout | `monorepo` | asked | restructure; `AGENTS.md`, `README.md` |
+| Namespace prefix | `Contoso` | asked | project names; `.dc-agentics.yaml` |
+| StyleCop mode | `relaxed` | default | `stylecop.ruleset` + [`stylecop.md`](stylecop.md); `.dc-agentics.yaml` |
+| Central package management | on | default | `Directory.Packages.props` |
+| Source-control mode | `local` | default | `.dc-agentics.yaml` |
+| Licence | `none` | default | step 3.10; `TODO.md` holds the decision |
+| Merge settings, ruleset | applied / refused / no remote | — | `/source-control setup`; `TODO.md` |
+| Serena project | written / skipped | — | step 3.7; `TODO.md` |
+
+Below the table, the open entries of `TODO.md` verbatim. A user who reads only
+this message knows what was decided for them and what is still theirs to
+decide.
 
 ## Known failure modes
 

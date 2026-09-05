@@ -131,16 +131,42 @@ switch. These checks cost nothing and catch the failure that follows:
 
 ## For an agent
 
+What the agent may do without asking is `source-control.mode` in the
+repository's `.dc-agentics.yaml`, read before the first action of any
+source-control task. Absent, or a value not listed, means `manual`. The user
+can override it in conversation ("auto for this one"); that holds for the
+session and is never written back.
+
+| Step | `auto` | `local` | `manual` |
+|---|---|---|---|
+| Edit the working tree | agent | agent | agent |
+| Create the ticket | agent, reports | ask | ask |
+| Create the branch | agent | agent, once the ticket exists | ask |
+| Commit | agent | agent, locally | ask |
+| Push | agent | ask | ask |
+| Open the change request | agent, as a draft | ask | ask |
+| Merge | never | never | never |
+
+*Ask* means show the exact command and wait for a yes; *agent* means run it
+and say what was done. In `local`, the first commit still needs the ticket:
+the branch name carries its number and nothing is committed on the default
+branch, so the work stays uncommitted in the tree until the user says yes to
+the ticket. "Not yet" leaves it uncommitted — never commit on the default
+branch or on an unnamed branch to get around that.
+
+In every mode:
+
 - Open change requests as **drafts** unless told otherwise, and never merge.
-- Show the exact command before running anything that creates or changes
-  something on the host — a branch, a request, a setting — and write
-  multi-line bodies to a file first; bodies on the command line get mangled.
+- Write multi-line bodies to a file first; bodies on the command line get
+  mangled.
 - Do not force-push, rebase, or close a request that has review activity
   without being asked.
 - The commit and push go through the signing and secret-scan setup as
   configured; if either fails, report it — do not bypass.
 - Ask for what is missing — the ticket, the scope, the summary — rather than
   inventing it.
+- Anything left unfinished, blocked, or undecided goes into the repository's
+  `TODO.md`, not only into the conversation.
 
 ## Hosts
 

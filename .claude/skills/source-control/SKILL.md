@@ -10,8 +10,12 @@ host today; for anything else, say so and stop.
 
 ## Find the rules
 
-Read each in the first location that exists, then the host file the
-source-control rules name. Never work from memory.
+First `.dc-agentics.yaml` at the repository root: its `source-control.mode`
+(`auto` | `local` | `manual`; absent = `manual`) decides which of the steps
+below run without asking and which stop for a yes - the table is in the
+source-control rules, *For an agent*. Then read each rule in the first
+location that exists, then the host file the source-control rules name. Never
+work from memory.
 
 | Rule | Initialized repository | dc-agentics toolkit |
 |---|---|---|

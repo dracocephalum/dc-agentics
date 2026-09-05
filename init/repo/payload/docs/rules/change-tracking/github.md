@@ -40,12 +40,15 @@ the board" is always "can the user, and does the token include it".
 
 ## Before any work: a ticket exists
 
-If the request does not name an issue, create one. A ticket is a sentence of
-intent, not a design document:
+If the request does not name an issue, one is needed. A ticket is a sentence
+of intent, not a design document:
 
     gh issue create --title "<what and why, one line>" --body "<context, links>"
 
-Take the number it returns. A ticket that only exists in the conversation is
+In `auto` mode run it and report the number; in `local` and `manual` show it
+and wait (`source-control.mode` in `.dc-agentics.yaml`; the table is in
+[`../source-control/source-control.md`](../source-control/source-control.md),
+*For an agent*). Take the number it returns. A ticket that only exists in the conversation is
 lost the moment the session ends.
 
 Working without a ticket is the user's call to make, not the agent's — ask,

@@ -36,6 +36,7 @@ Three kinds of file, told apart by location:
 
     (3) workspace - about this repo; never copied
     README.md  AGENTS.md  TODO.md  LICENSE  NOTICE  .gitignore  .gitattributes
+    .dc-agentics.yaml              this repository's own settings (source-control mode); same shape as the payload's
     .markdownlint.yaml             one line: extends the payload copy (so it cannot drift)
     init/
       local/                       developer-machine guides (Windows; platforms.md for the rest)
@@ -48,6 +49,8 @@ Three kinds of file, told apart by location:
     init/repo/payload/
       AGENTS.template.md           transformed at init (-> AGENTS.md)
       README.template.md           transformed at init (-> README.md); the human entry point
+      .dc-agentics.yaml            settings agents read: source-control mode, init choices, toolkit commit; placeholders filled at init
+      TODO.md                      the target's open-items file; init writes anything unresolved into it
       .editorconfig  .gitignore  .gitattributes   (+ .original pristine baselines - never edit)
       stylecop.ruleset  stylecop.json  StyleCop.props
       Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props  BannedSymbols.txt

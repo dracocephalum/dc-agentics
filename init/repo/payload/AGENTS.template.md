@@ -81,6 +81,8 @@ makes it selectable from a plain-language request.
 | Publishing the repository, committing, or opening / updating / merging a pull request | [`docs/rules/source-control/source-control.md`](docs/rules/source-control/source-control.md), then the host file it names |
 | Reviewing a pull request, a diff, or a set of changes | [`docs/rules/coding/code-review.md`](docs/rules/coding/code-review.md) — then the C# or markdown checklist it names |
 | Finding what exists — which component does what, where something lives | `README.md` here; in a monorepo, each category's `README.md` is the map of its components, and each component's `README.md` says how to run it |
+| Starting any source-control action, or asked what this repository's settings and defaults are | [`.dc-agentics.yaml`](.dc-agentics.yaml) — the mode the agent works in (`auto`, `local`, `manual`) and every choice made at initialization |
+| Leaving something unfinished, blocked, or undecided — or asked what is still open | [`TODO.md`](TODO.md) — add it there; a remark in a conversation is lost |
 
 {{ADDITIONAL_GUIDELINE_ROWS}}
 
