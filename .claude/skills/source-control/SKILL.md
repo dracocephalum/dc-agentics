@@ -31,8 +31,8 @@ Then run `setup`.
 is used as given; a description becomes a new issue (`gh issue create`) after
 the user confirms its title. Then create the branch `<ticket>-<kebab-topic>`
 linked to the issue (`gh issue develop <n> --name <branch>` **without**
-`--checkout`), fetch it, and `git switch` to it - confirm with
-`git branch --show-current` before committing anything. The user may
+`--checkout`), then `git fetch origin <branch>` and `git switch <branch>`;
+confirm with `git branch --show-current` before committing. The user may
 override the branch name; record the reason for the PR body.
 
 **`commit`** - Stage what the user indicates, write a Conventional Commit
@@ -54,7 +54,17 @@ someone else's discovery. Never merge.
 
 ## Always
 
-- Show the exact command before running anything that creates or changes
-  something on GitHub - an issue, a branch, a pull request, a setting.
+- **Confirm `git branch --show-current` before every commit**, and after any
+  branch switch check `git log --oneline -3` shows the commits you expect.
+  State can be lost between steps (a long session, a model switch); a commit on
+  the wrong branch is the most common failure. Never run a state-changing
+  command (`gh issue develop`, `git checkout -b`, `commit`, `push`) merely to
+  diagnose - inspect with read-only commands.
+- If a GitHub MCP server is connected in this session, prefer its tools for
+  issues and pull requests; otherwise use `gh`. Never install or authenticate
+  one mid-task.
+- Show the exact command or tool call before running anything that creates
+  or changes something on GitHub - an issue, a branch, a pull request, a
+  setting.
 - Ask for what is missing rather than inventing it: the ticket, the scope,
   the summary.

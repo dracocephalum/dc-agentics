@@ -54,6 +54,28 @@ history lacks, and the push is rejected).
    [`../change-tracking/github.md`](../change-tracking/github.md)) and verify
    the first commit reports `verified: true`.
 
+## Guardrails an agent must not skip
+
+State can be lost between steps — a long session, a compaction, a model
+switch. These checks cost nothing and catch the failure that follows:
+
+- **Confirm the branch before every commit.** `git branch --show-current`
+  must equal the branch you intend. A commit on the wrong branch is the most
+  common way a change ends up orphaned; verify, do not assume.
+- **Never run a side-effecting command to "diagnose".** `gh issue develop`,
+  `git checkout -b`, `git switch -c`, `git commit`, `git push` all change
+  state. To inspect, use read-only commands (`git status`, `git branch -vv`,
+  `git log`, `gh ... view`). A command run to investigate a failure must not
+  be able to cause a new one.
+- **After any branch switch, verify what is under you** before working:
+  `git log --oneline -3` should show the commits you expect. A branch that
+  unexpectedly sits at the base commit means the switch did not carry your
+  work.
+- **When recovering, inspect before you act.** `git branch -vv` and
+  `git log --graph --all` first; understand the divergence, then fix it. Bring
+  files across with `git checkout <branch> -- <path>` only after confirming
+  what that overwrites — it silently replaces the whole file.
+
 ## Branches
 
 - Every branch starts from a ticket — see
