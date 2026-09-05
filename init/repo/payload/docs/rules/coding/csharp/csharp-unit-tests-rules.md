@@ -51,10 +51,13 @@ Layout, naming, and project wiring are defined in the repository's root
 - **`// Arrange`, `// Act`, `// Assert`** in that order. `// Act & Assert` when
   the two are a single expression, as with `Should.Throw`.
 - **Naming** — one of these, matching whatever the class already uses:
-  - `Method_WhenCondition_ShouldResult` —
-    `Handle_WhenCommandValid_ShouldReturnUpdatedName`
-  - `GivenCondition_WhenAction_ShouldResult` —
-    `GivenEmptyConnectionString_WhenValidate_ShouldFail`
+  - `Method_WhenCondition_ShouldResult` — `Cancel_WhenShipped_ShouldThrow`
+  - `GivenCondition_WhenAction_ShouldResult` — `GivenShippedOrder_WhenCancel_ShouldThrow`
+- **Nested classes only when a flat class has outgrown its names** — an
+  aggregate with dozens of commands, each with happy-path, rejection, and
+  idempotency tests. Then one nested class per member, and the member leaves
+  the test name: `OrderTests.Cancel.WhenShipped_ShouldThrow`. Several hundred
+  tests in one flat class is still fine; nest for grouping, not for size.
 - **`[Theory]`** when several inputs exercise one behaviour; `[Fact]` otherwise.
 - **Assert only what you set.** Never assert on an AutoFixture-generated value
   you did not fix with `.With(...)`. The exception is DeepEqual, when the test
