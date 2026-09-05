@@ -13,6 +13,12 @@
 
 <!-- The problem, the constraint, or the request. Link the issue: Closes #123 -->
 
+## How
+
+<!-- Optional - for a change that is not trivial. The approach and the rationale behind it, in whatever
+     form makes them easiest to grasp later, by a person or an agent: a list of steps, a table of
+     options considered, a mermaid diagram of the flow. Delete if the diff speaks for itself. -->
+
 ## How it was verified
 
 <!-- Build and tests green is assumed. A checklist of what was actually run or checked beyond that:

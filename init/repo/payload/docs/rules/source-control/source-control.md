@@ -71,6 +71,12 @@ Then:
   under *What*; a **checklist** wherever the section is a list of actions —
   what was verified, what a person must do at merge or deploy time. Link the
   ticket with the tracker's closing keyword.
+- **A non-trivial change gets a *How*.** The approach and the reasoning
+  behind it, in the form that makes them easiest to grasp later — a list of
+  steps, a table of the options considered, a mermaid diagram of the flow.
+  It is written for the reader who opens this request in a year, person or
+  agent, and asks why it was done this way; the diff will not tell them.
+  Trivial changes skip it.
 - **The description scales with the diff.** Two sentences describe a
   two-file change; they do not describe a large one. When a request is
   legitimately large — a generated migration, a new component, a sequence
