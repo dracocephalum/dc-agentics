@@ -28,6 +28,12 @@ banned-API list. The authority for each item is
 | Enum stored as `int` — new entity without the string convention | EF Core | `issue` |
 | Query in a loop; `Include` missing where navigation is read | EF Core | `issue` |
 | `DateTimeOffset` with non-zero offset saved on PostgreSQL | EF Core | `issue (blocking)` |
+| Migration with `DropColumn`, `DropTable`, `RenameColumn`, or a narrowing `AlterColumn` | EF Core, Migrations | `issue (blocking)` — breaks the release still running |
+| `AddColumn` with `nullable: false` or `defaultValue:` on an existing table | EF Core, Migrations | `issue (blocking)` |
+| `CreateIndex` on an existing table without the online option and a confirmed row count | EF Core, Migrations | `issue` |
+| Index change generated as `DropIndex` + `CreateIndex` | EF Core, Migrations | `issue` — `DROP_EXISTING` or create-then-drop |
+| Migration or `ModelSnapshot` edited by hand; real connection string in a design-time factory | EF Core, Migrations | `issue (blocking)` |
+| `Database.Migrate()` at startup in a service that can run more than one instance | EF Core, Migrations | `issue` |
 | Scoped service injected into a singleton (captive dependency) | Design | `issue (blocking)` |
 | `IDisposable` created and not disposed / not `await using` | Design | `issue` |
 | Pattern (Strategy, Factory, Mediator) with one implementation | Design | `question` |
