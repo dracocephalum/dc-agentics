@@ -22,7 +22,7 @@ work from memory.
 | source control - branches, commits, size, opening, review, merge, agent guardrails; names the host file | `docs/rules/source-control/source-control.md` | `init/repo/payload/docs/rules/source-control/source-control.md` |
 | change tracking - tickets, branch creation, PR titles, reaching GitHub | `docs/rules/change-tracking/github.md` | `init/repo/payload/docs/rules/change-tracking/github.md` |
 
-## Modes from `$ARGUMENTS`
+## Actions from `$ARGUMENTS`
 
 | Argument | Do | Where the procedure is |
 |---|---|---|

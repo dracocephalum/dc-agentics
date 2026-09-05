@@ -148,7 +148,9 @@ session and is never written back.
 | Merge | never | never | never |
 
 *Ask* means show the exact command and wait for a yes; *agent* means run it
-and say what was done. In `local`, the first commit still needs the ticket:
+and say what was done. The linked branch is created on the host, and the yes
+to the ticket covers it: the branch is the ticket's, so `local` does not ask
+twice. In `local`, the first commit still needs the ticket:
 the branch name carries its number and nothing is committed on the default
 branch, so the work stays uncommitted in the tree until the user says yes to
 the ticket. "Not yet" leaves it uncommitted — never commit on the default

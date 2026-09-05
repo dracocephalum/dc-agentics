@@ -41,7 +41,8 @@ Three kinds of file, told apart by location:
     init/
       local/                       developer-machine guides (Windows; platforms.md for the rest)
       repo/
-        README.md                  repo initialization procedure
+        README.md                  repo initialization procedure, steps 0-3.5
+        finish.md                  its continuation, steps 3.6-6: documents, settings, verification, summary
         layout.md                  standalone + monorepo folder structures
         stylecop.md                StyleCop relaxed/strict procedure
 

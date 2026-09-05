@@ -48,8 +48,8 @@ of intent, not a design document:
 In `auto` mode run it and report the number; in `local` and `manual` show it
 and wait (`source-control.mode` in `.dc-agentics.yaml`; the table is in
 [`../source-control/source-control.md`](../source-control/source-control.md),
-*For an agent*). Take the number it returns. A ticket that only exists in the conversation is
-lost the moment the session ends.
+*For an agent*). Take the number it returns. A ticket that only exists in
+the conversation is lost the moment the session ends.
 
 Working without a ticket is the user's call to make, not the agent's — ask,
 and if they decline, say so in the PR body: `No ticket:` followed by the
