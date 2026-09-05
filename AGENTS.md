@@ -41,8 +41,8 @@ Three kinds of file, told apart by location:
     init/
       local/                       developer-machine guides (Windows; platforms.md for the rest)
       repo/
-        README.md                  repo initialization procedure, steps 0-3.5
-        finish.md                  its continuation, steps 3.6-6: documents, settings, verification, summary
+        README.md                  repo initialization: inputs, what lands, the five stages
+        copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
         layout.md                  standalone + monorepo folder structures
         stylecop.md                StyleCop relaxed/strict procedure
 
@@ -76,7 +76,7 @@ Three kinds of file, told apart by location:
 Three payload files are forked from `dotnet new` templates and carry a
 `dc-agentics-baseline:` marker recording the source SDK and the SHA-256 of the
 pristine generated file: `.editorconfig`, `.gitignore`, `.gitattributes`.
-Init step 0.5 re-checks them and stops on drift. Hashes are over
+The copy stage (`init/repo/copy.md`) re-checks them and stops on drift. Hashes are over
 newline-normalized bytes - never raw, since `dotnet new` emits CRLF and
 `text=auto` checks out LF. Each has a pristine `.original` sibling, stored
 LF-normalized so it hashes directly to its marker; drift is isolated by diffing
