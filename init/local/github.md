@@ -99,8 +99,7 @@ the default login scopes cannot touch the signing-key list.
 
     C:\Windows\System32\OpenSSH\ssh-add.exe -l          # one ED25519 key listed
     C:\Windows\System32\OpenSSH\ssh.exe -T git@github.com   # "Hi <user>! ..."
-    gh auth status                                       # logged in, protocol ssh
-    gh config get -h github.com git_protocol             # ssh - the per-host value; `gh auth refresh` can reset it to https
+    gh auth status                                       # logged in; "Git operations protocol: ssh" - gh auth refresh can reset it to https
     gh ssh-key list                                      # the key twice: authentication AND signing
 
 Then, in any repository:
