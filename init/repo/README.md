@@ -68,6 +68,7 @@ in that summary and, where it is a real decision, an entry in the target's
     .markdownlint.yaml           markdown mechanics; the review checklist relies on it
     .serena/
       project.yml                Serena project config (auto; non-blocking)
+
 ## Stages
 
 In order; each file is one stage, and each ends where the next begins. The
