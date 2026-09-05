@@ -26,7 +26,7 @@ Primary framework: .NET. Namespace prefix: `{{PREFIX}}`.
 | `src/` | production code |
 | `test/` | test projects, one per project under test |
 | `docs/` | documentation |
-| `docs/rules/` | rules, mirroring the toolkit's `rules/` tree; referenced below |
+| `docs/rules/` | the rules this repository is held to; see *Agent guidelines* below |
 | `{{REPO_NAME}}.slnx` | the solution — this repository is a single component |
 
 <!-- ==== MONOREPO variant - delete if this is standalone ==== -->
@@ -46,7 +46,7 @@ category map before assuming a component does or does not exist.
 | `infrastructure/` | provisioning (Terraform and similar) |
 | `ui/` | front-end applications |
 | `docs/` | documentation |
-| `docs/rules/` | rules, mirroring the toolkit's `rules/` tree; referenced below |
+| `docs/rules/` | the rules this repository is held to; see *Agent guidelines* below |
 | `build/` | CI/CD pipeline definitions |
 
 <!-- ==== end variants ==== -->
@@ -70,6 +70,7 @@ makes it selectable from a plain-language request.
 |---|---|
 | Writing, reviewing or refactoring C# in this repository | [`docs/rules/coding/csharp/csharp-coding-rules.md`](docs/rules/coding/csharp/csharp-coding-rules.md) |
 | Adding a project, component, or test project | [`docs/rules/coding/csharp/csharp-new-project.md`](docs/rules/coding/csharp/csharp-new-project.md) |
+| Checking a change for secrets, personal data, or local paths — or anything before a first push | [`docs/rules/security-reminders.md`](docs/rules/security-reminders.md) |
 | Adding, upgrading, or replacing a package (any ecosystem) | [`docs/rules/dependencies.md`](docs/rules/dependencies.md) |
 | Starting work on a ticket, naming a branch, titling a PR, or setting merge behaviour | [`docs/rules/change-tracking/github.md`](docs/rules/change-tracking/github.md) |
 | Publishing the repository, committing, or opening / updating / merging a pull request | [`docs/rules/source-control/github-pull-requests.md`](docs/rules/source-control/github-pull-requests.md) |

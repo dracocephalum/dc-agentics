@@ -16,7 +16,10 @@ and are not chained - run the built-in separately if a bug pass is wanted.
 2. `init/repo/payload/docs/rules/coding/code-review.md` - the dc-agentics toolkit
 
 Read the first that exists, then the language checklists it names, then the
-repository's `AGENTS.md`. Never review from memory.
+repository's `AGENTS.md`. If the change touches a package reference, a lock
+file, or `Directory.Packages.props`, also read `docs/rules/dependencies.md`
+(toolkit: `init/repo/payload/docs/rules/dependencies.md`) and apply its
+licence tiers and the transitive check. Never review from memory.
 
 ## Choose the mode from `$ARGUMENTS`
 
@@ -47,8 +50,9 @@ is a valid result.
 Anything that **leaves the session** - posting a review, replying to a thread,
 resolving a thread, committing a fix - is shown to the user in full first and
 done only on confirmation, thread by thread or as an approved batch. Never
-approve or merge; the verdict is a recommendation. The GitHub commands are in
-`docs/rules/change-tracking/github.md`.
+approve or merge; the verdict is a recommendation. Reach GitHub through its
+MCP server when one is connected in the session, otherwise through `gh`; the
+commands are in `docs/rules/change-tracking/github.md`.
 
 In comment-triage mode, the confirmation step is the summary of verdicts for
 every thread; act only on the ones the user confirms.

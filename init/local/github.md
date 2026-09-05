@@ -16,9 +16,9 @@ non-interactively — including for git commands an agent runs. Verified on
 Windows Server 2025 with Git 2.55, gh 2.100, Windows OpenSSH.
 
 Prerequisite: git identity set to the noreply form — see
-[`../security-reminders.md`](../security-reminders.md). The email in the key,
-the identity, and the GitHub account must all agree or commits show
-*Unverified*.
+[`security-reminders.md`](../repo/payload/docs/rules/security-reminders.md).
+The email in the key, the identity, and the GitHub account must all agree or
+commits show *Unverified*.
 
 ## Steps
 
@@ -100,6 +100,7 @@ the default login scopes cannot touch the signing-key list.
     C:\Windows\System32\OpenSSH\ssh-add.exe -l          # one ED25519 key listed
     C:\Windows\System32\OpenSSH\ssh.exe -T git@github.com   # "Hi <user>! ..."
     gh auth status                                       # logged in, protocol ssh
+    gh config get -h github.com git_protocol             # ssh - the per-host value; `gh auth refresh` can reset it to https
     gh ssh-key list                                      # the key twice: authentication AND signing
 
 Then, in any repository:
@@ -181,7 +182,10 @@ switching.
 
 Gives an agent API-level GitHub actions — issues, pull requests, code search —
 as MCP tools. `gh` already covers most of that from the shell, so this is
-optional.
+optional — **ask the user** at setup time and leave the decision with them.
+When it is connected, the toolkit's skills prefer it over `gh`; when it is
+not, everything works with `gh` alone. Whichever they choose, tell them the
+catch below before they spend time on the OAuth route.
 
 **The OAuth route does not work from Claude Code.** Registering the remote
 server plainly —

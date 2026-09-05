@@ -1,7 +1,8 @@
 # Pull requests on GitHub
 
-Applies when creating a branch, writing commits, or opening, updating, or
-merging a pull request. GitHub only, for now.
+Applies when publishing a repository for the first time, creating a branch,
+writing commits, or opening, updating, or merging a pull request. GitHub only,
+for now.
 
 The standard, borrowed from Google's engineering practices: a change should be
 **small, described so a stranger understands what and why, and verified before
@@ -40,7 +41,16 @@ history lacks, and the push is rejected).
      user what is there, and with their confirmation rebase local `main` onto
      it — or merge with `--allow-unrelated-histories` when the two really are
      unrelated — then push.
-3. **Apply the merge settings** (`gh repo edit …`, see
+3. **Check the remote URL.** `gh repo create --push` wires `origin` using the
+   per-host protocol (`gh config get -h github.com git_protocol`), and a
+   `gh auth refresh` can silently reset that to `https`. If the machine's transport is SSH (agent, signing, proxy
+   config), the remote must be too:
+
+       git remote get-url origin                 # want git@github.com:<owner>/<name>.git
+       git remote set-url origin git@github.com:<owner>/<name>.git
+       gh config set -h github.com git_protocol ssh   # the per-host value is the one gh uses; check with gh auth status
+
+4. **Apply the merge settings** (`gh repo edit …`, see
    [`../change-tracking/github.md`](../change-tracking/github.md)) and verify
    the first commit reports `verified: true`.
 

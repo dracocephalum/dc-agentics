@@ -29,7 +29,7 @@ Consequences:
 | **Design** | Does this belong here, shaped like this? Does it fit how the system already works? |
 | **Correctness** | Does it do what the description says, including edge cases and failure paths? Would it behave under concurrency, cancellation, partial failure? |
 | **Tests** | Do they exist, test behaviour rather than implementation, and would they fail if the code were wrong? |
-| **Security and data** | Secrets, PII in logs, injection, trust boundaries, new dependencies and their licences (`dependencies.md`). |
+| **Security and data** | Secrets, PII in logs, injection, trust boundaries, machine-specific paths and personal data ([`../security-reminders.md`](../security-reminders.md)), new dependencies and their licences ([`../dependencies.md`](../dependencies.md)). |
 | **Complexity** | Can the next reader understand it? Over-engineering counts. |
 | **Naming and comments** | Do names say what things are? Do comments explain *why*, not *what*? |
 | **Documentation** | Do docs, `AGENTS.md`, and rules change when behaviour does? |

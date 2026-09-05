@@ -25,7 +25,7 @@ them.
 | Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`init/repo/payload/docs/rules/coding/code-review.md`](init/repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
 | Initialize / scaffold / set up a repo at a path | [`init/repo/README.md`](init/repo/README.md) |
 | Set up StyleCop, or choose relaxed vs strict | [`init/repo/stylecop.md`](init/repo/stylecop.md) |
-| Check privacy/security before a first push | [`init/security-reminders.md`](init/security-reminders.md) |
+| Check privacy/security before a first push | [`init/repo/payload/docs/rules/security-reminders.md`](init/repo/payload/docs/rules/security-reminders.md) |
 
 Supported frameworks today: **.NET (dotnet core)** only. For anything else, say
 so rather than improvising.
@@ -38,7 +38,6 @@ Three kinds of file, told apart by location:
     README.md  AGENTS.md  TODO.md  .gitignore  .gitattributes
     .markdownlint.yaml             one line: extends the payload copy (so it cannot drift)
     init/
-      security-reminders.md        privacy & data-security checklist
       local/                       developer-machine guides (Windows; platforms.md for the rest)
       repo/
         README.md                  repo initialization procedure
@@ -56,6 +55,7 @@ Three kinds of file, told apart by location:
       .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .markdownlint.yaml
       docs/rules/                  every rules document, exactly where it lands
         dependencies.md
+        security-reminders.md      privacy & data-security checklist; the review's security pass
         change-tracking/github.md  ticket = issue; ticket-first branches and PR titles; merge settings; review mechanics
         source-control/github-pull-requests.md
         coding/code-review.md
@@ -88,11 +88,13 @@ cannot be relative in both trees; those are plain text.
 
 This repo holds two kinds of content, and confusing them causes real damage:
 
-**Payload** — `init/`, `rules/`, `agents/`, boilerplates, examples. Written to be
-consumed in *someone else's* project, on an unknown machine. Must be portable and
+**Payload** — `init/repo/payload/` (an exact mirror of a target repository
+root) and the skill shims in `.claude/skills/`. Written to be consumed in
+*someone else's* project, on an unknown machine. Must be portable and
 self-contained.
 
-**Workspace** — this file, README, repo tooling and CI. Instructions for an agent
+**Workspace** — everything else: this file, `README.md`, `TODO.md`, the
+procedures under `init/`, and the repo tooling. Instructions for an agent
 working *on* dc-agentics itself.
 
 Before writing a file, decide which it is. A rule that reads naturally as advice
@@ -116,10 +118,10 @@ somewhere the surrounding context no longer holds.
   can be copied and validated; snippets rot.
 - **A skill is a shim; the document is the substance.** `SKILL.md` carries
   frontmatter for discovery and a body that names which document to follow -
-  it never contains the procedure. The document lives under `rules/` here and
-  at `docs/rules/` in initialized repositories -
-  `payload/docs/rules/` is that mirror, and `AGENTS.md` points every tool
-  at it; the shim only adds `/name` invocation in Claude Code. There is one copy:
+  it never contains the procedure. The document lives at
+  `init/repo/payload/docs/rules/` here and lands at `docs/rules/` in
+  initialized repositories, and `AGENTS.md` points every tool at it; the shim
+  only adds `/name` invocation in Claude Code. There is one copy:
   `.claude/skills/<name>/SKILL.md`, live here and copied to a target's
   `.claude/skills/` at init - the one thing shipped from outside `payload/`.
   It locates its document by repository-root-relative path with a toolkit

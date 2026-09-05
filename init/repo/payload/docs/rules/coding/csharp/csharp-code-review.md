@@ -51,7 +51,8 @@ Project and packages:
 | Smell | Rule | Label |
 |---|---|---|
 | `Version="…"` on a `PackageReference` | central package management | `issue (blocking)` — fails restore |
-| New package not in `allowed-licenses.json` tiers | `dependencies.md` | `issue (blocking)` until reviewed |
+| New package not in `allowed-licenses.json` tiers | [`dependencies.md`](../../dependencies.md) | `issue (blocking)` until reviewed |
+| Package added without `nuget-license -t` passing on the whole graph | [`dependencies.md`](../../dependencies.md) | `issue (blocking)` |
 | `Directory.Build.props` or `Directory.Packages.props` below the root | layout | `issue (blocking)` — severs the subtree |
 | `.csproj` in `services/`, `jobs/`, `tools/` without `IsPackable=false` | layout | `todo` |
 | A root-level solution in a monorepo | layout | `issue` |

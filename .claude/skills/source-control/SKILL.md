@@ -52,7 +52,11 @@ someone else's discovery. Never merge.
 
 ## Always
 
-- Show the exact command before running anything that creates or changes
-  something on GitHub - an issue, a branch, a pull request, a setting.
+- If a GitHub MCP server is connected in this session, prefer its tools for
+  issues and pull requests; otherwise use `gh`. Never install or authenticate
+  one mid-task.
+- Show the exact command or tool call before running anything that creates
+  or changes something on GitHub - an issue, a branch, a pull request, a
+  setting.
 - Ask for what is missing rather than inventing it: the ticket, the scope,
   the summary.

@@ -10,18 +10,11 @@ close it, so it can be picked up cold.
       check the model indicator. If it reverts, document `/model fable` as the
       prerequisite and reduce `/plan` to the enter-plan-mode half. Low priority
       while Fable is the session default.
-- [ ] **Decide on the GitHub MCP server.** Registered at user scope; the
-      OAuth route fails ("does not support dynamic client registration") and
-      cannot be made to work from Claude Code. Close by either re-adding with a
-      fine-grained read-only PAT per `init/local/github.md`, or
-      `claude mcp remove github -s user`. `gh` covers most of what it offers.
 - [ ] **Delete `dracocephalum/signing-test`.** Disposable private repo created
       only to prove commit verification on GitHub's side. Web UI, or
       `gh auth refresh -s delete_repo` then `gh repo delete`.
 - [ ] **`python-new-project.md`** when the first Python component arrives —
       shape already decided in `init/local/python.md`.
-- [ ] **`git init` this repository** — deferred by choice; do the review skill
-      first.
 - [ ] **`dotnet-outdated-tool`** as a second entry in
       `init/repo/payload/.config/dotnet-tools.json` (4.8.1 at time of writing), so
       "keep the stack current" in `layout.md` becomes one command. Verify it

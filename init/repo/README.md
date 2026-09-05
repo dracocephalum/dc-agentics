@@ -203,7 +203,7 @@ additions, each carrying a baseline marker — see the drift check in step 0.5.
 `.gitignore` already includes the local-config entries the official template
 omits (`*.local.json`, `.env`, and similar). Ignore entries must exist **before**
 the files they cover — ignoring an already-tracked file has no effect. See
-[`../security-reminders.md`](../security-reminders.md).
+[`payload/docs/rules/security-reminders.md`](payload/docs/rules/security-reminders.md).
 
 #### Why .gitattributes matters here
 
@@ -369,7 +369,9 @@ later.
 
 ### 4. Security pass
 
-Walk [`../security-reminders.md`](../security-reminders.md). At minimum, before
+Walk [`security-reminders.md`](payload/docs/rules/security-reminders.md). It
+ships with the repository as `docs/rules/security-reminders.md`, so the review
+process holds later changes to the same standard. At minimum, before
 any first push, check the commit identity:
 
     git var GIT_AUTHOR_IDENT

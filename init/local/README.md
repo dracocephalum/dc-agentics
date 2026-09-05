@@ -69,7 +69,7 @@ Git does not refuse to commit with no identity configured; it silently derives
 
 The noreply form keeps a real address out of public history. Details, and what
 to do if commits already carry the wrong identity, are in
-[`../security-reminders.md`](../security-reminders.md).
+[`../repo/payload/docs/rules/security-reminders.md`](../repo/payload/docs/rules/security-reminders.md).
 
 ## 1b. GitHub — optional, ask first
 
