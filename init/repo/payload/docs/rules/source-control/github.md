@@ -105,7 +105,7 @@ commit to the default branch, [`source-control.md`](source-control.md)) plus
 the agent guardrails; report the branch as **unprotected**, never as
 protected.
 
-The ruleset file has not been applied from this toolkit — its own repository
-is private on GitHub Free — so its shape follows the REST reference for
-`POST /repos/{owner}/{repo}/rulesets` and is marked untested until a
-repository on an eligible plan runs it.
+Verified: the shipped file was applied unchanged to a public repository and
+`GET /repos/{owner}/{repo}/rules/branches/main` listed all four rules in
+force (`deletion`, `non_fast_forward`, `required_linear_history`,
+`pull_request` with squash as the only merge method).
