@@ -35,7 +35,7 @@ so rather than improvising.
 Three kinds of file, told apart by location:
 
     (3) workspace - about this repo; never copied
-    README.md  AGENTS.md  TODO.md  .gitignore  .gitattributes
+    README.md  AGENTS.md  TODO.md  LICENSE  .gitignore  .gitattributes
     .markdownlint.yaml             one line: extends the payload copy (so it cannot drift)
     init/
       local/                       developer-machine guides (Windows; platforms.md for the rest)
