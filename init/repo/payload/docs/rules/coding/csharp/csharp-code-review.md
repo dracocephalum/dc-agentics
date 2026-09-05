@@ -26,7 +26,8 @@ banned-API list. The authority for each item is
 | `throw new Exception(...)` or `catch (Exception)` swallowing | Design | `issue` |
 | Validation or not-found expressed as a throw where the component uses result records | Design | `suggestion` |
 | Entity or `DbSet` type crossing the API boundary | Design | `issue` |
-| Enum stored as `int` — new entity without the string convention | EF Core | `issue` |
+| Enum property without `.HasConversion<string>().HasMaxLength(…)` | EF Core, Model | `issue` |
+| New `DbContext` without a `ModelConventions.Check` test, or the check loosened to let a violation pass | EF Core, Model | `issue (blocking)` |
 | Query in a loop; `Include` missing where navigation is read | EF Core | `issue` |
 | `DateTimeOffset` with non-zero offset saved on PostgreSQL | EF Core | `issue (blocking)` |
 | `decimal` property named like a money amount without `HasPrecision(19, 4)` | EF Core, Model | `issue` |

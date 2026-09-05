@@ -7,6 +7,12 @@ task touches it.
 
 ## Model
 
+Conventions are **checked, not patched**. Every rule below is configured
+explicitly, per entity or per property, in `OnModelCreating`; a check at the
+end of this section throws with the complete list of violations, so a
+forgotten line fails the build instead of being silently rewritten by a
+loop. The fix is always the explicit configuration the message names.
+
 - **Schema: confirm it with the user; the default is the context's name.**
   Tables live in a schema named after the `DbContext` without the suffix —
   `TenantsDbContext` → `Tenants` — set once with
@@ -15,66 +21,41 @@ task touches it.
   on the provider options, so two contexts in one database never share a
   history. Ask before the first migration; moving tables between schemas
   later is a migration of every table.
-- **Table name is the entity class name, singular.** `Order`, not `Orders`.
-  EF's default is the `DbSet` property name, which is usually plural; the
-  conventions loop below overrides it.
+- **Table name is the entity class name, singular.** `.ToTable("Order")` on
+  every entity. EF's default is the `DbSet` property name, which is usually
+  plural.
 - **One primary key per table: a `Guid` column called `Id`.** Let EF generate
   the value — the SQL Server provider makes sequential GUIDs client-side; on
   other providers use `Guid.CreateVersion7()` so the clustered index does not
-  fragment. The typed-ID rule still applies: `readonly record struct
-  OrderId(Guid Value)` with a value converter, and the column is still `Id`.
-  A natural key is a unique index, never the primary key. A composite key is
-  only for an explicit join entity, and only with the user's agreement.
-- **No cascades, ever.** Every foreign key is `DeleteBehavior.Restrict` (or
-  `NoAction` where SQL Server rejects a cycle); deleting a parent with
-  children is an explicit decision in code, never a side effect of the
-  database, and `ClientCascade` counts as a cascade. Cascade *update* never
-  arises because keys are immutable: never update a primary key, and never
-  write `ON UPDATE CASCADE` in a migration. Owned types are the one exception
-  EF requires; the loop skips them.
-- **Money is `decimal(19, 4)`.** A `decimal` property whose name says currency
-  amount — `Amount`, `Price`, `Total`, `Cost`, `Fee`, `Balance`, and any
-  `*Amount` — is `HasPrecision(19, 4)`: four decimal places is the fiat
-  convention, and rounding to two happens at display. EF's default is
-  `decimal(18, 2)`, which silently rounds on save. Never the SQL Server
-  `money` type. Rates, quantities, and percentages are not money; give them
-  their own precision.
-
-  The table and cascade rules as one conventions loop in `OnModelCreating`,
-  next to the enum loop below:
-
-      foreach (var entity in modelBuilder.Model.GetEntityTypes())
-      {
-          if (!entity.IsOwned() && entity.BaseType is null)
-          {
-              entity.SetTableName(entity.ClrType.Name);   // TPH derived types share the base table
-          }
-
-          foreach (var foreignKey in entity.GetForeignKeys().Where(fk => !fk.IsOwnership))
-          {
-              foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
-          }
-      }
-
-- **Enums are stored as strings, never numbers.** Configure it once for every
-  enum in `OnModelCreating`, so no property can be forgotten and no migration
-  silently gets an `int` column:
-
-      foreach (var property in modelBuilder.Model.GetEntityTypes()
-          .SelectMany(t => t.GetProperties())
-          .Where(p => p.ClrType.IsEnum || (Nullable.GetUnderlyingType(p.ClrType)?.IsEnum ?? false)))
-      {
-          property.SetProviderClrType(typeof(string));
-          if (property.GetMaxLength() is null)
-          {
-              property.SetMaxLength(64);
-          }
-      }
-
-  Without a length the column is `nvarchar(max)`. For an enum whose member
-  names exceed 64 characters, set the length on that property explicitly —
-  `.Property(o => o.Status).HasMaxLength(80)` — before or after the loop; the
-  guard means the loop never overwrites an explicit length.
+  fragment. **An explicit value wins**: set `Id` before `Add` and EF keeps
+  it, the generator only fills `Guid.Empty` — so an entity keyed by an
+  external identifier, an event id in an event-sourced system, sets it and
+  nothing else changes. The typed-ID rule still applies: `readonly record
+  struct OrderId(Guid Value)` with a value converter, and the column is still
+  `Id`. A natural key is a unique index, never the primary key. A composite
+  key is only for an explicit join entity, and only with the user's agreement.
+- **No cascades, ever.** `.OnDelete(DeleteBehavior.Restrict)` on every
+  relationship (`NoAction` where SQL Server rejects a cycle) — EF's default
+  for a required relationship is `Cascade`. Deleting a parent with children
+  is an explicit decision in code, never a side effect of the database, and
+  `ClientCascade` counts as a cascade. Cascade *update* never arises because
+  keys are immutable: never update a primary key, and never write
+  `ON UPDATE CASCADE` in a migration. Owned types are the one exception EF
+  requires.
+- **Money has an explicit precision; fiat is `decimal(19, 4)`.** A `decimal`
+  property whose name says currency amount — `Amount`, `Price`, `Total`,
+  `Cost`, `Fee`, `Balance`, and any `*Amount` — is `HasPrecision(19, 4)`:
+  four decimal places is the fiat convention, and rounding to two happens at
+  display. EF's default is `decimal(18, 2)`, which silently rounds on save.
+  Never the SQL Server `money` type. **Crypto is not fiat**: if the domain
+  holds crypto amounts, ask the user which precision — 8 places for
+  BTC-style, 18 for ETH-style tokens, `decimal(38, 18)` is a common choice —
+  the check only insists that one was chosen. Rates, quantities, and
+  percentages are not money; give them their own precision.
+- **Enums are stored as bounded strings, never numbers.**
+  `.HasConversion<string>().HasMaxLength(64)` on every enum property — longer
+  for an enum whose member names exceed 64 characters. Without the conversion
+  the column is `int`; without the length it is `nvarchar(max)`.
 - **Same on the wire.** Register `JsonStringEnumConverter` globally so HTTP
   payloads carry names, not numbers. Put `[EnumDataType(typeof(T))]` on
   **request DTO** enum properties — it rejects undefined values such as `999`
@@ -83,6 +64,83 @@ task touches it.
 - **`DateTimeOffset` on PostgreSQL:** Npgsql accepts only offset-zero values
   for `timestamp with time zone`. Normalise with `.ToUniversalTime()` before
   saving.
+
+**The check.** Lives beside the `DbContext`, runs from a test — building the
+model needs the provider's type mappings, not a connection, so the
+design-time placeholder string is enough. Verified against EF Core 10.0.11
+with the SQL Server provider: typed IDs, string enums, and `Restrict`
+relationships pass; a defaulted entity fails on every line at once.
+
+    public static class ModelConventions
+    {
+        private static readonly string[] MoneySuffixes = ["Amount", "Price", "Total", "Cost", "Fee", "Balance"];
+
+        public static void Check(IModel model)
+        {
+            var violations = new List<string>();
+            foreach (var entity in model.GetEntityTypes().Where(e => !e.IsOwned()))
+            {
+                var name = entity.DisplayName();
+                if (entity.BaseType is null)
+                {
+                    if (entity.GetTableName() != entity.ClrType.Name)
+                    {
+                        violations.Add($"{name}: table must be '{entity.ClrType.Name}' - .ToTable(\"{entity.ClrType.Name}\")");
+                    }
+
+                    var key = entity.FindPrimaryKey();
+                    if (key is null || key.Properties.Count != 1 || key.Properties[0].Name != "Id" || StoreType(key.Properties[0]) != typeof(Guid))
+                    {
+                        violations.Add($"{name}: primary key must be a single Guid column named Id");
+                    }
+                }
+
+                foreach (var fk in entity.GetForeignKeys().Where(fk => !fk.IsOwnership && fk.DeleteBehavior is not (DeleteBehavior.Restrict or DeleteBehavior.NoAction)))
+                {
+                    violations.Add($"{name} -> {fk.PrincipalEntityType.DisplayName()}: {fk.DeleteBehavior} - .OnDelete(DeleteBehavior.Restrict)");
+                }
+
+                foreach (var property in entity.GetProperties())
+                {
+                    var clr = Nullable.GetUnderlyingType(property.ClrType) ?? property.ClrType;
+                    if (clr.IsEnum && (StoreType(property) != typeof(string) || property.GetMaxLength() is null))
+                    {
+                        violations.Add($"{name}.{property.Name}: enum must be a bounded string - .HasConversion<string>().HasMaxLength(64)");
+                    }
+
+                    if (clr == typeof(decimal) && MoneySuffixes.Any(s => property.Name.EndsWith(s, StringComparison.Ordinal)) && property.GetPrecision() is null)
+                    {
+                        violations.Add($"{name}.{property.Name}: money needs an explicit precision - .HasPrecision(19, 4), or the agreed crypto precision");
+                    }
+                }
+            }
+
+            if (violations.Count > 0)
+            {
+                throw new InvalidOperationException("Model conventions violated:" + Environment.NewLine + string.Join(Environment.NewLine, violations));
+            }
+        }
+
+        private static Type StoreType(IProperty property) => property.GetTypeMapping().Converter?.ProviderClrType ?? property.ClrType;
+    }
+
+The test, one per `DbContext`:
+
+    [Fact]
+    public void Model_WhenBuilt_ShouldFollowConventions()
+    {
+        // Arrange
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseSqlServer("Server=localhost;Database=design-time;Integrated Security=true")
+            .Options;
+        using var context = new AppDbContext(options);
+
+        // Act + Assert - throws with every violation listed
+        ModelConventions.Check(context.Model);
+    }
+
+Extend the check when a rule is added here; never loosen it to make a
+violation pass — the fix is the configuration line it names.
 
 ## Migrations
 
