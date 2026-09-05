@@ -66,3 +66,9 @@ map of categories.
 `AGENTS.md` is the index. The rules under `docs/rules/` are the standard for
 code, tests, dependencies, pull requests, and review — for people as much as
 for agents.
+
+## Licence
+
+<!-- Delete this section if the repository has no LICENSE file. -->
+
+{{LICENCE_NAME}} — see [`LICENSE`](LICENSE). Copyright {{YEAR}} {{COPYRIGHT_HOLDER}}.

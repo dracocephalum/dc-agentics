@@ -19,10 +19,12 @@ user has given.
 | Primary framework | ask; only .NET is supported today |
 | StyleCop mode | relaxed |
 | Central package management | on |
+| Licence | ask — `none`, `Apache-2.0`, or `MIT`; and the copyright holder (step 3.10) |
 
 ## What ends up in the repository root
 
     AGENTS.md                    generated from AGENTS.template.md
+    LICENSE, NOTICE              only if the user chose a licence (step 3.10)
     README.md                    generated from README.template.md; human entry point
     docs/templates/              component-README.md, category-README.md — used by /project
     .editorconfig                editor conventions (root = true)
@@ -353,6 +355,35 @@ Details and the verification query are in
 [`payload/docs/rules/source-control/github.md`](payload/docs/rules/source-control/github.md).
 Skip, and say so, if there is no remote yet; `/source-control setup` does it
 later.
+
+### 3.10 Licence — ask, never assume
+
+A repository with no `LICENSE` file is all rights reserved, which is the
+normal state of a private company repository; a repository meant to be shared
+gets one. Ask two things:
+
+1. **Which licence.** Offer `Apache-2.0` (patent grant, trademark clause,
+   contribution terms — the default for anything shared) or `MIT` (shorter;
+   attribution only). Anything else is the user's own choice, fetched the
+   same way. `none` is a valid answer and is recorded as such.
+2. **The copyright holder** — the legal owner of the work: the person's name,
+   or the company when the work is made for it. A GitHub handle is acceptable
+   for a personal project; a legal name is what a notice is for. Never guess,
+   and never take it from the git identity.
+
+Then, at the target root:
+
+    gh api licenses/apache-2.0 --jq .body > LICENSE      # verbatim text; or licenses/mit
+
+MIT carries `[year]` and `[fullname]` placeholders — fill both. The Apache
+text names nobody; put `Copyright <year> <holder>` in a `NOTICE` file beside
+it. Fill the *Licence* section of the generated `README.md`, or delete it when
+the answer was `none`. Nothing from the toolkit needs a notice in the target:
+the payload is offered under 0BSD.
+
+Verify: `gh repo view --json licenseInfo` reports the chosen licence once the
+file is on the default branch — GitHub detects it from the verbatim text, so
+an edited Apache text shows as *Other*.
 
 ### 4. Security pass
 
