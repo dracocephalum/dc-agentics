@@ -69,6 +69,7 @@ makes it selectable from a plain-language request.
 | When you are | Read |
 |---|---|
 | Writing, reviewing or refactoring C# in this repository | [`docs/rules/coding/csharp/csharp-coding-rules.md`](docs/rules/coding/csharp/csharp-coding-rules.md) |
+| Touching an entity, a `DbContext`, or a migration | [`docs/rules/coding/csharp/csharp-ef-core-rules.md`](docs/rules/coding/csharp/csharp-ef-core-rules.md) |
 | Adding a project, component, or test project | [`docs/rules/coding/csharp/csharp-new-project.md`](docs/rules/coding/csharp/csharp-new-project.md) |
 | Checking a change for secrets, personal data, or local paths — or anything before a first push | [`docs/rules/security-reminders.md`](docs/rules/security-reminders.md) |
 | Adding, upgrading, or replacing a package (any ecosystem) | [`docs/rules/dependencies.md`](docs/rules/dependencies.md) |

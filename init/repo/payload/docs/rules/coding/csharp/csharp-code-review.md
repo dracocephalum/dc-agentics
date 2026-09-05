@@ -4,7 +4,8 @@ Applies after the general pass in [`../code-review.md`](../code-review.md).
 Every item here is something the build **cannot** catch — StyleCop, analyzers
 and warnings-as-errors already reject formatting, naming style, and the
 banned-API list. The authority for each item is
-[`csharp-coding-rules.md`](csharp-coding-rules.md) and
+[`csharp-coding-rules.md`](csharp-coding-rules.md),
+[`csharp-ef-core-rules.md`](csharp-ef-core-rules.md), and
 [`csharp-unit-tests-rules.md`](csharp-unit-tests-rules.md); cite the rule.
 
 | Smell in the diff | Rule | Label |
