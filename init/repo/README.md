@@ -53,6 +53,7 @@ user has given.
       source-control/SKILL.md    Claude Code shim: /source-control start|commit|pr|setup
     .github/
       PULL_REQUEST_TEMPLATE.md   GitHub fills PR bodies from it
+      rulesets/protect-main.json default-branch ruleset: PR-only, squash, no force-push
     .markdownlint.yaml           markdown mechanics; the review checklist relies on it
     .serena/
       project.yml                Serena project config (auto; non-blocking)
@@ -339,9 +340,14 @@ judge until a project exists.
 ### 3.9 Merge settings — when the repository is on GitHub
 
 If a GitHub remote exists (or once it does), apply the merge behaviour the
-pull-request rules assume — squash only, delete the branch on merge:
+pull-request rules assume — squash only, delete the branch on merge — and,
+after the first push, the default-branch ruleset:
 
     gh repo edit --delete-branch-on-merge --enable-squash-merge --enable-merge-commit=false --enable-rebase-merge=false
+    gh api repos/<owner>/<name>/rulesets --input .github/rulesets/protect-main.json
+
+The ruleset is refused on a private repository under GitHub Free; that is the
+user's choice to make (Pro, public, or none), not a step to skip silently.
 
 Details and the verification query are in
 [`payload/docs/rules/source-control/github.md`](payload/docs/rules/source-control/github.md).

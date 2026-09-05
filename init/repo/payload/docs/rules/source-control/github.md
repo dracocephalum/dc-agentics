@@ -81,3 +81,31 @@ Apply this as part of repository initialization when a GitHub remote exists,
 or the first time a pull request is opened. Verify:
 
     gh repo view --json deleteBranchOnMerge,squashMergeAllowed,mergeCommitAllowed,rebaseMergeAllowed
+
+**Protect the default branch.** Nothing reaches `main` except a squash-merged
+pull request: no direct push, no force-push, no deletion, every review thread
+resolved. That is a repository ruleset, applied from the shipped file **after
+the first push** — the first commit has to land on `main` before there is a
+branch to protect:
+
+    gh api repos/<owner>/<name>/rulesets --input .github/rulesets/protect-main.json
+    gh api repos/<owner>/<name>/rulesets --jq '.[].name'     # protect-main
+
+Zero required approvals, deliberately: a solo author cannot approve their own
+pull request, and the merge is the author's after review anyway. Raise
+`required_approving_review_count` when there is a team. Administrators are
+not exempt — a ruleset has no "include administrators" toggle to forget;
+bypass exists only for actors listed in `bypass_actors`.
+
+**GitHub Free refuses this on a private repository** — HTTP 403, "Upgrade to
+GitHub Pro or make this repository public" — and refuses the classic
+branch-protection API the same way. The choice is the user's: Pro, public, or
+no server-side gate. In the last case the protection is the rule (never
+commit to the default branch, [`source-control.md`](source-control.md)) plus
+the agent guardrails; report the branch as **unprotected**, never as
+protected.
+
+The ruleset file has not been applied from this toolkit — its own repository
+is private on GitHub Free — so its shape follows the REST reference for
+`POST /repos/{owner}/{repo}/rulesets` and is marked untested until a
+repository on an eligible plan runs it.

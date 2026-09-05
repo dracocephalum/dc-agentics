@@ -52,7 +52,7 @@ Three kinds of file, told apart by location:
       stylecop.ruleset  stylecop.json  StyleCop.props
       Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props  BannedSymbols.txt
       nuget.config  allowed-licenses.json  license-overrides.json
-      .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .markdownlint.yaml
+      .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
       docs/rules/                  every rules document, exactly where it lands
         dependencies.md
         security-reminders.md      privacy & data-security checklist; the review's security pass

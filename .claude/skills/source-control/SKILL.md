@@ -26,7 +26,7 @@ source-control rules name. Never work from memory.
 | `start <#issue \| "description">` | ensure a ticket exists, create the linked branch, switch to it | change tracking, *Before any work* and *Branch* |
 | `commit` | stage what the user indicates and commit | source control, *Commits* |
 | `pr` | open a draft pull request from the template | source control, *Opening a change request*; host file, *Pull requests* |
-| `setup` | apply the merge settings once | host file, *Repository settings* |
+| `setup` | apply the merge settings and the default-branch ruleset once | host file, *Repository settings* |
 
 ## Always
 
