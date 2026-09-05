@@ -104,16 +104,54 @@ For entities, `DbContext` configuration, and migrations — enum storage,
 `DateTimeOffset` on PostgreSQL, and the migration safety rules — follow
 [csharp-ef-core-rules.md](csharp-ef-core-rules.md).
 
+## Comments
+
+Comments are written for the next reader, who is a person: a maintainer, a
+reviewer, the author a year on. Write them as prose — full sentences, plain
+words, the way the design would be explained across a desk. The measure is
+cognitive load: after the comment, the reader should not have to reconstruct
+the reasoning from the code, or open three other files to learn why this one
+exists.
+
+- **Say why, not what.** The code already says what it does. The comment says
+  why it does it this way: the requirement, the constraint, the trade-off, the
+  alternative that was rejected and the reason. `// increment the counter` is
+  noise. `// Counted before the write, so a crash between the two over-reports
+  rather than under-reports; the reconciler tolerates that direction.` is a
+  comment.
+- **Every non-trivial type opens with its role.** Its `<summary>` says what it
+  is for and where it sits: what calls it, what it relies on, what it must
+  never do. A reader decides whether this is the type they need without
+  reading the body.
+- **Rationale sits where the question arises.** A surprising line, a
+  workaround, an ordering that matters, a lock, a literal that looks arbitrary:
+  the comment goes directly above it and answers the question the reader is
+  about to ask. Link the ticket, spec, or vendor page when one exists; the
+  link stays authoritative where a paraphrase drifts.
+- **Invariants and assumptions are stated, not implied.** "Callers hold the
+  lock", "sorted by time, oldest first", "never called concurrently" — if the
+  code relies on it and the type system does not enforce it, write it down.
+- **A comment is a claim the code must keep true.** Change it in the same
+  commit as the code, or delete it. A stale comment misleads with authority,
+  and reviewers read every comment against the code beside it.
+- **When a comment explains what the code does, fix the code first** — a
+  better name, an extracted method — and comment only what remains.
+- **Nothing that source control already holds, and nothing about the author's
+  session.** No commented-out code, change history, or author tags; no task
+  narration such as "added per request" or a restatement of the rule that
+  prompted the change. The reader was not in the conversation.
+- **XML doc comments on every public API.** `<summary>` in one to three
+  sentences; `<remarks>` for the design; `<example>`/`<code>` where a usage
+  example clarifies. The build emits `$(AssemblyName).xml` beside each non-test
+  assembly, so consumers get IntelliSense from them. Missing comments do not
+  fail the build — SA1600 and CS1591 are off — reviewers enforce.
+
 ## Conventions
 
 - File-scoped namespaces. One `using` per line.
 - `nameof` for member names, never string literals.
 - Pattern matching and `switch` expressions where they read more clearly than
   `if`/`else` chains — not as a reflex.
-- XML doc comments on every public API, with `<example>`/`<code>` where a
-  usage example clarifies. The build emits `$(AssemblyName).xml` beside each
-  non-test assembly, so consumers get IntelliSense from them. Missing comments
-  do not fail the build — SA1600 and CS1591 are off — reviewers enforce.
 
 ## Testing
 

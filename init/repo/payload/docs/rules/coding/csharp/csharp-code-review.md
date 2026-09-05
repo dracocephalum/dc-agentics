@@ -44,6 +44,11 @@ banned-API list. The authority for each item is
 | `IDisposable` created and not disposed / not `await using` | Design | `issue` |
 | Pattern (Strategy, Factory, Mediator) with one implementation | Design | `question` |
 | MediatR added | Design | `issue (blocking)` — ConduitR |
+| Workaround, ordering constraint, lock, or arbitrary-looking literal with no comment saying why | Comments | `issue` |
+| Comment that contradicts the code beside it | Comments | `issue` — a stale claim misleads with authority |
+| Public type or member without a `<summary>`, or one that only restates the name | Comments | `suggestion` |
+| Comment narrating what the code plainly does | Comments | `nitpick` — improve the name instead |
+| Commented-out code, change history, author tag, or task narration ("added per request") | Comments | `nitpick` |
 
 Tests:
 
