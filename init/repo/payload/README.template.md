@@ -1,13 +1,14 @@
 <!--
   TEMPLATE - transformed at initialization into the repository's README.md.
   Fill every double-brace placeholder, keep the variant that applies, delete
-  this comment. Written for people; agents use AGENTS.md.
+  every prompt comment as it is answered. Written for people; agents use AGENTS.md.
 -->
 
 # {{REPO_NAME}}
 
-> Initialized with <https://github.com/dracocephalum/dc-agentics>.\
-> {{AGENT_TOOL}} · {{MODEL}} · dc-agentics@{{TOOLKIT_COMMIT}}
+> Initialized with <https://github.com/dracocephalum/dc-agentics>. The
+> choices made, and the toolkit commit, are in
+> [`.dc-agentics.yaml`](.dc-agentics.yaml); open items are in [`TODO.md`](TODO.md).
 
 {{ONE_LINE_PURPOSE}}
 

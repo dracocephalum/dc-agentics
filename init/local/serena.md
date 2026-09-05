@@ -75,7 +75,7 @@ registered.
 
 Repository initialization from this toolkit runs `serena project create`
 automatically and treats failure as non-blocking — see
-[`../repo/README.md`](../repo/README.md), step 3.7. For an existing repository,
+[`../repo/documents.md`](../repo/documents.md), *Serena*. For an existing repository,
 do it by hand:
 
     serena project create --language csharp      # writes .serena/project.yml

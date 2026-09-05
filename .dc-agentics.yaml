@@ -1,0 +1,8 @@
+# Settings that agents read before acting in this repository - the toolkit
+# itself, so no provenance and no repository block. The shipped shape is
+# init/repo/payload/.dc-agentics.yaml.
+
+source-control:
+  # auto | local | manual - docs/rules/source-control/source-control.md
+  # (here: init/repo/payload/docs/rules/source-control/source-control.md), "For an agent".
+  mode: auto

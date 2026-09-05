@@ -36,11 +36,13 @@ Three kinds of file, told apart by location:
 
     (3) workspace - about this repo; never copied
     README.md  AGENTS.md  TODO.md  LICENSE  NOTICE  .gitignore  .gitattributes
+    .dc-agentics.yaml              this repository's own settings (source-control mode); same shape as the payload's
     .markdownlint.yaml             one line: extends the payload copy (so it cannot drift)
     init/
       local/                       developer-machine guides (Windows; platforms.md for the rest)
       repo/
-        README.md                  repo initialization procedure
+        README.md                  repo initialization: inputs, what lands, the five stages
+        copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
         layout.md                  standalone + monorepo folder structures
         stylecop.md                StyleCop relaxed/strict procedure
 
@@ -48,6 +50,8 @@ Three kinds of file, told apart by location:
     init/repo/payload/
       AGENTS.template.md           transformed at init (-> AGENTS.md)
       README.template.md           transformed at init (-> README.md); the human entry point
+      .dc-agentics.yaml            settings agents read: source-control mode, init choices, toolkit commit; placeholders filled at init
+      TODO.md                      the target's open-items file; init writes anything unresolved into it
       .editorconfig  .gitignore  .gitattributes   (+ .original pristine baselines - never edit)
       stylecop.ruleset  stylecop.json  StyleCop.props
       Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props  BannedSymbols.txt
@@ -72,7 +76,7 @@ Three kinds of file, told apart by location:
 Three payload files are forked from `dotnet new` templates and carry a
 `dc-agentics-baseline:` marker recording the source SDK and the SHA-256 of the
 pristine generated file: `.editorconfig`, `.gitignore`, `.gitattributes`.
-Init step 0.5 re-checks them and stops on drift. Hashes are over
+The copy stage (`init/repo/copy.md`) re-checks them and stops on drift. Hashes are over
 newline-normalized bytes - never raw, since `dotnet new` emits CRLF and
 `text=auto` checks out LF. Each has a pristine `.original` sibling, stored
 LF-normalized so it hashes directly to its marker; drift is isolated by diffing

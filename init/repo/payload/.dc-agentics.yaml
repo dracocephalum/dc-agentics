@@ -1,0 +1,30 @@
+# Settings that agents read before acting in this repository. Written once at
+# initialization, edited by hand after. Every value says what it changes and
+# which document holds the rule; the rule is the authority, this file only
+# picks between the choices it offers.
+
+toolkit:
+  url: https://github.com/dracocephalum/dc-agentics
+  commit: "{{TOOLKIT_COMMIT}}"        # 12-char hash, "-dirty" appended if the toolkit tree was not clean; what an update diffs from
+  initialized: "{{DATE}}"             # yyyy-mm-dd
+  by: "{{AGENT_TOOL}} / {{MODEL}}"    # e.g. Claude Code / claude-fable-5-1
+
+repository:
+  framework: dotnet                   # the only value supported today
+  layout: "{{LAYOUT}}"                # standalone | monorepo - docs/rules and AGENTS.md describe the chosen one
+  namespace: "{{PREFIX}}"             # PascalCase prefix of every assembly and namespace
+  stylecop: relaxed                   # relaxed | strict - see stylecop.ruleset; strict also edits .editorconfig and BannedSymbols.txt
+  central-package-management: true    # Directory.Packages.props holds every package version
+  host: github                        # where the remote lives - docs/rules/source-control/<host>.md
+  licence: "{{LICENCE}}"              # none | Apache-2.0 | MIT | <SPDX id>; matches the LICENSE file
+  copyright-holder: "{{COPYRIGHT_HOLDER}}"   # the legal owner named in LICENSE or NOTICE; empty when licence is none
+
+source-control:
+  # What the agent may do without asking - docs/rules/source-control/source-control.md, "For an agent".
+  #   auto    ticket, branch, commit, push, and draft pull request without asking; each is reported after
+  #   local   edits and local commits without asking; stops and asks before anything reaches the host
+  #           (creating the ticket, pushing, opening the pull request)
+  #   manual  asks before every state change, local commits included
+  # Absent or unrecognised means manual. "auto for this one", said in conversation, overrides the
+  # value for that session and is never written back here.
+  mode: local
