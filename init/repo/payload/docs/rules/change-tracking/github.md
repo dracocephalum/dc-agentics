@@ -60,7 +60,16 @@ The ticket number **leads**; the change type lives in the commits, not the
 branch. GitHub can create the branch linked to the issue, so the issue page
 shows the branch and the PR that follows:
 
-    gh issue develop 123 --name 123-billing-retry --base main --checkout
+    gh issue develop 123 --name 123-billing-retry --base main
+    git fetch origin 123-billing-retry
+    git switch 123-billing-retry
+
+Create and check out in two steps rather than with `--checkout`: on the
+first run through this flow, `--checkout` created the branch and the link on
+GitHub and then failed on its own internal `git` call, leaving the work on
+`main`. The two-step form uses the same git configuration as every other
+command and is verifiable at each step (`gh issue develop --list 123` shows
+the link).
 
 The user may override the naming (an existing convention, a hotfix with no
 ticket); record the reason in the PR body.
@@ -97,25 +106,6 @@ Apply this as part of repository initialization when a GitHub remote exists,
 or the first time a pull request is opened. Verify:
 
     gh repo view --json deleteBranchOnMerge,squashMergeAllowed,mergeCommitAllowed,rebaseMergeAllowed
-
-## Reaching GitHub: an MCP server if present, `gh` otherwise
-
-Two ways an agent can act on GitHub, and the choice is made per session,
-not per repository:
-
-- **A GitHub MCP server is connected** (its tools are listed in the session)
-  → prefer its tools for issues, pull requests, comments, and threads. They
-  return structured data and need no shell.
-- **No MCP server** → use `gh`, as in the tables below. This is the baseline
-  every machine set up by the toolkit has; nothing here depends on the MCP
-  server existing.
-
-Whether to install the MCP server is the user's decision, made during machine
-setup — the toolkit's local guide asks, and records the known catch (the
-remote server's OAuth route does not work from Claude Code; it needs a
-personal access token in a header). Never install or authenticate it
-mid-task, and never mix the two routes for the same action; the confirmation
-rules apply equally to both.
 
 ## Review mechanics on GitHub
 
