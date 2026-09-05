@@ -29,6 +29,10 @@ banned-API list. The authority for each item is
 | Enum stored as `int` — new entity without the string convention | EF Core | `issue` |
 | Query in a loop; `Include` missing where navigation is read | EF Core | `issue` |
 | `DateTimeOffset` with non-zero offset saved on PostgreSQL | EF Core | `issue (blocking)` |
+| `decimal` property named like a money amount without `HasPrecision(19, 4)` | EF Core, Model | `issue` |
+| `DeleteBehavior.Cascade` or `ClientCascade`; `ON UPDATE CASCADE` in a migration | EF Core, Model | `issue (blocking)` |
+| Composite or non-`Guid` primary key, or a key column not named `Id` | EF Core, Model | `issue` |
+| Plural table name; `HasDefaultSchema` missing or the schema not confirmed | EF Core, Model | `issue` |
 | Migration with `DropColumn`, `DropTable`, `RenameColumn`, or a narrowing `AlterColumn` | EF Core, Migrations | `issue (blocking)` — breaks the release still running |
 | `AddColumn` with `nullable: false` or `defaultValue:` on an existing table | EF Core, Migrations | `issue (blocking)` |
 | `CreateIndex` on an existing table without the online option and a confirmed row count | EF Core, Migrations | `issue` |

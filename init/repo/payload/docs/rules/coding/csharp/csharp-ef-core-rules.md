@@ -7,6 +7,55 @@ task touches it.
 
 ## Model
 
+- **Schema: confirm it with the user; the default is the context's name.**
+  Tables live in a schema named after the `DbContext` without the suffix —
+  `TenantsDbContext` → `Tenants` — set once with
+  `modelBuilder.HasDefaultSchema("Tenants")`. The migrations history table
+  moves with it, `o => o.MigrationsHistoryTable("__EFMigrationsHistory", "Tenants")`
+  on the provider options, so two contexts in one database never share a
+  history. Ask before the first migration; moving tables between schemas
+  later is a migration of every table.
+- **Table name is the entity class name, singular.** `Order`, not `Orders`.
+  EF's default is the `DbSet` property name, which is usually plural; the
+  conventions loop below overrides it.
+- **One primary key per table: a `Guid` column called `Id`.** Let EF generate
+  the value — the SQL Server provider makes sequential GUIDs client-side; on
+  other providers use `Guid.CreateVersion7()` so the clustered index does not
+  fragment. The typed-ID rule still applies: `readonly record struct
+  OrderId(Guid Value)` with a value converter, and the column is still `Id`.
+  A natural key is a unique index, never the primary key. A composite key is
+  only for an explicit join entity, and only with the user's agreement.
+- **No cascades, ever.** Every foreign key is `DeleteBehavior.Restrict` (or
+  `NoAction` where SQL Server rejects a cycle); deleting a parent with
+  children is an explicit decision in code, never a side effect of the
+  database, and `ClientCascade` counts as a cascade. Cascade *update* never
+  arises because keys are immutable: never update a primary key, and never
+  write `ON UPDATE CASCADE` in a migration. Owned types are the one exception
+  EF requires; the loop skips them.
+- **Money is `decimal(19, 4)`.** A `decimal` property whose name says currency
+  amount — `Amount`, `Price`, `Total`, `Cost`, `Fee`, `Balance`, and any
+  `*Amount` — is `HasPrecision(19, 4)`: four decimal places is the fiat
+  convention, and rounding to two happens at display. EF's default is
+  `decimal(18, 2)`, which silently rounds on save. Never the SQL Server
+  `money` type. Rates, quantities, and percentages are not money; give them
+  their own precision.
+
+  The table and cascade rules as one conventions loop in `OnModelCreating`,
+  next to the enum loop below:
+
+      foreach (var entity in modelBuilder.Model.GetEntityTypes())
+      {
+          if (!entity.IsOwned() && entity.BaseType is null)
+          {
+              entity.SetTableName(entity.ClrType.Name);   // TPH derived types share the base table
+          }
+
+          foreach (var foreignKey in entity.GetForeignKeys().Where(fk => !fk.IsOwnership))
+          {
+              foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+          }
+      }
+
 - **Enums are stored as strings, never numbers.** Configure it once for every
   enum in `OnModelCreating`, so no property can be forgotten and no migration
   silently gets an `int` column:
