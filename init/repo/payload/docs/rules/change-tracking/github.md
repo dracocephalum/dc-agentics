@@ -107,6 +107,25 @@ or the first time a pull request is opened. Verify:
 
     gh repo view --json deleteBranchOnMerge,squashMergeAllowed,mergeCommitAllowed,rebaseMergeAllowed
 
+## Reaching GitHub: an MCP server if present, `gh` otherwise
+
+Two ways an agent can act on GitHub, and the choice is made per session,
+not per repository:
+
+- **A GitHub MCP server is connected** (its tools are listed in the session)
+  → prefer its tools for issues, pull requests, comments, and threads. They
+  return structured data and need no shell.
+- **No MCP server** → use `gh`, as in the tables below. This is the baseline
+  every machine set up by the toolkit has; nothing here depends on the MCP
+  server existing.
+
+Whether to install the MCP server is the user's decision, made during machine
+setup — the toolkit's local guide asks, and records the known catch (the
+remote server's OAuth route does not work from Claude Code; it needs a
+personal access token in a header). Never install or authenticate it
+mid-task, and never mix the two routes for the same action; the confirmation
+rules apply equally to both.
+
 ## Review mechanics on GitHub
 
 The review *standard* is [`../coding/code-review.md`](../coding/code-review.md);
