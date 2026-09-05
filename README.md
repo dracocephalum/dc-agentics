@@ -59,6 +59,31 @@ Three kinds of file, told apart by where they live:
 - **Small always-loaded files, everything else on demand.** `AGENTS.md` is a
   map; the rules it points at load only when the task matches.
 
+## Licensing
+
+The toolkit is licensed under the [Apache License 2.0](LICENSE).
+
+Everything under `init/repo/payload/` and `.claude/skills/` is copied into the
+repositories it initializes, so those files are **additionally** offered under
+the Zero-Clause BSD licence (0BSD): an initialized repository owes no notice
+and no attribution for them.
+
+> Copyright (C) 2026 Dracocephalum Limited
+>
+> Permission to use, copy, modify, and/or distribute this software for any
+> purpose with or without fee is hereby granted.
+>
+> THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+> REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+> AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+> INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+> LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+> OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+> PERFORMANCE OF THIS SOFTWARE.
+
+The code-review standard quotes Google's engineering practices, which are
+CC-BY 3.0; that attribution stays with the quote.
+
 ## Status
 
 Early. Open items are in [`TODO.md`](TODO.md).
