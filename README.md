@@ -8,6 +8,14 @@ them run — all verified on a real build before they ship.
 Today it supports **C# / .NET 10** repositories, standalone or monorepo, on
 **Windows** (other platforms best-effort, see `init/local/platforms.md`).
 
+## A note on models
+
+Every guideline here was written against Claude Opus and Fable: what it says,
+and what it leaves unsaid because those models do it by default. A different
+model has different defaults, and the difference shows up as rules it does not
+infer. Recommended: a model of at least 5T parameters. Below about 2.5T the
+gaps are large enough to degrade results markedly.
+
 ## Use it
 
 Agents start at [`AGENTS.md`](AGENTS.md) — a task index mapping requests to
