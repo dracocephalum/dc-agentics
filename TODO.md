@@ -23,6 +23,12 @@ close it, so it can be picked up cold.
       and ConfigureAwait rules usefully. Needs a build test on the template
       shells first; unlike `AnalysisMode`, it is not SDK-built-in and will have
       opinions of its own.
+- [ ] **Update mode for an initialized repository.** The generated README
+      records the toolkit commit it came from. Close by: a procedure that diffs
+      `init/repo/payload` between that commit and `HEAD`, maps each path to the
+      target, and applies the change — baseline markers decide overwrite versus
+      three-way merge, `docs/rules/**` and the shims overwrite, `AGENTS.md` and
+      `README.md` merge by hand — then rewrites the provenance line.
 
 ## CI — deferred as a group
 

@@ -287,7 +287,12 @@ target root with the copy; transform it in place:
 Then the repository's `README.md`, from `README.template.md` (it arrived at the
 target root with the copy) by the same transform: fill placeholders, keep the
 matching layout variant, delete the template comment. It is the human entry
-point; `AGENTS.md` is the agent's. In a monorepo, also give every category
+point; `AGENTS.md` is the agent's. The provenance block under its title takes
+three values the agent has and must not guess: the tool it runs in
+(`Claude Code`), the model identifier (`claude-fable-5-1` form), and the
+toolkit commit — `git -C <toolkit> rev-parse --short=12 HEAD`, with `-dirty`
+appended when `git -C <toolkit> status --porcelain` prints anything. That
+commit is what a future update of the repository diffs from. In a monorepo, also give every category
 folder you create its map — `docs/templates/category-README.md` copied to
 `<category>/README.md` and filled. Component READMEs are produced by the
 new-project procedure when components are added.

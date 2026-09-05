@@ -6,6 +6,9 @@
 
 # {{REPO_NAME}}
 
+> Initialized with <https://github.com/dracocephalum/dc-agentics>.\
+> {{AGENT_TOOL}} · {{MODEL}} · dc-agentics@{{TOOLKIT_COMMIT}}
+
 {{ONE_LINE_PURPOSE}}
 
 <!-- ==== STANDALONE variant - delete if this is a monorepo ==== -->

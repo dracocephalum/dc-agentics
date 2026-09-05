@@ -131,6 +131,13 @@ somewhere the surrounding context no longer holds.
   the macOS/FreeBSD equivalents, no backslash paths. The payload is verified on
   Windows only; a snippet that is portable by construction is the only one that
   does not need a machine we do not have. See `init/local/platforms.md`.
+- **Writing files from a shell: no backslashes in heredocs.** The shell tool
+  pre-processes the command text: a `\\` arrives as a single backslash, a line
+  ending in a backslash joins the next, and a batch of several quoted heredocs
+  containing one such line failed to parse and ran nothing — observed on
+  Windows, 2026-09-05. The markdown here has such lines (the `gh repo edit`
+  continuation). Use the editor tools for any file that contains a backslash
+  and for multi-file writes; keep shell heredocs to one per call.
 
 ## Publishing constraints
 
