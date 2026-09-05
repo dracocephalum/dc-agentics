@@ -3,15 +3,6 @@
 Open items for the toolkit itself. Not payload. Each entry says what would
 close it, so it can be picked up cold.
 
-## Decisions pending
-
-- [ ] **The toolkit's own board.** `.dc-agentics.yaml` names the board with
-      `board-auto-add: false`, so from #19 on the agent adds each ticket it
-      creates and moves the card on merge; #3 to #17 were never added. Close
-      by: enable the board's *Auto-add to project* (`is:issue`) and
-      *Item closed → Done* workflows in the web UI, flip the setting to
-      `true`, and either backfill #3 to #17 as Done or leave them off.
-
 ## Toolkit
 
 - [ ] **Global `pre-push` hook refusing direct pushes to the default branch** —

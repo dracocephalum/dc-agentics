@@ -6,7 +6,7 @@ change-tracking:
   # init/repo/payload/docs/rules/change-tracking/change-tracking.md
   tracker: github-issues
   board: https://github.com/users/dracocephalum/projects/1
-  board-auto-add: false               # the agent adds each ticket it creates; flip to true once the board's workflows are on
+  board-auto-add: true                # the board adds new issues and moves closed ones itself; the agent only reads it
 
 source-control:
   # auto | local | manual - docs/rules/source-control/source-control.md
