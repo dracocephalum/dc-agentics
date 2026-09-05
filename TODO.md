@@ -3,19 +3,42 @@
 Open items for the toolkit itself. Not payload. Each entry says what would
 close it, so it can be picked up cold.
 
-- [ ] **Validate the `/plan` model pin persists past the first turn.**
-      `~/.claude/commands/plan.md` sets `model: fable` and enters plan mode;
-      unverified whether the pin survives into the second turn while plan mode
-      continues. Close by: run `/plan <something>`, send a follow-up message,
-      check the model indicator. If it reverts, document `/model fable` as the
-      prerequisite and reduce `/plan` to the enter-plan-mode half. Low priority
-      while Fable is the session default.
-- [ ] **Delete `dracocephalum/signing-test`.** Disposable private repo created
-      only to prove commit verification on GitHub's side. Web UI, or
-      `gh auth refresh -s delete_repo` then `gh repo delete`.
+## Decisions pending
+
+- [ ] **Licence for this repository.** No `LICENSE` file yet. The wrinkle: the
+      payload is copied into other repositories, so whatever the toolkit
+      carries lands there too. Options on the table: MIT throughout, or
+      Apache-2.0 for the toolkit with `init/repo/payload/` and
+      `.claude/skills/` additionally offered under 0BSD so initialized
+      repositories owe no notice. Close by: the user's choice, a root
+      `LICENSE`, a *Licensing* section in `README.md` stating the payload
+      terms, and the licence name in the repository settings. Note the quoted
+      Google engineering-practices text is CC-BY 3.0 either way.
+- [ ] **Projects board automation.** Merging #2 closed issue #1 but left its
+      card *In Progress*; the agent moved it by hand. Close by one of: enable
+      the board's built-in "item closed → Done" workflow (web UI, once), or
+      have `/source-control` move the card after merge (needs the optional
+      `project` scope). Record the choice in `change-tracking/github.md`.
+
+## Toolkit
+
+- [ ] **Global `pre-push` hook refusing direct pushes to the default branch** —
+      the fallback protection for a private repository on GitHub Free, where
+      the shipped ruleset is refused. Shape decided: sits beside the gitleaks
+      hook under `core.hooksPath`, allows the push when the remote has no
+      default branch yet (the first publish), refuses afterwards. Close by:
+      the script in `init/local/gitleaks.md` (rename that guide to cover both
+      hooks), a proof step like the fake-key one, and a line in the
+      source-control host file pointing at it.
+- [ ] **`ModelConventions.cs` as a real file.** The verified check lives as a
+      snippet in `csharp-ef-core-rules.md`; the authoring rule prefers a real
+      file. Close by: `docs/templates/ModelConventions.cs` in the payload plus
+      the test, and the rules file pointing at them. Ship `dotnet-ef` in
+      `.config/dotnet-tools.json` at the same time, pinned to the EF version
+      in `Directory.Packages.props`.
 - [ ] **`python-new-project.md`** when the first Python component arrives —
       shape already decided in `init/local/python.md`.
-- [ ] **`dotnet-outdated-tool`** as a second entry in
+- [ ] **`dotnet-outdated-tool`** as a further entry in
       `init/repo/payload/.config/dotnet-tools.json` (4.8.1 at time of writing), so
       "keep the stack current" in `layout.md` becomes one command. Verify it
       respects central package management before shipping.
