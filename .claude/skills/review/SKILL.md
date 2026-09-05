@@ -7,52 +7,34 @@ argument-hint: [PR#] [branch] [paths...] [comments PR#] [--report <file>]
 
 Review against **this repository's rules**, not general taste. The built-in
 `/code-review` hunts bugs with its own machinery; this skill judges compliance
-with the rules below and reports in a fixed format. They complement each other
-and are not chained - run the built-in separately if a bug pass is wanted.
+with the rules and reports in a fixed format. They complement each other and
+are not chained - run the built-in separately if a bug pass is wanted.
 
 ## Find the standard
 
 1. `docs/rules/coding/code-review.md` - an initialized repository
 2. `init/repo/payload/docs/rules/coding/code-review.md` - the dc-agentics toolkit
 
-Read the first that exists, then the language checklists it names, then the
-repository's `AGENTS.md`. If the change touches a package reference, a lock
-file, or `Directory.Packages.props`, also read `docs/rules/dependencies.md`
-(toolkit: `init/repo/payload/docs/rules/dependencies.md`) and apply its
-licence tiers and the transitive check. Never review from memory.
+Read the first that exists, then the language checklists and the rules
+documents it names, then the repository's `AGENTS.md`. Never review from
+memory.
 
 ## Choose the mode from `$ARGUMENTS`
 
-| Arguments | Mode |
+| Arguments | Mode in the standard |
 |---|---|
-| a number, e.g. `42` | **pull request** - title, description, diff, existing threads |
-| `comments 42` | **comment triage** - the open review threads on PR 42 |
-| a branch name | **branch** - its diff against the base branch |
-| one or more paths | **files** - review those files in full (also the mode when there is no git history, as in the toolkit itself) |
-| nothing | **working tree** - uncommitted plus unpushed changes |
+| a number, e.g. `42` | *Pull request* |
+| `comments 42` | *Comment triage* - the open review threads on PR 42 |
+| a branch name | *Branch* - its diff against the base branch |
+| one or more paths | *Files* - those files in full (also the mode when there is no git history, as in the toolkit itself) |
+| nothing | *Working tree* - uncommitted plus unpushed changes |
 
-`--report <file>` saves the review there instead of printing. Confirm the
-path if it is inside the repository.
+`--report <file>` saves the review there instead of printing.
 
-## Do the review
+## Then
 
-Apply the standard's *broaden the analysis range* section: whole files, not
-hunks; callers and callees (Serena's `find_referencing_symbols` when
-connected); the tests for the touched code. Verify by building and testing
-when the change is checked out, and say which claims were verified.
-
-## Output and confirmation
-
-Conventional Comments, `path:line`, most severe first, then one verdict:
-approve / approve with non-blocking comments / request changes. Zero findings
-is a valid result.
-
-Anything that **leaves the session** - posting a review, replying to a thread,
-resolving a thread, committing a fix - is shown to the user in full first and
-done only on confirmation, thread by thread or as an approved batch. Never
-approve or merge; the verdict is a recommendation. Reach GitHub through its
-MCP server when one is connected in the session, otherwise through `gh`; the
-commands are in `docs/rules/change-tracking/github.md`.
-
-In comment-triage mode, the confirmation step is the summary of verdicts for
-every thread; act only on the ones the user confirms.
+Follow the standard's *Broaden the analysis range*, *Modes*, and *For an
+agent* sections as written: what leaves the session is shown in full and
+confirmed first, the verdict is a recommendation, and in comment triage the
+summary of verdicts is the confirmation step. The GitHub commands are in
+`docs/rules/change-tracking/github.md`.

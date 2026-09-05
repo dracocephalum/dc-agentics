@@ -21,7 +21,7 @@ them.
 | Set up a machine that is **not Windows** (Linux, macOS, FreeBSD) | [`init/local/platforms.md`](init/local/platforms.md) — untested, read first |
 | Add or upgrade a package; judge a licence | [`init/repo/payload/docs/rules/dependencies.md`](init/repo/payload/docs/rules/dependencies.md) |
 | Start work on a ticket, name a branch, title a PR, set merge behaviour (`/source-control`) | [`init/repo/payload/docs/rules/change-tracking/github.md`](init/repo/payload/docs/rules/change-tracking/github.md) |
-| Publish a repository (first push), commit, or open / update / merge a pull request | [`init/repo/payload/docs/rules/source-control/github-pull-requests.md`](init/repo/payload/docs/rules/source-control/github-pull-requests.md) |
+| Publish a repository (first push), commit, or open / update / merge a pull request | [`init/repo/payload/docs/rules/source-control/source-control.md`](init/repo/payload/docs/rules/source-control/source-control.md), then the host file it names |
 | Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`init/repo/payload/docs/rules/coding/code-review.md`](init/repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
 | Initialize / scaffold / set up a repo at a path | [`init/repo/README.md`](init/repo/README.md) |
 | Set up StyleCop, or choose relaxed vs strict | [`init/repo/stylecop.md`](init/repo/stylecop.md) |
@@ -57,9 +57,9 @@ Three kinds of file, told apart by location:
         dependencies.md
         security-reminders.md      privacy & data-security checklist; the review's security pass
         change-tracking/github.md  ticket = issue; ticket-first branches and PR titles; merge settings; review mechanics
-        source-control/github-pull-requests.md
+        source-control/          source-control.md - the rules, host-neutral; github.md - the mechanics
         coding/code-review.md
-        coding/csharp/             coding rules, unit-test rules, new-project, code-review
+        coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
         coding/markdown/markdown-review.md
       docs/templates/              component-README.md, category-README.md - filled by /project
 

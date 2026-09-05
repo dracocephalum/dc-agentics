@@ -41,9 +41,10 @@ user has given.
     stylecop.json                StyleCop settings
     docs/rules/                  exactly as in payload/docs/rules/
       dependencies.md
-      source-control/github-pull-requests.md
+      change-tracking/github.md
+      source-control/            source-control.md (rules), github.md (mechanics)
       coding/code-review.md
-      coding/csharp/             coding rules, unit-test rules, new-project, code-review
+      coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
       coding/markdown/markdown-review.md
     .claude/skills/
       project/SKILL.md           Claude Code shim: /project <kind> <name>

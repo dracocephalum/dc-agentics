@@ -74,7 +74,7 @@ makes it selectable from a plain-language request.
 | Checking a change for secrets, personal data, or local paths — or anything before a first push | [`docs/rules/security-reminders.md`](docs/rules/security-reminders.md) |
 | Adding, upgrading, or replacing a package (any ecosystem) | [`docs/rules/dependencies.md`](docs/rules/dependencies.md) |
 | Starting work on a ticket, naming a branch, titling a PR, or setting merge behaviour | [`docs/rules/change-tracking/github.md`](docs/rules/change-tracking/github.md) |
-| Publishing the repository, committing, or opening / updating / merging a pull request | [`docs/rules/source-control/github-pull-requests.md`](docs/rules/source-control/github-pull-requests.md) |
+| Publishing the repository, committing, or opening / updating / merging a pull request | [`docs/rules/source-control/source-control.md`](docs/rules/source-control/source-control.md), then the host file it names |
 | Reviewing a pull request, a diff, or a set of changes | [`docs/rules/coding/code-review.md`](docs/rules/coding/code-review.md) — then the C# or markdown checklist it names |
 | Finding what exists — which component does what, where something lives | `README.md` here; in a monorepo, each category's `README.md` is the map of its components, and each component's `README.md` says how to run it |
 
