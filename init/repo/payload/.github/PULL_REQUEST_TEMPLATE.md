@@ -1,4 +1,5 @@
-<!-- Title: `#<ticket> <type>(<scope>): <summary>`, e.g. "#123 feat(billing): retry failed charges once". It becomes the squash commit. -->
+<!-- Title: `#<ticket> <type>(<scope>): <summary>`, e.g. "#123 feat(billing): retry failed charges once".
+     It becomes the squash commit. -->
 
 ## What
 
