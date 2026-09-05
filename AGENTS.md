@@ -50,7 +50,7 @@ Three kinds of file, told apart by location:
       README.template.md           transformed at init (-> README.md); the human entry point
       .editorconfig  .gitignore  .gitattributes   (+ .original pristine baselines - never edit)
       stylecop.ruleset  stylecop.json  StyleCop.props
-      Directory.Build.props  Directory.Packages.props  Tests.props  BannedSymbols.txt
+      Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props  BannedSymbols.txt
       nuget.config  allowed-licenses.json  license-overrides.json
       .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .markdownlint.yaml
       docs/rules/                  every rules document, exactly where it lands

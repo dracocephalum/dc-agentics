@@ -1,0 +1,31 @@
+<Project>
+
+  <!--
+    Stamp the informational version with the short commit hash and a dirty marker:
+    1.2.3+abcdef12 or 1.2.3+abcdef12-dirty.
+
+    The SDK's own git integration (Microsoft.Build.Tasks.Git, in the SDK since .NET 8)
+    already appends the full 40-character hash when SourceRevisionId is empty; this target
+    runs first and, when git answers, supplies the short form instead. It never fails the
+    build: no git on PATH, no repository, or a repository with no commits yet all leave
+    SourceRevisionId empty and the SDK default takes over.
+  -->
+  <Target Name="SetSourceRevisionId"
+          BeforeTargets="InitializeSourceControlInformation"
+          Condition="'$(SourceRevisionId)' == '' and '$(DesignTimeBuild)' != 'true'">
+    <Exec Command="git describe --long --always --dirty --exclude=* --abbrev=8"
+          WorkingDirectory="$(MSBuildProjectDirectory)"
+          IgnoreExitCode="true"
+          ConsoleToMSBuild="true"
+          EchoOff="true"
+          StandardOutputImportance="low"
+          StandardErrorImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitDescribeOutput" />
+      <Output TaskParameter="ExitCode" PropertyName="_GitDescribeExitCode" />
+    </Exec>
+    <PropertyGroup Condition="'$(_GitDescribeExitCode)' == '0' and '$(_GitDescribeOutput)' != ''">
+      <SourceRevisionId>$(_GitDescribeOutput)</SourceRevisionId>
+    </PropertyGroup>
+  </Target>
+
+</Project>

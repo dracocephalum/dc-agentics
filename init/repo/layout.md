@@ -64,6 +64,7 @@ toolkit.
       .gitattributes
       .gitignore
       Directory.Build.props
+      Directory.Build.targets
       Directory.Packages.props
       Tests.props
       StyleCop.props
@@ -103,6 +104,7 @@ layout repeats**:
 
     <repo-root>/
       Directory.Build.props          <- one set at the root, inherited by all
+      Directory.Build.targets
       Directory.Packages.props
       .editorconfig
       stylecop.ruleset
@@ -152,11 +154,12 @@ the point of the layout in the first place.
 
 ### Config lives at the root only
 
-`Directory.Build.props`, `Directory.Packages.props`, `.editorconfig` and the
-StyleCop files exist **once**, at the repository root. Every component inherits
-them.
+`Directory.Build.props`, `Directory.Build.targets`, `Directory.Packages.props`,
+`.editorconfig` and the StyleCop files exist **once**, at the repository root.
+Every component inherits them.
 
-Do not copy them into component folders. Both `Directory.Build.props` and
+Do not copy them into component folders. `Directory.Build.props`,
+`Directory.Build.targets`, and
 `Directory.Packages.props` resolve by searching upward and stopping at the first
 hit, so a copy inside `services/proxy-gateway/` silently cuts that component off
 from the root configuration — with a green build and no warning.

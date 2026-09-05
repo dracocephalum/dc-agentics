@@ -52,11 +52,15 @@ category map before assuming a component does or does not exist.
 <!-- ==== end variants ==== -->
 
 Build configuration lives **once, at the repository root** — `Directory.Build.props`,
-`Directory.Packages.props`, `Tests.props`, `StyleCop.props`, `stylecop.ruleset`,
-`stylecop.json`, `.editorconfig`. Every project inherits it.
+`Directory.Build.targets`, `Directory.Packages.props`, `Tests.props`,
+`StyleCop.props`, `stylecop.ruleset`, `stylecop.json`, `.editorconfig`. Every
+project inherits it. The targets file stamps every assembly's informational
+version with the short commit hash (`1.2.3+abcdef12`, `-dirty` when the tree
+is not clean); it never fails the build.
 
-Never add a `Directory.Build.props` or `Directory.Packages.props` inside a
-subfolder: resolution stops at the first file found walking upward, so a nested
+Never add a `Directory.Build.props`, `Directory.Build.targets`, or
+`Directory.Packages.props` inside a subfolder: resolution stops at the first
+file found walking upward, so a nested
 copy silently severs that subtree from central package management, StyleCop and
 warnings-as-errors — with a green build and no warning.
 

@@ -29,6 +29,7 @@ user has given.
     .gitattributes               line-ending normalization  (dotnet new)
     .gitignore                   ignore rules               (dotnet new)
     Directory.Build.props        build defaults + StyleCop import
+    Directory.Build.targets      short commit hash + dirty marker in the informational version
     Directory.Packages.props     central package versions   (CPM only)
     Tests.props                  test-only packages (*.Tests projects)
     BannedSymbols.txt            banned APIs; inert until strict mode
@@ -169,9 +170,19 @@ spells this out.
 ### 2. Generate the build files
 
 Already at the target root after the payload copy: `Directory.Build.props`,
-`Directory.Packages.props`, `Tests.props`, `BannedSymbols.txt`, `nuget.config`.
-The props files reference each other by `$(MSBuildThisFileDirectory)` and must
-stay together.
+`Directory.Build.targets`, `Directory.Packages.props`, `Tests.props`,
+`BannedSymbols.txt`, `nuget.config`. The props files reference each other by
+`$(MSBuildThisFileDirectory)` and must stay together.
+
+`Directory.Build.targets` stamps the informational version of every assembly
+with the short commit hash — `1.2.3+abcdef12`, `-dirty` appended when the
+working tree is not clean — by running `git describe` before the SDK's own
+source-control step. It is fail-safe by construction and was verified in all
+five states: no repository and a repository with no commits both build clean
+with a bare `1.2.3`; a clean commit and a dirty tree stamp correctly; with no
+`git` on `PATH` the SDK's built-in integration supplies the full 40-character
+hash instead. Read it back at runtime from
+`AssemblyInformationalVersionAttribute`.
 
 `nuget.config` clears inherited package sources and maps every package to
 nuget.org. A private feed is added there, with its own package pattern — see
