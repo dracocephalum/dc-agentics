@@ -108,43 +108,29 @@ is applied automatically by `Directory.Build.props`.
 
 ## Serena — use it when connected, fall back when not
 
-This repository is set up for [Serena](https://github.com/oraios/serena), a
-language-server-backed MCP server (`.serena/project.yml` at the root). Whether
-it is *available* depends on the machine, not the repository.
-
-**If the `serena` MCP server is connected:** call its `initial_instructions`
-tool once at the start of a coding task, then prefer its symbolic tools over
-text search and whole-file reads — `get_symbols_overview` before reading a
-file, `find_symbol` / `find_referencing_symbols` instead of grep for code,
-`replace_symbol_body` / `insert_after_symbol` for edits scoped to a symbol.
-The gain is precision and context budget: one method body instead of a
-400-line file, references from the compiler's view instead of a text match.
-
-**If it is not connected:** proceed with the ordinary file, search, and edit
-tools. Nothing in this repository depends on Serena; do not stop, install, or
-ask about it mid-task.
-
-Serena's C# language server needs a restored solution to resolve symbols well
-— `dotnet restore` first if references look incomplete.
+This repository carries a [Serena](https://github.com/oraios/serena) project
+file (`.serena/project.yml`); whether the server is available depends on the
+machine. **Connected:** call `initial_instructions` once per coding task, then
+prefer the symbolic tools — `get_symbols_overview` before reading a file,
+`find_symbol` / `find_referencing_symbols` over grep, `replace_symbol_body` /
+`insert_after_symbol` for symbol-scoped edits — one method body instead of a
+400-line file. **Not connected:** use the ordinary tools; do not stop, install,
+or ask about it mid-task. Its C# language server needs a restored solution —
+`dotnet restore` first if references look incomplete.
 
 ## Building and testing
 
     dotnet build <solution> --nologo -v:q
     dotnet test  <solution> --nologo
 
-**Keep build output out of context.** Always `--nologo -v:q`, then read the
-summary lines (`Build succeeded` / `error …` / `Passed!`). Never paste a full
-build log into the conversation; grep it for `error|warning|Passed|Failed`
-and report those. A verbose build log is the most expensive thing a session
-can read for the least information.
+**Keep build output out of context.** Always `--nologo -v:q`; grep the output
+for `error|warning|Passed|Failed` and report those lines, never a full log.
 
 **Warnings are errors.** StyleCop rules set to `Warning` fail the build; rules
 at `Info` never surface at build time and appear only in the editor.
 
-Test projects need no package references of their own — any project named
-`*.Tests` inherits the whole test stack from `Tests.props`. A test `.csproj`
-should contain only its `TargetFramework` and a `ProjectReference` to the code
-under test.
+A `*.Tests` project inherits the whole test stack from `Tests.props`; its
+`.csproj` holds only `TargetFramework` and a `ProjectReference`.
 
 Do not report work as complete until `dotnet build` and `dotnet test` both pass,
 and confirm the test count is what you expect — a misconfigured runner reports

@@ -7,8 +7,7 @@ Applies when a developer machine needs source-control integration. Ask first:
 > Do you need source-control integration on this machine? Only **GitHub** is
 > supported at the moment.
 
-If no, stop here. Everything below is Windows; other platforms differ mainly in
-the agent and the `ssh` binary paths.
+If no, stop here.
 
 What this sets up: SSH for transport, **SSH commit signing** with the same key,
 `gh` for the API, and the Windows `ssh-agent` so a passphrase-protected key works
@@ -134,12 +133,11 @@ which is what proxies allow CONNECT to.
         IdentityFile ~/.ssh/id_ed25519
         ProxyCommand "C:\\Program Files\\Git\\mingw64\\bin\\connect.exe" %h %p
 
-Verified both ways on the same config: tunnelled with `HTTP_PROXY` set,
-direct with it unset, through `git ls-remote` as well as `ssh -T` — and again
-with outbound port 22 blocked by a firewall rule, where raw SSH was refused
-and this config, `gh`, and a real `git push` all still worked. This only takes
-effect because step 6 pointed git at Windows OpenSSH, which reads this file;
-Git-Bash `ssh` would need the same block but its own agent.
+Verified on this config: tunnelled with `HTTP_PROXY` set, direct with it
+unset, and with outbound port 22 blocked — `ssh -T`, `git ls-remote`, `gh`, and
+a real `git push` all worked. It takes effect because step 6 pointed git at
+Windows OpenSSH, which reads this file; Git-Bash `ssh` would need the same
+block but its own agent.
 
 Two notes: the `known_hosts` entry is for `[ssh.github.com]:443`, not
 `github.com` — expect one first-connection prompt or use

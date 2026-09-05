@@ -51,9 +51,8 @@ The condition matches a whole trailing `.Core` segment, not a substring — whic
 is why `Contoso.CoreBanking` is left alone. A naive string replace would turn it
 into `ContosoBanking`.
 
-`Contoso` is a placeholder. Ask the user for the namespace prefix — it is
-usually an organization or product name — and never hard-code one into this
-toolkit.
+`Contoso` is a placeholder: the prefix comes from the user, usually an
+organization or product name, and is never hard-coded into this toolkit.
 
 ## Standalone
 
@@ -140,17 +139,10 @@ every component author has to touch.
 This is a decision, not a default — do not add one even if asked to "make a
 solution for the repo" without the tradeoff being discussed first.
 
-To build everything, iterate the component solutions:
-
-    for each *.slnx found under the repository:
-        dotnet build <that solution>
-
-Note that `dotnet build` with no argument does **not** work at the repository
-root — with no project or solution file there it fails with `MSB1003`. That is
-the expected consequence of having no root solution, not a misconfiguration.
-
-In practice CI should build only the components affected by a change, which is
-the point of the layout in the first place.
+To build everything, build each `*.slnx` found under the repository; CI should
+build only the components a change touches, which is the point of the layout.
+`dotnet build` with no argument at the root fails with `MSB1003` — the expected
+consequence of having no root solution, not a misconfiguration.
 
 ### Config lives at the root only
 
@@ -158,11 +150,10 @@ the point of the layout in the first place.
 `.editorconfig` and the StyleCop files exist **once**, at the repository root.
 Every component inherits them.
 
-Do not copy them into component folders. `Directory.Build.props`,
-`Directory.Build.targets`, and
-`Directory.Packages.props` resolve by searching upward and stopping at the first
-hit, so a copy inside `services/proxy-gateway/` silently cuts that component off
-from the root configuration — with a green build and no warning.
+Do not copy them into component folders. All three `Directory.*` files
+resolve by searching upward and stopping at the first hit, so a copy inside
+`services/proxy-gateway/` silently cuts that component off from the root
+configuration — with a green build and no warning.
 
 Non-.NET folders (`infrastructure/`, `ui/`, `docs/`) are unaffected: MSBuild
 files only apply to MSBuild projects.
@@ -170,16 +161,10 @@ files only apply to MSBuild projects.
 ## Creating a component
 
 The procedure — templates, the sample code each one emits that fails the
-ruleset, central-package-management fixes, test project wiring, and the
-verification checklist — lives in
-[`payload/docs/rules/coding/csharp/csharp-new-project.md`](payload/docs/rules/coding/csharp/csharp-new-project.md).
-It ships to every initialized repository as
-`docs/rules/coding/csharp/csharp-new-project.md`
-and backs the `/project` skill, so initialization and later additions follow
-one document.
-
-Use it here too: creating the first component during initialization is the same
-procedure as adding one afterwards.
+ruleset, central-package-management fixes, test wiring, verification — is
+[`payload/docs/rules/coding/csharp/csharp-new-project.md`](payload/docs/rules/coding/csharp/csharp-new-project.md),
+shipped to every repository as `docs/rules/coding/csharp/csharp-new-project.md`
+and backing `/project`. The first component at initialization follows it too.
 
 ## Choices made here
 
