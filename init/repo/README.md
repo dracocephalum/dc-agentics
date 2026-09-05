@@ -346,6 +346,7 @@ pull-request rules assume — squash only, delete the branch on merge — and,
 after the first push, the default-branch ruleset:
 
     gh repo edit --delete-branch-on-merge --enable-squash-merge --enable-merge-commit=false --enable-rebase-merge=false
+    gh api -X PATCH repos/<owner>/<name> -f squash_merge_commit_title=PR_TITLE -f squash_merge_commit_message=PR_BODY
     gh api repos/<owner>/<name>/rulesets --input .github/rulesets/protect-main.json
 
 The ruleset is refused on a private repository under GitHub Free; that is the
