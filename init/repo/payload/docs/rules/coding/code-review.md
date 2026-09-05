@@ -117,7 +117,7 @@ path the agent invents into `src/`. The report uses the same format as a
 posted review.
 
 The GitHub commands each mode uses are in
-[`../change-tracking/github.md`](../change-tracking/github.md).
+[`../source-control/github.md`](../source-control/github.md).
 
 ## For an agent
 

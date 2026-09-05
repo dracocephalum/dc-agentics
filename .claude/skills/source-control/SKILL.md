@@ -20,14 +20,14 @@ work from memory.
 | Rule | Initialized repository | dc-agentics toolkit |
 |---|---|---|
 | source control - branches, commits, size, opening, review, merge, agent guardrails; names the host file | `docs/rules/source-control/source-control.md` | `init/repo/payload/docs/rules/source-control/source-control.md` |
-| change tracking - tickets, branch creation, PR titles, reaching GitHub | `docs/rules/change-tracking/github.md` | `init/repo/payload/docs/rules/change-tracking/github.md` |
+| change tracking - the ticket that must exist first; names the tracker file | `docs/rules/change-tracking/change-tracking.md` | `init/repo/payload/docs/rules/change-tracking/change-tracking.md` |
 
 ## Actions from `$ARGUMENTS`
 
 | Argument | Do | Where the procedure is |
 |---|---|---|
 | `publish` | put a local repository that has no remote on the host | host file, *Publishing a repository* |
-| `start <#issue \| "description">` | ensure a ticket exists, create the linked branch, switch to it | change tracking, *Before any work* and *Branch* |
+| `start <#issue \| "description">` | ensure a ticket exists (`/change-tracking new` when it does not), create the linked branch, switch to it | change tracking, *Before any work*; tracker file, *Tickets* |
 | `commit` | stage what the user indicates and commit | source control, *Commits* |
 | `pr` | open a draft pull request from the template | source control, *Opening a change request*; host file, *Pull requests* |
 | `setup` | apply the merge settings and the default-branch ruleset once | host file, *Repository settings* |

@@ -53,7 +53,7 @@ in that summary and, where it is a real decision, an entry in the target's
     stylecop.json                StyleCop settings
     docs/rules/                  exactly as in payload/docs/rules/
       dependencies.md
-      change-tracking/github.md
+      change-tracking/         change-tracking.md (rules), github.md (mechanics)
       source-control/            source-control.md (rules), github.md (mechanics)
       coding/code-review.md
       coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review

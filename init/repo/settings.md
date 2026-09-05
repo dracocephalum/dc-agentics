@@ -77,6 +77,13 @@ three modes are defined in
 [`source-control.md`](payload/docs/rules/source-control/source-control.md),
 *For an agent*.
 
+`change-tracking` stays at its defaults — GitHub Issues, no board — unless the
+user asked for a board; a board needs the extra scopes in the tracker file,
+and the choice is recorded here, not asked. The initialization itself has no
+ticket: the tracker exists only once the repository does, and
+[`change-tracking.md`](payload/docs/rules/change-tracking/change-tracking.md)
+states that as the one exception.
+
 Then `TODO.md`: by now the earlier stages have added their entries — a skipped
 Serena config, a refused or not-yet-applicable ruleset, the licence decision.
 Anything else that was not finished, could not be verified, or was left for
