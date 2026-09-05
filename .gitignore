@@ -1,0 +1,31 @@
+# dc-agentics has no build output of its own. This list is deliberately small;
+# grow it when something actually needs ignoring rather than pre-emptively.
+#
+# Consuming .NET repos get the full official list instead, via
+# `dotnet new gitignore` - see init/repo/README.md.
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors / IDEs
+.vs/
+.idea/
+*.swp
+*~
+
+# Local configuration - never commit machine-specific values
+*.local.json
+*.local.props
+.env
+.env.*
+
+# Claude Code: skills and shared settings are committed; per-person overrides are not
+.claude/settings.local.json
+
+# Saved review reports (/review --report) are working notes, not history
+docs/reviews/
+
+# Build output, if sample projects are ever added here
+[Bb]in/
+[Oo]bj/

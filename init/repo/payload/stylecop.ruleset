@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Custom StyleCop Rules" Description="Custom StyleCop.Analyzers rule severities" ToolsVersion="16.0">
+
+  <!-- ==================== Compiler Warnings (not StyleCop.Analyzers rules) ==================== -->
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.Compilers" RuleNamespace="Microsoft.CodeAnalysis.CSharp">
+    <Rule Id="CS0618" Action="None" /> <!-- CS0618: Member is obsolete (compiler warning for [Obsolete] usage) -->
+    <Rule Id="CS1591" Action="None" /> <!-- CS1591: Missing XML comment for publicly visible type or member (compiler warning) -->
+  </Rules>
+
+  <!-- ==================== DocumentationRules (SA1600-SA1652) ==================== -->
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.DocumentationRules">
+    <Rule Id="SA1600" Action="None" /> <!-- SA1600: Elements should be documented with an XML comment -->
+    <Rule Id="SA1602" Action="None" /> <!-- SA1602: Enumeration items should be documented -->
+    <Rule Id="SA1623" Action="None" /> <!-- SA1623: Property summary documentation should match accessors (Gets/Sets wording) -->
+    <Rule Id="SA1624" Action="None" /> <!-- SA1624: Property summary should omit 'or sets' when set accessor is non-public -->
+    <Rule Id="SA1633" Action="None" /> <!-- SA1633: File should have a standard header with copyright info -->
+    <Rule Id="SA1642" Action="None" /> <!-- SA1642: Constructor summary documentation should begin with standard text ("Initializes a new instance...") -->
+  </Rules>
+
+  <!-- ==================== LayoutRules (SA1500-SA1520) ==================== -->
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.LayoutRules">
+    <Rule Id="SA1512" Action="Info" /> <!-- SA1512: Single-line comments should not be followed by a blank line -->
+    <Rule Id="SA1518" Action="Warning" /> <!-- SA1518: File must end with exactly one newline. Paired with stylecop.json layoutRules.newlineAtEndOfFile = "require" and .editorconfig insert_final_newline = true. Set explicitly so the intent does not drift with the analyzer package default. -->
+  </Rules>
+
+  <!-- ==================== MaintainabilityRules (SA1400-SA1414) ==================== -->
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.MaintainabilityRules">
+    <Rule Id="SA1414" Action="Error" /> <!-- SA1414: Tuple types in signatures should have element names -->
+  </Rules>
+
+  <!-- ==================== NamingRules (SA1300-SA1316) ==================== -->
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.NamingRules">
+    <Rule Id="SA1309" Action="None" /> <!-- SA1309: Field names should not begin with an underscore -->
+  </Rules>
+
+  <!-- ==================== OrderingRules (SA1200-SA1217) ==================== -->
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.OrderingRules">
+    <Rule Id="SA1200" Action="None" /> <!-- SA1200: Using directives should be placed correctly (inside/outside namespace per config) -->
+    <Rule Id="SA1201" Action="Info" /> <!-- SA1201: Elements should appear in the correct type-member order -->
+    <Rule Id="SA1202" Action="Info" /> <!-- SA1202: Elements should be ordered by access modifier (public before private, etc.) -->
+    <Rule Id="SA1203" Action="Info" /> <!-- SA1203: Constant fields should appear before non-constant fields -->
+    <Rule Id="SA1204" Action="Info" /> <!-- SA1204: Static elements should appear before instance elements -->
+  </Rules>
+
+  <!-- ==================== ReadabilityRules (SA1100-SA1139) ==================== -->
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.ReadabilityRules">
+    <Rule Id="SA1101" Action="None" /> <!-- SA1101: Prefix local calls with 'this.' -->
+    <Rule Id="SA1111" Action="None" /> <!-- SA1111: Closing parenthesis should be on the line of the last parameter -->
+    <Rule Id="SA1117" Action="None" /> <!-- SA1117: Parameters should all be on the same line, or each on a separate line -->
+    <Rule Id="SA1118" Action="None" /> <!-- SA1118: Parameter should not span multiple lines -->
+  </Rules>
+
+  <!-- ==================== SpacingRules (SA1000-SA1028) ==================== -->
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.SpacingRules">
+    <Rule Id="SA1009" Action="None" /> <!-- SA1009: Closing parenthesis should be spaced correctly -->
+    <Rule Id="SA1011" Action="None" /> <!-- SA1011: Closing square bracket should be spaced correctly -->
+  </Rules>
+
+  <!-- ==================== SpecialRules ==================== -->
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.SpecialRules">
+    <Rule Id="SA0001" Action="None" /> <!-- SA0001: XML comment analysis is disabled due to project configuration -->
+  </Rules>
+
+</RuleSet>

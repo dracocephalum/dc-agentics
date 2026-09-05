@@ -1,0 +1,73 @@
+# Markdown review checklist
+
+Applies after the general pass in [`../code-review.md`](../code-review.md),
+to documentation
+and to agent-facing files — `AGENTS.md`, anything under `docs/rules/`,
+skill shims. Two layers: mechanics, then content.
+
+## Mechanics — run the linter, do not eyeball
+
+    npx markdownlint-cli2 "**/*.md"
+
+The repository ships `.markdownlint.yaml`; it relaxes line length for prose
+and disables table-style rules that add nothing. What remains is real:
+broken tables (`MD056`), lists glued to paragraphs (`MD032`), spaces inside
+code spans (`MD038`), a line that accidentally starts with `-` and becomes a
+bullet. Fix these; do not argue with them.
+
+## Content — what a linter cannot judge
+
+For any document an agent will act on:
+
+| Check | Why |
+|---|---|
+| **The trigger is stated** — "when you are X" / "applies when Y" | a rule with no trigger is applied everywhere or nowhere |
+| **Decision first, rationale after** | a truncated read still gets the rule |
+| **No duplication** of a rule stated elsewhere | two copies drift; link instead |
+| **Commands were run**, not typed from memory | a snippet that has never executed is a liability |
+| **Links resolve** from the file's own directory | a dead link is a rule nobody reaches |
+| **No placeholders left** — `{{…}}`, `TBD`, `TODO`, `(path)` | a template that shipped unfilled |
+| **No local paths, personal data, or secrets** | `security-reminders` — it will be pushed |
+| **Portable shell** — POSIX `sh`, no GNU-only flags, no backslash paths | the reader may not be on Windows |
+| **Length is earned** | every always-loaded line costs every session; on-demand files may be longer |
+
+## Structure — is it shaped for an agent?
+
+An agent reads a document to decide *whether it applies* and *what to do*,
+usually under a token budget and often only partially. Judge the shape, not
+just the words:
+
+| Check | Pass looks like |
+|---|---|
+| **Headings name tasks, not topics** | "Adding a project", "Verify" — not "Projects", "Misc" |
+| **The first screen answers "does this apply to me?"** | trigger sentence, then scope, before anything else |
+| **Lookups are tables, rules are bullets, rationale is prose** | a smell→rule table beats three paragraphs; a rule is one bullet, decision first |
+| **Runnable things are code blocks that run as written** | no `$` prompts, no prose inside a command; placeholders in angle brackets are called out |
+| **References resolve mechanically** | relative links from the file's own directory, or repository-root-relative paths in text; never "see above", "as discussed", "the earlier section" |
+| **Every procedure ends in a verification** | a command and what its output must contain |
+| **Size matches load frequency** | always-loaded files (`AGENTS.md`) stay under ~150 lines; on-demand files may run longer but split at ~200 |
+| **Format is the cheapest that carries the meaning** | terse markdown; JSON/YAML only for genuinely tabular data (measured: JSON costs ~1.6× the tokens of the same rules as bullets, base64 ~3×) |
+| **Nothing is stated twice across files** | one home per rule; other files link to it |
+
+Findings here are `suggestion` unless the document cannot be acted on
+mechanically — an unresolvable reference or a command that does not run as
+written is an `issue`.
+
+Link check, portable:
+
+    for f in $(find . -name '*.md'); do
+      d=$(dirname "$f")
+      for l in $(grep -oE '\]\([^)#]+\)' "$f" | tr -d '()]'); do
+        case "$l" in http*) continue ;; esac
+        [ -e "$d/$l" ] || echo "DEAD $f -> $l"
+      done
+    done
+
+Inside the toolkit, `*.template.md` files link to target-repository paths
+and report as dead by design — check those in a generated repository.
+
+## Labels
+
+Mechanics findings are `todo` (fix, no discussion). A missing trigger, a
+duplicated rule, or an unverified command is an `issue`. Wording preferences
+are `nitpick` and never block.

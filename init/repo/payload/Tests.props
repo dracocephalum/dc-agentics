@@ -1,0 +1,101 @@
+<Project>
+
+  <!--
+    Test-project defaults.
+
+    Imported from Directory.Build.props ONLY for projects whose name ends in
+    `.Tests`, so nothing here reaches shipping code. Test projects are never
+    published, so a redundant reference costs a restore entry and nothing more -
+    the bar for adding one here is deliberately low.
+
+    Versions live in Directory.Packages.props like everything else.
+  -->
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+
+    <!--
+      CA1707 (no underscores in member names) is right for production code and
+      wrong for tests, whose naming convention is Method_WhenCondition_ShouldResult.
+      $(NoWarn); keeps whatever was already suppressed. This is the only
+      AnalysisMode=Recommended rule that conflicts with the toolkit's own rules;
+      if another appears, add it here rather than lowering AnalysisMode.
+    -->
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
+  </PropertyGroup>
+
+  <!-- Test host and runner. Required for the project to run at all. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <!-- [CombinatorialData] / [PairwiseData] theories. Must stay on 1.x while
+         xunit is 2.x - Xunit.Combinatorial 2.x pulls xunit.v3.core and the
+         duplicate TheoryAttribute fails the build with CS0433. -->
+    <PackageReference Include="Xunit.Combinatorial" />
+  </ItemGroup>
+
+  <!--
+    In-process integration testing of ASP.NET Core apps (WebApplicationFactory).
+
+    Pulls the Microsoft.AspNetCore.App framework reference into every test
+    project, including those testing plain class libraries. Verified harmless
+    there, and cheaper than making every web component opt in by hand.
+
+    Its version tracks the TFM's ASP.NET Core major, unlike everything else
+    here. If components in this repository target different frameworks, move
+    this to the per-project level instead of leaving it global.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+  </ItemGroup>
+
+  <!-- Faking. FakeItEasy.Analyzer.CSharp catches misuse at compile time. -->
+  <ItemGroup>
+    <PackageReference Include="FakeItEasy" />
+    <PackageReference Include="FakeItEasy.Analyzer.CSharp">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!--
+    Convenience libraries. On by default; remove any the team does not want.
+    Confirm with the user at initialization rather than assuming.
+  -->
+  <ItemGroup>
+    <PackageReference Include="AutoFixture" />
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="DeepEqual" />
+  </ItemGroup>
+
+  <!--
+    FakeTimeProvider. Not optional: the unit-test rules forbid real clocks and
+    delays, and the coding rules require time-dependent code to accept a
+    TimeProvider. This package is the other half of that contract.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
+  </ItemGroup>
+
+  <!--
+    Conditional on what the application itself uses. Uncomment only when the
+    corresponding library is actually referenced by production code - otherwise
+    they are dead weight that still has to resolve.
+  -->
+  <ItemGroup>
+    <!-- <PackageReference Include="FluentValidation" /> -->
+    <!-- <PackageReference Include="Serilog.Sinks.TestCorrelator" /> -->
+    <!-- EF Core in-memory provider, for query/read-model handler tests. -->
+    <!-- <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" /> -->
+  </ItemGroup>
+
+</Project>
