@@ -84,6 +84,16 @@ The body always goes through a file; a multi-line `--body` on the command
 line gets mangled. Merging is `gh pr merge --squash` — the author's action,
 after approval and green checks, never an agent's.
 
+**The body in that file is not wrapped.** GitHub renders issue, pull-request
+and comment bodies with hard line breaks on, so every newline becomes a
+`<br>`. Confirmed by reading one back:
+
+    gh api -H "Accept: application/vnd.github.html+json" repos/<owner>/<name>/pulls/<n> --jq .body_html
+
+Prose wrapped at 80 columns arrives at the reader still wrapped at 80. Write
+one paragraph per line and let the browser wrap it — the rule and its reasoning
+are in [`source-control.md`](source-control.md), *Opening a change request*.
+
 ## Repository settings — once, after the repository exists on GitHub
 
 Two of the merge rules are repository settings, not habits:

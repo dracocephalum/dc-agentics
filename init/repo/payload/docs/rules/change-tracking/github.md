@@ -33,6 +33,11 @@ configuration as every other command and is verifiable at each step. The
 user may override the naming (an existing convention, a hotfix with no
 ticket); record the reason in the pull-request body.
 
+A ticket body is not wrapped, for the same reason a pull-request body is not:
+GitHub renders it with hard line breaks on, so wrapped prose stays wrapped for
+every reader. One paragraph per line. See
+[`../source-control/github.md`](../source-control/github.md).
+
 ## Boards
 
 Nothing routine. A Projects board keeps itself in step with issues once its
