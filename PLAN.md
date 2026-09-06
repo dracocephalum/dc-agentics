@@ -16,6 +16,12 @@ An idea graduates to `TODO.md` when its shape is decided and it has a closing
 condition. Until then it stays here, where it is allowed to be vague and
 allowed to be wrong.
 
+**Initialized repositories get `TODO.md` only.** The payload ships no
+`PLAN.md`, and initialization never writes one: what it produces is a list of
+actions the user must take to conclude the initialization, which is exactly
+what `TODO.md` is for. Whether a repository also wants somewhere to keep its
+ideas is its own decision, and copying an empty file in would be presuming it.
+
 ## Release and distribution
 
 The toolkit currently takes a repository as far as a green build. Everything
@@ -121,9 +127,82 @@ The second is the one with a settled design already: the target's
 `.dc-agentics.yaml` records the commit it was initialized from, so the
 procedure is a diff of `init/repo/payload` between that commit and `HEAD`.
 
-## Open questions
+## Research
 
-- **Should the payload ship a `PLAN.md`** to initialized repositories, the way
-  it ships `TODO.md`? An argument each way: a repository's ideas are as worth
-  recording as its open items, but two files is also two places for a person to
-  forget to look.
+Neighbouring projects and prior art, with what each is worth taking from.
+Recorded so the survey does not have to be repeated — and dated, because it
+will age: **surveyed September 2026**.
+
+### dotnet/skills — Microsoft's own .NET agent skills
+
+Around twelve MIT-licensed plugins, including `dotnet-msbuild`, `dotnet-nuget`,
+`dotnet-test` and `dotnet-template-engine`. Targets Copilot CLI, Claude Code,
+VS Code, Cursor and Codex CLI from one source, following the `agentskills.io`
+open standard.
+
+Two things to take:
+
+1. **Check it for contradictions with our C# rules.** A repository can have
+   both loaded at once, and an agent given two answers will pick one without
+   saying which.
+2. **The skill format is a standard.** Our `.claude/skills/` shims are
+   Claude-only by construction. Conforming them to `agentskills.io` would make
+   them portable at roughly zero cost, since `AGENTS.md` already carries the
+   substance and the shims are thin by design.
+
+### github/spec-kit — spec-driven development
+
+GitHub's, MIT, a CLI named `specify`. Its `init` asks which agent you use and
+writes the matching per-agent command files, dropping a `.specify/` folder of
+templates plus a `constitution.md` — non-negotiable project principles,
+referenced by every later phase.
+
+Architecturally the closest thing found. That constitution is very nearly our
+`docs/rules/` and `.dc-agentics.yaml` pairing. The interesting difference is
+direction: **spec-kit generates N tool-specific files from one source; we ship
+one tool-neutral document plus one thin shim.** Theirs scales to more agent
+tools, ours keeps the authority unambiguous. Worth re-reading before deciding
+anything if a second agent tool ever matters here.
+
+### Release versioning — MinVer and Nerdbank.GitVersioning
+
+Covered under *Release versioning* above. The distinction between them, for
+when it is needed: Nerdbank.GitVersioning drives from a `version.json` and uses
+git height for the patch number; MinVer drives purely from git tags, with
+height present only on ad-hoc builds as a signal not to release them.
+
+### .NET solution templates
+
+Jason Taylor's and Ardalis's Clean Architecture templates are the most-starred
+in the ecosystem, scaffolding Domain/Application/Infrastructure/Web with CQRS,
+MediatR, FluentValidation and EF Core.
+
+They are **structure** opinions, and deliberately silent on everything this
+toolkit is about: analyzer wiring, warnings-as-errors, central package
+management, licence policy, review standards. They also assume a human runs
+them once and reads the README afterwards.
+
+Useful mainly as confirmation of the gap — and as the reason "template" is the
+wrong word for what we do.
+
+### The AGENTS.md standard
+
+The settled convention for agent instruction files, used by a large and growing
+number of repositories. The pattern that has emerged for boundaries is three
+tiers — always do, ask first, never do — which is a close parallel to `auto`,
+`local` and `manual`, arrived at here independently. Worth checking the
+generated `AGENTS.md` against ecosystem conventions before the format hardens
+further.
+
+### Sources
+
+- [dotnet/skills](https://github.com/dotnet/skills)
+- [github/spec-kit](https://github.com/github/spec-kit) and
+  [Microsoft's write-up](https://developer.microsoft.com/blog/spec-driven-development-spec-kit/)
+- [Nerdbank.GitVersioning](https://github.com/dotnet/Nerdbank.GitVersioning)
+- [MinVer](https://github.com/adamralph/minver)
+- [jasontaylordev/CleanArchitecture](https://github.com/jasontaylordev/CleanArchitecture)
+  and [ardalis/CleanArchitecture](https://github.com/ardalis/CleanArchitecture)
+- [SignPath](https://signpath.io) and [Sigstore](https://www.sigstore.dev)
+- [The Architect's Guide to .NET Templates: Building Scalable Golden Paths](https://bradjolicoeur.com/article/architect-dotnet-new-platform)
+  — where the *golden path* framing in [`README.md`](README.md) comes from
