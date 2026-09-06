@@ -1,9 +1,23 @@
 # dc-agentics
 
-A toolkit for standing up repositories that agents and people can work in from
-the first commit: build configuration, coding rules, review and pull-request
-conventions, secret scanning, licence policy, and the machine setup that makes
-them run — all verified on a real build before they ship.
+A **golden path** for C# repositories: the opinionated, fully-supported route
+where the easiest way to start a project is also the compliant one. Build
+configuration, coding rules, review and pull-request conventions, secret
+scanning, licence policy, and the machine setup that makes them run — landed
+by one procedure and verified on a real build before they ship.
+
+Golden paths have always belonged to organizations large enough to afford one:
+a platform team, years of accumulated judgment, and the standing cost of
+keeping dozens of composed decisions consistent as each of them moves. The
+composition is the expensive part. Any single decision is a search away; it is
+holding a hundred of them together — written down, current, and agreeing with
+each other — that most teams never get to.
+
+An agent changes that arithmetic. The decisions still have to be made well,
+once. But composing them, applying them to a new repository, and holding later
+changes to them is work an agent does in minutes and for nothing. A golden
+path stops being the trophy of a large engineering organization and becomes
+something one person can own and anyone can fork.
 
 Today it supports **C# / .NET 10** repositories, standalone or monorepo, on
 **Windows** (other platforms best-effort, see `init/local/platforms.md`).
@@ -58,6 +72,10 @@ Three kinds of file, told apart by where they live:
   re-litigated per repository.
 - **Small always-loaded files, everything else on demand.** `AGENTS.md` is a
   map; the rules it points at load only when the task matches.
+- **Composition is the product.** Any one choice above is a search away and
+  worth little alone. What is expensive — and what is maintained here — is the
+  hundred of them holding together: agreeing with each other, current with the
+  toolchain, and applied the same way to every repository.
 
 ## Licensing
 

@@ -1,7 +1,8 @@
 # dc-agentics
 
-An agentics toolkit: reusable instructions, rules, boilerplates, and examples for
-standing up new projects and improving agentic workflow performance.
+A golden path for C# repositories: reusable rules, build configuration,
+procedures and boilerplate that stand a new project up already meeting the
+standard, and hold later changes to it there.
 
 Consumed by *other* repos — its output is copied, referenced, or installed into
 them. Nothing here is application code.
