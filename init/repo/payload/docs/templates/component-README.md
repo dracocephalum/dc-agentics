@@ -12,7 +12,7 @@
 |---|---|
 | Category | `{{CATEGORY}}/` |
 | Kind | {{KIND}} <!-- service / library / job / tool --> |
-| Solution | `{{COMPONENT_NAME}}.slnx` |
+| Solution | `{{PREFIX}}.{{PROJECT_NAME}}.slnx` |
 | Projects | `src/{{PREFIX}}.{{PROJECT_NAME}}`, `test/{{PREFIX}}.{{PROJECT_NAME}}.Tests` |
 
 ## What it does
@@ -21,8 +21,8 @@
 
 ## Run it
 
-    dotnet build {{COMPONENT_NAME}}.slnx --nologo -v:q
-    dotnet test  {{COMPONENT_NAME}}.slnx --nologo
+    dotnet build {{PREFIX}}.{{PROJECT_NAME}}.slnx --nologo -v:q
+    dotnet test  {{PREFIX}}.{{PROJECT_NAME}}.slnx --nologo
 
 <!-- Beyond build and test: required configuration, local dependencies, how to start it, where it listens. -->
 

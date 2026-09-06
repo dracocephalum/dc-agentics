@@ -1,8 +1,8 @@
 # Land the payload
 
 Stage 1 of [`README.md`](README.md): confirm what is at the target, check the
-shipped baselines for drift, then copy. Nothing here edits a file; the stages
-after this one do.
+shipped baselines for drift, then copy. Nothing here edits an existing file;
+the stages after this one do.
 
 ## 1. Preconditions
 
@@ -13,7 +13,11 @@ carries settings that matter.
 If one exists, merge into it rather than replacing: add the `Import` line to the
 existing file, keep its current properties.
 
-Note whether the path is a git repository. Do not run `git init` unless asked.
+Note whether the path is a git repository. **If it is not, run `git init`** —
+everything after this stage assumes one, and the build stamp, the ruleset and
+the first push each depend on it existing. **Never create a commit**: the
+payload is left in the working tree for the user to review and commit
+themselves.
 
 ## 2. Baseline drift check
 

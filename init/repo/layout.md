@@ -22,14 +22,17 @@ implicit:
 | Thing | Convention | Example |
 |---|---|---|
 | Directories | lowercase, hyphenated | `proxy-gateway` |
-| Solution file | matches its directory | `proxy-gateway.slnx` |
+| Solution file | its component's main project | `Contoso.ProxyGateway.slnx` |
 | .NET project + assembly | PascalCase, prefixed | `Contoso.ProxyGateway` |
 | Default namespace | project name, minus `.Core` | `Contoso.ProxyGateway` |
 | Test project | project name + `.Tests` | `Contoso.ProxyGateway.Tests` |
 
 The rule underneath: **directories are kebab-case, .NET artifacts are
-PascalCase.** A solution file is a directory-level artifact, so it follows the
-directory.
+PascalCase.** The solution is a .NET artifact, not a directory-level one: its
+name is what appears in every build command, in the IDE title bar, and in the
+component README, so it takes the main project's name rather than the folder's.
+Where a component holds several projects, the main one is the deliverable the
+others support.
 
 ### The `.Core` exception
 
@@ -69,7 +72,7 @@ organization or product name, and is never hard-coded into this toolkit.
       StyleCop.props
       stylecop.json
       stylecop.ruleset
-      <repo-name>.slnx
+      Contoso.Thing.slnx             named after the main project, not the repo
       docs/
         rules/                     exactly as in payload/docs/rules/
           coding/csharp/csharp-coding-rules.md
@@ -112,7 +115,7 @@ layout repeats**:
         README.md                    map of components in this category - one row each
         proxy-gateway/
           README.md                  what it is, how to run it, configuration
-          proxy-gateway.slnx
+          Contoso.ProxyGateway.slnx
           src/
             Contoso.ProxyGateway/
           test/
@@ -121,7 +124,7 @@ layout repeats**:
         README.md
         message-contracts/
           README.md
-          message-contracts.slnx
+          Contoso.MessageContracts.slnx
           src/
             Contoso.MessageContracts/
           test/
@@ -129,7 +132,8 @@ layout repeats**:
 
 ### One solution per component, none at the repository root
 
-Each component carries its own `.slnx` covering only its own `src/` and `test/`.
+Each component carries its own `.slnx`, named after its main project, covering
+only its own `src/` and `test/`.
 
 **Do not create a root solution spanning the repository.** It gets out of hand
 quickly: load times grow with every component added, an unrelated change forces

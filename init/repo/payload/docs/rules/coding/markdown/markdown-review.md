@@ -7,7 +7,13 @@ skill shims. Two layers: mechanics, then content.
 
 ## Mechanics — run the linter, do not eyeball
 
-    npx markdownlint-cli2 "**/*.md"
+    npx --yes markdownlint-cli2@0.23.2 "**/*.md" "#node_modules"
+
+`--yes` because it is rarely on `PATH` and npx otherwise stops to ask, which
+reads as a hang. The version is pinned so a new release cannot change the
+verdict mid-review — bump it deliberately. `"#node_modules"` keeps vendored
+markdown out. Read the `Summary:` line: the exit code says pass or fail and
+nothing about how much.
 
 The repository ships `.markdownlint.yaml`; it relaxes line length for prose
 and disables table-style rules that add nothing. What remains is real:
