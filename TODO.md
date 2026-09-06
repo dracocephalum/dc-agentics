@@ -3,6 +3,10 @@
 Open items for the toolkit itself. Not payload. Each entry says what would
 close it, so it can be picked up cold.
 
+Ideas that are **not** committed work — no settled shape, and possibly not
+worth doing — go in [`PLAN.md`](PLAN.md) instead, and graduate to this file
+when they have a closing condition.
+
 ## Toolkit
 
 - [ ] **Global `pre-push` hook refusing direct pushes to the default branch** —
