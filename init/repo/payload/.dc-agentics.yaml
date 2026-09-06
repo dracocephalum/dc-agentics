@@ -5,7 +5,7 @@
 
 toolkit:
   url: https://github.com/dracocephalum/dc-agentics
-  commit: "{{TOOLKIT_COMMIT}}"        # 12-char hash, "-dirty" appended if the toolkit tree was not clean; what an update diffs from
+  commit: "{{TOOLKIT_COMMIT}}"        # the dc-agentics commit, never this repository's: 12-char hash, "-dirty" if that tree was not clean; what an update diffs from
   initialized: "{{DATE}}"             # yyyy-mm-dd
   by: "{{AGENT_TOOL}} / {{MODEL}}"    # e.g. Claude Code / claude-fable-5-1
 

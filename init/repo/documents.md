@@ -20,7 +20,14 @@ Then generate the repository's own `AGENTS.md` at its root from
 target root with the copy; transform it in place:
 
 1. Fill every double-brace placeholder — `REPO_NAME`, `ONE_LINE_PURPOSE`,
-   `PREFIX`. Ask for the purpose line rather than inventing one.
+   `PREFIX`, and `SOLUTION_NAME`, the main project the solution is named after
+   (standalone only). Ask for the purpose line rather than inventing one, and
+   **wrap it**: it is a sentence of prose landing in two markdown files, and a
+   long one breaks MD013 in both.
+
+   An existing document is a legitimate source for the purpose line, the layout
+   and the prefix — a README in the repository, or one the user points at.
+   Quote what you took back to them for confirmation; that is not inventing.
 2. Delete the layout variant that does not apply (standalone or monorepo), and
    the surrounding `==== variant ====` comments.
 3. Trim the folder table to folders that **actually exist**. A row for a folder
@@ -29,6 +36,9 @@ target root with the copy; transform it in place:
 5. Add a table row for any further rules documents, then delete the
    `ADDITIONAL_GUIDELINE_ROWS` line — it sits below the table as a reminder,
    not as a row.
+6. In standalone mode, replace `<solution>` under *Building and testing* with
+   the solution file name. In a monorepo it stays: there is no single solution
+   there, and the command is generic on purpose.
 
 Then the repository's `README.md`, from `README.template.md` (it arrived at the
 target root with the copy) by the same transform: fill placeholders, keep the
@@ -38,12 +48,14 @@ point; `AGENTS.md` is the agent's. The line under its title points at
 for open items; it has no placeholders of its own. In a monorepo, also give
 every category folder you create its map —
 `docs/templates/category-README.md` copied to `<category>/README.md` and
-filled. Component READMEs come from the new-project procedure.
+filled. Component READMEs come from the new-project procedure. In standalone
+mode, delete `docs/templates/category-README.md`: there are no categories, so
+it can never be used there.
 
 Verify nothing was missed:
 
     grep -n "{{" <repo>/AGENTS.md <repo>/README.md      # must return nothing
-    ls <repo>/README.template.md                           # must NOT exist
+    ls <repo>/AGENTS.template.md <repo>/README.template.md   # both must NOT exist
     grep -n "<!--" <repo>/AGENTS.md <repo>/README.md    # must return nothing: every prompt comment answered and removed
 
 ### Why the guideline rows are phrased as situations
@@ -69,9 +81,14 @@ with no interactive stdin it aborts with `Aborted!` and writes nothing.
 `--language` skips inference entirely. The toolkit knows the answer anyway:
 C#, plus `terraform` when the repository has an `infrastructure/` folder.
 
-That writes `.serena/project.yml`. Commit it (and the `.serena/.gitignore`
-Serena writes on first index — the shipped repository `.gitignore` already
-covers the per-machine files in the meantime).
+That writes `.serena/project.yml`, alongside a `.serena/project.local.yml` for
+per-machine overrides. Commit `project.yml`; the shipped repository
+`.gitignore` already excludes `project.local.yml` and `.serena/cache/`.
+
+Serena writes its own `.serena/.gitignore` the first time an agent indexes or
+activates the project — which is after initialization, so it is not here yet
+and cannot be committed now. It turns up untracked later; that is expected, not
+a missed step.
 
 **This step never blocks initialization.** If `serena` is not on `PATH`, is
 not installed, or the command fails for any reason: report it in one line —

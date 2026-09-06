@@ -24,6 +24,16 @@
     <NoWarn>$(NoWarn);CA1707</NoWarn>
   </PropertyGroup>
 
+  <!--
+    The xunit template writes this global using into the project it generates,
+    inside the same ItemGroup as the PackageReferences that csharp-new-project.md
+    has us delete. Supplying it here keeps [Fact] and [Theory] resolving without
+    a using directive in every test file, and makes that deletion safe.
+  -->
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
   <!-- Test host and runner. Required for the project to run at all. -->
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />

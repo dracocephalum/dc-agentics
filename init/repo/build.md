@@ -1,8 +1,9 @@
-# Verify the build files
+# The build files and the first project
 
 Stage 2 of [`README.md`](README.md): the payload is at the target root. Check
 the StyleCop and build files against the chosen mode, understand the two git
-files, and create the folder structure.
+files, create the folder structure, and create the first project so that there
+is something for stage 5 to build.
 
 ## 1. The StyleCop files
 
@@ -39,8 +40,20 @@ Already at the target root after the payload copy: `Directory.Build.props`,
 the short commit hash — `1.2.3+abcdef12`, `-dirty` when the tree is not clean —
 via `git describe` ahead of the SDK's own source-control step. Verified
 fail-safe: no repository or no commits build clean as `1.2.3`; no `git` on
-`PATH` leaves the SDK's full hash. Read it back from
-`AssemblyInformationalVersionAttribute`.
+`PATH` leaves the SDK's full hash. Read it back with:
+
+    dotnet msbuild <project> -t:Build -getProperty:InformationalVersion
+
+The `-t:Build` is not optional — the targets file sets the property while
+building, so evaluating without it prints an empty line. On Windows the built
+assembly can be read directly instead:
+
+    [System.Diagnostics.FileVersionInfo]::GetVersionInfo("<path-to-dll>").ProductVersion
+
+`strings` will not find it: the attribute is UTF-16 in the metadata heap.
+A freshly initialized repository has no commit yet, so the stamp reads a plain
+`1.0.0` and the hash appears from the first commit on — the fail-safe path
+above, not a fault.
 
 `nuget.config` clears inherited package sources and maps every package to
 nuget.org. A private feed is added there, with its own package pattern — see
@@ -85,6 +98,10 @@ repository that already has tracked files does nothing to them until:
 which rewrites every affected file in one large, noisy commit. Doing it now
 avoids that entirely.
 
+On Windows the first `git add` prints one `LF will be replaced by CRLF` warning
+per file. That is the normalization working. There is nothing to fix and
+nothing to suppress.
+
 The template also sets `*.cs text diff=csharp` (better diff hunk headers) and
 `*.sln text eol=crlf` (Visual Studio expects CRLF there).
 
@@ -97,6 +114,31 @@ build (CPM version conflicts, and placeholder files that violate StyleCop).
 
 Root configuration files exist **once**, at the repository root, in both modes.
 Never copy them into component folders.
+
+## 5. The first project
+
+A repository with no project cannot be built, so the analyzer probe, the build
+stamp and the licence check in [`verify.md`](verify.md) would each have nothing
+to run against. This stage therefore ends by creating one, following
+[`payload/docs/rules/coding/csharp/csharp-new-project.md`](payload/docs/rules/coding/csharp/csharp-new-project.md).
+That procedure also creates the solution, since a solution is named after its
+main project and so cannot exist before it.
+
+**Derive the name rather than asking for it.** The namespace prefix, plus the
+repository directory name with hyphens removed and each segment capitalized,
+dropping a leading segment that is an owner or vendor tag rather than part of
+the name: `dc-widgets` with prefix `Contoso` gives `Contoso.Widgets`. It is a
+default like any other — reported in the closing summary, not asked up front,
+because renaming a project on its first day costs nothing.
+
+Kind: `library`, unless the purpose line plainly names a service, a job or a
+tool. The procedure writes the first real test as well, which is what makes
+the test-count check in [`verify.md`](verify.md) mean anything.
+
+**Skip this when the repository already has code** — the project and its
+solution exist. Skip it too when the user asked for a bare scaffold, and record
+under *Initialization* in the target's `TODO.md` that the build, the analyzer
+probe and the licence check are unrun until a first project exists.
 
 ## Known failure modes
 

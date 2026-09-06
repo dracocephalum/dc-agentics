@@ -13,7 +13,7 @@ Never guess the namespace prefix. Take it from `AGENTS.md`.
 |---|---|---|---|
 | standalone | a project | `src/<Prefix>.<Name>/` | the root `.slnx` |
 | monorepo | a project to an existing component | `<component>/src/<Prefix>.<Name>/` | that component's `.slnx` |
-| monorepo | a new component | `<category>/<kebab-name>/` — create `src/`, `test/`, and `<kebab-name>.slnx` there first | its own, new |
+| monorepo | a new component | `<category>/<kebab-name>/` — create `src/` and `test/` there first | its own, new — see step 5 |
 
 Categories are `services/`, `libraries/`, `jobs/`, `tools/`. Never create a
 solution at a monorepo root, and never add a `Directory.Build.props`,
@@ -94,9 +94,11 @@ The namespace is derived automatically: a trailing `.Core` is dropped
 
 Then:
 
-- **Delete the whole `<ItemGroup>` of `PackageReference`s.** `Tests.props`
-  supplies the entire stack to any `*.Tests` project. Keeping them is both
-  redundant and, under CPM, invalid.
+- **Delete every `<PackageReference>` the template wrote.** `Tests.props`
+  supplies the entire stack to any `*.Tests` project; keeping them is both
+  redundant and, under CPM, invalid. Delete the template's
+  `<Using Include="Xunit" />` alongside them — `Tests.props` supplies that as
+  well, so `[Fact]` and `[Theory]` still resolve with no `using` in the file.
 - Delete `UnitTest1.cs` — it fails SA1505/SA1508.
 - Add `<ProjectReference Include="../../src/<Prefix>.<Name>/<Prefix>.<Name>.csproj" />`.
 - Write the first real test now, following
@@ -106,7 +108,20 @@ Then:
 A finished test `.csproj` contains a `TargetFramework` and a `ProjectReference`
 and nothing else.
 
-## 5. Register in the solution
+## 5. The solution
+
+A solution is named after its **main project**, not its folder, so a component
+has no solution until its first project exists. When there is none — a new
+component, or a standalone repository being initialized — create it in the
+component root (the repository root, when standalone):
+
+    dotnet new sln -n <Prefix>.<Name> -f slnx
+
+`slnx` is already the default format on SDK 10. Pass `-f` regardless, so a
+change of default can never quietly produce a `.sln`.
+
+Then register both projects, in the new solution or the component's existing
+one:
 
     dotnet sln <solution>.slnx add src/<Prefix>.<Name>/<Prefix>.<Name>.csproj
     dotnet sln <solution>.slnx add test/<Prefix>.<Name>.Tests/<Prefix>.<Name>.Tests.csproj
@@ -152,3 +167,4 @@ update it instead.
 | `CA1707` on a test method name | the project is not named `*.Tests`, so `Tests.props` (which suppresses it) was never applied |
 | `NU1100`/`NU1101` package not found, on a private package | `nuget.config` source mapping has no pattern routing it to the private feed |
 | zero tests, green exit | wrong runner version, or no tests written yet |
+| `CS0246` on `Fact`, `Theory` or `InlineData` | the project is not named `*.Tests`, so `Tests.props` — which supplies the `Xunit` global using — was never applied |

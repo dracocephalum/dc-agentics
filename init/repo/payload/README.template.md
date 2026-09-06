@@ -20,8 +20,8 @@
 
 ## Run it locally
 
-    dotnet build {{REPO_NAME}}.slnx --nologo -v:q
-    dotnet test  {{REPO_NAME}}.slnx --nologo
+    dotnet build {{SOLUTION_NAME}}.slnx --nologo -v:q
+    dotnet test  {{SOLUTION_NAME}}.slnx --nologo
 
 <!-- Anything beyond build and test: configuration to set, a database to start, a URL to open. -->
 

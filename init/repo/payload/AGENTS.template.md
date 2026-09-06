@@ -27,15 +27,16 @@ Primary framework: .NET. Namespace prefix: `{{PREFIX}}`.
 | `test/` | test projects, one per project under test |
 | `docs/` | documentation |
 | `docs/rules/` | the rules this repository is held to; see *Agent guidelines* below |
-| `{{REPO_NAME}}.slnx` | the solution — this repository is a single component |
+| `{{SOLUTION_NAME}}.slnx` | the solution — this repository is a single component |
 
 <!-- ==== MONOREPO variant - delete if this is standalone ==== -->
 
-Each component is a kebab-case folder containing its own `.slnx`, `src/`,
-`test/` and `README.md`. There is deliberately **no solution at the repository
-root**, and no component list here: **each category's `README.md` is the map**
-of what it contains, kept current by the new-project procedure. Read the
-category map before assuming a component does or does not exist.
+Each component is a kebab-case folder holding its own `.slnx` — named after its
+main project — plus `src/`, `test/` and `README.md`. There is deliberately **no
+solution at the repository root**, and no component list here: **each category's
+`README.md` is the map** of what it contains, kept current by the new-project
+procedure. Read the category map before assuming a component does or does not
+exist.
 
 | Path | Purpose |
 |---|---|
