@@ -77,10 +77,12 @@ three modes are defined in
 [`source-control.md`](payload/docs/rules/source-control/source-control.md),
 *For an agent*.
 
-`change-tracking` stays at its defaults — GitHub Issues, no board — unless the
-user asked for a board; a board needs the extra scopes in the tracker file,
-and the choice is recorded here, not asked. The initialization itself has no
-ticket: the tracker exists only once the repository does, and
+`change-tracking.tracker` is the answer to the one yes-or-no question:
+`github-issues` when the repository tracks its work as GitHub Issues,
+`none` when it does not (branch names and pull-request titles then carry no
+ticket). A Projects board is a view over issues, kept in step by GitHub
+itself, and is not recorded. The initialization itself has no ticket: the
+tracker exists only once the repository does, and
 [`change-tracking.md`](payload/docs/rules/change-tracking/change-tracking.md)
 states that as the one exception.
 

@@ -26,7 +26,7 @@ in that summary and, where it is a real decision, an entry in the target's
 | StyleCop mode | relaxed |
 | Central package management | on |
 | Source-control mode | `local` — `auto`, `local`, or `manual`; [`settings.md`](settings.md) |
-| Change tracking | GitHub Issues, no board — the only tracker today; a board is the user's ask and needs extra scopes; [`settings.md`](settings.md) |
+| Change tracking | ask — GitHub Issues, yes or no; `none` means branch names and PR titles carry no ticket; [`settings.md`](settings.md) |
 | Licence | `none` — recorded, summarised, and left as a decision in `TODO.md`; [`settings.md`](settings.md) |
 
 ## What ends up in the repository root
