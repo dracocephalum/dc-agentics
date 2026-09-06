@@ -3,14 +3,6 @@
 Open items for the toolkit itself. Not payload. Each entry says what would
 close it, so it can be picked up cold.
 
-## Decisions pending
-
-- [ ] **Projects board automation.** Merging #2 closed issue #1 but left its
-      card *In Progress*; the agent moved it by hand. Close by one of: enable
-      the board's built-in "item closed → Done" workflow (web UI, once), or
-      have `/source-control` move the card after merge (needs the optional
-      `project` scope). Record the choice in `change-tracking/github.md`.
-
 ## Toolkit
 
 - [ ] **Global `pre-push` hook refusing direct pushes to the default branch** —

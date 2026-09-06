@@ -2,6 +2,12 @@
 # itself, so no provenance and no repository block. The shipped shape is
 # init/repo/payload/.dc-agentics.yaml.
 
+change-tracking:
+  # init/repo/payload/docs/rules/change-tracking/change-tracking.md
+  tracker: github-issues
+  board: https://github.com/users/dracocephalum/projects/1
+  board-auto-add: true                # the board adds new issues and moves closed ones itself; the agent only reads it
+
 source-control:
   # auto | local | manual - docs/rules/source-control/source-control.md
   # (here: init/repo/payload/docs/rules/source-control/source-control.md), "For an agent".

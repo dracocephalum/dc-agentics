@@ -37,4 +37,4 @@ Follow the standard's *Broaden the analysis range*, *Modes*, and *For an
 agent* sections as written: what leaves the session is shown in full and
 confirmed first, the verdict is a recommendation, and in comment triage the
 summary of verdicts is the confirmation step. The GitHub commands are in
-`docs/rules/change-tracking/github.md`.
+`docs/rules/source-control/github.md`.

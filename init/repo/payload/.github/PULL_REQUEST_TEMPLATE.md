@@ -1,5 +1,7 @@
 <!-- Title: `#<ticket> <type>(<scope>): <summary>`, e.g. "#123 feat(billing): retry failed charges once".
-     It becomes the squash commit. -->
+     It becomes the squash commit. The first line below links the ticket; GitHub closes it on merge. -->
+
+Closes #[ticket]
 
 ## What
 
@@ -11,7 +13,7 @@
 
 ## Why
 
-<!-- The problem, the constraint, or the request. Link the issue: Closes #123 -->
+<!-- The problem, the constraint, or the request - beyond what the ticket already says. -->
 
 ## How
 

@@ -20,8 +20,8 @@ them.
 | Set up or troubleshoot secret scanning / git hooks | [`init/local/gitleaks.md`](init/local/gitleaks.md) |
 | Set up a machine that is **not Windows** (Linux, macOS, FreeBSD) | [`init/local/platforms.md`](init/local/platforms.md) — untested, read first |
 | Add or upgrade a package; judge a licence | [`init/repo/payload/docs/rules/dependencies.md`](init/repo/payload/docs/rules/dependencies.md) |
-| Start work on a ticket, name a branch, title a PR, set merge behaviour (`/source-control`) | [`init/repo/payload/docs/rules/change-tracking/github.md`](init/repo/payload/docs/rules/change-tracking/github.md) |
-| Publish a repository (first push), commit, or open / update / merge a pull request | [`init/repo/payload/docs/rules/source-control/source-control.md`](init/repo/payload/docs/rules/source-control/source-control.md), then the host file it names |
+| Create or find a ticket, put work on the board (`/change-tracking`) | [`init/repo/payload/docs/rules/change-tracking/change-tracking.md`](init/repo/payload/docs/rules/change-tracking/change-tracking.md), then the tracker file it names |
+| Start work on a ticket, name a branch, publish a repository, commit, or open / update / merge a pull request, set merge behaviour (`/source-control`) | [`init/repo/payload/docs/rules/source-control/source-control.md`](init/repo/payload/docs/rules/source-control/source-control.md), then the host file it names |
 | Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`init/repo/payload/docs/rules/coding/code-review.md`](init/repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
 | Initialize / scaffold / set up a repo at a path | [`init/repo/README.md`](init/repo/README.md) |
 | Set up StyleCop, or choose relaxed vs strict | [`init/repo/stylecop.md`](init/repo/stylecop.md) |
@@ -60,8 +60,8 @@ Three kinds of file, told apart by location:
       docs/rules/                  every rules document, exactly where it lands
         dependencies.md
         security-reminders.md      privacy & data-security checklist; the review's security pass
-        change-tracking/github.md  ticket = issue; ticket-first branches and PR titles; merge settings; review mechanics
-        source-control/          source-control.md - the rules, host-neutral; github.md - the mechanics
+        change-tracking/         change-tracking.md - the ticket rule, settings, boards; github.md - issues, linked branches, boards
+        source-control/          source-control.md - the rules, host-neutral; github.md - reaching GitHub, publishing, PRs, review, settings
         coding/code-review.md
         coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
         coding/markdown/markdown-review.md
@@ -71,6 +71,7 @@ Three kinds of file, told apart by location:
     .claude/skills/                skill shims; live here, copied to a target's .claude/skills/
       project/SKILL.md             /project - add a component or project
       review/SKILL.md              /review  - PR, branch, files, or comment triage; post/print/report
+      change-tracking/SKILL.md     /change-tracking - create or find a ticket, board add, board setup
       source-control/SKILL.md      /source-control - ticket-linked branch, commit, draft PR, merge settings
 
 Three payload files are forked from `dotnet new` templates and carry a

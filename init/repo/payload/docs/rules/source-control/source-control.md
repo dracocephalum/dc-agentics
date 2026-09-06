@@ -14,7 +14,7 @@ anyone else spends time on it.**
 Every change is traceable to a ticket, and the ticket number leads — in the
 branch name and in the change-request title — so history, boards, and searches
 line up on one key. How a ticket is created and linked is the tracker's
-business: [`../change-tracking/github.md`](../change-tracking/github.md).
+business: [`../change-tracking/change-tracking.md`](../change-tracking/change-tracking.md).
 
 ## Branches
 
@@ -69,8 +69,8 @@ Then:
 - **Body** follows the repository's change-request template. **Bullet
   points, not paragraphs**: one bullet per change in behaviour or structure
   under *What*; a **checklist** wherever the section is a list of actions —
-  what was verified, what a person must do at merge or deploy time. Link the
-  ticket with the tracker's closing keyword.
+  what was verified, what a person must do at merge or deploy time. The first
+  line of the body is the tracker's closing keyword and the ticket.
 - **A non-trivial change gets a *How*.** The approach and the reasoning
   behind it, in the form that makes them easiest to grasp later — a list of
   steps, a table of the options considered, a mermaid diagram of the flow.

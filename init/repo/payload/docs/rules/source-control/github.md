@@ -1,10 +1,29 @@
 # Source control on GitHub
 
 The mechanics of [`source-control.md`](source-control.md) on GitHub:
-publishing, pull requests, and the repository settings that enforce the merge
-rules. Read the rules first; this file only says which commands. Tickets,
-creating a branch from an issue, the MCP-or-`gh` choice, and the review
-mechanics are in [`../change-tracking/github.md`](../change-tracking/github.md).
+reaching GitHub, publishing, pull requests, review, and the repository
+settings that enforce the merge rules. Read the rules first; this file only
+says which commands. Tickets, the branch linked to an issue, and boards are
+[`../change-tracking/github.md`](../change-tracking/github.md).
+
+## Reaching GitHub: an MCP server if present, `gh` otherwise
+
+Two ways an agent can act on GitHub, and the choice is made per session,
+not per repository:
+
+- **A GitHub MCP server is connected** (its tools are listed in the session)
+  → prefer its tools for issues, pull requests, comments, and threads. They
+  return structured data and need no shell.
+- **No MCP server** → use `gh`, as in the tables below. This is the baseline
+  every machine set up by the toolkit has; nothing here depends on the MCP
+  server existing.
+
+Whether to install the MCP server is the user's decision, made during machine
+setup — the toolkit's local guide asks, and records the known catch (the
+remote server's OAuth route does not work from Claude Code; it needs a
+personal access token in a header). Never install or authenticate it
+mid-task, and never mix the two routes for the same action; the confirmation
+rules apply equally to both.
 
 ## Publishing a repository — the first push
 
@@ -56,7 +75,7 @@ history lacks, and the push is rejected).
 | Step | Command |
 |---|---|
 | open, as a draft | `gh pr create --draft --title "#<ticket> <type>(<scope>): <summary>" --body-file <file>` |
-| the body | from `.github/PULL_REQUEST_TEMPLATE.md`, written to a file, ending with `Closes #<ticket>` |
+| the body | from `.github/PULL_REQUEST_TEMPLATE.md`, written to a file, opening with `Closes #<ticket>` |
 | update the description | `gh pr edit <n> --body-file <file>` |
 | ready for review | `gh pr ready <n>`, then `gh pr edit <n> --add-reviewer <login>` |
 | see it whole | `gh pr view <n> --json title,body,files,reviews,comments` |
@@ -117,3 +136,22 @@ Verified: the shipped file was applied unchanged to a public repository and
 `GET /repos/{owner}/{repo}/rules/branches/main` listed all four rules in
 force (`deletion`, `non_fast_forward`, `required_linear_history`,
 `pull_request` with squash as the only merge method).
+
+## Review mechanics
+
+The review *standard* is [`../coding/code-review.md`](../coding/code-review.md);
+these are the commands its modes use here.
+
+| Need | Command |
+|---|---|
+| everything about a PR | `gh pr view <n> --json title,body,baseRefName,headRefName,files,reviews,comments` |
+| the diff | `gh pr diff <n>` |
+| the discussion, as threads | `gh api graphql` — `pullRequest(number:) { reviewThreads(first:100) { nodes { id isResolved path line comments(first:50) { nodes { author { login } body } } } } }` |
+| post a review with a body | `gh pr review <n> --comment --body-file <file>` (or `--request-changes` / `--approve` — **never `--approve` from an agent**) |
+| reply in a thread | mutation `addPullRequestReviewThreadReply(input:{pullRequestReviewThreadId, body})` |
+| resolve a thread | mutation `resolveReviewThread(input:{threadId})` |
+| start a new thread on a line | mutation `addPullRequestReviewThread(input:{pullRequestId, path, line, body})` |
+
+Every one of these that *writes* to GitHub — posting, replying, resolving — is
+confirmed with the user first, thread by thread or as an approved batch. Print
+what will be posted before posting it.

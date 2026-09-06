@@ -19,6 +19,13 @@ repository:
   licence: "{{LICENCE}}"              # none | Apache-2.0 | MIT | <SPDX id>; matches the LICENSE file
   copyright-holder: "{{COPYRIGHT_HOLDER}}"   # the legal owner named in LICENSE or NOTICE; empty when licence is none
 
+change-tracking:
+  # docs/rules/change-tracking/change-tracking.md. Tickets exist from the second commit on; the
+  # initialization itself has none.
+  tracker: github-issues              # where tickets live; the only value today
+  board: none                         # none | URL of a board on top of the tracker; needs read:project, and project to add or move cards
+  board-auto-add: false               # true when the board's own workflows add new tickets and move closed ones; the agent then only reads it
+
 source-control:
   # What the agent may do without asking - docs/rules/source-control/source-control.md, "For an agent".
   #   auto    ticket, branch, commit, push, and draft pull request without asking; each is reported after

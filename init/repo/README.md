@@ -26,6 +26,7 @@ in that summary and, where it is a real decision, an entry in the target's
 | StyleCop mode | relaxed |
 | Central package management | on |
 | Source-control mode | `local` — `auto`, `local`, or `manual`; [`settings.md`](settings.md) |
+| Change tracking | GitHub Issues, no board — the only tracker today; a board is the user's ask and needs extra scopes; [`settings.md`](settings.md) |
 | Licence | `none` — recorded, summarised, and left as a decision in `TODO.md`; [`settings.md`](settings.md) |
 
 ## What ends up in the repository root
@@ -53,7 +54,7 @@ in that summary and, where it is a real decision, an entry in the target's
     stylecop.json                StyleCop settings
     docs/rules/                  exactly as in payload/docs/rules/
       dependencies.md
-      change-tracking/github.md
+      change-tracking/         change-tracking.md (rules), github.md (mechanics)
       source-control/            source-control.md (rules), github.md (mechanics)
       coding/code-review.md
       coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review

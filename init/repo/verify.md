@@ -53,6 +53,7 @@ silently stays silent:
 | StyleCop mode | `relaxed` | default | `stylecop.ruleset` + [`stylecop.md`](stylecop.md); `.dc-agentics.yaml` |
 | Central package management | on | default | `Directory.Packages.props` |
 | Source-control mode | `local` | default | `.dc-agentics.yaml` |
+| Change tracking | GitHub Issues, no board | default | `.dc-agentics.yaml` |
 | Licence | `none` | default | [`settings.md`](settings.md); `TODO.md` holds the decision |
 | Merge settings, ruleset | applied / refused / no remote | — | `/source-control setup`; `TODO.md` |
 | Serena project | written / skipped | — | [`documents.md`](documents.md); `TODO.md` |
