@@ -86,7 +86,7 @@ repositories it initializes, so those files are **additionally** offered under
 the Zero-Clause BSD licence (0BSD): an initialized repository owes no notice
 and no attribution for them.
 
-> Copyright (C) 2026 Dracocephalum Limited
+> Copyright (C) 2026 Chris Har
 >
 > Permission to use, copy, modify, and/or distribute this software for any
 > purpose with or without fee is hereby granted.
