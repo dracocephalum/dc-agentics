@@ -39,6 +39,11 @@ Types: `feat`, `fix`, `refactor`, `test`, `docs`, `build`, `ci`, `chore`,
 sentence a future developer reads in `git log --oneline` — "Fix bug" and "WIP"
 are not summaries.
 
+**Wrap the message body at ~72 columns.** Git stores it verbatim and never
+reflows it, so `git log` in a narrow terminal shows exactly the lines that were
+written. This is the opposite of a pull-request body — see below — and the two
+are confused often enough to be worth stating separately.
+
 Commits are signed (the machine setup enforces this) and contain no secrets
 (the pre-commit hook enforces this). A commit that fails either is not fixed
 by `--no-verify`.
@@ -85,6 +90,14 @@ Then:
   bullets grouped by area, a reading order under *Notes for the reviewer*,
   every manual step under *Actions*. A reviewer should be able to navigate
   the diff from the description alone.
+- **Never hard-wrap the body.** A description is typed into a web form, not
+  stored as a file: the host renders every newline as a line break, so prose
+  wrapped at 80 columns stays at 80 columns for every reader and wraps a second
+  time, raggedly, on a narrow window. **One paragraph per line**, blank lines
+  between paragraphs. Lists, tables and code fences are unaffected. This is the
+  reverse of the rule for `.md` files in the repository, which are wrapped
+  because their renderer joins the lines of a paragraph — the question is
+  always whether the audience is a renderer or a diff.
 - **Draft** until it is ready for review. A draft says "look if you like, do
   not spend review effort yet."
 - Request reviewers explicitly; code owners are the default choice.

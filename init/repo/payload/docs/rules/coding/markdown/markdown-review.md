@@ -15,6 +15,12 @@ verdict mid-review — bump it deliberately. `"#node_modules"` keeps vendored
 markdown out. Read the `Summary:` line: the exit code says pass or fail and
 nothing about how much.
 
+**This checklist is about files.** Issue bodies, change-request descriptions
+and review comments are not files: the host renders every newline in them as a
+line break, so they are written unwrapped, one paragraph per line. See
+[`../../source-control/source-control.md`](../../source-control/source-control.md),
+*Opening a change request*.
+
 The repository ships `.markdownlint.yaml`; it relaxes line length for prose
 and disables table-style rules that add nothing. What remains is real:
 broken tables (`MD056`), lists glued to paragraphs (`MD032`), spaces inside
