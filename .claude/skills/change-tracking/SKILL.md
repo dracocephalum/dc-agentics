@@ -1,7 +1,7 @@
 ---
 name: change-tracking
 description: Create or find the ticket a piece of work belongs to, per this repository's change-tracking rules. GitHub Issues only, for now.
-when_to_use: When asked which ticket a change is for, or to create or find a ticket or issue. Branches, commits, and pull requests are /source-control. Anything on a Projects board is an explicit request, handled per the tracker file.
+when_to_use: When asked which ticket a change is for, or to create or find a ticket or issue. Branches, commits, and pull requests are /source-control. A Projects board is out of scope - on an explicit request, check the token's scope first and work it out on demand, per the tracker file.
 argument-hint: new "<what and why>" | find <#n | words>
 ---
 
@@ -25,7 +25,7 @@ then the tracker file it names. Never work from memory.
 | Argument | Do | Where the procedure is |
 |---|---|---|
 | `new "<what and why>"` | create the ticket and report its number | change tracking, *Before any work*; tracker file, *Tickets* |
-| `find <#n \| words>` | show the ticket, or the tickets matching the words; a board card with no ticket behind it is converted first | tracker file, *Tickets* and *Boards, when asked* |
+| `find <#n \| words>` | show the ticket, or the tickets matching the words | tracker file, *Tickets* |
 
 ## Always
 

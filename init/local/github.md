@@ -29,7 +29,7 @@ user as a command to run and continues afterwards; it never types a passphrase.
 | 1 | GitHub CLI | `winget install --id GitHub.cli -e --silent --accept-package-agreements --accept-source-agreements` | agent |
 | 2 | Windows ssh-agent | `Set-Service ssh-agent -StartupType Automatic; Start-Service ssh-agent` — **elevated** PowerShell | user |
 | 3 | SSH key | `ssh-keygen -t ed25519 -C "<git email>" -f %USERPROFILE%\.ssh\id_ed25519` — set a passphrase | user |
-| 4 | Log in, upload the key | `gh auth login --web --git-protocol ssh --scopes admin:ssh_signing_key` — append `,read:project,project` **only if** work is tracked on a Projects board | user |
+| 4 | Log in, upload the key | `gh auth login --web --git-protocol ssh --scopes admin:ssh_signing_key` | user |
 | 5 | Load key into the agent | `C:\Windows\System32\OpenSSH\ssh-add.exe %USERPROFILE%\.ssh\id_ed25519` | user |
 | 6 | Point git at Windows OpenSSH | see below | agent |
 | 7 | Enable SSH signing | see below | agent |
@@ -79,13 +79,13 @@ saved as `%USERPROFILE%\.ssh\allowed_signers`, and:
 ### Step 4 — scopes
 
 The default login covers repositories, issues, and pull requests (`repo`) —
-which is everything change tracking needs when tickets are plain GitHub
-Issues. Two extras exist: `admin:ssh_signing_key` for step 9 (always), and
-`read:project` + `project` **only if the team tracks work on a Projects
-board** — ask, and leave them out otherwise; they can be added later with
-`gh auth refresh -s read:project,project`. `gh auth status` shows what the
-token holds. The permission model is in
-`docs/rules/change-tracking/github.md` of any initialized repository.
+everything change tracking needs. The one extra at setup is
+`admin:ssh_signing_key` for step 9. Projects-board scopes (`read:project`,
+`project`) are **not** part of setup: a board request is rare, handled on
+demand, and the agent checks `gh auth status` and hands over
+`gh auth refresh -h github.com -s read:project,project` only then. The
+permission model is in `docs/rules/change-tracking/github.md` of any
+initialized repository.
 
 ### Step 9 — the trap
 

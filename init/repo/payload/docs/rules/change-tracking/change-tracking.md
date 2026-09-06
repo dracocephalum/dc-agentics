@@ -63,11 +63,13 @@ Commits parsers expect. This toolkit does not run one; if a repository adopts
 A board is a view over tickets with a card per ticket; the ticket is the
 record, and the host keeps the two in step on its own (a board that adds new
 tickets and moves closed ones is a one-time setting on the board, not the
-agent's work). The agent therefore never touches a board unless asked, and
-then it is a host action under the mode like any other. A card created on a
-board without a ticket behind it is a note, not a ticket — it has no
-identifier — and is converted to a ticket before any branch is named; the
-tracker file says how.
+agent's work). The agent therefore never touches a board unless asked; then
+it checks the credential's scope first — board access is never assumed the
+way tracker access is — works the request out on demand, and treats it as a
+host action under the mode like any other. A card created on a board without
+a ticket behind it is a note, not a ticket — it has no identifier — and
+becomes one through the tracker's own convert step before any branch is
+named.
 
 ## Trackers
 

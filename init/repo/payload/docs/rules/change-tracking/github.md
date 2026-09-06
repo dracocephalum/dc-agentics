@@ -6,17 +6,15 @@ first. How to reach GitHub — an MCP server or `gh` — and the pull-request an
 review commands are in
 [`../source-control/github.md`](../source-control/github.md).
 
-## Permissions the agent needs
+## Permissions
 
-`gh` acts with an OAuth token whose **scopes** decide what the agent can
-touch. Issues need nothing beyond the default `gh auth login` (`repo`).
-Anything on a Projects board — asked for explicitly, never routine — needs
-`read:project` to look and `project` to change; add them with
-`gh auth refresh -h github.com -s read:project,project`, which opens a
-browser, so the agent hands the command to the user. `gh auth status` lists
-the token's scopes; "missing required scopes" means exactly this. A board
-owned by an organization additionally needs the user to have write access to
-it — scopes cannot grant what the account does not have.
+The default `gh auth login` (`repo`) covers everything here. Nothing about a
+Projects board is set up in advance: a board request is handled on demand,
+and the first step is `gh auth status` — the board scopes (`read:project` to
+look, `project` to change) are never assumed to be on the token the way
+`repo` is. When they are missing, hand the user
+`gh auth refresh -h github.com -s read:project,project` (it opens a browser)
+and stop until it has run.
 
 ## Tickets
 
@@ -35,14 +33,14 @@ configuration as every other command and is verifiable at each step. The
 user may override the naming (an existing convention, a hotfix with no
 ticket); record the reason in the pull-request body.
 
-## Boards, when asked
+## Boards
 
-A Projects board keeps itself in step with issues once its own workflows are
-on (*Auto-add to project* with the filter `is:issue`, *Item closed → Done* —
-web UI, once); nothing here runs routinely. On request:
-
-| Need | Command |
-|---|---|
-| is a ticket on the board | `gh issue view <n> --json projectItems` |
-| put a ticket on it | `gh project item-add <number> --owner <owner> --url <issue-url>` — number and owner from the board URL |
-| a card that is not an issue yet | mutation `convertProjectV2DraftIssueItemToIssue(input:{itemId, repositoryId})` — a draft has no number, no `Closes`, no linked branch; convert first, then proceed with the issue it becomes |
+Nothing routine. A Projects board keeps itself in step with issues once its
+own workflows are on (*Auto-add to project* with the filter `is:issue`,
+*Item closed → Done* — web UI, once). When the user asks for something on a
+board, work it out from `gh project --help` and the GraphQL API after the
+scope check above, and show the command first as for any host action. One
+fact worth knowing in advance: a card created on the board is a draft with
+no issue number, no `Closes`, and no linked branch — it becomes a ticket
+through the board's *Convert to issue*, and work starts from the issue that
+produces.
