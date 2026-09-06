@@ -13,7 +13,8 @@ anyone else spends time on it.**
 
 Every change is traceable to a ticket, and the ticket number leads — in the
 branch name and in the change-request title — so history, boards, and searches
-line up on one key. How a ticket is created and linked is the tracker's
+line up on one key. How a ticket is created and linked, and the form the
+names take when a repository tracks no tickets at all, is the tracker's
 business: [`../change-tracking/change-tracking.md`](../change-tracking/change-tracking.md).
 
 ## Branches

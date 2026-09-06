@@ -77,7 +77,7 @@ makes it selectable from a plain-language request.
 | Adding a project, component, or test project | [`docs/rules/coding/csharp/csharp-new-project.md`](docs/rules/coding/csharp/csharp-new-project.md) |
 | Checking a change for secrets, personal data, or local paths — or anything before a first push | [`docs/rules/security-reminders.md`](docs/rules/security-reminders.md) |
 | Adding, upgrading, or replacing a package (any ecosystem) | [`docs/rules/dependencies.md`](docs/rules/dependencies.md) |
-| Creating or finding a ticket, asking which ticket a change is for, or putting work on a board | [`docs/rules/change-tracking/change-tracking.md`](docs/rules/change-tracking/change-tracking.md), then the tracker file it names |
+| Creating or finding a ticket, or asking which ticket a change is for | [`docs/rules/change-tracking/change-tracking.md`](docs/rules/change-tracking/change-tracking.md), then the tracker file it names |
 | Starting work on a ticket, naming a branch, publishing the repository, committing, or opening / updating / merging a pull request | [`docs/rules/source-control/source-control.md`](docs/rules/source-control/source-control.md), then the host file it names |
 | Reviewing a pull request, a diff, or a set of changes | [`docs/rules/coding/code-review.md`](docs/rules/coding/code-review.md) — then the C# or markdown checklist it names |
 | Finding what exists — which component does what, where something lives | `README.md` here; in a monorepo, each category's `README.md` is the map of its components, and each component's `README.md` says how to run it |
@@ -89,7 +89,7 @@ makes it selectable from a plain-language request.
 The documents above are the substance, for every tool. In Claude Code some
 are also invocable through a shim in `.claude/skills/` - `/project <kind>
 <name>`, `/review [PR# | branch | paths | comments PR#]`,
-`/change-tracking new|find|board`,
+`/change-tracking new|find`,
 `/source-control start|commit|pr|setup`, or just ask in plain language - each
 following the same document. `/review` is the rules pass; the built-in
 `/code-review` is the bug-hunting pass, and the two complement each other.
