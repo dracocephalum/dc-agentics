@@ -27,6 +27,7 @@ them.
 | Initialize / scaffold / set up a repo at a path | [`init/repo/README.md`](init/repo/README.md) |
 | Set up StyleCop, or choose relaxed vs strict | [`init/repo/stylecop.md`](init/repo/stylecop.md) |
 | Check privacy/security before a first push | [`init/repo/payload/docs/rules/security-reminders.md`](init/repo/payload/docs/rules/security-reminders.md) |
+| Capture an idea that is not committed work, or asked what might be built later | [`PLAN.md`](PLAN.md) — `TODO.md` is for decided work; see the table at the top of either |
 
 Supported frameworks today: **.NET (dotnet core)** only. For anything else, say
 so rather than improvising.
@@ -36,7 +37,7 @@ so rather than improvising.
 Three kinds of file, told apart by location:
 
     (3) workspace - about this repo; never copied
-    README.md  AGENTS.md  TODO.md  LICENSE  NOTICE  .gitignore  .gitattributes
+    README.md  AGENTS.md  TODO.md  PLAN.md  LICENSE  NOTICE  .gitignore  .gitattributes
     .dc-agentics.yaml              this repository's own settings (source-control mode); same shape as the payload's
     .markdownlint.yaml             one line: extends the payload copy (so it cannot drift)
     init/
@@ -99,7 +100,7 @@ root) and the skill shims in `.claude/skills/`. Written to be consumed in
 *someone else's* project, on an unknown machine. Must be portable and
 self-contained.
 
-**Workspace** — everything else: this file, `README.md`, `TODO.md`, the
+**Workspace** — everything else: this file, `README.md`, `TODO.md`, `PLAN.md`, the
 procedures under `init/`, and the repo tooling. Instructions for an agent
 working *on* dc-agentics itself.
 
@@ -159,7 +160,8 @@ local config file and reference that file instead.
 
 ## Status
 
-Open items live in [`TODO.md`](TODO.md); check it before assuming something
+Open items live in [`TODO.md`](TODO.md) and uncommitted ideas in
+[`PLAN.md`](PLAN.md); check both before assuming something
 was never considered.
 
 Early scaffold. There is no build, no test suite, and no release process yet.

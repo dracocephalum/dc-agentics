@@ -55,7 +55,7 @@ Three kinds of file, told apart by where they live:
   under `docs/rules/`.
 - **`init/`** (everything else) — procedures and guides. Read here, never
   copied.
-- **The root** — this file, `AGENTS.md`, `TODO.md`, and the workspace config
+- **The root** — this file, `AGENTS.md`, `TODO.md`, `PLAN.md`, and the workspace config
   for working on the toolkit itself. `.claude/skills/` is the one thing shipped
   from outside the payload.
 
@@ -104,4 +104,5 @@ CC-BY 3.0; that attribution stays with the quote.
 
 ## Status
 
-Early. Open items are in [`TODO.md`](TODO.md).
+Early. Open items are in [`TODO.md`](TODO.md); ideas that are not commitments
+are in [`PLAN.md`](PLAN.md).
