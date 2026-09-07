@@ -32,6 +32,10 @@ two agree, and declines rather than mixing a payload delta into a layout change.
 
 ## Then
 
+The tree being changed must be clean - `git status --porcelain` empty,
+untracked included - or decline and say so; the document says why, and what
+the one-command undo is that a clean start makes possible.
+
 Produce the plan first: what changed between the two commits, what it would do
 to each file, and what needs a decision. Apply as a second step, and let
 `source-control.mode` in the target's `.dc-agentics.yaml` decide what may be

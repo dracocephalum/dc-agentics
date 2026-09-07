@@ -14,6 +14,29 @@ Operation 2 needs both repositories present, because it diffs two commits of
 the toolkit. Running it "from the target" still means a toolkit checkout exists
 somewhere; ask for its path rather than guessing.
 
+**The tree must be clean before anything is applied.** Every operation
+rewrites many files at once, so it starts only from a repository where
+`git status --porcelain` prints nothing — no modified, no staged, and no
+untracked files. For operation 1 that is the toolkit's own tree; for 2 and 3,
+the target's. If it is not clean, **decline** with that one line and let the
+user commit or stash; never stash on their behalf, since unstashing over
+files the upgrade rewrote is exactly the conflict this rule exists to prevent.
+
+Untracked counts because it is what makes recovery unambiguous. From a clean
+tree, *the diff is the upgrade*, and undoing it is one command:
+
+    git checkout -- . && git clean -fd      # before committing: exact pre-upgrade state
+
+After committing, the previous commit is the snapshot, and its
+`toolkit.commit` says which version it was. Nothing else — no tag, no backup —
+is needed, and nothing less would do: with a scratch file in the tree, that
+`git clean` would take it too, and the plan could not say which changes were
+the upgrade's.
+
+This is the deliberate opposite of initialization, which *leaves* the payload
+uncommitted for review. Both serve the same end: initialization produces the
+diff to inspect, an upgrade requires a clean base so that it can.
+
 **Report before applying.** Every operation produces a plan first — what
 changed, what it would do to each file, and what needs a decision. Applying is
 a second step, and `source-control.mode` in the target's `.dc-agentics.yaml`
@@ -373,6 +396,7 @@ the root failing `MSB1003` as intended.
 | Symptom | Cause |
 |---|---|
 | Every payload file appears new | diffed the current root only, or without `-M`, across a toolkit restructure |
+| No way to tell the upgrade's changes from the user's | applied to a dirty tree; the precondition exists so that `git checkout -- . && git clean -fd` is the whole undo |
 | A customization silently disappears | overwrote on path alone, without comparing against the payload at the recorded commit |
 | A customized config file becomes a merge mess | three-way merged text; apply the new file and re-apply the repository's changes by intent instead |
 | A zero-byte file where the toolkit deleted one | the apply loop redirected a failing `git show` for a `D` path; handle deletions first |
