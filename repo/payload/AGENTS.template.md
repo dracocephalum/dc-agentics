@@ -82,6 +82,7 @@ makes it selectable from a plain-language request.
 | Starting work on a ticket, naming a branch, publishing the repository, committing, or opening / updating / merging a pull request | [`docs/rules/source-control/source-control.md`](docs/rules/source-control/source-control.md), then the host file it names |
 | Reviewing a pull request, a diff, or a set of changes | [`docs/rules/coding/code-review.md`](docs/rules/coding/code-review.md) — then the C# or markdown checklist it names |
 | Scrubbing, sweeping or auditing this repository for drift or inconsistency — or after any move, rename or restructure | [`docs/rules/scrub.md`](docs/rules/scrub.md) |
+| Bringing this repository up to a newer version of the toolkit it was initialized with | the toolkit's own `repo/upgrade.md` — it diffs two commits of dc-agentics, so a checkout of it must be present; `.dc-agentics.yaml` records which commit this repository came from |
 | Finding what exists — which component does what, where something lives | `README.md` here; in a monorepo, each category's `README.md` is the map of its components, and each component's `README.md` says how to run it |
 | Starting any source-control action, or asked what this repository's settings and defaults are | [`.dc-agentics.yaml`](.dc-agentics.yaml) — the mode the agent works in (`auto`, `local`, `manual`) and every choice made at initialization |
 | Leaving something unfinished, blocked, or undecided — or asked what is still open | [`TODO.md`](TODO.md) — add it there; a remark in a conversation is lost |
@@ -91,7 +92,7 @@ makes it selectable from a plain-language request.
 The documents above are the substance, for every tool. In Claude Code some
 are also invocable through a shim in `.claude/skills/` - `/project <kind>
 <name>`, `/review [PR# | branch | paths | comments PR#]`,
-`/change-tracking new|find`, `/scrub [paths...]`,
+`/change-tracking new|find`, `/scrub [paths...]`, `/upgrade`,
 `/source-control start|commit|pr|setup`, or just ask in plain language - each
 following the same document. `/review` is the rules pass; the built-in
 `/code-review` is the bug-hunting pass, and the two complement each other.

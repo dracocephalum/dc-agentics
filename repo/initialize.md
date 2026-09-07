@@ -74,6 +74,7 @@ the worse question.
       review/SKILL.md            Claude Code shim: /review [PR# | branch | paths | comments PR#]
       scrub/SKILL.md             Claude Code shim: /scrub [paths...]
       source-control/SKILL.md    Claude Code shim: /source-control start|commit|pr|setup
+      upgrade/SKILL.md           Claude Code shim: /upgrade — needs a toolkit checkout
     .github/
       PULL_REQUEST_TEMPLATE.md   GitHub fills PR bodies from it
       rulesets/protect-main.json default-branch ruleset: PR-only, squash, no force-push

@@ -26,6 +26,7 @@ them.
 | Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`repo/payload/docs/rules/coding/code-review.md`](repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
 | Scrub, sweep, or audit a repository for drift or inconsistency (`/scrub`) | [`repo/scrub.md`](repo/scrub.md) here; [`repo/payload/docs/rules/scrub.md`](repo/payload/docs/rules/scrub.md) is the part every target gets |
 | Initialize / scaffold / set up a repo at a path | [`repo/initialize.md`](repo/initialize.md) |
+| Upgrade this toolkit's pinned versions, or bring an initialized repo up to the current toolkit (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — standalone-to-monorepo is not written yet |
 | Set up StyleCop, or choose relaxed vs strict | [`repo/stylecop.md`](repo/stylecop.md) |
 | Check privacy/security before a first push | [`repo/payload/docs/rules/security-reminders.md`](repo/payload/docs/rules/security-reminders.md) |
 | Capture an idea that is not committed work, or asked what might be built later | [`PLAN.md`](PLAN.md) — `TODO.md` is for decided work; see the table at the top of either |
@@ -47,6 +48,7 @@ Three kinds of file, told apart by location:
       initialize.md                repo initialization: inputs, what lands, the five stages
       copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
       scrub.md                     consistency + drift pass for THIS repo; extends the payload checklist
+      upgrade.md                   toolkit pins current; a target up to the current toolkit (ops 1+2)
       layout.md                    standalone + monorepo folder structures
       stylecop.md                  StyleCop relaxed/strict procedure
       baselines/                   pristine `dotnet new` output, NEVER copied to a target
@@ -81,6 +83,7 @@ Three kinds of file, told apart by location:
       change-tracking/SKILL.md     /change-tracking - create or find a ticket
       source-control/SKILL.md      /source-control - ticket-linked branch, commit, draft PR, merge settings
       scrub/SKILL.md               /scrub   - consistency + drift pass; reports, does not fix
+      upgrade/SKILL.md             /upgrade - toolkit pins, or a target to the current toolkit
 
 Three payload files are forked from `dotnet new` templates and carry a
 `dc-agentics-baseline:` marker recording the source SDK and the SHA-256 of the

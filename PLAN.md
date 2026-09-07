@@ -251,31 +251,28 @@ with whatever the user was doing.
 The risk to design against is a scrub that quietly rewrites files nobody
 asked it to touch, which is how a useful check becomes one people turn off.
 
-### `/upgrade`
+### `/upgrade`, third operation: standalone to monorepo
 
-Three operations under one verb:
+The first two operations are written — [`repo/upgrade.md`](repo/upgrade.md).
+The third is not, and it shares nothing with them but the verb: they diff a
+recorded baseline and apply a delta, while this moves files, rewrites paths,
+creates category folders and a category map, and relocates the component's
+solution.
 
-| Operation | Where it runs | Notes |
-|---|---|---|
-| Bring the toolkit's own pinned versions current | the toolkit | SDK baselines, analyzer and test-stack versions, the `dc-agentics-verified` marker |
-| Upgrade a target repository to the current toolkit | either | this is the *Update mode for an initialized repository* entry in `TODO.md`; that entry holds the decided shape |
-| Change a target's layout, standalone to monorepo | either | restructure, move the component under a category, add the category map |
+Three things it needs before it can be written:
 
-Run from inside a target repository, only the last two are available — the
-first needs a toolkit checkout to upgrade.
-
-The second is the one with a settled design already: the target's
-`.dc-agentics.yaml` records the commit it was initialized from, so the
-procedure is a diff of `repo/payload` between that commit and `HEAD`.
-
-The third has a known snag, found in the second initialization trial:
-initialization **deletes** `docs/templates/category-README.md` in standalone
-mode, on the grounds that a repository with no categories can never use it —
-but `csharp-new-project.md` still tells the reader to copy that file when
-creating a category folder. Nothing is broken while the repository stays
-standalone; the conversion is where it bites, because the template it needs is
-the one that was removed. Either keep the file in both modes, or have the
-conversion restore it.
+- **A test subject that is not `dc-nightingale`.** Converting it would destroy
+  the standalone baseline the second initialization trial established, which is
+  the only conforming target there is.
+- **`docs/templates/category-README.md` back.** Standalone initialization
+  deletes it, on the grounds that a repository with no categories can never use
+  it — but the conversion is exactly when a category map is needed. Either keep
+  the file in both modes, or have the conversion restore it from the toolkit.
+- **The lessons from the toolkit's own restructure.** Moving `init/` to
+  `machine/` and `repo/` produced the whole failure list this procedure would
+  have to encode: path references living in files a markdown search never
+  reaches, a directory's `.gitattributes` overriding the root's, `git mv` and
+  rename detection, and a bulk rewrite quietly changing line endings.
 
 ## Research
 
