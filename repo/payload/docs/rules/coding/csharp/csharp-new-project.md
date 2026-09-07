@@ -7,6 +7,19 @@ build configuration it inherits are defined in the repository's root
 
 Never guess the namespace prefix. Take it from `AGENTS.md`.
 
+**Ask the choices; do not negotiate the mechanics.** What gets created is the
+user's call — the kind, the name, which component it joins, whether a `src/`
+project gets a matching test project. Ask for anything the request does not
+say, and in a standalone repository do not ask which component, because there
+is only one.
+
+The steps below are not conventions and are not open to preference. Each one
+is the difference between a project that builds and one that does not:
+stripping `Version=` avoids `NU1008` under central package management,
+replacing the template's sample code avoids failing under warnings-as-errors,
+and the `.Tests` suffix is what makes `Tests.props` apply at all. Apply them
+without asking; the build would enforce them anyway.
+
 ## 0. Where it goes
 
 | Repository | Adding | Location | Solution |
@@ -96,6 +109,17 @@ The namespace is derived automatically: a trailing `.Core` is dropped
 (`<Prefix>.Core` → namespace `<Prefix>`).
 
 ## 4. Test project
+
+**Ask whether to create one, defaulting to yes** — except at initialization,
+where it is not optional: the first project's tests are what make the test
+count in the toolkit's `verify.md` mean anything, so a repository initialized
+without them has no evidence its runner works.
+
+A test project can also be created on its own, for a `src/` project that
+already exists. The naming is the whole of it: `Tests.props` is imported on
+`$(MSBuildProjectName.EndsWith('.Tests'))`, so a project named anything else
+gets **no test stack at all** — `[Fact]` does not resolve, and test method
+names trip `CA1707`. Mirror `src/`: `test/<Prefix>.<Name>.Tests/`.
 
     dotnet new xunit -o test/<Prefix>.<Name>.Tests -n <Prefix>.<Name>.Tests
 

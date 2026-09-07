@@ -213,25 +213,10 @@ inside the repository.
 Run from inside the target there is nothing to check: it uses its own files,
 which are consistent with themselves by definition.
 
-Run from a toolkit checkout against a target, check that the two agree first —
-not for safety, but so that a payload delta is not mixed into a layout change
-where neither could be blamed for a breakage. Commit hashes have no ordering,
-so it is an ancestry test:
-
-    git cat-file -e <recorded>                     # resolvable at all?
-    git merge-base --is-ancestor <recorded> HEAD
-    git merge-base --is-ancestor HEAD <recorded>
-
-| Outcome | Do |
-|---|---|
-| equal | convert |
-| the target is an ancestor of `HEAD` | decline; offer a **toolkit upgrade** first, then the conversion |
-| `HEAD` is an ancestor of the target | decline — the toolkit is behind, and converting would be a regression |
-| neither, or the commit does not resolve | decline; say to run the conversion from inside the target, which sidesteps the question |
-
-That last row is why best-effort is the right standard: it always has somewhere
-to go. The commit may legitimately be unresolvable — a repository initialized
-from a branch that was later squash-merged records a hash that no longer exists.
+Run from a toolkit checkout against a target, confirm the two agree first —
+[`version-check.md`](version-check.md) has the test and the four outcomes. Here
+the point is narrow: keep a payload delta out of a layout change, where neither
+could be blamed for a breakage.
 
 ### Ask for the category; derive the folder
 

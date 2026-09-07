@@ -25,6 +25,7 @@ them.
 | Start work on a ticket, name a branch, publish a repository, commit, or open / update / merge a pull request, set merge behaviour (`/source-control`) | [`repo/payload/docs/rules/source-control/source-control.md`](repo/payload/docs/rules/source-control/source-control.md), then the host file it names |
 | Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`repo/payload/docs/rules/coding/code-review.md`](repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
 | Scrub, sweep, or audit a repository for drift or inconsistency (`/scrub`) | [`repo/scrub.md`](repo/scrub.md) here; [`repo/payload/docs/rules/scrub.md`](repo/payload/docs/rules/scrub.md) is the part every target gets |
+| Add a project, a test project, or a whole component to an initialized repo (`/new`) | [`repo/payload/docs/rules/coding/csharp/csharp-new-project.md`](repo/payload/docs/rules/coding/csharp/csharp-new-project.md) — from a toolkit checkout, [`repo/version-check.md`](repo/version-check.md) first |
 | Initialize / scaffold / set up a repo at a path | [`repo/initialize.md`](repo/initialize.md) |
 | Upgrade this toolkit's pinned versions, bring an initialized repo up to the current toolkit, or convert one from standalone to monorepo (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — three operations; the conversion needs no toolkit checkout |
 | Set up StyleCop, or choose relaxed vs strict | [`repo/stylecop.md`](repo/stylecop.md) |
@@ -50,7 +51,8 @@ Three kinds of file, told apart by location:
       initialize.md                repo initialization: inputs, what lands, the five stages
       copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
       scrub.md                     consistency + drift pass for THIS repo; extends the payload checklist
-      upgrade.md                   toolkit pins current; a target up to the current toolkit (ops 1+2)
+      upgrade.md                   toolkit pins, a target up to the toolkit, standalone -> monorepo
+      version-check.md             does a target agree with this toolkit; used by /upgrade and /new
       stylecop.md                  StyleCop relaxed/strict procedure
       baselines/                   pristine `dotnet new` output, NEVER copied to a target
                                    path mirrors payload/; .original suffix keeps them inert
@@ -75,12 +77,12 @@ Three kinds of file, told apart by location:
         coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
         coding/markdown/markdown-review.md
       docs/templates/              AGENTS.template.md, README.template.md - transformed at init, and KEPT
-                                   component-README.md, category-README.md - filled by /project
+                                   component-README.md, category-README.md - filled by /new
                                    kept in both modes: a layout conversion needs them, with no toolkit present
 
     (2) the one thing copied from OUTSIDE payload/
     .claude/skills/                skill shims; live here, copied to a target's .claude/skills/
-      project/SKILL.md             /project - add a component or project
+      new/SKILL.md                 /new     - a project, or a whole component
       review/SKILL.md              /review  - PR, branch, files, or comment triage; post/print/report
       change-tracking/SKILL.md     /change-tracking - create or find a ticket
       source-control/SKILL.md      /source-control - ticket-linked branch, commit, draft PR, merge settings

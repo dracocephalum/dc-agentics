@@ -100,8 +100,8 @@ makes it selectable from a plain-language request.
 {{ADDITIONAL_GUIDELINE_ROWS}}
 
 The documents above are the substance, for every tool. In Claude Code some
-are also invocable through a shim in `.claude/skills/` - `/project <kind>
-<name>`, `/review [PR# | branch | paths | comments PR#]`,
+are also invocable through a shim in `.claude/skills/` -
+`/new [project|component] <name>`, `/review [PR# | branch | paths | comments PR#]`,
 `/change-tracking new|find`, `/scrub [paths...]`, `/upgrade`,
 `/source-control start|commit|pr|setup`, or just ask in plain language - each
 following the same document. `/review` is the rules pass; the built-in
