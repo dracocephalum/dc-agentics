@@ -33,7 +33,7 @@ solution at a monorepo root, and never add a `Directory.Build.props`,
 `Directory.Build.targets`, or `Directory.Packages.props` below the root — see `AGENTS.md` for why.
 
 **Creating a category folder for the first time?** Give it its map:
-copy `docs/templates/category-README.md` to `<category>/README.md`, fill the
+copy `agentics/templates/category-README.md` to `<category>/README.md`, fill the
 placeholders, and remove the example row. Every component added afterwards
 appends a row there (step 7).
 
@@ -180,7 +180,7 @@ afterwards — see *Building and testing* in `AGENTS.md`.
 ## 7. README and the category map
 
 Every component has a `README.md` — the page someone reads before touching it.
-Copy `docs/templates/component-README.md` into the component folder as
+Copy `agentics/templates/component-README.md` into the component folder as
 `README.md`, fill every double-brace placeholder — `COMPONENT_NAME` is the
 kebab-case folder, `KIND` follows from the category, `PROJECT_NAME` is the main
 project minus the prefix — (name, purpose, category,

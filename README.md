@@ -1,23 +1,23 @@
 # dc-agentics
 
-A **golden path** for C# repositories: the opinionated, fully-supported route
-where the easiest way to start a project is also the compliant one. Build
-configuration, coding rules, review and pull-request conventions, secret
+A **golden path** for C# repositories: an opinionated, supported route where
+the easiest way to start a project is also the one that meets the standard.
+Build configuration, coding rules, review and pull-request conventions, secret
 scanning, licence policy, and the machine setup that makes them run — landed
 by one procedure and verified on a real build before they ship.
 
-Golden paths have always belonged to organizations large enough to afford one:
-a platform team, years of accumulated judgment, and the standing cost of
-keeping dozens of composed decisions consistent as each of them moves. The
-composition is the expensive part. Any single decision is a search away; it is
-holding a hundred of them together — written down, current, and agreeing with
-each other — that most teams never get to.
+The hard part of a golden path is not any single decision; each of those is a
+search away. It is the composition: dozens of decisions that have to stay
+written down, current, and consistent with each other as the toolchain
+underneath them moves. That upkeep has usually needed a platform team, which
+is why smaller teams rarely get to keep one.
 
-An agent changes that arithmetic. The decisions still have to be made well,
-once. But composing them, applying them to a new repository, and holding later
-changes to them is work an agent does in minutes and for nothing. A golden
-path stops being the trophy of a large engineering organization and becomes
-something one person can own and anyone can fork.
+This toolkit treats the composition as the product and uses an agent to do
+the upkeep. The decisions are made once, deliberately, and recorded with their
+reasons; applying them to a new repository, checking one for drift, and
+carrying it forward to a newer version of the standard are procedures an agent
+runs. What it produces is a repository that meets the standard on day one and
+has a documented way to stay there.
 
 Today it supports **C# / .NET 10** repositories, standalone or monorepo, on
 **Windows** (other platforms best-effort, see `machine/platforms.md`).
@@ -31,7 +31,7 @@ infer. Recommended: a model of at least 5T parameters. Below about 2.5T the
 gaps are large enough to degrade results markedly.
 
 The line, and the date it was last verified end to end, are recorded under
-`guidelines:` in [`.dc-agentics.yaml`](.dc-agentics.yaml) and carried into
+`guidelines:` in [`.agentics.yaml`](.agentics.yaml) and carried into
 every repository this initializes. It is a record rather than a requirement —
 its purpose is that odd behaviour after a model change has a known-good
 combination to be compared against, the same way `dc-agentics-verified` pins
@@ -61,7 +61,7 @@ Three kinds of file, told apart by where they live:
 
 - **`repo/payload/`** — an exact mirror of a target repository root. Every
   file in it lands verbatim in an initialized repository, including the rules
-  under `docs/rules/`.
+  under `agentics/rules/`.
 - **`machine/`** and **`repo/`** (everything else) — procedures and guides,
   grouped by what they act on: a machine, or a target repository. Read here,
   never copied.

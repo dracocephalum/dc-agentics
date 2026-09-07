@@ -24,7 +24,7 @@ the worse question.
 | Input | Default if unstated |
 |---|---|
 | Repository root path | *required — never guess* |
-| Layout mode | ask — `standalone` or `monorepo`, see [`payload/docs/rules/layout.md`](payload/docs/rules/layout.md) |
+| Layout mode | ask — `standalone` or `monorepo`, see [`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md) |
 | Category of the first component | ask, **monorepo only** — `libraries/`, `services/`, and so on from `layout.md`; standalone has no categories, so it is not a question there |
 | Namespace prefix | ask — e.g. `Contoso`; never invent one |
 | One-line purpose | ask — lands in `AGENTS.md` and `README.md`; never invent one |
@@ -36,14 +36,14 @@ the worse question.
 
 ## What ends up in the repository root
 
-    AGENTS.md                    generated from docs/templates/AGENTS.template.md
+    AGENTS.md                    generated from agentics/templates/AGENTS.template.md
     LICENSE, NOTICE              only if the user chose a licence (settings.md)
-    README.md                    generated from docs/templates/README.template.md; human entry point
-    .dc-agentics.yaml            settings agents read: source-control mode, every init choice, toolkit commit (settings.md)
+    README.md                    generated from agentics/templates/README.template.md; human entry point
+    .agentics.yaml            settings agents read: source-control mode, every init choice, toolkit commit (settings.md)
     TODO.md                      open items; init writes anything unresolved here (settings.md)
     <Prefix>.<Name>.slnx         the solution, named after the first project (build.md)
     src/, test/                  the first project and its tests (build.md)
-    docs/templates/              AGENTS.template.md, README.template.md — the sources of the two above, kept
+    agentics/templates/              AGENTS.template.md, README.template.md — the sources of the two above, kept
                                  component-README.md, category-README.md — used by /new
                                  all four kept in both modes (documents.md)
     .editorconfig                editor conventions (root = true)
@@ -61,7 +61,7 @@ the worse question.
     StyleCop.props               analyzer reference + wiring
     stylecop.ruleset             rule severities
     stylecop.json                StyleCop settings
-    docs/rules/                  exactly as in payload/docs/rules/
+    agentics/rules/                  exactly as in payload/agentics/rules/
       dependencies.md
       layout.md                  standalone + monorepo trees, naming, test projects
       scrub.md                   the recurring consistency + drift checks
@@ -93,9 +93,9 @@ step numbers restart per file.
 | Stage | File | What it does |
 |---|---|---|
 | 1 | [`copy.md`](copy.md) | preconditions, baseline drift check, the copy |
-| 2 | [`build.md`](build.md) | StyleCop and build files against the chosen mode, the two git files, the folder structure ([`payload/docs/rules/layout.md`](payload/docs/rules/layout.md)), the first project and its solution; known failure modes |
+| 2 | [`build.md`](build.md) | StyleCop and build files against the chosen mode, the two git files, the folder structure ([`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md)), the first project and its solution; known failure modes |
 | 3 | [`documents.md`](documents.md) | `AGENTS.md` and `README.md` from the templates, Serena project file, local tools |
-| 4 | [`settings.md`](settings.md) | merge settings and ruleset on the host, licence, `.dc-agentics.yaml` and `TODO.md` |
+| 4 | [`settings.md`](settings.md) | merge settings and ruleset on the host, licence, `.agentics.yaml` and `TODO.md` |
 | 5 | [`verify.md`](verify.md) | security pass, build and analyzer probe, licence and markdown checks, closing summary |
 
 Changing a StyleCop severity later is [`stylecop.md`](stylecop.md), referenced

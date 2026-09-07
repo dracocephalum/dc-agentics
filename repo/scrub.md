@@ -5,23 +5,23 @@ repository dc-agentics initialized, the shipped checklist is the whole
 procedure.
 
 **Start with the shipped checklist**,
-[`payload/docs/rules/scrub.md`](payload/docs/rules/scrub.md), read as though
+[`payload/agentics/rules/scrub.md`](payload/agentics/rules/scrub.md), read as though
 this repository were a target — the toolkit is held to what it ships. Three
 adjustments, because it is not a target:
 
-- **Judge the payload's documents against `payload/docs/templates/AGENTS.template.md`, not
+- **Judge the payload's documents against `payload/agentics/templates/AGENTS.template.md`, not
   against this repository's `AGENTS.md`.** The template is the table a target
   actually gets; this repository's own index lists only what an agent working
   *here* needs, and it correctly omits the C# rules because there is no C# code
   here. Checking payload docs against the wrong index reports four false
   orphans. This repository's `AGENTS.md` links into the payload by the longer
-  `repo/payload/docs/rules/...` path; that path is what its own reverse check
+  `repo/payload/agentics/rules/...` path; that path is what its own reverse check
   must resolve.
 - The settings-truth check has less to do here. This repository's
-  `.dc-agentics.yaml` has no `repository:` block at all — no licence, layout,
+  `.agentics.yaml` has no `repository:` block at all — no licence, layout,
   StyleCop or CPM rows — because it is the toolkit, not a target. What remains
   to check is `change-tracking`, `source-control` and `guidelines`.
-- **`payload/.dc-agentics.yaml` is unfilled on purpose**, so the placeholder
+- **`payload/.agentics.yaml` is unfilled on purpose**, so the placeholder
   check finds eight `{{…}}` tokens in it every time. That file is a template
   in everything but name — its placeholders are filled at initialization. Add
   it to that check's exclusions here; in a target the same file is filled, so
@@ -46,7 +46,7 @@ So sweep every file, not one extension:
 
 Run it after **any** move or rename, and again once the rewrite is done — the
 second run is the one that catches what the first rewrite missed. Also check
-`.dc-agentics.yaml` comments, the payload's `.editorconfig`, `.gitignore`,
+`.agentics.yaml` comments, the payload's `.editorconfig`, `.gitignore`,
 `Directory.Build.props` and `Directory.Packages.props`, and the root
 `.gitignore`: all of them name toolkit paths in prose.
 
@@ -88,17 +88,17 @@ toolkit's own directory structure does not exist. So:
 ## 4. Skill shim fallbacks
 
 Each `.claude/skills/*/SKILL.md` names the document it follows — for the rules
-shims, the target's `docs/rules/...` then the toolkit's
-`repo/payload/docs/rules/...`; for `scrub` and `upgrade`, a toolkit document
+shims, the target's `agentics/rules/...` then the toolkit's
+`repo/payload/agentics/rules/...`; for `scrub` and `upgrade`, a toolkit document
 under `repo/` as well. The shims are copied into targets, so a wrong path
 ships. Also confirm each frontmatter is valid YAML: an `argument-hint` such as
 `[a] [b]` opens a flow sequence and continues past it, the whole block fails to
 parse, and the skill's description degrades to its body's first line — which is
 how `review` shipped for weeks. Quote any value that starts with `[`.
 
-    grep -rn "repo/payload/docs/rules" .claude/skills/*/SKILL.md
+    grep -rn "repo/payload/agentics/rules" .claude/skills/*/SKILL.md
 
-Every path printed must exist here, and its `docs/rules/...` counterpart must be
+Every path printed must exist here, and its `agentics/rules/...` counterpart must be
 the same document.
 
 ## 5. Root and payload parity
@@ -106,7 +106,7 @@ the same document.
 This repository runs on its own payload, through two files that claim to follow
 the shipped shape:
 
-- `.dc-agentics.yaml` — same keys as `payload/.dc-agentics.yaml`, minus the
+- `.agentics.yaml` — same keys as `payload/.agentics.yaml`, minus the
   provenance and repository blocks. A key added to the payload and not
   considered here is a divergence.
 - `.markdownlint.yaml` — one line, extending the payload copy, so the two
@@ -131,7 +131,7 @@ genuinely copied, which is what makes this a straight comparison.
 
 `AGENTS.md` is read every session with no trigger to gate it, and so is each
 shim's **name and description** — the shim body loads only when the skill is
-invoked. Everything under `payload/docs/rules/` is loaded on demand and is not
+invoked. Everything under `payload/agentics/rules/` is loaded on demand and is not
 measured here; depth there is cheap until its trigger fires.
 
     wc -l AGENTS.md .claude/skills/*/SKILL.md | sort -n

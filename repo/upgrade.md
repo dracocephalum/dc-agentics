@@ -39,7 +39,7 @@ diff to inspect, an upgrade requires a clean base so that it can.
 
 **Report before applying.** Every operation produces a plan first — what
 changed, what it would do to each file, and what needs a decision. Applying is
-a second step, and `source-control.mode` in the target's `.dc-agentics.yaml`
+a second step, and `source-control.mode` in the target's `.agentics.yaml`
 governs what may be committed without asking.
 
 ## 1. Bring the toolkit's own pins current
@@ -58,7 +58,7 @@ reviewable.
 
 ### The analyzer and test-stack packages
 
-The procedure is *Keeping the test stack current* in [`payload/docs/rules/layout.md`](payload/docs/rules/layout.md),
+The procedure is *Keeping the test stack current* in [`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md),
 which already covers the part that matters: these packages are not independent,
 and their failures are compile-time ambiguities rather than version errors.
 Move families together, never package by package.
@@ -83,8 +83,8 @@ session can tell a known-good combination from an untested one:
 |---|---|---|
 | `dc-agentics-verified: sdk= date=` | `payload/Directory.Packages.props` | the test stack was moved and verified |
 | `dc-agentics-baseline: sdk= sha256=` | each forked file | that file was re-baselined |
-| `guidelines.model-baseline` | `.dc-agentics.yaml` | the model line these rules target has changed |
-| `guidelines.verified` | `.dc-agentics.yaml` | a full initialization trial completed on that line |
+| `guidelines.model-baseline` | `.agentics.yaml` | the model line these rules target has changed |
+| `guidelines.verified` | `.agentics.yaml` | a full initialization trial completed on that line |
 
 `guidelines.verified` is not a formality. It is the date the documents were
 last shown to produce a conforming repository, and moving it without running
@@ -94,7 +94,7 @@ the trial removes the only evidence anyone has.
 
 ### Find the merge base
 
-The target's `.dc-agentics.yaml` records where it came from:
+The target's `.agentics.yaml` records where it came from:
 
     toolkit:
       commit: "<12-char hash>"
@@ -142,6 +142,23 @@ of the repository's changes **by intent**: the severity it raised, the
 setting it flipped, the version it pinned. Verify each landed. That is what
 preserves the decision without preserving the old file around it.
 
+**Apply renames as moves, before anything else.** When the toolkit renames a
+directory — `docs/` became `agentics/` — every file under it shows as `R100`,
+a pure rename with no content change. That does *not* mean the target sees
+nothing: the directory has to move. `git mv` it in the target first, so the
+history survives as a rename and the completeness check does not then report
+the entire old tree as orphans and the entire new tree as missing. Only after
+the move do the per-file decisions above apply, to whatever also changed.
+
+A rename also leaves the old path in files the upgrade does not own: the
+generated `AGENTS.md` links to every rules document by path, the generated
+`README.md` and any category map name the folder, and the repository's own
+prose may too. None of those are in the diff. After the move, sweep the whole
+target for the old path — every file type, not only markdown — and replace it.
+This is safe to do mechanically, because the old path no longer exists and so
+every occurrence is stale by definition. Measured on a real target: seventeen
+links in `AGENTS.md` alone.
+
 **Handle deletions before the loop.** A path the toolkit deleted appears in
 the diff as `D`, and `git show HEAD:<path>` fails for it. A loop that redirects
 that output into the target creates an *empty file* first — and the orphan
@@ -155,7 +172,7 @@ recorded commit is that it can tell an edit from an untouched file.
 **Two kinds of file the comparison cannot judge**, and reporting them as
 conflicts is noise:
 
-- **`.dc-agentics.yaml` always differs.** Initialization filled its
+- **`.agentics.yaml` always differs.** Initialization filled its
   placeholders, so it is never byte-identical to the payload and never will be.
   Skip the comparison and go straight to its policy below — merge new keys,
   keep every recorded value.
@@ -184,7 +201,7 @@ what it is for, and ask before reintroducing it. Some absences are deliberate
 and should stay — a repository may have removed a rule it does not want.
 
 This is not hypothetical. Standalone initialization used to delete
-`docs/templates/category-README.md`, so every repository initialized that way
+`agentics/templates/category-README.md`, so every repository initialized that way
 is missing a file the payload has always contained, and no diff between two
 toolkit commits will ever mention it.
 
@@ -201,18 +218,18 @@ purpose.
 
 | Path | Policy | Why |
 |---|---|---|
-| `docs/rules/**` | replace when unmodified | the standard is the toolkit's; a target that edited one has forked it, which is a decision to surface |
+| `agentics/rules/**` | replace when unmodified | the standard is the toolkit's; a target that edited one has forked it, which is a decision to surface |
 | `.claude/skills/**` | replace when unmodified | thin shims; the substance lives in the documents |
 | new files | add | a new rules document also needs its row — see below |
 | `.editorconfig`, `.gitignore`, `.gitattributes` | replace only when unmodified, else three-way | they carry baseline markers; a mismatch there is the drift procedure's business, not this one's |
 | `Directory.*.props`, `Tests.props`, `nuget.config`, `stylecop.*`, `allowed-licenses.json`, `.config/dotnet-tools.json` | three-way | routinely customized per repository |
-| `.dc-agentics.yaml` | merge keys, keep values, drop the dead | new settings arrive with their defaults; every recorded choice is the target's and survives; **a key the payload no longer defines is removed**, and the report names it — nothing reads it, and nothing would ever notice it otherwise |
+| `.agentics.yaml` | merge keys, keep values, drop the dead | new settings arrive with their defaults; every recorded choice is the target's and survives; **a key the payload no longer defines is removed**, and the report names it — nothing reads it, and nothing would ever notice it otherwise |
 | `AGENTS.md`, `README.md`, `TODO.md` | by hand | generated from templates and then filled; there is no mechanical mapping back |
 
 ### Templates changed, so their output must change too
 
-The templates in `docs/templates/` are replaced like any other file under
-`docs/` — but their *output* is not. `AGENTS.md` and `README.md` were generated
+The templates in `agentics/templates/` are replaced like any other file under
+`agentics/` — but their *output* is not. `AGENTS.md` and `README.md` were generated
 from them at initialization, with placeholders filled and a layout variant
 deleted, so no mechanical mapping runs backwards. A change to a template is
 therefore two things: a file to replace, and an instruction to carry out. Read
@@ -238,9 +255,9 @@ Not optional, and mostly already written:
     dotnet build <solution> --nologo -v:q
     dotnet test  <solution> --nologo
 
-Then the scrub, [`payload/docs/rules/scrub.md`](payload/docs/rules/scrub.md),
+Then the scrub, [`payload/agentics/rules/scrub.md`](payload/agentics/rules/scrub.md),
 which is exactly the post-upgrade check: links that no longer resolve, a
-document with no row, a `.dc-agentics.yaml` that no longer matches the
+document with no row, a `.agentics.yaml` that no longer matches the
 repository, a placeholder in a file that arrived mid-transform.
 
 ## 3. Convert a target from standalone to monorepo
@@ -292,7 +309,7 @@ mistake available here:
     Tests.props   StyleCop.props   stylecop.ruleset   stylecop.json
     BannedSymbols.txt   nuget.config   .editorconfig
     allowed-licenses.json   license-overrides.json   .config/
-    AGENTS.md   TODO.md   LICENSE   NOTICE   docs/   .github/   .claude/
+    AGENTS.md   TODO.md   LICENSE   NOTICE   agentics/   docs/   .github/   .claude/
 
 `layout.md` explains why: all three `Directory.*` files resolve by searching
 upward and stop at the first hit, so a copy inside the component silently cuts
@@ -307,9 +324,9 @@ has to produce all of them from that one file:
 
 | Layer | Comes from | Holds |
 |---|---|---|
-| `<category>/<component>/README.md` | the existing root README's content, into `docs/templates/component-README.md` | what it is, how to run it, configuration |
-| `<category>/README.md` | `docs/templates/category-README.md` | one row per component, this one added |
-| root `README.md` | the monorepo variant of `docs/templates/README.template.md` | the map of categories |
+| `<category>/<component>/README.md` | the existing root README's content, into `agentics/templates/component-README.md` | what it is, how to run it, configuration |
+| `<category>/README.md` | `agentics/templates/category-README.md` | one row per component, this one added |
+| root `README.md` | the monorepo variant of `agentics/templates/README.template.md` | the map of categories |
 
 **Move the content down before regenerating the root.** Regenerating first
 destroys the only copy of the component's own description, and nothing later
@@ -318,7 +335,7 @@ notices, because the result looks like a perfectly good monorepo README.
 Three fills are not obvious:
 
 - **The category description** in `category-README.md` — take the wording from
-  that category's row in [`payload/docs/rules/layout.md`](payload/docs/rules/layout.md),
+  that category's row in [`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md),
   so the two agree rather than being written twice.
 - **The component's *Kind*** — it follows from the category, not from anything
   recorded: `libraries/` is a library, `services/` a service, and so on.
@@ -334,8 +351,8 @@ false statement about the repository.
 ### Swap the layout variant in AGENTS.md
 
 `AGENTS.md` was generated with the standalone variant kept and the monorepo one
-deleted. Take the monorepo variant from `docs/templates/AGENTS.template.md`,
-fill its placeholders from `.dc-agentics.yaml`, and replace the standalone
+deleted. Take the monorepo variant from `agentics/templates/AGENTS.template.md`,
+fill its placeholders from `.agentics.yaml`, and replace the standalone
 table with it — trimming the folder rows to categories that now exist.
 
 Also revert `<solution>` under *Building and testing* to the generic form.
@@ -345,7 +362,7 @@ the layout.
 
 ### Finish the conversion
 
-1. `.dc-agentics.yaml`: `layout: standalone` becomes `monorepo`.
+1. `.agentics.yaml`: `layout: standalone` becomes `monorepo`.
 2. Anything that needed a decision and did not get one goes in `TODO.md`.
 3. Report the derived component name, the chosen category, and the new build
    commands — they have changed, and every README that quoted the old ones has
@@ -364,7 +381,7 @@ That is the expected consequence of having no root solution, not a
 misconfiguration. Assert it rather than discovering it later and treating it as
 a bug.
 
-Then the scrub, [`payload/docs/rules/scrub.md`](payload/docs/rules/scrub.md).
+Then the scrub, [`payload/agentics/rules/scrub.md`](payload/agentics/rules/scrub.md).
 Its link check earns its place here more than anywhere else: every relative
 link that crossed the boundary between root and component has just changed
 depth.
@@ -403,7 +420,7 @@ the root failing `MSB1003` as intended.
 | A settings key nothing reads, in every target | the payload dropped it and "keep values" was read as "keep keys" |
 | A new rules document is never read | copied in without adding its row to the target's `AGENTS.md` |
 | `NU1008`, or a restore that cannot resolve | package versions moved without `Directory.Packages.props` moving with them |
-| The build breaks on rules nobody changed | a `docs/rules/**` replacement where the target had forked the document |
+| The build breaks on rules nobody changed | a `agentics/rules/**` replacement where the target had forked the document |
 | Versions written but never proven | bumped in the toolkit, which has no project to build |
 | A component silently loses StyleCop, CPM and warnings-as-errors | a `Directory.*` file was moved into the component instead of left at the root |
 | The component's own description vanished | the root README was regenerated before its content was moved down |

@@ -12,8 +12,8 @@ are not chained - run the built-in separately if a bug pass is wanted.
 
 ## Find the standard
 
-1. `docs/rules/coding/code-review.md` - an initialized repository
-2. `repo/payload/docs/rules/coding/code-review.md` - the dc-agentics toolkit
+1. `agentics/rules/coding/code-review.md` - an initialized repository
+2. `repo/payload/agentics/rules/coding/code-review.md` - the dc-agentics toolkit
 
 Read the first that exists, then the language checklists and the rules
 documents it names, then the repository's `AGENTS.md`. Never review from
@@ -37,5 +37,5 @@ Follow the standard's *Broaden the analysis range*, *Modes*, and *For an
 agent* sections as written: what leaves the session is shown in full and
 confirmed first, the verdict is a recommendation, and in comment triage the
 summary of verdicts is the confirmation step. The GitHub commands are in
-`docs/rules/source-control/github.md` - in the toolkit,
-`repo/payload/docs/rules/source-control/github.md`.
+`agentics/rules/source-control/github.md` - in the toolkit,
+`repo/payload/agentics/rules/source-control/github.md`.

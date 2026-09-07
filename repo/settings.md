@@ -9,7 +9,7 @@ records every choice made so far. Fill the settings file last.
 If a GitHub remote exists (or once it does), apply the merge behaviour the
 pull-request rules assume — squash only, delete the branch on merge — and,
 after the first push, the default-branch ruleset. The three commands are in
-[`payload/docs/rules/source-control/github.md`](payload/docs/rules/source-control/github.md),
+[`payload/agentics/rules/source-control/github.md`](payload/agentics/rules/source-control/github.md),
 *Repository settings*; `/source-control setup` runs them.
 
 The ruleset is refused on a private repository under GitHub Free; that is the
@@ -18,7 +18,7 @@ it goes under *Decisions pending* in the target's `TODO.md` with the three
 options and the command to run once one is taken.
 
 Details and the verification query are in
-[`payload/docs/rules/source-control/github.md`](payload/docs/rules/source-control/github.md).
+[`payload/agentics/rules/source-control/github.md`](payload/agentics/rules/source-control/github.md).
 If there is no remote yet, skip, say so, and add an *Initialization* entry to
 `TODO.md` naming the three commands; `/source-control setup` runs them later.
 
@@ -27,7 +27,7 @@ If there is no remote yet, skip, say so, and add an *Initialization* entry to
 A repository with no `LICENSE` file is all rights reserved, which is the
 normal state of a private company repository; a repository meant to be shared
 gets one. Unless the request names a licence, apply `none`: record it in
-`.dc-agentics.yaml`, add *Choose a licence* under *Decisions pending* in the
+`.agentics.yaml`, add *Choose a licence* under *Decisions pending* in the
 target's `TODO.md` with the two options below, and flag it in the closing
 summary. When the user has chosen, two things are needed:
 
@@ -56,7 +56,7 @@ an edited Apache text shows as *Other*.
 
 ## 3. Settings file and TODO
 
-`.dc-agentics.yaml` and `TODO.md` arrive with the payload copy. The settings
+`.agentics.yaml` and `TODO.md` arrive with the payload copy. The settings
 file is what agents read before any source-control action and what a future
 update of the repository diffs from; every choice made above is recorded in
 it, so fill it last, when the choices are final.
@@ -68,7 +68,7 @@ commit so a later upgrade diffs the right root; and the `guidelines:` block,
 which records the model line the shipped rules were written and verified
 against.
 
-Fill every quoted double-brace placeholder in `.dc-agentics.yaml` — `LAYOUT`
+Fill every quoted double-brace placeholder in `.agentics.yaml` — `LAYOUT`
 and `PREFIX` are the answers already given for the layout mode and the
 namespace prefix, and the rest are named below; the
 unquoted values are defaults, already correct unless a step above changed
@@ -86,7 +86,7 @@ a file people read.
 
 `source-control.mode` is `local` unless the user asked for another; the
 three modes are defined in
-[`source-control.md`](payload/docs/rules/source-control/source-control.md),
+[`source-control.md`](payload/agentics/rules/source-control/source-control.md),
 *For an agent*.
 
 `change-tracking.tracker` is the answer to the one yes-or-no question:
@@ -95,7 +95,7 @@ three modes are defined in
 ticket). A Projects board is a view over issues, kept in step by GitHub
 itself, and is not recorded. The initialization itself has no ticket: the
 tracker exists only once the repository does, and
-[`change-tracking.md`](payload/docs/rules/change-tracking/change-tracking.md)
+[`change-tracking.md`](payload/agentics/rules/change-tracking/change-tracking.md)
 states that as the one exception.
 
 Then `TODO.md`: by now the earlier stages have added their entries — a skipped
@@ -107,4 +107,4 @@ where every later agent puts what it leaves open.
 
 Verify:
 
-    grep -n "{{" <repo>/.dc-agentics.yaml                 # must return nothing
+    grep -n "{{" <repo>/.agentics.yaml                 # must return nothing

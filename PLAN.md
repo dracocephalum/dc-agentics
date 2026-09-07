@@ -221,7 +221,7 @@ proposition**, and the reasons to be careful are specific:
 If it is ever attempted, the toolkit's own documents under `machine/` and
 `repo/` are the place to try it, not the payload: they are read by whatever
 agent the user runs today, and a mistake stays here rather than shipping. It
-would want a stated model baseline in `.dc-agentics.yaml`, a record of what was
+would want a stated model baseline in `.agentics.yaml`, a record of what was
 removed and why, and some way to re-test the claim when the baseline moves —
 which is most of an evaluation harness, and worth building only if the context
 saving turns out to be large.
@@ -273,7 +273,7 @@ templates plus a `constitution.md` — non-negotiable project principles,
 referenced by every later phase.
 
 Architecturally the closest thing found. That constitution is very nearly our
-`docs/rules/` and `.dc-agentics.yaml` pairing. The interesting difference is
+`agentics/rules/` and `.agentics.yaml` pairing. The interesting difference is
 direction: **spec-kit generates N tool-specific files from one source; we ship
 one tool-neutral document plus one thin shim.** Theirs scales to more agent
 tools, ours keeps the authority unambiguous. Worth re-reading before deciding

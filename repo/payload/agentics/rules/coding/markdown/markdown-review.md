@@ -2,7 +2,7 @@
 
 Applies after the general pass in [`../code-review.md`](../code-review.md),
 to documentation
-and to agent-facing files — `AGENTS.md`, anything under `docs/rules/`,
+and to agent-facing files — `AGENTS.md`, anything under `agentics/rules/`,
 skill shims. Two layers: mechanics, then content.
 
 ## Mechanics — run the linter, do not eyeball
@@ -68,7 +68,7 @@ written is an `issue`.
 Link check: the script is check 2 in [`../../scrub.md`](../../scrub.md), and
 lives there only. It filters code blocks and inline code first, because a
 document that describes a link check contains link-shaped text that is not a
-link, and it names the one legitimate exception — `docs/templates/`, whose
+link, and it names the one legitimate exception — `agentics/templates/`, whose
 links are relative to the repository root where their output lands.
 
 ## Labels

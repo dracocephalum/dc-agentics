@@ -121,7 +121,7 @@ The GitHub commands each mode uses are in
 
 ## For an agent
 
-- Read this repository's `AGENTS.md` and the rules under `docs/rules/` before
+- Read this repository's `AGENTS.md` and the rules under `agentics/rules/` before
   judging — the standard is *this* repository's rules, not general taste.
 - Verify, do not assume: run the build and tests when the change is checked
   out; state which claims were checked and which were not.

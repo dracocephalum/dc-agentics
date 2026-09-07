@@ -14,7 +14,7 @@ a precondition rather than a barrier: every failing case has the same way out.
 ## The test
 
 Commit hashes have no ordering, so comparing them is an ancestry question, not
-a comparison. `toolkit.commit` in the target's `.dc-agentics.yaml` is the value
+a comparison. `toolkit.commit` in the target's `.agentics.yaml` is the value
 under test:
 
     git cat-file -e <recorded>                     # resolvable at all?

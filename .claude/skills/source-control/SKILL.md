@@ -10,7 +10,7 @@ host today; for anything else, say so and stop.
 
 ## Find the rules
 
-First `.dc-agentics.yaml` at the repository root: its `source-control.mode`
+First `.agentics.yaml` at the repository root: its `source-control.mode`
 (`auto` | `local` | `manual`; absent = `manual`) decides which of the steps
 below run without asking and which stop for a yes - the table is in the
 source-control rules, *For an agent*. Then read each rule in the first
@@ -19,8 +19,8 @@ work from memory.
 
 | Rule | Initialized repository | dc-agentics toolkit |
 |---|---|---|
-| source control - branches, commits, size, opening, review, merge, agent guardrails; names the host file | `docs/rules/source-control/source-control.md` | `repo/payload/docs/rules/source-control/source-control.md` |
-| change tracking - the ticket that must exist first; names the tracker file | `docs/rules/change-tracking/change-tracking.md` | `repo/payload/docs/rules/change-tracking/change-tracking.md` |
+| source control - branches, commits, size, opening, review, merge, agent guardrails; names the host file | `agentics/rules/source-control/source-control.md` | `repo/payload/agentics/rules/source-control/source-control.md` |
+| change tracking - the ticket that must exist first; names the tracker file | `agentics/rules/change-tracking/change-tracking.md` | `repo/payload/agentics/rules/change-tracking/change-tracking.md` |
 
 ## Actions from `$ARGUMENTS`
 

@@ -12,9 +12,9 @@ enough to run without deciding to.
 
 ## Find the standard
 
-1. `docs/rules/scrub.md` - an initialized repository
+1. `agentics/rules/scrub.md` - an initialized repository
 2. `repo/scrub.md` - the dc-agentics toolkit, which adds its own checks on top
-   of `repo/payload/docs/rules/scrub.md`
+   of `repo/payload/agentics/rules/scrub.md`
 
 Read the first that exists and follow it as written. Never scrub from memory:
 the checks exist because each one caught something that review did not.
@@ -22,7 +22,7 @@ the checks exist because each one caught something that review did not.
 ## Scope
 
 The whole repository, always. Most checks are repository-wide by nature - the
-`AGENTS.md` index, `.dc-agentics.yaml` truthfulness, `TODO.md`, baseline drift,
+`AGENTS.md` index, `.agentics.yaml` truthfulness, `TODO.md`, baseline drift,
 duplication - and a narrowed pass reported as clean is worse than no pass. If
 `$ARGUMENTS` names paths, run everything and lead the report with those.
 

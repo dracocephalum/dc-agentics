@@ -52,13 +52,13 @@ contains link-shaped text that is not a link — this file does, and without the
 filter it reports itself. Any repository whose documentation quotes a path in
 backticks hits the same thing.
 
-Template files are the other exception: `docs/templates/*` and any
+Template files are the other exception: `agentics/templates/*` and any
 `*.template.md` link into the repository they are copied into, not the place
 they sit. Note them and move on.
 
 ### 3. No unfilled placeholders
 
-    for f in $(git ls-files '*.md' '*.yaml' | grep -v 'docs/templates/\|\.template\.md'); do
+    for f in $(git ls-files '*.md' '*.yaml' | grep -v 'agentics/templates/\|\.template\.md'); do
       sed -e 's/^    .*$//' -e 's/`[^`]*`//g' "$f" | grep -n "{{" | sed "s|^|$f:|"
     done
 
@@ -100,7 +100,7 @@ Windows path. A bracket expression has no escaping to get wrong.
 Findings here are reported, never quietly deleted: a real credential in history
 needs rotating, not removing.
 
-### 6. `.dc-agentics.yaml` still tells the truth
+### 6. `.agentics.yaml` still tells the truth
 
 It records what was chosen at initialization. A repository drifts away from it
 silently, because nothing enforces it:
@@ -114,12 +114,12 @@ silently, because nothing enforces it:
 
 ### 7. `AGENTS.md` index is complete in both directions
 
-Every document under `docs/rules/` is **reachable** from the table, and every
+Every document under `agentics/rules/` is **reachable** from the table, and every
 row's link resolves. A document nobody can arrive at will not be read, and a row
 pointing at nothing teaches an agent to distrust the table.
 
-    find docs/rules -name '*.md' | sort
-    grep -oE '\(docs/rules/[^)]*\.md\)' AGENTS.md | tr -d '()' | sort -u
+    find agentics/rules -name '*.md' | sort
+    grep -oE '\(agentics/rules/[^)]*\.md\)' AGENTS.md | tr -d '()' | sort -u
 
 **Reachable, not listed.** Several documents are deliberately reached through
 another — the C# and markdown checklists via `coding/code-review.md`, each host
