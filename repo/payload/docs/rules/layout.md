@@ -2,9 +2,17 @@
 
 Two modes. Ask which one; do not infer it from the path name.
 
-The unit of organization is the **component**: one solution, one deliverable,
-one `src/` and `test/` pair. A component may hold as many projects as it needs —
-what makes it one component is that they ship together.
+The unit of organization is the **component**: one solution, one `src/` and
+`test/` pair. A component may hold as many projects as it needs, and may produce
+**more than one deliverable** — an internal and an external API built from the
+same solution, each with its own pipeline and its own release cadence.
+
+What makes it one component is that its projects **build and version together**,
+not that they deploy together. The solution boundary is a build decision; when
+each artifact ships is a pipeline decision, and the two are allowed to differ.
+Split into two components when the code genuinely diverges — separate
+dependencies, separate lifecycles, a change to one that cannot break the
+other — not merely because there are two things to deploy.
 
 | Mode | Components | Shape |
 |---|---|---|
@@ -12,7 +20,8 @@ what makes it one component is that they ship together.
 | **monorepo** | many | each lives under a category folder at the root |
 
 So standalone is not "a small repo" — it is a **single-component** repo. Several
-projects combined into one deliverable is still standalone.
+projects built from one solution are still standalone, and so are several
+deliverables produced from it.
 
 ## Naming rules
 
@@ -33,6 +42,12 @@ name is what appears in every build command, in the IDE title bar, and in the
 component README, so it takes the main project's name rather than the folder's.
 Where a component holds several projects, the main one is the deliverable the
 others support.
+
+**When there is no single main deliverable** — two peer APIs, say, an internal
+and an external face of the same service — name the solution after the project
+they share, which is usually the core library, or after the namespace root they
+all sit under: `Contoso.Ordering.slnx` over `Contoso.Ordering.Api.Internal` and
+`Contoso.Ordering.Api.External`. Still never the folder name.
 
 ### The `.Core` exception
 
@@ -98,7 +113,7 @@ noise, and a folder that exists implies a decision that has not been made:
 | `jobs/` | scheduled executables (Kubernetes CronJobs and similar) |
 | `tools/` | never shipped to production |
 | `infrastructure/` | Terraform and similar provisioning |
-| `ui/` | front-end applications |
+| `ui/` | front-end applications that are **deployed** — a shared component library is a package and belongs in `libraries/` |
 | `docs/` | documentation |
 | `build/` | CI/CD pipeline definitions |
 
@@ -185,6 +200,18 @@ the .NET repositories use.
 
 **`.slnx`, not `.sln`.** The SDK 10 default, XML, and reviewable in a diff —
 unlike the legacy format's GUID soup.
+
+**`ui/`, not `apps/`.** The categories are cut by *kind of deliverable*, and
+`ui/` names that axis for a front-end the way `jobs/` does for a scheduled
+executable. `apps/` would overlap: a web API in `services/` is also an app.
+
+This does cut against the dominant monorepo convention, which is worth knowing
+rather than discovering. Nx uses `apps/` and `libs/`; Turborepo uses `apps/`
+and `packages/`, and in its own starter `packages/ui` is a **shared component
+library** consumed by the apps, not an application. Anyone arriving from that
+world will read `ui/` as the design system. The row above says which it is —
+deployed front-ends here, component libraries in `libraries/` — because the
+name alone cannot carry that.
 
 ## Test projects
 
