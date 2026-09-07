@@ -17,7 +17,7 @@
 
   Every link below is relative to the REPOSITORY ROOT, where the output lands -
   so they do not resolve from this directory. That is correct; do not "fix"
-  them to climb out of docs/templates/.
+  them to climb out of agentics/templates/.
 -->
 
 # {{REPO_NAME}}
@@ -34,8 +34,7 @@ Primary framework: .NET. Namespace prefix: `{{PREFIX}}`.
 |---|---|
 | `src/` | production code |
 | `test/` | test projects, one per project under test |
-| `docs/` | documentation |
-| `docs/rules/` | the rules this repository is held to; see *Agent guidelines* below |
+| `agentics/` | what agents follow — `rules/` this repository is held to, see *Agent guidelines* below, and `templates/` |
 | `{{SOLUTION_NAME}}.slnx` | the solution — this repository is a single component |
 
 <!-- ==== MONOREPO variant - delete if this is standalone ==== -->
@@ -55,8 +54,7 @@ exist.
 | `tools/` | internal tooling, never shipped to production |
 | `infrastructure/` | provisioning (Terraform and similar) |
 | `ui/` | front-end applications |
-| `docs/` | documentation |
-| `docs/rules/` | the rules this repository is held to; see *Agent guidelines* below |
+| `agentics/` | what agents follow — `rules/` this repository is held to, see *Agent guidelines* below, and `templates/` |
 | `build/` | CI/CD pipeline definitions |
 
 <!-- ==== end variants ==== -->
@@ -71,7 +69,7 @@ is not clean); it never fails the build.
 Never add a `Directory.Build.props`, `Directory.Build.targets`, or
 `Directory.Packages.props` inside a subfolder — a nested copy silently severs
 that subtree from everything above, with a green build and no warning.
-[`docs/rules/layout.md`](docs/rules/layout.md), *Config lives at the root only*.
+[`agentics/rules/layout.md`](agentics/rules/layout.md), *Config lives at the root only*.
 
 ## Agent guidelines
 
@@ -81,19 +79,19 @@ makes it selectable from a plain-language request.
 
 | When you are | Read |
 |---|---|
-| Writing, reviewing or refactoring C# in this repository | [`docs/rules/coding/csharp/csharp-coding-rules.md`](docs/rules/coding/csharp/csharp-coding-rules.md) |
-| Touching an entity, a `DbContext`, or a migration | [`docs/rules/coding/csharp/csharp-ef-core-rules.md`](docs/rules/coding/csharp/csharp-ef-core-rules.md) |
-| Adding a project, component, or test project | [`docs/rules/coding/csharp/csharp-new-project.md`](docs/rules/coding/csharp/csharp-new-project.md) |
-| Asking where something goes, how it should be named, or what the other layout looks like | [`docs/rules/layout.md`](docs/rules/layout.md) — both modes, so this repository can describe a shape it does not currently have |
-| Checking a change for secrets, personal data, or local paths — or anything before a first push | [`docs/rules/security-reminders.md`](docs/rules/security-reminders.md) |
-| Adding, upgrading, or replacing a package (any ecosystem) | [`docs/rules/dependencies.md`](docs/rules/dependencies.md) |
-| Creating or finding a ticket, or asking which ticket a change is for | [`docs/rules/change-tracking/change-tracking.md`](docs/rules/change-tracking/change-tracking.md), then the tracker file it names |
-| Starting work on a ticket, naming a branch, publishing the repository, committing, or opening / updating / merging a pull request | [`docs/rules/source-control/source-control.md`](docs/rules/source-control/source-control.md), then the host file it names |
-| Reviewing a pull request, a diff, or a set of changes | [`docs/rules/coding/code-review.md`](docs/rules/coding/code-review.md) — then the C# or markdown checklist it names |
-| Scrubbing, sweeping or auditing this repository for drift or inconsistency — or after any move, rename or restructure | [`docs/rules/scrub.md`](docs/rules/scrub.md) |
-| Bringing this repository up to a newer version of the toolkit it was initialized with | the toolkit's own `repo/upgrade.md` — it diffs two commits of dc-agentics, so a checkout of it must be present; `.dc-agentics.yaml` records which commit this repository came from |
+| Writing, reviewing or refactoring C# in this repository | [`agentics/rules/coding/csharp/csharp-coding-rules.md`](agentics/rules/coding/csharp/csharp-coding-rules.md) |
+| Touching an entity, a `DbContext`, or a migration | [`agentics/rules/coding/csharp/csharp-ef-core-rules.md`](agentics/rules/coding/csharp/csharp-ef-core-rules.md) |
+| Adding a project, component, or test project | [`agentics/rules/coding/csharp/csharp-new-project.md`](agentics/rules/coding/csharp/csharp-new-project.md) |
+| Asking where something goes, how it should be named, or what the other layout looks like | [`agentics/rules/layout.md`](agentics/rules/layout.md) — both modes, so this repository can describe a shape it does not currently have |
+| Checking a change for secrets, personal data, or local paths — or anything before a first push | [`agentics/rules/security-reminders.md`](agentics/rules/security-reminders.md) |
+| Adding, upgrading, or replacing a package (any ecosystem) | [`agentics/rules/dependencies.md`](agentics/rules/dependencies.md) |
+| Creating or finding a ticket, or asking which ticket a change is for | [`agentics/rules/change-tracking/change-tracking.md`](agentics/rules/change-tracking/change-tracking.md), then the tracker file it names |
+| Starting work on a ticket, naming a branch, publishing the repository, committing, or opening / updating / merging a pull request | [`agentics/rules/source-control/source-control.md`](agentics/rules/source-control/source-control.md), then the host file it names |
+| Reviewing a pull request, a diff, or a set of changes | [`agentics/rules/coding/code-review.md`](agentics/rules/coding/code-review.md) — then the C# or markdown checklist it names |
+| Scrubbing, sweeping or auditing this repository for drift or inconsistency — or after any move, rename or restructure | [`agentics/rules/scrub.md`](agentics/rules/scrub.md) |
+| Bringing this repository up to a newer version of the toolkit it was initialized with | the toolkit's own `repo/upgrade.md` — it diffs two commits of dc-agentics, so a checkout of it must be present; `.agentics.yaml` records which commit this repository came from |
 | Finding what exists — which component does what, where something lives | `README.md` here; in a monorepo, each category's `README.md` is the map of its components, and each component's `README.md` says how to run it |
-| Starting any source-control action, or asked what this repository's settings and defaults are | [`.dc-agentics.yaml`](.dc-agentics.yaml) — the mode the agent works in (`auto`, `local`, `manual`) and every choice made at initialization |
+| Starting any source-control action, or asked what this repository's settings and defaults are | [`.agentics.yaml`](.agentics.yaml) — the mode the agent works in (`auto`, `local`, `manual`) and every choice made at initialization |
 | Leaving something unfinished, blocked, or undecided — or asked what is still open | [`TODO.md`](TODO.md) — add it there; a remark in a conversation is lost |
 
 {{ADDITIONAL_GUIDELINE_ROWS}}
@@ -108,7 +106,7 @@ following the same document. `/review` is the rules pass; the built-in
 `/scrub` is neither: it looks for drift and inconsistency, and reports rather
 than fixing.
 
-Add a row whenever a rules document is added under `docs/rules/`. A document
+Add a row whenever a rules document is added under `agentics/rules/`. A document
 nobody is pointed at will not be read.
 
 ## Conventions
@@ -121,7 +119,7 @@ nobody is pointed at will not be read.
 
 A trailing `.Core` names the assembly, not the namespace — `{{PREFIX}}.Core` has
 namespace `{{PREFIX}}` — applied by `Directory.Build.props`; the full rule and
-its edge cases are in [`docs/rules/layout.md`](docs/rules/layout.md).
+its edge cases are in [`agentics/rules/layout.md`](agentics/rules/layout.md).
 
 ## Serena — use it when connected, fall back when not
 
@@ -158,7 +156,7 @@ at `Info` never surface at build time and appear only in the editor.
 
 A `*.Tests` project inherits the whole test stack from `Tests.props`, so its
 `.csproj` holds only `TargetFramework` and a `ProjectReference` —
-[`docs/rules/coding/csharp/csharp-unit-tests-rules.md`](docs/rules/coding/csharp/csharp-unit-tests-rules.md).
+[`agentics/rules/coding/csharp/csharp-unit-tests-rules.md`](agentics/rules/coding/csharp/csharp-unit-tests-rules.md).
 
 Do not report work as complete until `dotnet build` and `dotnet test` both pass,
 with the test count you expect: zero tests and a green exit is a misconfigured

@@ -1,5 +1,5 @@
 <!--
-  TEMPLATE - ships with the repository under docs/templates/. Copied and filled
+  TEMPLATE - ships with the repository under agentics/templates/. Copied and filled
   when a component is created; the placeholders here are intentional.
   this is the page someone reads before touching the component.
 -->

@@ -12,20 +12,20 @@ toolkit:
 
 repository:
   framework: dotnet                   # the only value supported today
-  layout: "{{LAYOUT}}"                # standalone | monorepo - AGENTS.md describes the chosen one; docs/rules/layout.md describes both
+  layout: "{{LAYOUT}}"                # standalone | monorepo - AGENTS.md describes the chosen one; agentics/rules/layout.md describes both
   namespace: "{{PREFIX}}"             # PascalCase prefix of every assembly and namespace
   central-package-management: true    # Directory.Packages.props holds every package version
-  host: github                        # where the remote lives - docs/rules/source-control/<host>.md
+  host: github                        # where the remote lives - agentics/rules/source-control/<host>.md
   licence: "{{LICENCE}}"              # none | Apache-2.0 | MIT | <SPDX id>; matches the LICENSE file
   copyright-holder: "{{COPYRIGHT_HOLDER}}"   # the legal owner named in LICENSE or NOTICE; empty when licence is none
 
 change-tracking:
-  # docs/rules/change-tracking/change-tracking.md - including the one exception, initialization,
+  # agentics/rules/change-tracking/change-tracking.md - including the one exception, initialization,
   # and why a Projects board is not recorded here.
   tracker: github-issues              # github-issues | none - none means branch names and PR titles carry no ticket
 
 source-control:
-  # What the agent may do without asking - docs/rules/source-control/source-control.md, "For an agent".
+  # What the agent may do without asking - agentics/rules/source-control/source-control.md, "For an agent".
   #   auto    ticket, branch, commit, push, and draft pull request without asking; each is reported after
   #   local   edits and local commits without asking; stops and asks before anything reaches the host
   #           (creating the ticket, pushing, opening the pull request)

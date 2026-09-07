@@ -38,7 +38,7 @@ the one-command undo is that a clean start makes possible.
 
 Produce the plan first: what changed between the two commits, what it would do
 to each file, and what needs a decision. Apply as a second step, and let
-`source-control.mode` in the target's `.dc-agentics.yaml` decide what may be
+`source-control.mode` in the target's `.agentics.yaml` decide what may be
 committed without asking.
 
 Operations 2 and 3 finish with `dotnet build`, `dotnet test`, and `/scrub` -

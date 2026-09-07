@@ -62,7 +62,7 @@ Before opening:
 
 1. `dotnet build` and `dotnet test` green — the reviewer should never be the
    one to discover a red build.
-2. The licence check passes (`docs/rules/dependencies.md`) if any package
+2. The licence check passes (`agentics/rules/dependencies.md`) if any package
    changed.
 3. Read your own diff top to bottom as a reviewer would. Remove debug code,
    stray files, unrelated formatting.
@@ -147,7 +147,7 @@ switch. These checks cost nothing and catch the failure that follows:
 ## For an agent
 
 What the agent may do without asking is `source-control.mode` in the
-repository's `.dc-agentics.yaml`, read before the first action of any
+repository's `.agentics.yaml`, read before the first action of any
 source-control task. Absent, or a value not listed, means `manual`. The user
 can override it in conversation ("auto for this one"); that holds for the
 session and is never written back.

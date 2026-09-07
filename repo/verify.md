@@ -6,8 +6,8 @@ and the last message is the summary of every value the repository carries.
 
 ## 1. Security pass
 
-Walk [`security-reminders.md`](payload/docs/rules/security-reminders.md). It
-ships with the repository as `docs/rules/security-reminders.md`, so the review
+Walk [`security-reminders.md`](payload/agentics/rules/security-reminders.md). It
+ships with the repository as `agentics/rules/security-reminders.md`, so the review
 process holds later changes to the same standard. At minimum, before
 any first push, check the commit identity:
 
@@ -68,19 +68,19 @@ Finally, the licence check over the whole transitive graph:
 
 Exit code 0 is the pass. A non-zero exit lists the offending packages; a `Url`
 in the licence column means an old package with no SPDX metadata — resolve it
-per [`payload/docs/rules/dependencies.md`](payload/docs/rules/dependencies.md), never by widening
+per [`payload/agentics/rules/dependencies.md`](payload/agentics/rules/dependencies.md), never by widening
 the allow-list.
 
 Last, lint the markdown the procedure has just written. The command and the
 checklist are in
-[`payload/docs/rules/coding/markdown/markdown-review.md`](payload/docs/rules/coding/markdown/markdown-review.md);
+[`payload/agentics/rules/coding/markdown/markdown-review.md`](payload/agentics/rules/coding/markdown/markdown-review.md);
 read its `Summary:` line rather than the exit code. `AGENTS.md` and `README.md`
 are the freshly written prose, so a long line or a mangled table will be there —
 the shipped rules documents already lint clean.
 
 **The recurring form of these checks is
-[`payload/docs/rules/scrub.md`](payload/docs/rules/scrub.md)**, which lands in
-the target as `docs/rules/scrub.md` and backs `/scrub`. This stage runs them
+[`payload/agentics/rules/scrub.md`](payload/agentics/rules/scrub.md)**, which lands in
+the target as `agentics/rules/scrub.md` and backs `/scrub`. This stage runs them
 once, at initialization, alongside the build and licence checks that only make
 sense here. Anything added to one that belongs in both goes in the scrub file,
 so the two cannot drift apart.
@@ -94,13 +94,13 @@ silently stays silent:
 | Setting | Value | Source | Change it in |
 |---|---|---|---|
 | Layout | `monorepo` | asked | restructure; `AGENTS.md`, `README.md` |
-| Namespace prefix | `Contoso` | asked | project names; recorded in `.dc-agentics.yaml` |
+| Namespace prefix | `Contoso` | asked | project names; recorded in `.agentics.yaml` |
 | First project | `Contoso.Widgets`, library | derived | rename now; it is one day old |
 | Solution | `Contoso.Widgets.slnx` | follows the project | rename with the project |
-| StyleCop mode | `relaxed` | default | `stylecop.ruleset` + [`stylecop.md`](stylecop.md); `.dc-agentics.yaml` |
+| StyleCop mode | `relaxed` | default | `stylecop.ruleset` + [`stylecop.md`](stylecop.md); `.agentics.yaml` |
 | Central package management | on | default | `Directory.Packages.props` |
-| Source-control mode | `local` | default | `.dc-agentics.yaml` |
-| Change tracking | GitHub Issues | asked | `.dc-agentics.yaml` |
+| Source-control mode | `local` | default | `.agentics.yaml` |
+| Change tracking | GitHub Issues | asked | `.agentics.yaml` |
 | Licence | `none` | default | [`settings.md`](settings.md); `TODO.md` holds the decision |
 | Merge settings, ruleset | applied / refused / no remote | — | `/source-control setup`; `TODO.md` |
 | Serena project | written / skipped | — | [`documents.md`](documents.md); `TODO.md` |

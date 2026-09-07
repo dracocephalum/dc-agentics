@@ -15,7 +15,7 @@ non-interactively — including for git commands an agent runs. Verified on
 Windows Server 2025 with Git 2.55, gh 2.100, Windows OpenSSH.
 
 Prerequisite: git identity set to the noreply form — see
-[`security-reminders.md`](../repo/payload/docs/rules/security-reminders.md).
+[`security-reminders.md`](../repo/payload/agentics/rules/security-reminders.md).
 The email in the key, the identity, and the GitHub account must all agree or
 commits show *Unverified*.
 
@@ -84,7 +84,7 @@ everything change tracking needs. The one extra at setup is
 `project`) are **not** part of setup: a board request is rare, handled on
 demand, and the agent checks `gh auth status` and hands over
 `gh auth refresh -h github.com -s read:project,project` only then. The
-permission model is in `docs/rules/change-tracking/github.md` of any
+permission model is in `agentics/rules/change-tracking/github.md` of any
 initialized repository.
 
 ### Step 9 — the trap

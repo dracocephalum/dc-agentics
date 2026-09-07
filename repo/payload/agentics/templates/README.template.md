@@ -13,7 +13,7 @@
 
 > Initialized with <https://github.com/dracocephalum/dc-agentics>. The
 > choices made, and the toolkit commit, are in
-> [`.dc-agentics.yaml`](.dc-agentics.yaml); open items are in [`TODO.md`](TODO.md).
+> [`.agentics.yaml`](.agentics.yaml); open items are in [`TODO.md`](TODO.md).
 
 {{ONE_LINE_PURPOSE}}
 
@@ -36,7 +36,7 @@
 |---|---|
 | `src/` | production code |
 | `test/` | tests |
-| `docs/rules/` | the rules this repository is held to — see `AGENTS.md` |
+| `agentics/rules/` | the rules this repository is held to — see `AGENTS.md` |
 
 <!-- ==== MONOREPO variant - delete if this is standalone ==== -->
 
@@ -69,7 +69,7 @@ map of categories.
 
 ## Conventions and rules
 
-`AGENTS.md` is the index. The rules under `docs/rules/` are the standard for
+`AGENTS.md` is the index. The rules under `agentics/rules/` are the standard for
 code, tests, dependencies, pull requests, and review — for people as much as
 for agents.
 

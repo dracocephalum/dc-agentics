@@ -1,5 +1,5 @@
 <!--
-  TEMPLATE - ships with the repository under docs/templates/. Copied to
+  TEMPLATE - ships with the repository under agentics/templates/. Copied to
   <category>/README.md and filled when a category folder is created in a
   monorepo; the placeholders here are intentional.
 
@@ -17,5 +17,5 @@
 <!-- | [`example-service`](example-service/README.md) | one line | active | -->
 
 Each component has its own solution and `README.md`. To add one, follow
-`docs/rules/coding/csharp/csharp-new-project.md` (or `/new` in Claude Code)
+`agentics/rules/coding/csharp/csharp-new-project.md` (or `/new` in Claude Code)
 — it appends the row here.

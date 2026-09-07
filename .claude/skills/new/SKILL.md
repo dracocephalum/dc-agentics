@@ -10,8 +10,8 @@ and stop.
 
 ## Find the procedure
 
-1. `docs/rules/coding/csharp/csharp-new-project.md` - an initialized repository
-2. `repo/payload/docs/rules/coding/csharp/csharp-new-project.md` - the toolkit
+1. `agentics/rules/coding/csharp/csharp-new-project.md` - an initialized repository
+2. `repo/payload/agentics/rules/coding/csharp/csharp-new-project.md` - the toolkit
 
 Read the first that exists and follow it exactly. Both modes, what is asked and
 what is not, where things go, and what "done" means are all there; do not work

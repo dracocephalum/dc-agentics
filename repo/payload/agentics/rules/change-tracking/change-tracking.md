@@ -15,7 +15,7 @@ document: what and why, one line, with context and links in the body.
 
 ## Settings
 
-`change-tracking.tracker` in the repository's `.dc-agentics.yaml`, asked once
+`change-tracking.tracker` in the repository's `.agentics.yaml`, asked once
 at initialization as a yes or no:
 
 | Value | Meaning |

@@ -70,7 +70,7 @@ is why `Contoso.CoreBanking` is left alone. A naive string replace would turn it
 into `ContosoBanking`.
 
 `Contoso` is a placeholder: the prefix comes from the user, usually an
-organization or product name, and is recorded in `.dc-agentics.yaml` under
+organization or product name, and is recorded in `.agentics.yaml` under
 `repository.namespace`.
 
 ## Standalone
@@ -114,7 +114,8 @@ noise, and a folder that exists implies a decision that has not been made:
 | `tools/` | never shipped to production |
 | `infrastructure/` | Terraform and similar provisioning |
 | `ui/` | front-end applications that are **deployed** — a shared component library is a package and belongs in `libraries/` |
-| `docs/` | documentation |
+| `docs/` | documentation written for people — architecture, decisions, guides; created only when there is some |
+| `agentics/` | what agents follow: `rules/` and `templates/`; ships with every repository |
 | `build/` | CI/CD pipeline definitions |
 
 Each C# component gets a kebab-case folder, and **inside it the standalone
@@ -175,7 +176,7 @@ resolve by searching upward and stopping at the first hit, so a copy inside
 `services/proxy-gateway/` silently cuts that component off from the root
 configuration — with a green build and no warning.
 
-Non-.NET folders (`infrastructure/`, `ui/`, `docs/`) are unaffected: MSBuild
+Non-.NET folders (`infrastructure/`, `ui/`, `docs/`, `agentics/`) are unaffected: MSBuild
 files only apply to MSBuild projects.
 
 ## Creating a component
@@ -195,8 +196,15 @@ Recorded so they are not re-litigated per repository:
 in the wider ecosystem — this is a coin flip that has been flipped. Be
 consistent rather than right.
 
-**`docs/`, not `doc/`.** Unambiguous: it is what GitHub Pages expects and what
-the .NET repositories use.
+**`agentics/` for the rules, `docs/` for people.** The rules and templates
+agents follow live in `agentics/`, named for their audience, and ship with
+every repository. `docs/` is kept for documentation written for people —
+architecture, decisions, guides — and exists only when there is some. Mixing
+the two in one folder is what happened first: the rules were under `docs/`,
+on the grounds that `docs/` is what GitHub Pages expects — which is a reason
+about human documentation, and the wrong one for a folder of agent rules.
+When `docs/` does exist, it is `docs/`, not `doc/`: what GitHub Pages expects
+and what the .NET repositories use.
 
 **`.slnx`, not `.sln`.** The SDK 10 default, XML, and reviewable in a diff —
 unlike the legacy format's GUID soup.

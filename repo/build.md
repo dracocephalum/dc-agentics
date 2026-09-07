@@ -73,7 +73,7 @@ additions, each carrying a baseline marker — see the drift check in [`copy.md`
 `.gitignore` already includes the local-config entries the official template
 omits (`*.local.json`, `.env`, and similar). Ignore entries must exist **before**
 the files they cover — ignoring an already-tracked file has no effect. See
-[`payload/docs/rules/security-reminders.md`](payload/docs/rules/security-reminders.md).
+[`payload/agentics/rules/security-reminders.md`](payload/agentics/rules/security-reminders.md).
 
 ### Why .gitattributes matters here
 
@@ -99,7 +99,7 @@ The template also sets `*.cs text diff=csharp` (better diff hunk headers) and
 
 ## 4. Create the folder structure
 
-Follow [`payload/docs/rules/layout.md`](payload/docs/rules/layout.md) for the chosen mode. It covers the standalone
+Follow [`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md) for the chosen mode. It covers the standalone
 and monorepo trees, the kebab-case-directory / PascalCase-project naming rule,
 and per-folder conventions. The two SDK-template defects that break the first
 build — CPM version conflicts, and sample files that violate StyleCop — are in
@@ -113,7 +113,7 @@ Never copy them into component folders.
 A repository with no project cannot be built, so the analyzer probe, the build
 stamp and the licence check in [`verify.md`](verify.md) would each have nothing
 to run against. This stage therefore ends by creating one, following
-[`payload/docs/rules/coding/csharp/csharp-new-project.md`](payload/docs/rules/coding/csharp/csharp-new-project.md).
+[`payload/agentics/rules/coding/csharp/csharp-new-project.md`](payload/agentics/rules/coding/csharp/csharp-new-project.md).
 That procedure also creates the solution, since a solution is named after its
 main project and so cannot exist before it.
 

@@ -6,18 +6,18 @@ and restore the local tools.
 
 ## 1. Documentation and AGENTS.md
 
-`docs/rules/`, `.github/`, and `.markdownlint.yaml` arrive with the payload
+`agentics/rules/`, `.github/`, and `.markdownlint.yaml` arrive with the payload
 copy, in both modes, exactly as they sit in `payload/` — so every relative
 link between rules files resolves identically here and there. `.claude/skills/`
 is copied from the toolkit root: each `SKILL.md` is a shim — frontmatter so
-Claude Code can invoke it, and a pointer to its document under `docs/rules/`,
+Claude Code can invoke it, and a pointer to its document under `agentics/rules/`,
 located by repository-root-relative path with a toolkit fallback. The document
 is the substance and `AGENTS.md` points every tool at it, so a team without
 Claude Code loses nothing by skipping the shims.
 
 Then generate the repository's own `AGENTS.md` at its root from
-[`payload/docs/templates/AGENTS.template.md`](payload/docs/templates/AGENTS.template.md).
-It arrived with the copy at `<repo>/docs/templates/`, and **it stays there** —
+[`payload/agentics/templates/AGENTS.template.md`](payload/agentics/templates/AGENTS.template.md).
+It arrived with the copy at `<repo>/agentics/templates/`, and **it stays there** —
 copy it to the root as `AGENTS.md` and transform the copy, leaving the template
 untouched.
 
@@ -25,7 +25,8 @@ untouched.
 monorepo needs the monorepo layout variant, and that text exists nowhere else.
 Keeping the template is what lets a repository describe a shape it does not
 yet have, without a toolkit checkout. A toolkit upgrade replaces anything under
-`docs/` that the repository has not modified, so it stays current on its own.
+`agentics/` that the repository has not modified, so it stays current on its
+own.
 
 Transform the copy:
 
@@ -54,17 +55,18 @@ Transform the copy:
    the solution file name. In a monorepo it stays: there is no single solution
    there, and the command is generic on purpose.
 
-Then the repository's `README.md`, copied out of `docs/templates/` the same way
+Then the repository's `README.md`, copied out of `agentics/templates/` the same way
 and transformed the same way: fill placeholders, keep the matching layout
 variant, delete the template comment. It is the human entry point; `AGENTS.md`
-is the agent's. The line under its title points at `.dc-agentics.yaml` for
+is the agent's. The line under its title points at `.agentics.yaml` for
 provenance and choices ([`settings.md`](settings.md)) and at `TODO.md` for open
 items; it has no placeholders of its own.
 
 In a monorepo, also give every category folder you create its map —
-`docs/templates/category-README.md` copied to `<category>/README.md` and
+`agentics/templates/category-README.md` copied to `<category>/README.md` and
 filled: `CATEGORY` is the folder name, and `CATEGORY_DESCRIPTION` is that
-category's own row in `docs/rules/layout.md`, so the two cannot disagree. Component READMEs come from the new-project procedure.
+category's own row in `agentics/rules/layout.md`, so the two cannot disagree.
+Component READMEs come from the new-project procedure..
 
 **Every template stays, in both modes**, `category-README.md` included. A
 standalone repository has no categories today and may have them tomorrow: the
@@ -75,7 +77,7 @@ the toolkit is not self-describing. It also makes the reference in
 Verify nothing was missed:
 
     grep -n "{{" <repo>/AGENTS.md <repo>/README.md      # only the Licence section may still match
-    ls <repo>/docs/templates/                            # all four templates must still be there
+    ls <repo>/agentics/templates/                            # all four templates must still be there
     grep -n "<!--" <repo>/AGENTS.md <repo>/README.md    # only the Licence section may still match
 
 The generated documents must be clean; the templates they came from must be
@@ -143,8 +145,8 @@ Details, and the two choices behind the machine-level wiring, are in
 
 That installs `nuget-license` as a repository-local tool (pinned in the
 manifest, nothing global). The policy itself is
-[`payload/docs/rules/dependencies.md`](payload/docs/rules/dependencies.md), shipped to the
-repository as `docs/rules/dependencies.md` and referenced from `AGENTS.md`.
+[`payload/agentics/rules/dependencies.md`](payload/agentics/rules/dependencies.md), shipped to the
+repository as `agentics/rules/dependencies.md` and referenced from `AGENTS.md`.
 
 The check runs in [`verify.md`](verify.md), not here; there are no packages to
 judge until a project exists.

@@ -19,7 +19,7 @@ when they have a closing condition.
       source-control host file pointing at it.
 - [ ] **`ModelConventions.cs` as a real file.** The verified check lives as a
       snippet in `csharp-ef-core-rules.md`; the authoring rule prefers a real
-      file. Close by: `docs/templates/ModelConventions.cs` in the payload plus
+      file. Close by: `agentics/templates/ModelConventions.cs` in the payload plus
       the test, and the rules file pointing at them. Ship `dotnet-ef` in
       `.config/dotnet-tools.json` at the same time, pinned to the EF version
       in `Directory.Packages.props`.
@@ -27,7 +27,7 @@ when they have a closing condition.
       shape already decided in `machine/python.md`.
 - [ ] **`dotnet-outdated-tool`** as a further entry in
       `repo/payload/.config/dotnet-tools.json` (4.8.1 at time of writing), so
-      "keep the stack current" in `docs/rules/layout.md` becomes one command. Verify it
+      "keep the stack current" in `agentics/rules/layout.md` becomes one command. Verify it
       respects central package management before shipping.
 - [ ] **Meziantou.Analyzer** (MIT, 3.0.204) — overlaps the CancellationToken
       and ConfigureAwait rules usefully. Needs a build test on the template

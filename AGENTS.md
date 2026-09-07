@@ -20,16 +20,16 @@ them.
 | Set up GitHub access, SSH keys, commit signing, or `gh` | [`machine/github.md`](machine/github.md) |
 | Set up or troubleshoot secret scanning / git hooks | [`machine/gitleaks.md`](machine/gitleaks.md) |
 | Set up a machine that is **not Windows** (Linux, macOS, FreeBSD) | [`machine/platforms.md`](machine/platforms.md) — untested, read first |
-| Add or upgrade a package; judge a licence | [`repo/payload/docs/rules/dependencies.md`](repo/payload/docs/rules/dependencies.md) |
-| Create or find a ticket, or ask which ticket a change is for (`/change-tracking`) | [`repo/payload/docs/rules/change-tracking/change-tracking.md`](repo/payload/docs/rules/change-tracking/change-tracking.md), then the tracker file it names |
-| Start work on a ticket, name a branch, publish a repository, commit, or open / update / merge a pull request, set merge behaviour (`/source-control`) | [`repo/payload/docs/rules/source-control/source-control.md`](repo/payload/docs/rules/source-control/source-control.md), then the host file it names |
-| Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`repo/payload/docs/rules/coding/code-review.md`](repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
-| Scrub, sweep, or audit a repository for drift or inconsistency (`/scrub`) | [`repo/scrub.md`](repo/scrub.md) here; [`repo/payload/docs/rules/scrub.md`](repo/payload/docs/rules/scrub.md) is the part every target gets |
-| Add a project, a test project, or a whole component to an initialized repo (`/new`) | [`repo/payload/docs/rules/coding/csharp/csharp-new-project.md`](repo/payload/docs/rules/coding/csharp/csharp-new-project.md) — from a toolkit checkout, [`repo/version-check.md`](repo/version-check.md) first |
+| Add or upgrade a package; judge a licence | [`repo/payload/agentics/rules/dependencies.md`](repo/payload/agentics/rules/dependencies.md) |
+| Create or find a ticket, or ask which ticket a change is for (`/change-tracking`) | [`repo/payload/agentics/rules/change-tracking/change-tracking.md`](repo/payload/agentics/rules/change-tracking/change-tracking.md), then the tracker file it names |
+| Start work on a ticket, name a branch, publish a repository, commit, or open / update / merge a pull request, set merge behaviour (`/source-control`) | [`repo/payload/agentics/rules/source-control/source-control.md`](repo/payload/agentics/rules/source-control/source-control.md), then the host file it names |
+| Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`repo/payload/agentics/rules/coding/code-review.md`](repo/payload/agentics/rules/coding/code-review.md), then the C# or markdown checklist |
+| Scrub, sweep, or audit a repository for drift or inconsistency (`/scrub`) | [`repo/scrub.md`](repo/scrub.md) here; [`repo/payload/agentics/rules/scrub.md`](repo/payload/agentics/rules/scrub.md) is the part every target gets |
+| Add a project, a test project, or a whole component to an initialized repo (`/new`) | [`repo/payload/agentics/rules/coding/csharp/csharp-new-project.md`](repo/payload/agentics/rules/coding/csharp/csharp-new-project.md) — from a toolkit checkout, [`repo/version-check.md`](repo/version-check.md) first |
 | Initialize / scaffold / set up a repo at a path | [`repo/initialize.md`](repo/initialize.md) |
 | Upgrade this toolkit's pinned versions, bring an initialized repo up to the current toolkit, or convert one from standalone to monorepo (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — three operations; the conversion needs no toolkit checkout |
 | Change a StyleCop severity, or asked why a rule is set the way it is | [`repo/stylecop.md`](repo/stylecop.md) — the ruleset's own header carries the principle |
-| Check privacy/security before a first push | [`repo/payload/docs/rules/security-reminders.md`](repo/payload/docs/rules/security-reminders.md) |
+| Check privacy/security before a first push | [`repo/payload/agentics/rules/security-reminders.md`](repo/payload/agentics/rules/security-reminders.md) |
 | Asked what a term here means — payload, baseline, component, toolkit upgrade, drift | [`GLOSSARY.md`](GLOSSARY.md) — an index to the document that owns each term, never a second definition |
 | Capture an idea that is not committed work, or asked what might be built later | [`PLAN.md`](PLAN.md) — `TODO.md` is for decided work; see the table at the top of either |
 
@@ -43,7 +43,7 @@ Three kinds of file, told apart by location:
     (3) workspace - about this repo; never copied
     README.md  AGENTS.md  TODO.md  PLAN.md  LICENSE  NOTICE  .gitignore  .gitattributes
     GLOSSARY.md                    index of terms to the document that owns each; never a second definition
-    .dc-agentics.yaml              this repository's own settings (source-control mode); same shape as the payload's
+    .agentics.yaml              this repository's own settings (source-control mode); same shape as the payload's
     .markdownlint.yaml             one line: extends the payload copy (so it cannot drift)
     machine/                       setting up a machine (README.md, then github/gitleaks/python/serena)
                                    Windows and interactive today; platforms.md for other platforms
@@ -59,14 +59,14 @@ Three kinds of file, told apart by location:
 
     (1)+(2) payload - an EXACT mirror of a target repository root; copied verbatim
     repo/payload/
-      .dc-agentics.yaml            settings agents read: source-control mode, init choices, toolkit commit; placeholders filled at init
+      .agentics.yaml            settings agents read: source-control mode, init choices, toolkit commit; placeholders filled at init
       TODO.md                      the target's open-items file; init writes anything unresolved into it
       .editorconfig  .gitignore  .gitattributes   (forked; baselines live in repo/baselines/)
       stylecop.ruleset  stylecop.json  StyleCop.props
       Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props  BannedSymbols.txt
       nuget.config  allowed-licenses.json  license-overrides.json
       .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
-      docs/rules/                  every rules document, exactly where it lands
+      agentics/rules/                  every rules document, exactly where it lands
         dependencies.md
         layout.md                  standalone + monorepo trees, naming, test projects, stack currency
         scrub.md                   the consistency + drift checks every target gets
@@ -76,7 +76,7 @@ Three kinds of file, told apart by location:
         coding/code-review.md
         coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
         coding/markdown/markdown-review.md
-      docs/templates/              AGENTS.template.md, README.template.md - transformed at init, and kept
+      agentics/templates/              AGENTS.template.md, README.template.md - transformed at init, and kept
                                    component-README.md, category-README.md - filled by /new
                                    all four stay in the target, both modes; repo/documents.md says why
 
@@ -97,7 +97,7 @@ works, why the hash is over normalized bytes, why the baselines are never
 edited, and why their `.original` suffix and the root `-text` rule are both
 load-bearing: [`repo/copy.md`](repo/copy.md), *Baseline drift check*.
 
-Rules documents keep their relative links correct by construction: `docs/rules/`
+Rules documents keep their relative links correct by construction: `agentics/rules/`
 inside `payload/` *is* the target layout. Only links up to the root `AGENTS.md`
 cannot be relative in both trees; those are plain text.
 
@@ -140,7 +140,7 @@ somewhere the surrounding context no longer holds.
 - **Budget by what is always loaded, not by total size.** `AGENTS.md` is read
   every session with no trigger to gate it, and so is each shim's name and
   description - a shim's body loads only when it is invoked. Everything under
-  `docs/rules/` is loaded on demand, where depth costs nothing until its trigger
+  `agentics/rules/` is loaded on demand, where depth costs nothing until its trigger
   fires; length there is only a problem if the trigger is too broad. Splitting a
   document that is always loaded saves nothing, and splitting one whose parts
   share a single trigger just adds files to open.
@@ -151,7 +151,7 @@ somewhere the surrounding context no longer holds.
 - **A skill is a shim; the document is the substance.** `SKILL.md` carries
   frontmatter for discovery and a body that names which document to follow -
   it never contains the procedure. The document lives at
-  `repo/payload/docs/rules/` here and lands at `docs/rules/` in
+  `repo/payload/agentics/rules/` here and lands at `agentics/rules/` in
   initialized repositories, and `AGENTS.md` points every tool at it; the shim
   only adds `/name` invocation in Claude Code. There is one copy:
   `.claude/skills/<name>/SKILL.md`, live here and copied to a target's

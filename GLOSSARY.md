@@ -18,7 +18,7 @@ the document wins and the row is the bug.
 | **target** | a repository dc-agentics initialized, as distinct from the toolkit itself | [`repo/version-check.md`](repo/version-check.md) |
 | **baseline** | the pristine `dotnet new` output in `repo/baselines/`, hash-verified byte-for-byte; never copied to a target | [`repo/copy.md`](repo/copy.md), *Baseline drift check* |
 | **marker** | a recorded "this was verified together, and when" — `dc-agentics-baseline`, `dc-agentics-verified`, `guidelines.verified` | [`repo/upgrade.md`](repo/upgrade.md), *The markers* |
-| **drift** | a recorded value no longer matching reality: an SDK that moved, settings that no longer describe the repository | [`repo/payload/docs/rules/scrub.md`](repo/payload/docs/rules/scrub.md) |
+| **drift** | a recorded value no longer matching reality: an SDK that moved, settings that no longer describe the repository | [`repo/payload/agentics/rules/scrub.md`](repo/payload/agentics/rules/scrub.md) |
 
 ## Operations
 
@@ -30,24 +30,24 @@ Each is a distinct verb, so a refusal can name exactly which one it means.
 | **toolkit version** | which toolkit commit a repository currently carries — `toolkit.commit` in its settings | [`repo/settings.md`](repo/settings.md) |
 | **toolkit upgrade** | bringing a target up to a newer toolkit commit; operation 2 | [`repo/upgrade.md`](repo/upgrade.md) |
 | **layout conversion** | changing a target from standalone to monorepo; operation 3, and the one that needs no toolkit checkout | [`repo/upgrade.md`](repo/upgrade.md) |
-| **scrub** | a consistency and drift pass that reports and changes nothing | [`repo/payload/docs/rules/scrub.md`](repo/payload/docs/rules/scrub.md) |
+| **scrub** | a consistency and drift pass that reports and changes nothing | [`repo/payload/agentics/rules/scrub.md`](repo/payload/agentics/rules/scrub.md) |
 | **re-baselining** | replacing a pristine baseline after an upstream template changed, and updating its marker | [`repo/copy.md`](repo/copy.md) |
 
 ## How a repository is shaped
 
 | Term | In one line | Owned by |
 |---|---|---|
-| **component** | one solution and one `src/` + `test/` pair; its projects build and version together, and may produce more than one deliverable | [`repo/payload/docs/rules/layout.md`](repo/payload/docs/rules/layout.md) |
-| **standalone** | a single-component repository; the component *is* the repository | [`repo/payload/docs/rules/layout.md`](repo/payload/docs/rules/layout.md) |
-| **monorepo** | many components, each under a category folder, each with its own solution | [`repo/payload/docs/rules/layout.md`](repo/payload/docs/rules/layout.md) |
-| **category** | a root folder grouping components by kind — `services/`, `libraries/`, `jobs/`, `tools/`, `ui/`, `infrastructure/` | [`repo/payload/docs/rules/layout.md`](repo/payload/docs/rules/layout.md) |
-| **solution** | the `.slnx`, named after its component's **main project**, never after the folder | [`repo/payload/docs/rules/layout.md`](repo/payload/docs/rules/layout.md), *Naming rules* |
+| **component** | one solution and one `src/` + `test/` pair; its projects build and version together, and may produce more than one deliverable | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
+| **standalone** | a single-component repository; the component *is* the repository | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
+| **monorepo** | many components, each under a category folder, each with its own solution | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
+| **category** | a root folder grouping components by kind — `services/`, `libraries/`, `jobs/`, `tools/`, `ui/`, `infrastructure/` | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
+| **solution** | the `.slnx`, named after its component's **main project**, never after the folder | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md), *Naming rules* |
 
 ## Settings
 
 | Term | In one line | Owned by |
 |---|---|---|
-| **mode** | what an agent may do without asking — `auto`, `local`, `manual`; absent means manual | [`repo/payload/docs/rules/source-control/source-control.md`](repo/payload/docs/rules/source-control/source-control.md), *For an agent* |
-| **tracker** | whether the repository tracks work as GitHub Issues, or not at all | [`repo/payload/docs/rules/change-tracking/change-tracking.md`](repo/payload/docs/rules/change-tracking/change-tracking.md) |
+| **mode** | what an agent may do without asking — `auto`, `local`, `manual`; absent means manual | [`repo/payload/agentics/rules/source-control/source-control.md`](repo/payload/agentics/rules/source-control/source-control.md), *For an agent* |
+| **tracker** | whether the repository tracks work as GitHub Issues, or not at all | [`repo/payload/agentics/rules/change-tracking/change-tracking.md`](repo/payload/agentics/rules/change-tracking/change-tracking.md) |
 | **model baseline** | the model line the guidelines were written against, and when a full trial last passed on it | [`README.md`](README.md), *A note on models* |
 | **always-loaded** | read every session with no trigger to gate it: `AGENTS.md`, and each skill's name and description | [`AGENTS.md`](AGENTS.md), *Authoring payload* |

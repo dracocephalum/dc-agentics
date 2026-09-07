@@ -10,7 +10,7 @@ supported tracker today; for anything else, say so and stop.
 
 ## Find the rules
 
-First `.dc-agentics.yaml` at the repository root: `change-tracking.tracker`
+First `.agentics.yaml` at the repository root: `change-tracking.tracker`
 is `github-issues` or `none` - with `none` there is nothing to create and
 this skill says so and stops; `source-control.mode` says whether creating a
 ticket asks first. Then read the rule in the first location that exists,
@@ -18,7 +18,7 @@ then the tracker file it names. Never work from memory.
 
 | Rule | Initialized repository | dc-agentics toolkit |
 |---|---|---|
-| change tracking - the ticket rule, the setting, the initialization exception, boards; names the tracker file | `docs/rules/change-tracking/change-tracking.md` | `repo/payload/docs/rules/change-tracking/change-tracking.md` |
+| change tracking - the ticket rule, the setting, the initialization exception, boards; names the tracker file | `agentics/rules/change-tracking/change-tracking.md` | `repo/payload/agentics/rules/change-tracking/change-tracking.md` |
 
 ## Actions from `$ARGUMENTS`
 
