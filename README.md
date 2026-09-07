@@ -42,9 +42,10 @@ The two things you will ask for:
 |---|---|
 | set up a developer machine | [`machine/README.md`](machine/README.md) |
 | initialize a repository | [`repo/initialize.md`](repo/initialize.md) |
+| check a repository for drift | [`repo/scrub.md`](repo/scrub.md) |
 
-Both are procedures an agent can run: "set up this machine", "initialize a repo
-at `<path>`".
+All three are procedures an agent can run: "set up this machine", "initialize a
+repo at `<path>`", "scrub this repo".
 
 ## What is in here
 

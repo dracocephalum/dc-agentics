@@ -116,3 +116,10 @@
 .gitattributes export-ignore
 .gitignore     export-ignore
 .gitkeep       export-ignore
+
+# The toolkit keeps pristine `*.original` baselines beside the forked files and
+# verifies them byte-for-byte against a recorded SHA-256. They must never be
+# line-ending converted, or `* text=auto` above checks them out as CRLF on
+# Windows and the hash check fails on a clean clone with nothing wrong.
+# Initialized repositories have no `.original` files; this rule is inert there.
+*.original -text

@@ -61,6 +61,8 @@ the worse question.
     stylecop.json                StyleCop settings
     docs/rules/                  exactly as in payload/docs/rules/
       dependencies.md
+      scrub.md                   the recurring consistency + drift checks
+      security-reminders.md      privacy + data-security checklist
       change-tracking/         change-tracking.md (rules), github.md (mechanics)
       source-control/            source-control.md (rules), github.md (mechanics)
       coding/code-review.md
@@ -70,6 +72,7 @@ the worse question.
       change-tracking/SKILL.md   Claude Code shim: /change-tracking new|find
       project/SKILL.md           Claude Code shim: /project <kind> <name>
       review/SKILL.md            Claude Code shim: /review [PR# | branch | paths | comments PR#]
+      scrub/SKILL.md             Claude Code shim: /scrub [paths...]
       source-control/SKILL.md    Claude Code shim: /source-control start|commit|pr|setup
     .github/
       PULL_REQUEST_TEMPLATE.md   GitHub fills PR bodies from it

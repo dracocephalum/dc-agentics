@@ -24,6 +24,7 @@ them.
 | Create or find a ticket, or ask which ticket a change is for (`/change-tracking`) | [`repo/payload/docs/rules/change-tracking/change-tracking.md`](repo/payload/docs/rules/change-tracking/change-tracking.md), then the tracker file it names |
 | Start work on a ticket, name a branch, publish a repository, commit, or open / update / merge a pull request, set merge behaviour (`/source-control`) | [`repo/payload/docs/rules/source-control/source-control.md`](repo/payload/docs/rules/source-control/source-control.md), then the host file it names |
 | Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`repo/payload/docs/rules/coding/code-review.md`](repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
+| Scrub, sweep, or audit a repository for drift or inconsistency (`/scrub`) | [`repo/scrub.md`](repo/scrub.md) here; [`repo/payload/docs/rules/scrub.md`](repo/payload/docs/rules/scrub.md) is the part every target gets |
 | Initialize / scaffold / set up a repo at a path | [`repo/initialize.md`](repo/initialize.md) |
 | Set up StyleCop, or choose relaxed vs strict | [`repo/stylecop.md`](repo/stylecop.md) |
 | Check privacy/security before a first push | [`repo/payload/docs/rules/security-reminders.md`](repo/payload/docs/rules/security-reminders.md) |
@@ -45,6 +46,7 @@ Three kinds of file, told apart by location:
     repo/                          acting on a target repository
       initialize.md                repo initialization: inputs, what lands, the five stages
       copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
+      scrub.md                     consistency + drift pass for THIS repo; extends the payload checklist
       layout.md                    standalone + monorepo folder structures
       stylecop.md                  StyleCop relaxed/strict procedure
 
@@ -61,6 +63,7 @@ Three kinds of file, told apart by location:
       .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
       docs/rules/                  every rules document, exactly where it lands
         dependencies.md
+        scrub.md                   the consistency + drift checks every target gets
         security-reminders.md      privacy & data-security checklist; the review's security pass
         change-tracking/         change-tracking.md - the ticket rule, the yes/no setting, boards as views; github.md - issues, linked branches
         source-control/          source-control.md - the rules, host-neutral; github.md - reaching GitHub, publishing, PRs, review, settings
@@ -75,6 +78,7 @@ Three kinds of file, told apart by location:
       review/SKILL.md              /review  - PR, branch, files, or comment triage; post/print/report
       change-tracking/SKILL.md     /change-tracking - create or find a ticket
       source-control/SKILL.md      /source-control - ticket-linked branch, commit, draft PR, merge settings
+      scrub/SKILL.md               /scrub   - consistency + drift pass; reports, does not fix
 
 Three payload files are forked from `dotnet new` templates and carry a
 `dc-agentics-baseline:` marker recording the source SDK and the SHA-256 of the

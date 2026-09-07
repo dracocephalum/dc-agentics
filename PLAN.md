@@ -124,6 +124,28 @@ Worth writing only when something actually runs this way — most likely
 alongside the *Pipelines* decision above, since a runner is the first headless
 machine the toolkit will meet.
 
+## Structure
+
+### The baselines sit inside a mirror they are not part of
+
+`repo/payload/` is described everywhere as "an exact mirror of a target
+repository root, copied verbatim". The three `*.original` baselines live in it
+and are *not* part of that mirror: `copy.md` deletes them from the target
+immediately after copying, with a `find` whose only purpose is to undo their
+presence.
+
+They also collide with the mirror's own rules. `payload/.gitattributes` sets
+`* text=auto` for everything beneath it, which checks the baselines out as CRLF
+on Windows and breaks the byte-for-byte hash they exist to support — fixed for
+now by an `*.original -text` rule in that same file, which then ships to every
+target, where it is inert.
+
+Moving them to something like `repo/baselines/` would make the mirror true,
+drop the deletion step, and put the attribute rule at the root where it
+belongs. The cost is touching the drift procedure in `copy.md`, the `AGENTS.md`
+description and `scrub.md` — worth folding into a change that already touches
+those, rather than doing on its own.
+
 ## Skills
 
 ### `/new`
@@ -134,6 +156,41 @@ thing to this repository", each backed by the document that already governs it.
 
 Open: whether it replaces `/project` or wraps it, and whether the name invites
 confusion with `dotnet new`.
+
+### A full `/scrub`
+
+`/scrub` as shipped is a **consistency** pass: lint, links, placeholders, line
+endings, privacy, settings that still match reality, a complete `AGENTS.md`
+index, stale `TODO.md` entries, and baseline drift. It deliberately stops
+short of anything that needs a build, so it stays cheap enough to run without
+deciding to.
+
+A *full* scrub would add what `verify.md` runs once at initialization:
+`dotnet build` and `dotnet test` with the expected count, the analyzer probe,
+`nuget-license` over the transitive graph, lock files current, and the age of
+the `dc-agentics-verified` marker on the test stack.
+
+The open question is not whether those checks are worth running — they are —
+but whether a skill is the right place, given that CI will eventually run all
+of them on every push. A full scrub may turn out to be most useful exactly
+where CI is not: before a first push, on a repository nobody has touched for a
+year, or when a toolchain has moved underneath one.
+
+### An automated `/scrub`
+
+`/scrub` reports and changes nothing. That is the right default for a check
+whose findings include "the baseline you recorded no longer matches the SDK",
+which is a decision rather than an edit.
+
+Some findings are not decisions, though. Mixed line endings in a file,
+`markdownlint --fix`'s mechanical corrections, trailing whitespace, a
+`TODO.md` entry whose closing condition is demonstrably met — these have one
+right answer. A `--fix` mode could apply exactly that class and report the
+rest, provided the fixes land as their own reviewable change and never mix
+with whatever the user was doing.
+
+The risk to design against is a scrub that quietly rewrites files nobody
+asked it to touch, which is how a useful check becomes one people turn off.
 
 ### `/upgrade`
 

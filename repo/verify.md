@@ -71,6 +71,13 @@ read its `Summary:` line rather than the exit code. `AGENTS.md` and `README.md`
 are the freshly written prose, so a long line or a mangled table will be there —
 the shipped rules documents already lint clean.
 
+**The recurring form of these checks is
+[`payload/docs/rules/scrub.md`](payload/docs/rules/scrub.md)**, which lands in
+the target as `docs/rules/scrub.md` and backs `/scrub`. This stage runs them
+once, at initialization, alongside the build and licence checks that only make
+sense here. Anything added to one that belongs in both goes in the scrub file,
+so the two cannot drift apart.
+
 ## 3. Closing summary
 
 The last message of the procedure is a table of every value the repository
