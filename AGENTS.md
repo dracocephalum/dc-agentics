@@ -26,7 +26,7 @@ them.
 | Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`repo/payload/docs/rules/coding/code-review.md`](repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
 | Scrub, sweep, or audit a repository for drift or inconsistency (`/scrub`) | [`repo/scrub.md`](repo/scrub.md) here; [`repo/payload/docs/rules/scrub.md`](repo/payload/docs/rules/scrub.md) is the part every target gets |
 | Initialize / scaffold / set up a repo at a path | [`repo/initialize.md`](repo/initialize.md) |
-| Upgrade this toolkit's pinned versions, or bring an initialized repo up to the current toolkit (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — standalone-to-monorepo is not written yet |
+| Upgrade this toolkit's pinned versions, bring an initialized repo up to the current toolkit, or convert one from standalone to monorepo (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — three operations; the conversion needs no toolkit checkout |
 | Set up StyleCop, or choose relaxed vs strict | [`repo/stylecop.md`](repo/stylecop.md) |
 | Check privacy/security before a first push | [`repo/payload/docs/rules/security-reminders.md`](repo/payload/docs/rules/security-reminders.md) |
 | Asked what a term here means — payload, baseline, component, toolkit upgrade, drift | [`GLOSSARY.md`](GLOSSARY.md) — an index to the document that owns each term, never a second definition |
