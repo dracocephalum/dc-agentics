@@ -222,8 +222,8 @@ It is imported from `Directory.Build.props` under a single condition:
             Condition="$(MSBuildProjectName.EndsWith('.Tests'))" />
 
 So any project named `*.Tests`, at any depth, picks up the whole stack and
-nothing else does. Verified: a `src/` project resolves 1 package reference
-(the analyzer), a `.Tests` project resolves 10.
+nothing else does. Verified: a `src/` project resolves 2 package references
+(the StyleCop and banned-API analyzers), a `.Tests` project resolves 13.
 
 **Why the condition lives in the root file** rather than a
 `Directory.Build.props` inside `test/`: a nested one would *replace* the root

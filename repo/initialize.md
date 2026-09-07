@@ -25,6 +25,7 @@ the worse question.
 |---|---|
 | Repository root path | *required — never guess* |
 | Layout mode | ask — `standalone` or `monorepo`, see [`payload/docs/rules/layout.md`](payload/docs/rules/layout.md) |
+| Category of the first component | ask, **monorepo only** — `libraries/`, `services/`, and so on from `layout.md`; standalone has no categories, so it is not a question there |
 | Namespace prefix | ask — e.g. `Contoso`; never invent one |
 | One-line purpose | ask — lands in `AGENTS.md` and `README.md`; never invent one |
 | Primary framework | .NET; the only one supported today, so it is not a question |
@@ -73,11 +74,11 @@ the worse question.
       coding/markdown/markdown-review.md
     .claude/skills/
       change-tracking/SKILL.md   Claude Code shim: /change-tracking new|find
-      project/SKILL.md           Claude Code shim: /new [project|component] <name>
+      new/SKILL.md               Claude Code shim: /new [project|component] <name>
       review/SKILL.md            Claude Code shim: /review [PR# | branch | paths | comments PR#]
       scrub/SKILL.md             Claude Code shim: /scrub [paths...]
       source-control/SKILL.md    Claude Code shim: /source-control start|commit|pr|setup
-      upgrade/SKILL.md           Claude Code shim: /upgrade — needs a toolkit checkout
+      upgrade/SKILL.md           Claude Code shim: /upgrade — the layout conversion needs no toolkit checkout
     .github/
       PULL_REQUEST_TEMPLATE.md   GitHub fills PR bodies from it
       rulesets/protect-main.json default-branch ruleset: PR-only, squash, no force-push

@@ -2,7 +2,7 @@
 name: review
 description: Review a pull request, a branch, or a set of files against this repository's rules, or triage the review comments on a pull request - producing Conventional Comments with a verdict, posted, printed, or saved as a report.
 when_to_use: When asked to review, check, critique, or look over a pull request, a diff, a branch, or specific files; or to go through, answer, address, or resolve review comments on a pull request.
-argument-hint: [PR#] [branch] [paths...] [comments PR#] [--report <file>]
+argument-hint: "[PR#] [branch] [paths...] [comments PR#] [--report <file>]"
 ---
 
 Review against **this repository's rules**, not general taste. The built-in
@@ -37,4 +37,5 @@ Follow the standard's *Broaden the analysis range*, *Modes*, and *For an
 agent* sections as written: what leaves the session is shown in full and
 confirmed first, the verdict is a recommendation, and in comment triage the
 summary of verdicts is the confirmation step. The GitHub commands are in
-`docs/rules/source-control/github.md`.
+`docs/rules/source-control/github.md` - in the toolkit,
+`repo/payload/docs/rules/source-control/github.md`.

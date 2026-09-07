@@ -14,7 +14,7 @@ Operation 2 needs both repositories present, because it diffs two commits of
 the toolkit. Running it "from the target" still means a toolkit checkout exists
 somewhere; ask for its path rather than guessing.
 
-**Report before applying.** Both operations produce a plan first — what
+**Report before applying.** Every operation produces a plan first — what
 changed, what it would do to each file, and what needs a decision. Applying is
 a second step, and `source-control.mode` in the target's `.dc-agentics.yaml`
 governs what may be committed without asking.
@@ -149,6 +149,15 @@ This is not hypothetical. Standalone initialization used to delete
 `docs/templates/category-README.md`, so every repository initialized that way
 is missing a file the payload has always contained, and no diff between two
 toolkit commits will ever mention it.
+
+**And the other direction.** A file the target has that the payload no longer
+does is an orphan — most often the old half of a rename that git reported as a
+delete and an add, because too little content survived. The `/project` to
+`/new` rename did exactly that, and a target kept `project/SKILL.md` with
+nothing to ever remove it. For each file under the payload's paths that exists
+in the target and not in the payload at `HEAD`: unmodified since the recorded
+commit — remove it; modified — ask, because the target may be keeping it on
+purpose.
 
 ### The per-path policy
 

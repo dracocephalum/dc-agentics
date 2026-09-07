@@ -29,7 +29,7 @@ change.
 
 ### 1. Markdown lint
 
-    npx --yes markdownlint-cli2 "**/*.md" "#node_modules"
+    npx --yes markdownlint-cli2@0.23.2 "**/*.md" "#node_modules"
 
 **Read the `Summary:` line, not the exit code.** The configuration is
 `.markdownlint.yaml`; every rule left enabled points at a real defect.
@@ -110,7 +110,7 @@ silently, because nothing enforces it:
 | `licence` | the `LICENSE` file — present, and the same licence |
 | `copyright-holder` | the holder named in `LICENSE` or `NOTICE` |
 | `layout` | the actual tree: `standalone` has one solution at the root, `monorepo` has category folders and none |
-| `stylecop` | `stylecop.ruleset` — `relaxed` or `strict`, see the repository's StyleCop procedure |
+| `stylecop` | `stylecop.ruleset` — `relaxed` or `strict`, see the toolkit's `repo/stylecop.md` |
 | `central-package-management` | `Directory.Packages.props` exists and `ManagePackageVersionsCentrally` is `true` |
 
 ### 7. `AGENTS.md` index is complete in both directions

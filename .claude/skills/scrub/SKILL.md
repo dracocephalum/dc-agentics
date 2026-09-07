@@ -2,7 +2,7 @@
 name: scrub
 description: Sweep this repository for inconsistency and drift - markdown lint, unresolved links, unfilled placeholders, mixed line endings, privacy, settings that no longer match reality, an incomplete AGENTS.md index, stale TODO entries, and drift in the files forked from dotnet new templates. Reports; does not fix.
 when_to_use: When asked to scrub, sweep, audit, or health-check a repository; to look for drift, staleness, or inconsistency; or after a move, rename, or restructure.
-argument-hint: [paths...]
+argument-hint: "[paths...]"
 ---
 
 A consistency and drift pass. **Not a bug hunt** - that is the built-in
@@ -19,16 +19,12 @@ enough to run without deciding to.
 Read the first that exists and follow it as written. Never scrub from memory:
 the checks exist because each one caught something that review did not.
 
-## Scope from `$ARGUMENTS`
+## Scope
 
-| Arguments | Scope |
-|---|---|
-| nothing | the whole repository |
-| one or more paths | only those files and directories, skipping checks that are repository-wide by nature |
-
-Repository-wide by nature: the `AGENTS.md` index, `.dc-agentics.yaml`
-truthfulness, `TODO.md`, and baseline drift. Say which were skipped rather than
-reporting a narrowed pass as a clean one.
+The whole repository, always. Most checks are repository-wide by nature - the
+`AGENTS.md` index, `.dc-agentics.yaml` truthfulness, `TODO.md`, baseline drift,
+duplication - and a narrowed pass reported as clean is worse than no pass. If
+`$ARGUMENTS` names paths, run everything and lead the report with those.
 
 ## Report
 
