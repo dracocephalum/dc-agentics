@@ -63,7 +63,8 @@ items; it has no placeholders of its own.
 
 In a monorepo, also give every category folder you create its map —
 `docs/templates/category-README.md` copied to `<category>/README.md` and
-filled. Component READMEs come from the new-project procedure.
+filled: `CATEGORY` is the folder name, and `CATEGORY_DESCRIPTION` is that
+category's own row in `docs/rules/layout.md`, so the two cannot disagree. Component READMEs come from the new-project procedure.
 
 **Every template stays, in both modes**, `category-README.md` included. A
 standalone repository has no categories today and may have them tomorrow: the

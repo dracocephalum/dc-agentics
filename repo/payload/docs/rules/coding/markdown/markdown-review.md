@@ -65,18 +65,11 @@ Findings here are `suggestion` unless the document cannot be acted on
 mechanically — an unresolvable reference or a command that does not run as
 written is an `issue`.
 
-Link check, portable:
-
-    for f in $(find . -name '*.md'); do
-      d=$(dirname "$f")
-      for l in $(grep -oE '\]\([^)#]+\)' "$f" | tr -d '()]'); do
-        case "$l" in http*) continue ;; esac
-        [ -e "$d/$l" ] || echo "DEAD $f -> $l"
-      done
-    done
-
-Inside the toolkit, `*.template.md` files link to target-repository paths
-and report as dead by design — check those in a generated repository.
+Link check: the script is check 2 in [`../../scrub.md`](../../scrub.md), and
+lives there only. It filters code blocks and inline code first, because a
+document that describes a link check contains link-shaped text that is not a
+link, and it names the one legitimate exception — `docs/templates/`, whose
+links are relative to the repository root where their output lands.
 
 ## Labels
 

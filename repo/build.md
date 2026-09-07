@@ -109,8 +109,9 @@ The template also sets `*.cs text diff=csharp` (better diff hunk headers) and
 
 Follow [`payload/docs/rules/layout.md`](payload/docs/rules/layout.md) for the chosen mode. It covers the standalone
 and monorepo trees, the kebab-case-directory / PascalCase-project naming rule,
-per-folder conventions, and the two SDK-template defects that break the first
-build (CPM version conflicts, and placeholder files that violate StyleCop).
+and per-folder conventions. The two SDK-template defects that break the first
+build — CPM version conflicts, and sample files that violate StyleCop — are in
+`csharp-new-project.md`, which it points at.
 
 Root configuration files exist **once**, at the repository root, in both modes.
 Never copy them into component folders.

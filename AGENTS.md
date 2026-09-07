@@ -87,7 +87,7 @@ Three kinds of file, told apart by location:
       change-tracking/SKILL.md     /change-tracking - create or find a ticket
       source-control/SKILL.md      /source-control - ticket-linked branch, commit, draft PR, merge settings
       scrub/SKILL.md               /scrub   - consistency + drift pass; reports, does not fix
-      upgrade/SKILL.md             /upgrade - toolkit pins, or a target to the current toolkit
+      upgrade/SKILL.md             /upgrade - toolkit pins, a target to the toolkit, or standalone -> monorepo
 
 Three payload files are forked from `dotnet new` templates and carry a
 `dc-agentics-baseline:` marker recording the source SDK and the SHA-256 of the
@@ -143,9 +143,9 @@ somewhere the surrounding context no longer holds.
 - **Say when it applies, not just what to do.** A rule with no trigger gets
   applied everywhere or nowhere. The trigger is also what keeps a long document
   cheap: nobody pays for `csharp-ef-core-rules.md` unless they touch EF Core.
-- **Budget by what is always loaded, not by total size.** `AGENTS.md` and the
-  skill shims are read every session and have no trigger to gate them, so they
-  stay tight - the shims are 30-40 lines and should remain so. Everything under
+- **Budget by what is always loaded, not by total size.** `AGENTS.md` is read
+  every session with no trigger to gate it, and so is each shim's name and
+  description - a shim's body loads only when it is invoked. Everything under
   `docs/rules/` is loaded on demand, where depth costs nothing until its trigger
   fires; length there is only a problem if the trigger is too broad. Splitting a
   document that is always loaded saves nothing, and splitting one whose parts

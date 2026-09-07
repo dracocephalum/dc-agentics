@@ -174,7 +174,9 @@ one:
 
 Every component has a `README.md` — the page someone reads before touching it.
 Copy `docs/templates/component-README.md` into the component folder as
-`README.md`, fill every double-brace placeholder (name, purpose, category,
+`README.md`, fill every double-brace placeholder — `COMPONENT_NAME` is the
+kebab-case folder, `KIND` follows from the category, `PROJECT_NAME` is the main
+project minus the prefix — (name, purpose, category,
 kind, prefix, project name), and delete the template comment. Say how to run
 it beyond build and test, and what configuration it needs; "none" is a valid
 answer, silence is not.

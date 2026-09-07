@@ -65,7 +65,7 @@ Three kinds of file, told apart by where they live:
 - **`machine/`** and **`repo/`** (everything else) — procedures and guides,
   grouped by what they act on: a machine, or a target repository. Read here,
   never copied.
-- **The root** — this file, `AGENTS.md`, `TODO.md`, `PLAN.md`, and the workspace config
+- **The root** — this file, `AGENTS.md`, `GLOSSARY.md`, `TODO.md`, `PLAN.md`, and the workspace config
   for working on the toolkit itself. `.claude/skills/` is the one thing shipped
   from outside the payload.
 

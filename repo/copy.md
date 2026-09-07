@@ -22,7 +22,7 @@ review and commit themselves.
 **Pass `-b main` explicitly.** A machine with no `init.defaultBranch` set
 still creates `master`, and the default branch is named `main` throughout —
 `.github/rulesets/protect-main.json`, the ruleset command in
-[`settings.md`](settings.md), and every `--base main` in the source-control
+[`settings.md`](settings.md), and the `--base main` in the change-tracking
 rules. Renaming afterwards works, but only if someone notices; nothing later
 in the procedure fails loudly on the wrong name.
 

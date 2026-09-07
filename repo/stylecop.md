@@ -17,9 +17,12 @@ wiring.
 
 ## Steps
 
-### 1. Ask which mode
+### 1. Know which mode
 
-Ask the user before copying — do not assume:
+At initialization the mode is `relaxed` unless the user asked for `strict` —
+[`initialize.md`](initialize.md) applies that default without asking and
+reports it. This procedure is for when the answer is known, or when a
+repository switches later; it never asks on its own:
 
 - **Relaxed** (default) — the ruleset as shipped. Ordering, `this.` prefixing,
   bracket spacing and single-line-comment layout are off or informational.

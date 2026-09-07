@@ -9,7 +9,7 @@ procedure.
 this repository were a target — the toolkit is held to what it ships. Three
 adjustments, because it is not a target:
 
-- **Judge the payload's documents against `payload/AGENTS.template.md`, not
+- **Judge the payload's documents against `payload/docs/templates/AGENTS.template.md`, not
   against this repository's `AGENTS.md`.** The template is the table a target
   actually gets; this repository's own index lists only what an agent working
   *here* needs, and it correctly omits the C# rules because there is no C# code
@@ -17,10 +17,12 @@ adjustments, because it is not a target:
   orphans. This repository's `AGENTS.md` links into the payload by the longer
   `repo/payload/docs/rules/...` path; that path is what its own reverse check
   must resolve.
-- There is no build, so the `.dc-agentics.yaml` rows about StyleCop and central
-  package management describe what the payload *ships*, not what runs here.
+- The settings-truth check has less to do here. This repository's
+  `.dc-agentics.yaml` has no `repository:` block at all — no licence, layout,
+  StyleCop or CPM rows — because it is the toolkit, not a target. What remains
+  to check is `change-tracking`, `source-control` and `guidelines`.
 - **`payload/.dc-agentics.yaml` is unfilled on purpose**, so the placeholder
-  check finds seven `{{…}}` tokens in it every time. That file is a template
+  check finds eight `{{…}}` tokens in it every time. That file is a template
   in everything but name — its placeholders are filled at initialization. Add
   it to that check's exclusions here; in a target the same file is filled, so
   a hit there is a real finding.
@@ -96,15 +98,20 @@ toolkit's own directory structure does not exist. So:
 - **No instruction addressed to someone working on dc-agentics.** Payload prose
   speaks to an agent in a repository that merely uses the standard. A rule that
   reads naturally as advice to "you, working here" is usually misfiled — see
-  *Payload, skills, workspace* in `AGENTS.md`.
+  *The distinction that matters most here* in `AGENTS.md`.
 - **`payload/` is a mirror of a target root.** Anything in it that would not
   belong at the root of an initialized repository is in the wrong place.
 
 ## 4. Skill shim fallbacks
 
-Each `.claude/skills/*/SKILL.md` names two paths: the target's
-`docs/rules/...`, then the toolkit's `repo/payload/docs/rules/...`. The shims
-are copied into targets, so a wrong fallback ships:
+Each `.claude/skills/*/SKILL.md` names the document it follows — for the rules
+shims, the target's `docs/rules/...` then the toolkit's
+`repo/payload/docs/rules/...`; for `scrub` and `upgrade`, a toolkit document
+under `repo/` as well. The shims are copied into targets, so a wrong path
+ships. Also confirm each frontmatter is valid YAML: an `argument-hint` such as
+`[a] [b]` opens a flow sequence and continues past it, the whole block fails to
+parse, and the skill's description degrades to its body's first line — which is
+how `review` shipped for weeks. Quote any value that starts with `[`.
 
     grep -rn "repo/payload/docs/rules" .claude/skills/*/SKILL.md
 
@@ -139,17 +146,17 @@ genuinely copied, which is what makes this a straight comparison.
 
 ## 7. Always-loaded documents stay within budget
 
-`AGENTS.md` and the skill shims are read every session with no trigger to gate
-them, so their length is a cost paid on every request. Everything under
-`payload/docs/rules/` is loaded on demand and is not measured here — depth
-there is cheap until its trigger fires.
+`AGENTS.md` is read every session with no trigger to gate it, and so is each
+shim's **name and description** — the shim body loads only when the skill is
+invoked. Everything under `payload/docs/rules/` is loaded on demand and is not
+measured here; depth there is cheap until its trigger fires.
 
     wc -l AGENTS.md .claude/skills/*/SKILL.md | sort -n
 
-Shims are 30-40 lines and should stay there; a shim that has grown is usually
-carrying substance that belongs in the document it points at. `AGENTS.md` is
-the one to watch, since every row added to the task index is paid for
-everywhere.
+`AGENTS.md` is the one to watch, since every row added to the task index is
+paid for everywhere. Shims sit around 40 lines; one that has grown well past
+that is usually carrying substance that belongs in the document it points at,
+which is a clarity problem rather than a context one.
 
 Report growth as a trend rather than a threshold: a shim that has doubled is a
 finding, a shim at 44 lines is not.

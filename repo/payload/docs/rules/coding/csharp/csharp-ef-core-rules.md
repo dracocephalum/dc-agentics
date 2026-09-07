@@ -148,9 +148,11 @@ Every migration runs against a live database while the **previous release is
 still serving**. The generator does not know that, so generating is step one
 and editing the generated file against these rules is step two.
 
-- **Generate, never hand-write.** `dotnet ef migrations add <Name>` — `dotnet-ef`
-  is a local tool in `.config/dotnet-tools.json`, pinned to the same version as
-  `Microsoft.EntityFrameworkCore.Design`. A hand-written migration or a
+- **Generate, never hand-write.** `dotnet ef migrations add <Name>`. Add
+  `dotnet-ef` to `.config/dotnet-tools.json` as a local tool when the first
+  `DbContext` arrives — it does not ship there by default — and pin it to the
+  same version as `Microsoft.EntityFrameworkCore.Design`. A hand-written
+  migration or a
   hand-edited `ModelSnapshot` desynchronises the snapshot, and every later
   migration is generated from the wrong model. If the `DbContext` cannot be
   constructed at design time (it needs configuration or DI), add an

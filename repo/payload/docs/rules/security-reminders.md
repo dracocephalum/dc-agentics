@@ -4,7 +4,7 @@ A checklist for any repository that may be pushed to a remote, public or private
 
 These are **reminders, not enforcement**. Nothing here blocks anything. Adopting
 them — and deciding which to make mandatory — is the consuming project's call.
-The last section covers turning the ones that matter into actual gates.
+*Turning reminders into gates*, near the end, covers making the ones that matter enforceable.
 
 Cheapest time to act on all of this is before the first push. Most items become
 a history rewrite afterwards.

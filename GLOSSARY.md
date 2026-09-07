@@ -15,7 +15,7 @@ the document wins and the row is the bug.
 | **payload** | `repo/payload/` — an exact mirror of a target repository root, copied verbatim and never pruned afterwards | [`AGENTS.md`](AGENTS.md), *Layout* |
 | **workspace** | everything that is *not* copied: the procedures, and this repository's own files | [`AGENTS.md`](AGENTS.md), *The distinction that matters most here* |
 | **shim** | a `.claude/skills/*/SKILL.md` — frontmatter plus a pointer to the document that holds the substance | [`AGENTS.md`](AGENTS.md), *Layout* |
-| **target** | a repository dc-agentics initialized, as distinct from the toolkit itself | [`repo/initialize.md`](repo/initialize.md) |
+| **target** | a repository dc-agentics initialized, as distinct from the toolkit itself | [`repo/version-check.md`](repo/version-check.md) |
 | **baseline** | the pristine `dotnet new` output in `repo/baselines/`, hash-verified byte-for-byte; never copied to a target | [`repo/copy.md`](repo/copy.md), *Baseline drift check* |
 | **marker** | a recorded "this was verified together, and when" — `dc-agentics-baseline`, `dc-agentics-verified`, `guidelines.verified` | [`repo/upgrade.md`](repo/upgrade.md), *The markers* |
 | **drift** | a recorded value no longer matching reality: an SDK that moved, settings that no longer describe the repository | [`repo/payload/docs/rules/scrub.md`](repo/payload/docs/rules/scrub.md) |
@@ -29,8 +29,8 @@ Each is a distinct verb, so a refusal can name exactly which one it means.
 | **initialization** | landing the payload in a repository for the first time; five stages | [`repo/initialize.md`](repo/initialize.md) |
 | **toolkit version** | which toolkit commit a repository currently carries — `toolkit.commit` in its settings | [`repo/settings.md`](repo/settings.md) |
 | **toolkit upgrade** | bringing a target up to a newer toolkit commit; operation 2 | [`repo/upgrade.md`](repo/upgrade.md) |
-| **layout conversion** | changing a target from standalone to monorepo; operation 3, not written yet | [`PLAN.md`](PLAN.md) |
-| **scrub** | a consistency and drift pass that reports and changes nothing | [`repo/scrub.md`](repo/scrub.md) |
+| **layout conversion** | changing a target from standalone to monorepo; operation 3, and the one that needs no toolkit checkout | [`repo/upgrade.md`](repo/upgrade.md) |
+| **scrub** | a consistency and drift pass that reports and changes nothing | [`repo/payload/docs/rules/scrub.md`](repo/payload/docs/rules/scrub.md) |
 | **re-baselining** | replacing a pristine baseline after an upstream template changed, and updating its marker | [`repo/copy.md`](repo/copy.md) |
 
 ## How a repository is shaped

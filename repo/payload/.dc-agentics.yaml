@@ -12,7 +12,7 @@ toolkit:
 
 repository:
   framework: dotnet                   # the only value supported today
-  layout: "{{LAYOUT}}"                # standalone | monorepo - docs/rules and AGENTS.md describe the chosen one
+  layout: "{{LAYOUT}}"                # standalone | monorepo - AGENTS.md describes the chosen one; docs/rules/layout.md describes both
   namespace: "{{PREFIX}}"             # PascalCase prefix of every assembly and namespace
   stylecop: relaxed                   # relaxed | strict - see stylecop.ruleset; strict also edits .editorconfig and BannedSymbols.txt
   central-package-management: true    # Directory.Packages.props holds every package version

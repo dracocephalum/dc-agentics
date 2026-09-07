@@ -111,7 +111,7 @@
 # in each fork. They must never be line-ending converted: `* text=auto` above
 # would check them out as CRLF on Windows and break the hash they exist to
 # support. The path mirrors payload/, so baselines/.editorconfig.original is
-# the pristine form of payload/.editorconfig.
+# the pristine form of repo/payload/.editorconfig.
 #
 # The .original suffix is load-bearing, not decoration: a file named exactly
 # `.gitattributes` or `.gitignore` is read as live configuration for its
