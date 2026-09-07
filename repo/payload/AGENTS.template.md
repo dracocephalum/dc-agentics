@@ -81,6 +81,7 @@ makes it selectable from a plain-language request.
 | Creating or finding a ticket, or asking which ticket a change is for | [`docs/rules/change-tracking/change-tracking.md`](docs/rules/change-tracking/change-tracking.md), then the tracker file it names |
 | Starting work on a ticket, naming a branch, publishing the repository, committing, or opening / updating / merging a pull request | [`docs/rules/source-control/source-control.md`](docs/rules/source-control/source-control.md), then the host file it names |
 | Reviewing a pull request, a diff, or a set of changes | [`docs/rules/coding/code-review.md`](docs/rules/coding/code-review.md) — then the C# or markdown checklist it names |
+| Scrubbing, sweeping or auditing this repository for drift or inconsistency — or after any move, rename or restructure | [`docs/rules/scrub.md`](docs/rules/scrub.md) |
 | Finding what exists — which component does what, where something lives | `README.md` here; in a monorepo, each category's `README.md` is the map of its components, and each component's `README.md` says how to run it |
 | Starting any source-control action, or asked what this repository's settings and defaults are | [`.dc-agentics.yaml`](.dc-agentics.yaml) — the mode the agent works in (`auto`, `local`, `manual`) and every choice made at initialization |
 | Leaving something unfinished, blocked, or undecided — or asked what is still open | [`TODO.md`](TODO.md) — add it there; a remark in a conversation is lost |
@@ -90,10 +91,12 @@ makes it selectable from a plain-language request.
 The documents above are the substance, for every tool. In Claude Code some
 are also invocable through a shim in `.claude/skills/` - `/project <kind>
 <name>`, `/review [PR# | branch | paths | comments PR#]`,
-`/change-tracking new|find`,
+`/change-tracking new|find`, `/scrub [paths...]`,
 `/source-control start|commit|pr|setup`, or just ask in plain language - each
 following the same document. `/review` is the rules pass; the built-in
 `/code-review` is the bug-hunting pass, and the two complement each other.
+`/scrub` is neither: it looks for drift and inconsistency, and reports rather
+than fixing.
 
 Add a row whenever a rules document is added under `docs/rules/`. A document
 nobody is pointed at will not be read.

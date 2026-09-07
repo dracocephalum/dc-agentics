@@ -105,3 +105,16 @@
 .gitattributes export-ignore
 .gitignore     export-ignore
 .gitkeep       export-ignore
+
+# repo/baselines/ holds the pristine `dotnet new` output that the forked files
+# in repo/payload/ are verified against, byte-for-byte, via a SHA-256 recorded
+# in each fork. They must never be line-ending converted: `* text=auto` above
+# would check them out as CRLF on Windows and break the hash they exist to
+# support. The path mirrors payload/, so baselines/.editorconfig.original is
+# the pristine form of payload/.editorconfig.
+#
+# The .original suffix is load-bearing, not decoration: a file named exactly
+# `.gitattributes` or `.gitignore` is read as live configuration for its
+# directory, and the pristine `.gitattributes` would then override this rule
+# with its own `* text=auto`.
+repo/baselines/** -text

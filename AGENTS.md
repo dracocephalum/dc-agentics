@@ -24,6 +24,7 @@ them.
 | Create or find a ticket, or ask which ticket a change is for (`/change-tracking`) | [`repo/payload/docs/rules/change-tracking/change-tracking.md`](repo/payload/docs/rules/change-tracking/change-tracking.md), then the tracker file it names |
 | Start work on a ticket, name a branch, publish a repository, commit, or open / update / merge a pull request, set merge behaviour (`/source-control`) | [`repo/payload/docs/rules/source-control/source-control.md`](repo/payload/docs/rules/source-control/source-control.md), then the host file it names |
 | Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`repo/payload/docs/rules/coding/code-review.md`](repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
+| Scrub, sweep, or audit a repository for drift or inconsistency (`/scrub`) | [`repo/scrub.md`](repo/scrub.md) here; [`repo/payload/docs/rules/scrub.md`](repo/payload/docs/rules/scrub.md) is the part every target gets |
 | Initialize / scaffold / set up a repo at a path | [`repo/initialize.md`](repo/initialize.md) |
 | Set up StyleCop, or choose relaxed vs strict | [`repo/stylecop.md`](repo/stylecop.md) |
 | Check privacy/security before a first push | [`repo/payload/docs/rules/security-reminders.md`](repo/payload/docs/rules/security-reminders.md) |
@@ -45,8 +46,11 @@ Three kinds of file, told apart by location:
     repo/                          acting on a target repository
       initialize.md                repo initialization: inputs, what lands, the five stages
       copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
+      scrub.md                     consistency + drift pass for THIS repo; extends the payload checklist
       layout.md                    standalone + monorepo folder structures
       stylecop.md                  StyleCop relaxed/strict procedure
+      baselines/                   pristine `dotnet new` output, NEVER copied to a target
+                                   path mirrors payload/; .original suffix keeps them inert
 
     (1)+(2) payload - an EXACT mirror of a target repository root; copied verbatim
     repo/payload/
@@ -54,13 +58,14 @@ Three kinds of file, told apart by location:
       README.template.md           transformed at init (-> README.md); the human entry point
       .dc-agentics.yaml            settings agents read: source-control mode, init choices, toolkit commit; placeholders filled at init
       TODO.md                      the target's open-items file; init writes anything unresolved into it
-      .editorconfig  .gitignore  .gitattributes   (+ .original pristine baselines - never edit)
+      .editorconfig  .gitignore  .gitattributes   (forked; baselines live in repo/baselines/)
       stylecop.ruleset  stylecop.json  StyleCop.props
       Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props  BannedSymbols.txt
       nuget.config  allowed-licenses.json  license-overrides.json
       .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
       docs/rules/                  every rules document, exactly where it lands
         dependencies.md
+        scrub.md                   the consistency + drift checks every target gets
         security-reminders.md      privacy & data-security checklist; the review's security pass
         change-tracking/         change-tracking.md - the ticket rule, the yes/no setting, boards as views; github.md - issues, linked branches
         source-control/          source-control.md - the rules, host-neutral; github.md - reaching GitHub, publishing, PRs, review, settings
@@ -75,17 +80,28 @@ Three kinds of file, told apart by location:
       review/SKILL.md              /review  - PR, branch, files, or comment triage; post/print/report
       change-tracking/SKILL.md     /change-tracking - create or find a ticket
       source-control/SKILL.md      /source-control - ticket-linked branch, commit, draft PR, merge settings
+      scrub/SKILL.md               /scrub   - consistency + drift pass; reports, does not fix
 
 Three payload files are forked from `dotnet new` templates and carry a
 `dc-agentics-baseline:` marker recording the source SDK and the SHA-256 of the
 pristine generated file: `.editorconfig`, `.gitignore`, `.gitattributes`.
 The copy stage (`repo/copy.md`) re-checks them and stops on drift. Hashes are over
 newline-normalized bytes - never raw, since `dotnet new` emits CRLF and
-`text=auto` checks out LF. Each has a pristine `.original` sibling, stored
-LF-normalized so it hashes directly to its marker; drift is isolated by diffing
-a freshly generated template against the `.original`, never against our
-version. Never edit an `.original` - they carry no header precisely because a
-header would change the bytes the hash verifies.
+`text=auto` checks out LF. Each has a pristine counterpart in
+`repo/baselines/`, at the path it mirrors in `payload/`, stored LF-normalized so
+it hashes directly to its marker; drift is isolated by diffing a freshly
+generated template against the baseline, never against our version. Never edit
+a baseline - they carry no header precisely because a header would change the
+bytes the hash verifies.
+
+`repo/baselines/` is **not payload**: nothing in it is ever copied to a target,
+which is what lets `payload/` be an exact mirror with no post-copy pruning. Two
+details there are deliberate. The root `.gitattributes` sets
+`repo/baselines/** -text`, because a converted line ending breaks a
+byte-for-byte hash; that rule can only live at the root because the directory
+has no attributes file of its own. And the `.original` suffix is load-bearing -
+a file named exactly `.gitattributes` or `.gitignore` would be read as live
+configuration for the directory it sits in, and would override that very rule.
 
 Rules documents keep their relative links correct by construction: `docs/rules/`
 inside `payload/` *is* the target layout. Only links up to the root `AGENTS.md`
@@ -118,7 +134,15 @@ somewhere the surrounding context no longer holds.
 - **Self-contained.** Payload must not depend on a sibling file existing at a
   path that only holds inside this repo.
 - **Say when it applies, not just what to do.** A rule with no trigger gets
-  applied everywhere or nowhere.
+  applied everywhere or nowhere. The trigger is also what keeps a long document
+  cheap: nobody pays for `csharp-ef-core-rules.md` unless they touch EF Core.
+- **Budget by what is always loaded, not by total size.** `AGENTS.md` and the
+  skill shims are read every session and have no trigger to gate them, so they
+  stay tight - the shims are 30-40 lines and should remain so. Everything under
+  `docs/rules/` is loaded on demand, where depth costs nothing until its trigger
+  fires; length there is only a problem if the trigger is too broad. Splitting a
+  document that is always loaded saves nothing, and splitting one whose parts
+  share a single trigger just adds files to open.
 - **Examples must run.** A boilerplate that was never executed is a liability.
   If it can't be verified, mark it explicitly as untested.
 - **Prefer a real file over a snippet in prose.** Templates that are actual files

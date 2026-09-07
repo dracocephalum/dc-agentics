@@ -135,6 +135,122 @@ thing to this repository", each backed by the document that already governs it.
 Open: whether it replaces `/project` or wraps it, and whether the name invites
 confusion with `dotnet new`.
 
+### A full `/scrub`
+
+`/scrub` as shipped is a **consistency** pass: lint, links, placeholders, line
+endings, privacy, settings that still match reality, a complete `AGENTS.md`
+index, stale `TODO.md` entries, and baseline drift. It deliberately stops
+short of anything that needs a build, so it stays cheap enough to run without
+deciding to.
+
+A *full* scrub would add what `verify.md` runs once at initialization:
+`dotnet build` and `dotnet test` with the expected count, the analyzer probe,
+`nuget-license` over the transitive graph, lock files current, and the age of
+the `dc-agentics-verified` marker on the test stack.
+
+The open question is not whether those checks are worth running — they are —
+but whether a skill is the right place, given that CI will eventually run all
+of them on every push. A full scrub may turn out to be most useful exactly
+where CI is not: before a first push, on a repository nobody has touched for a
+year, or when a toolchain has moved underneath one.
+
+### Tree shaking against a model line
+
+The compaction problem inverted: instead of writing terse documents and hoping
+a model fills the gaps, keep a **comprehensive** set — every rule stated, no
+reliance on any default — and shake it down against a named model when someone
+asks to compact. The full text stays the source of truth; the compact form is
+generated output for one model line, regenerated when that line moves.
+
+It is the only version of compaction that fails safely, because nothing is ever
+lost: a regression after a model change is fixed by re-shaking, not by
+remembering what was deleted. It also makes the model dependency explicit
+rather than baked in.
+
+The cost is high enough to park it. Two forms of every document to keep in
+step, a shaking step that must itself be verified — the only honest test being
+whether an agent still reaches a conforming repository from the shaken
+version — and a comprehensive source set that does not exist today, because
+this toolkit began by writing against Opus and Fable rather than against
+nothing. Worth revisiting only if a second model line ever has to be supported
+properly.
+
+### Verbose multi-file rule sets
+
+Prior art worth reading before assuming our shape is right:
+[Aaronontheweb/dotnet-skills](https://github.com/Aaronontheweb/dotnet-skills/tree/master/skills/csharp-coding-standards)
+splits general C# coding standards across several files. Ours is one
+`csharp-coding-rules.md`, with EF Core and unit tests split out because each has
+its own trigger.
+
+The distinction that matters is not file count but **what fires a load**. Their
+split is by topic within one subject, so a request about C# plausibly pulls
+several files; ours splits by trigger, so touching EF Core loads EF Core rules
+and nothing else. Verbosity aimed at weaker models is the other half of it, and
+it is real cost on every request for a model that did not need it.
+
+Not a change to make now. Revisit if a second model line has to be supported,
+where the extra explicitness stops being waste — most likely together with
+*Tree shaking* above, which is the same problem approached from the other end.
+
+### A compacting `/scrub`
+
+Documents cost context every time they are read, so trimming them has real
+value. But "compact" covers two very different operations, and only one of them
+is safe.
+
+**Removing genuine redundancy is safe and belongs here.** A rule stated in two
+documents is a drift hazard, not just length: the copies diverge and nothing
+says which is authoritative. So is prose that restates what a linked document
+already says, and instructions for things that no longer exist. These are
+verifiable — two documents saying the same thing is a fact, not a judgement —
+which is why *No rule stated twice* is now a shipped check rather than an idea.
+
+**Removing content because the model would do it anyway is a different
+proposition**, and the reasons to be careful are specific:
+
+- **It cannot be verified, only observed.** The toolkit's standard is
+  "verified, not asserted". "Opus does this by default" is an assertion whose
+  truth changes with the model, the version, the context length, and how much
+  of the document survived into the prompt. Nothing in the repository could
+  prove it still held six months later.
+- **The payload is tool-neutral by design.** `AGENTS.md` is a cross-tool
+  convention and the shipped rules are written for any agent. Compacting
+  against one vendor's defaults silently couples every initialized repository
+  to that vendor — a repo driven by a different tool would quietly lose rules
+  its model does not default to.
+- **The failure is invisible.** A dropped rule does not error. It shows up
+  months later as a repository that stopped meeting a standard nobody noticed
+  had gone.
+- **Instructions do more than change behaviour.** They also tell a *reader*
+  what the standard is, and make the rule reviewable in a diff. A rule the
+  model would have followed anyway still earns its place if a person needs to
+  know it is the rule.
+
+If it is ever attempted, the toolkit's own documents under `machine/` and
+`repo/` are the place to try it, not the payload: they are read by whatever
+agent the user runs today, and a mistake stays here rather than shipping. It
+would want a stated model baseline in `.dc-agentics.yaml`, a record of what was
+removed and why, and some way to re-test the claim when the baseline moves —
+which is most of an evaluation harness, and worth building only if the context
+saving turns out to be large.
+
+### An automated `/scrub`
+
+`/scrub` reports and changes nothing. That is the right default for a check
+whose findings include "the baseline you recorded no longer matches the SDK",
+which is a decision rather than an edit.
+
+Some findings are not decisions, though. Mixed line endings in a file,
+`markdownlint --fix`'s mechanical corrections, trailing whitespace, a
+`TODO.md` entry whose closing condition is demonstrably met — these have one
+right answer. A `--fix` mode could apply exactly that class and report the
+rest, provided the fixes land as their own reviewable change and never mix
+with whatever the user was doing.
+
+The risk to design against is a scrub that quietly rewrites files nobody
+asked it to touch, which is how a useful check becomes one people turn off.
+
 ### `/upgrade`
 
 Three operations under one verb:

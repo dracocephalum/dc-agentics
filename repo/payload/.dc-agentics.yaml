@@ -33,3 +33,11 @@ source-control:
   # Absent or unrecognised means manual. "auto for this one", said in conversation, overrides the
   # value for that session and is never written back here.
   mode: local
+
+guidelines:
+  # The model line the rules in docs/ were written and verified against, carried
+  # over from the toolkit at initialization. Not a requirement: another model
+  # works, but rules it does not infer by default are the ones it will miss.
+  # Fixed values, not placeholders - they describe the toolkit, not this repo.
+  model-baseline: "claude-opus-5, claude-fable-5-1"
+  verified: "2026-09-07"              # last end-to-end initialization trial on that line
