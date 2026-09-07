@@ -63,9 +63,12 @@ file is what agents read before any source-control action and what a future
 update of the repository diffs from; every choice made above is recorded in
 it, so fill it last, when the choices are final.
 
-The `guidelines:` block is **not** filled in: it records the model line the
-shipped rules were written and verified against, travels with the payload as a
-fixed value, and describes the toolkit rather than the target. Leave it alone.
+Two values are **not** filled in, because they describe the toolkit rather than
+the target and travel with the payload as fixed values. Leave both alone:
+`toolkit.payload-path`, which records where the payload lived at the recorded
+commit so a later upgrade diffs the right root; and the `guidelines:` block,
+which records the model line the shipped rules were written and verified
+against.
 
 Fill every quoted double-brace placeholder in `.dc-agentics.yaml`; the
 unquoted values are defaults, already correct unless a step above changed

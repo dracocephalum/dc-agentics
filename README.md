@@ -43,16 +43,17 @@ Agents start at [`AGENTS.md`](AGENTS.md) — a task index mapping requests to
 the document that governs them. People can too; it is the shortest route to
 anything here.
 
-The two things you will ask for:
+What you will ask for:
 
 | To … | Read |
 |---|---|
 | set up a developer machine | [`machine/README.md`](machine/README.md) |
 | initialize a repository | [`repo/initialize.md`](repo/initialize.md) |
 | check a repository for drift | [`repo/scrub.md`](repo/scrub.md) |
+| upgrade a repository, or the toolkit itself | [`repo/upgrade.md`](repo/upgrade.md) |
 
-All three are procedures an agent can run: "set up this machine", "initialize a
-repo at `<path>`", "scrub this repo".
+All four are procedures an agent can run: "set up this machine", "initialize a
+repo at `<path>`", "scrub this repo", "bring it up to the current toolkit".
 
 ## What is in here
 

@@ -33,13 +33,6 @@ when they have a closing condition.
       and ConfigureAwait rules usefully. Needs a build test on the template
       shells first; unlike `AnalysisMode`, it is not SDK-built-in and will have
       opinions of its own.
-- [ ] **Update mode for an initialized repository.** The target's
-      `.dc-agentics.yaml` records the toolkit commit it came from. Close by: a
-      procedure that diffs `repo/payload` between that commit and `HEAD`,
-      maps each path to the target, and applies the change — baseline markers
-      decide overwrite versus three-way merge, `docs/rules/**` and the shims
-      overwrite, `AGENTS.md`, `README.md`, and `TODO.md` merge by hand — then
-      rewrites `toolkit.commit`.
 
 ## CI — deferred as a group
 
