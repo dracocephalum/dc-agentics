@@ -29,8 +29,8 @@
 # Settings reconciled with StyleCop are marked  [StyleCop]  below. Changing one
 # without changing its counterpart puts the editor and the build in conflict.
 #
-# Switching to strict mode requires edits here too - see the block at the end
-# of this file, and the toolkit's repo/stylecop.md.
+# One StyleCop rule, SA1101, has a counterpart here; the note beside it says what
+# turning it on would require. Everything else is matched to the ruleset already.
 
 root = true
 
@@ -104,8 +104,8 @@ dotnet_sort_system_directives_first = true
 # [StyleCop] SA1633 is disabled in the ruleset, so no header is required.
 file_header_template = unset
 
-# [StyleCop] SA1101 - relaxed mode disables SA1101, so "no this." is correct.
-# STRICT MODE: SA1101 requires this. - flip all four to `true`.
+# [StyleCop] SA1101 (prefix local calls with this.) is off in stylecop.ruleset, so "no this." is correct.
+# If SA1101 is ever turned on, flip all four to `true`, or the IDE strips this. while the build demands it.
 # this. and Me. preferences
 dotnet_style_qualification_for_event = false:silent
 dotnet_style_qualification_for_field = false:silent
@@ -456,29 +456,6 @@ dotnet_naming_style.s_camelcase.word_separator =
 dotnet_naming_style.s_camelcase.capitalization = camel_case
 
 
-##############################################################################
-# STRICT MODE
-#
-# the toolkit's repo/stylecop.md describes a strict mode that re-enables a set of
-# StyleCop rules. Only one of those rules has an EditorConfig counterpart, but
-# leaving it unchanged makes the editor actively fight the build.
-#
-# When switching to strict, change these four from `false` to `true`:
-#
-#   dotnet_style_qualification_for_event    = true:silent
-#   dotnet_style_qualification_for_field    = true:silent
-#   dotnet_style_qualification_for_method   = true:silent
-#   dotnet_style_qualification_for_property = true:silent
-#
-# Reason: strict mode re-enables SA1101 (prefix local calls with `this.`),
-# which is the exact opposite of the relaxed default above. Left unchanged,
-# the IDE offers to remove `this.` while the build errors for its absence.
-#
-# The other strict-mode rules - SA1201-SA1204 (ordering), SA1512 (comment
-# layout), SA1111 (closing parenthesis placement), SA1009 and SA1011 (bracket
-# spacing) - have no EditorConfig equivalent, or are already satisfied by the
-# spacing defaults above. No further edits are needed.
-##############################################################################
 
 ##############################################################################
 # DELIBERATE PAIRINGS

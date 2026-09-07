@@ -140,6 +140,16 @@ or ask about it mid-task. Its C# language server needs a restored solution —
     dotnet build <solution> --nologo -v:q
     dotnet test  <solution> --nologo
 
+**If the build fails only on spacing rules** — `SA1009`, `SA1011`, `SA1111`,
+`SA1028`, `SA1518` — do not fix them by hand:
+
+    dotnet format analyzers <solution>
+
+corrects every one at once; rebuild. Run the same command before each commit
+regardless. It costs about as much as a build, and `--include` does not make
+it cheaper, so it is a repair and a pre-commit step rather than a prefix to
+every build.
+
 **Keep build output out of context.** Always `--nologo -v:q`; grep the output
 for `error|warning|Passed|Failed` and report those lines, never a full log.
 

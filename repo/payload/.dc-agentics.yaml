@@ -14,7 +14,6 @@ repository:
   framework: dotnet                   # the only value supported today
   layout: "{{LAYOUT}}"                # standalone | monorepo - AGENTS.md describes the chosen one; docs/rules/layout.md describes both
   namespace: "{{PREFIX}}"             # PascalCase prefix of every assembly and namespace
-  stylecop: relaxed                   # relaxed | strict - see stylecop.ruleset; strict also edits .editorconfig and BannedSymbols.txt
   central-package-management: true    # Directory.Packages.props holds every package version
   host: github                        # where the remote lives - docs/rules/source-control/<host>.md
   licence: "{{LICENCE}}"              # none | Apache-2.0 | MIT | <SPDX id>; matches the LICENSE file

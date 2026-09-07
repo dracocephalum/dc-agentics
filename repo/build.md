@@ -7,8 +7,10 @@ is something for stage 5 to build.
 
 ## 1. The StyleCop files
 
-Already at the target root after the payload copy: `stylecop.ruleset`
-(ships in relaxed mode), `stylecop.json`, `StyleCop.props`, `.editorconfig`.
+Already at the target root after the payload copy: `stylecop.ruleset`,
+`stylecop.json`, `StyleCop.props`, `.editorconfig`. There is one ruleset, and
+its header says how every severity was chosen; [`stylecop.md`](stylecop.md)
+says how to change one.
 
 `.editorconfig` declares `root = true`, so it must land at the **repository
 root** — any `.editorconfig` above it is then ignored, which is the intent.
@@ -18,11 +20,6 @@ It has been reconciled with `stylecop.ruleset`: the ruleset governs the build,
 `.editorconfig` is the file that was changed to match. Do not substitute a
 stock `dotnet new editorconfig` here — its `insert_final_newline = false`
 contradicts `stylecop.json` and produces SA1518 on every file.
-
-For **strict** mode, apply [`stylecop.md`](stylecop.md) in full — the ruleset
-edits, with their XML comment-nesting trap, and the matching `.editorconfig`
-change that strict requires. Doing the first without the second is the loop
-that document describes.
 
 ## 2. Generate the build files
 
@@ -57,8 +54,9 @@ the first restore every project has a `packages.lock.json`, and **those are
 committed** — they are what makes restores reproducible and what lets CI see
 transitive packages.
 
-For **strict** mode, also uncomment the entries in `BannedSymbols.txt` — see
-[`stylecop.md`](stylecop.md).
+`BannedSymbols.txt` is live as shipped: it bans the clock APIs the coding
+rules already forbid in favour of `TimeProvider`, for non-test projects only.
+A hit is a defect, not style.
 
 If central package management is **off**, omit `Directory.Packages.props`;
 [`stylecop.md`](stylecop.md) says where the analyzer version then comes from.
@@ -144,4 +142,4 @@ probe and the licence check are unrun until a first project exists.
 | Package version not found on restore | `StyleCop.Analyzers` missing from `Directory.Packages.props` |
 | Settings ignored | `stylecop.json` not registered as an `AdditionalFiles` item |
 | Subtree silently unstyled | a nested `Directory.Build.props` replaced the root one |
-| Ruleset fails to load | nested XML comments from a bad strict-mode edit |
+| Ruleset fails to load | a `<Rule>` element was commented out; its trailing description comment does not nest |

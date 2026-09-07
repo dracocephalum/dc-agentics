@@ -28,7 +28,7 @@ them.
 | Add a project, a test project, or a whole component to an initialized repo (`/new`) | [`repo/payload/docs/rules/coding/csharp/csharp-new-project.md`](repo/payload/docs/rules/coding/csharp/csharp-new-project.md) — from a toolkit checkout, [`repo/version-check.md`](repo/version-check.md) first |
 | Initialize / scaffold / set up a repo at a path | [`repo/initialize.md`](repo/initialize.md) |
 | Upgrade this toolkit's pinned versions, bring an initialized repo up to the current toolkit, or convert one from standalone to monorepo (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — three operations; the conversion needs no toolkit checkout |
-| Set up StyleCop, or choose relaxed vs strict | [`repo/stylecop.md`](repo/stylecop.md) |
+| Change a StyleCop severity, or asked why a rule is set the way it is | [`repo/stylecop.md`](repo/stylecop.md) — the ruleset's own header carries the principle |
 | Check privacy/security before a first push | [`repo/payload/docs/rules/security-reminders.md`](repo/payload/docs/rules/security-reminders.md) |
 | Asked what a term here means — payload, baseline, component, toolkit upgrade, drift | [`GLOSSARY.md`](GLOSSARY.md) — an index to the document that owns each term, never a second definition |
 | Capture an idea that is not committed work, or asked what might be built later | [`PLAN.md`](PLAN.md) — `TODO.md` is for decided work; see the table at the top of either |
@@ -53,7 +53,7 @@ Three kinds of file, told apart by location:
       scrub.md                     consistency + drift pass for THIS repo; extends the payload checklist
       upgrade.md                   toolkit pins, a target up to the toolkit, standalone -> monorepo
       version-check.md             does a target agree with this toolkit; used by /upgrade and /new
-      stylecop.md                  StyleCop relaxed/strict procedure
+      stylecop.md                  the ruleset: what each severity means, how to change one, the wiring
       baselines/                   pristine `dotnet new` output, NEVER copied to a target
                                    path mirrors payload/; .original suffix keeps them inert
 

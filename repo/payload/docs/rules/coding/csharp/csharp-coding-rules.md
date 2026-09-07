@@ -57,6 +57,16 @@ Metrics and spans:
   and keep to it. Everything else throws a specific domain type such as
   `ServerConnectionTimeoutException`, never bare `Exception`.
 
+## Naming
+
+- **`_camelCase` for private and internal fields**, PascalCase for everything
+  a type exposes, camelCase for locals and parameters — the `dotnet/runtime`
+  convention. The underscore is what makes a field recognizable at the point
+  of use, which is why **`this.` is not written**: a parameter `value` cannot
+  collide with a property `Value`, a field is already marked, and the compiler
+  catches the rest. `stylecop.ruleset` has both rules off on purpose and says
+  what turning either on would cost.
+
 ## Types and APIs
 
 - **Records for DTOs, messages, and events.** `init`, not `set`.
@@ -95,8 +105,8 @@ Metrics and spans:
   `DateTimeOffset.UtcNow` there — the testability rule already requires the
   `TimeProvider`. Tests may use `DateTimeOffset.UtcNow` for arbitrary
   timestamps in test data; anything the system under test *reads* still goes
-  through `FakeTimeProvider`. In strict mode this is enforced at build time
-  by `BannedSymbols.txt` (`RS0030`); in relaxed mode by review.
+  through `FakeTimeProvider`. Enforced at build time by `BannedSymbols.txt`
+  (`RS0030`) in non-test projects.
 
 ## Entity Framework Core
 
