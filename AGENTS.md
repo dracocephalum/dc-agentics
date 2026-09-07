@@ -29,6 +29,7 @@ them.
 | Upgrade this toolkit's pinned versions, or bring an initialized repo up to the current toolkit (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — standalone-to-monorepo is not written yet |
 | Set up StyleCop, or choose relaxed vs strict | [`repo/stylecop.md`](repo/stylecop.md) |
 | Check privacy/security before a first push | [`repo/payload/docs/rules/security-reminders.md`](repo/payload/docs/rules/security-reminders.md) |
+| Asked what a term here means — payload, baseline, component, toolkit upgrade, drift | [`GLOSSARY.md`](GLOSSARY.md) — an index to the document that owns each term, never a second definition |
 | Capture an idea that is not committed work, or asked what might be built later | [`PLAN.md`](PLAN.md) — `TODO.md` is for decided work; see the table at the top of either |
 
 Supported frameworks today: **.NET (dotnet core)** only. For anything else, say
@@ -40,6 +41,7 @@ Three kinds of file, told apart by location:
 
     (3) workspace - about this repo; never copied
     README.md  AGENTS.md  TODO.md  PLAN.md  LICENSE  NOTICE  .gitignore  .gitattributes
+    GLOSSARY.md                    index of terms to the document that owns each; never a second definition
     .dc-agentics.yaml              this repository's own settings (source-control mode); same shape as the payload's
     .markdownlint.yaml             one line: extends the payload copy (so it cannot drift)
     machine/                       setting up a machine (README.md, then github/gitleaks/python/serena)

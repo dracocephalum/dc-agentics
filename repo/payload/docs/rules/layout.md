@@ -98,7 +98,7 @@ noise, and a folder that exists implies a decision that has not been made:
 | `jobs/` | scheduled executables (Kubernetes CronJobs and similar) |
 | `tools/` | never shipped to production |
 | `infrastructure/` | Terraform and similar provisioning |
-| `ui/` | front-end applications |
+| `ui/` | front-end applications that are **deployed** — a shared component library is a package and belongs in `libraries/` |
 | `docs/` | documentation |
 | `build/` | CI/CD pipeline definitions |
 
@@ -185,6 +185,18 @@ the .NET repositories use.
 
 **`.slnx`, not `.sln`.** The SDK 10 default, XML, and reviewable in a diff —
 unlike the legacy format's GUID soup.
+
+**`ui/`, not `apps/`.** The categories are cut by *kind of deliverable*, and
+`ui/` names that axis for a front-end the way `jobs/` does for a scheduled
+executable. `apps/` would overlap: a web API in `services/` is also an app.
+
+This does cut against the dominant monorepo convention, which is worth knowing
+rather than discovering. Nx uses `apps/` and `libs/`; Turborepo uses `apps/`
+and `packages/`, and in its own starter `packages/ui` is a **shared component
+library** consumed by the apps, not an application. Anyone arriving from that
+world will read `ui/` as the design system. The row above says which it is —
+deployed front-ends here, component libraries in `libraries/` — because the
+name alone cannot carry that.
 
 ## Test projects
 
