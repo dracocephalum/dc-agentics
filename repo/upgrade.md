@@ -129,6 +129,27 @@ Everything else is genuinely comparable, and in practice most of it comes back
 untouched — which is what makes the handful that did change worth a human's
 attention.
 
+### Then check for what the diff cannot see
+
+The diff shows what changed **in the payload**. It says nothing about a file
+that never changed and is simply absent from the target — deleted at
+initialization, or removed later by someone. Those files are invisible to every
+step above and stay missing for ever.
+
+So after applying the diff, compare the payload's whole file list against the
+target:
+
+    git ls-tree -r --name-only HEAD -- <payload-root> | sed 's|^<payload-root>/||' | sort
+
+Anything present there and absent from the target is a finding: report it with
+what it is for, and ask before reintroducing it. Some absences are deliberate
+and should stay — a repository may have removed a rule it does not want.
+
+This is not hypothetical. Standalone initialization used to delete
+`docs/templates/category-README.md`, so every repository initialized that way
+is missing a file the payload has always contained, and no diff between two
+toolkit commits will ever mention it.
+
 ### The per-path policy
 
 | Path | Policy | Why |
