@@ -44,7 +44,7 @@ the worse question.
     <Prefix>.<Name>.slnx         the solution, named after the first project (build.md)
     src/, test/                  the first project and its tests (build.md)
     docs/templates/              AGENTS.template.md, README.template.md — the sources of the two above, kept
-                                 component-README.md, category-README.md — used by /project
+                                 component-README.md, category-README.md — used by /new
                                  all four kept in both modes, so a layout conversion needs no toolkit
     .editorconfig                editor conventions (root = true)
     .gitattributes               line-ending normalization  (dotnet new)
@@ -73,7 +73,7 @@ the worse question.
       coding/markdown/markdown-review.md
     .claude/skills/
       change-tracking/SKILL.md   Claude Code shim: /change-tracking new|find
-      project/SKILL.md           Claude Code shim: /project <kind> <name>
+      project/SKILL.md           Claude Code shim: /new [project|component] <name>
       review/SKILL.md            Claude Code shim: /review [PR# | branch | paths | comments PR#]
       scrub/SKILL.md             Claude Code shim: /scrub [paths...]
       source-control/SKILL.md    Claude Code shim: /source-control start|commit|pr|setup

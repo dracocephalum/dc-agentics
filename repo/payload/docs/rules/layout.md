@@ -183,7 +183,7 @@ files only apply to MSBuild projects.
 The procedure — templates, the sample code each one emits that fails the
 ruleset, central-package-management fixes, test wiring, verification — is
 [`coding/csharp/csharp-new-project.md`](coding/csharp/csharp-new-project.md),
-which also backs `/project`. The first component created at initialization
+which also backs `/new`. The first component created at initialization
 follows it too.
 
 ## Choices made here

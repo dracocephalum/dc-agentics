@@ -17,5 +17,5 @@
 <!-- | [`example-service`](example-service/README.md) | one line | active | -->
 
 Each component has its own solution and `README.md`. To add one, follow
-`docs/rules/coding/csharp/csharp-new-project.md` (or `/project` in Claude Code)
+`docs/rules/coding/csharp/csharp-new-project.md` (or `/new` in Claude Code)
 — it appends the row here.
