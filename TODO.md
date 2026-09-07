@@ -14,7 +14,7 @@ when they have a closing condition.
       the shipped ruleset is refused. Shape decided: sits beside the gitleaks
       hook under `core.hooksPath`, allows the push when the remote has no
       default branch yet (the first publish), refuses afterwards. Close by:
-      the script in `init/local/gitleaks.md` (rename that guide to cover both
+      the script in `machine/gitleaks.md` (rename that guide to cover both
       hooks), a proof step like the fake-key one, and a line in the
       source-control host file pointing at it.
 - [ ] **`ModelConventions.cs` as a real file.** The verified check lives as a
@@ -24,9 +24,9 @@ when they have a closing condition.
       `.config/dotnet-tools.json` at the same time, pinned to the EF version
       in `Directory.Packages.props`.
 - [ ] **`python-new-project.md`** when the first Python component arrives —
-      shape already decided in `init/local/python.md`.
+      shape already decided in `machine/python.md`.
 - [ ] **`dotnet-outdated-tool`** as a further entry in
-      `init/repo/payload/.config/dotnet-tools.json` (4.8.1 at time of writing), so
+      `repo/payload/.config/dotnet-tools.json` (4.8.1 at time of writing), so
       "keep the stack current" in `layout.md` becomes one command. Verify it
       respects central package management before shipping.
 - [ ] **Meziantou.Analyzer** (MIT, 3.0.204) — overlaps the CancellationToken
@@ -35,7 +35,7 @@ when they have a closing condition.
       opinions of its own.
 - [ ] **Update mode for an initialized repository.** The target's
       `.dc-agentics.yaml` records the toolkit commit it came from. Close by: a
-      procedure that diffs `init/repo/payload` between that commit and `HEAD`,
+      procedure that diffs `repo/payload` between that commit and `HEAD`,
       maps each path to the target, and applies the change — baseline markers
       decide overwrite versus three-way merge, `docs/rules/**` and the shims
       overwrite, `AGENTS.md`, `README.md`, and `TODO.md` merge by hand — then
@@ -63,7 +63,7 @@ already decided on the local side that need their server-side half:
       `ubuntu-latest` and `macos-latest` that runs the local setup (minus the
       interactive steps) and the full repo-init procedure end to end is the
       Linux/macOS test environment we do not otherwise have — free on a public
-      repository. Until it exists, `init/local/platforms.md` is best effort.
+      repository. Until it exists, `machine/platforms.md` is best effort.
       FreeBSD has no hosted runner and no official .NET 10; it stays
       "user-prepared prerequisites" (community source builds such as
       sec/dotnet-core-freebsd-source-build) unless a VM is set up.

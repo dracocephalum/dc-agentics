@@ -121,7 +121,7 @@
     Banned APIs. BannedSymbols.txt at the repository root lists symbols that
     must not be used; each use is diagnostic RS0030, an error under
     warnings-as-errors. The file ships with every entry commented out (relaxed
-    mode) - strict mode uncomments them. See the toolkit's init/repo/stylecop.md.
+    mode) - strict mode uncomments them. See the toolkit's repo/stylecop.md.
 
     Not attached to *.Tests projects: tests may use DateTimeOffset.UtcNow for
     test data, and the analyzer never loads there at all.

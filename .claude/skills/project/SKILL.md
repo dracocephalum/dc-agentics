@@ -11,7 +11,7 @@ language or framework, say so and stop.
 ## Find the procedure
 
 1. `docs/rules/coding/csharp/csharp-new-project.md` - an initialized repository
-2. `init/repo/payload/docs/rules/coding/csharp/csharp-new-project.md` - the dc-agentics toolkit itself
+2. `repo/payload/docs/rules/coding/csharp/csharp-new-project.md` - the dc-agentics toolkit itself
 
 Read the first one that exists and follow it exactly - where projects go, how
 they are named, what a finished project looks like, and what "done" means are

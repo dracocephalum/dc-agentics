@@ -13,7 +13,7 @@ are not chained - run the built-in separately if a bug pass is wanted.
 ## Find the standard
 
 1. `docs/rules/coding/code-review.md` - an initialized repository
-2. `init/repo/payload/docs/rules/coding/code-review.md` - the dc-agentics toolkit
+2. `repo/payload/docs/rules/coding/code-review.md` - the dc-agentics toolkit
 
 Read the first that exists, then the language checklists and the rules
 documents it names, then the repository's `AGENTS.md`. Never review from

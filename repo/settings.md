@@ -1,6 +1,6 @@
 # Host settings, licence, and the settings file
 
-Stage 4 of [`README.md`](README.md): the choices that live outside the build
+Stage 4 of [`initialize.md`](initialize.md): the choices that live outside the build
 — merge behaviour on the host, the licence, and the settings file that
 records every choice made so far. Fill the settings file last.
 

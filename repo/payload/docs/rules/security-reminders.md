@@ -75,7 +75,7 @@ A checklist depends on everyone remembering. These do not:
   blocks the commit rather than reporting it later. Run the same scan in CI so
   it cannot be bypassed with `--no-verify`. A machine-wide gitleaks hook, with
   the checks that prove it is actually active, is in the toolkit's
-  `init/local/gitleaks.md`.
+  `machine/gitleaks.md`.
 - **Platform push protection** — GitHub's secret scanning push protection
   rejects pushes containing recognized credential formats. GitHub also offers a
   per-account setting to block command-line pushes that would expose a real

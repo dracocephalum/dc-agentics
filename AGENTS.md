@@ -15,18 +15,18 @@ them.
 
 | When asked to | Read |
 |---|---|
-| Set up a developer machine, install tooling, or fix Python/Git setup | [`init/local/README.md`](init/local/README.md) |
-| Install or wire Serena (or another MCP server) into Claude Code | [`init/local/serena.md`](init/local/serena.md) |
-| Set up GitHub access, SSH keys, commit signing, or `gh` | [`init/local/github.md`](init/local/github.md) |
-| Set up or troubleshoot secret scanning / git hooks | [`init/local/gitleaks.md`](init/local/gitleaks.md) |
-| Set up a machine that is **not Windows** (Linux, macOS, FreeBSD) | [`init/local/platforms.md`](init/local/platforms.md) — untested, read first |
-| Add or upgrade a package; judge a licence | [`init/repo/payload/docs/rules/dependencies.md`](init/repo/payload/docs/rules/dependencies.md) |
-| Create or find a ticket, or ask which ticket a change is for (`/change-tracking`) | [`init/repo/payload/docs/rules/change-tracking/change-tracking.md`](init/repo/payload/docs/rules/change-tracking/change-tracking.md), then the tracker file it names |
-| Start work on a ticket, name a branch, publish a repository, commit, or open / update / merge a pull request, set merge behaviour (`/source-control`) | [`init/repo/payload/docs/rules/source-control/source-control.md`](init/repo/payload/docs/rules/source-control/source-control.md), then the host file it names |
-| Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`init/repo/payload/docs/rules/coding/code-review.md`](init/repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
-| Initialize / scaffold / set up a repo at a path | [`init/repo/README.md`](init/repo/README.md) |
-| Set up StyleCop, or choose relaxed vs strict | [`init/repo/stylecop.md`](init/repo/stylecop.md) |
-| Check privacy/security before a first push | [`init/repo/payload/docs/rules/security-reminders.md`](init/repo/payload/docs/rules/security-reminders.md) |
+| Set up a developer machine, install tooling, or fix Python/Git setup | [`machine/README.md`](machine/README.md) |
+| Install or wire Serena (or another MCP server) into Claude Code | [`machine/serena.md`](machine/serena.md) |
+| Set up GitHub access, SSH keys, commit signing, or `gh` | [`machine/github.md`](machine/github.md) |
+| Set up or troubleshoot secret scanning / git hooks | [`machine/gitleaks.md`](machine/gitleaks.md) |
+| Set up a machine that is **not Windows** (Linux, macOS, FreeBSD) | [`machine/platforms.md`](machine/platforms.md) — untested, read first |
+| Add or upgrade a package; judge a licence | [`repo/payload/docs/rules/dependencies.md`](repo/payload/docs/rules/dependencies.md) |
+| Create or find a ticket, or ask which ticket a change is for (`/change-tracking`) | [`repo/payload/docs/rules/change-tracking/change-tracking.md`](repo/payload/docs/rules/change-tracking/change-tracking.md), then the tracker file it names |
+| Start work on a ticket, name a branch, publish a repository, commit, or open / update / merge a pull request, set merge behaviour (`/source-control`) | [`repo/payload/docs/rules/source-control/source-control.md`](repo/payload/docs/rules/source-control/source-control.md), then the host file it names |
+| Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`repo/payload/docs/rules/coding/code-review.md`](repo/payload/docs/rules/coding/code-review.md), then the C# or markdown checklist |
+| Initialize / scaffold / set up a repo at a path | [`repo/initialize.md`](repo/initialize.md) |
+| Set up StyleCop, or choose relaxed vs strict | [`repo/stylecop.md`](repo/stylecop.md) |
+| Check privacy/security before a first push | [`repo/payload/docs/rules/security-reminders.md`](repo/payload/docs/rules/security-reminders.md) |
 | Capture an idea that is not committed work, or asked what might be built later | [`PLAN.md`](PLAN.md) — `TODO.md` is for decided work; see the table at the top of either |
 
 Supported frameworks today: **.NET (dotnet core)** only. For anything else, say
@@ -40,16 +40,16 @@ Three kinds of file, told apart by location:
     README.md  AGENTS.md  TODO.md  PLAN.md  LICENSE  NOTICE  .gitignore  .gitattributes
     .dc-agentics.yaml              this repository's own settings (source-control mode); same shape as the payload's
     .markdownlint.yaml             one line: extends the payload copy (so it cannot drift)
-    init/
-      local/                       developer-machine guides (Windows; platforms.md for the rest)
-      repo/
-        README.md                  repo initialization: inputs, what lands, the five stages
-        copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
-        layout.md                  standalone + monorepo folder structures
-        stylecop.md                StyleCop relaxed/strict procedure
+    machine/                       setting up a machine (README.md, then github/gitleaks/python/serena)
+                                   Windows and interactive today; platforms.md for other platforms
+    repo/                          acting on a target repository
+      initialize.md                repo initialization: inputs, what lands, the five stages
+      copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
+      layout.md                    standalone + monorepo folder structures
+      stylecop.md                  StyleCop relaxed/strict procedure
 
     (1)+(2) payload - an EXACT mirror of a target repository root; copied verbatim
-    init/repo/payload/
+    repo/payload/
       AGENTS.template.md           transformed at init (-> AGENTS.md)
       README.template.md           transformed at init (-> README.md); the human entry point
       .dc-agentics.yaml            settings agents read: source-control mode, init choices, toolkit commit; placeholders filled at init
@@ -79,7 +79,7 @@ Three kinds of file, told apart by location:
 Three payload files are forked from `dotnet new` templates and carry a
 `dc-agentics-baseline:` marker recording the source SDK and the SHA-256 of the
 pristine generated file: `.editorconfig`, `.gitignore`, `.gitattributes`.
-The copy stage (`init/repo/copy.md`) re-checks them and stops on drift. Hashes are over
+The copy stage (`repo/copy.md`) re-checks them and stops on drift. Hashes are over
 newline-normalized bytes - never raw, since `dotnet new` emits CRLF and
 `text=auto` checks out LF. Each has a pristine `.original` sibling, stored
 LF-normalized so it hashes directly to its marker; drift is isolated by diffing
@@ -95,14 +95,14 @@ cannot be relative in both trees; those are plain text.
 
 This repo holds two kinds of content, and confusing them causes real damage:
 
-**Payload** — `init/repo/payload/` (an exact mirror of a target repository
+**Payload** — `repo/payload/` (an exact mirror of a target repository
 root) and the skill shims in `.claude/skills/`. Written to be consumed in
 *someone else's* project, on an unknown machine. Must be portable and
 self-contained.
 
 **Workspace** — everything else: this file, `README.md`, `TODO.md`, `PLAN.md`, the
-procedures under `init/`, and the repo tooling. Instructions for an agent
-working *on* dc-agentics itself.
+procedures under `machine/` and `repo/`, and the repo tooling. Instructions for
+an agent working *on* dc-agentics itself.
 
 Before writing a file, decide which it is. A rule that reads naturally as advice
 to "you, working here" is usually wrong as payload, because payload gets copied
@@ -126,7 +126,7 @@ somewhere the surrounding context no longer holds.
 - **A skill is a shim; the document is the substance.** `SKILL.md` carries
   frontmatter for discovery and a body that names which document to follow -
   it never contains the procedure. The document lives at
-  `init/repo/payload/docs/rules/` here and lands at `docs/rules/` in
+  `repo/payload/docs/rules/` here and lands at `docs/rules/` in
   initialized repositories, and `AGENTS.md` points every tool at it; the shim
   only adds `/name` invocation in Claude Code. There is one copy:
   `.claude/skills/<name>/SKILL.md`, live here and copied to a target's
@@ -137,7 +137,7 @@ somewhere the surrounding context no longer holds.
   suffix, `readlink -f`, `grep -P`, `timeout`), no `sha256sum` without naming
   the macOS/FreeBSD equivalents, no backslash paths. The payload is verified on
   Windows only; a snippet that is portable by construction is the only one that
-  does not need a machine we do not have. See `init/local/platforms.md`.
+  does not need a machine we do not have. See `machine/platforms.md`.
 - **Writing files from a shell: no backslashes in heredocs.** The shell tool
   pre-processes the command text: a `\\` arrives as a single backslash, a line
   ending in a backslash joins the next, and a batch of several quoted heredocs

@@ -57,7 +57,7 @@
 
     These are a KNOWN-GOOD FLOOR, not a ceiling. At repository initialization,
     try to move the whole set forward - see "Keeping the test stack current" in
-    init/repo/layout.md. Update the marker above when you do.
+    repo/layout.md. Update the marker above when you do.
 
     Known couplings - these move together or not at all:
       xunit 2.x           <-> xunit.runner.visualstudio 3.x

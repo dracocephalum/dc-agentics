@@ -1,6 +1,6 @@
 # The build files and the first project
 
-Stage 2 of [`README.md`](README.md): the payload is at the target root. Check
+Stage 2 of [`initialize.md`](initialize.md): the payload is at the target root. Check
 the StyleCop and build files against the chosen mode, understand the two git
 files, create the folder structure, and create the first project so that there
 is something for stage 5 to build.

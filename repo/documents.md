@@ -1,6 +1,6 @@
 # Documents and tool configuration
 
-Stage 3 of [`README.md`](README.md): turn the two templates into the
+Stage 3 of [`initialize.md`](initialize.md): turn the two templates into the
 repository's own `AGENTS.md` and `README.md`, write the Serena project file,
 and restore the local tools.
 
@@ -114,7 +114,7 @@ Skip `serena project index` at initialization: it needs a restored solution
 and there is no code yet.
 
 Details, and the two choices behind the machine-level wiring, are in
-[`../local/serena.md`](../local/serena.md).
+[`../machine/serena.md`](../machine/serena.md).
 
 ## 3. Dependency licence policy
 
