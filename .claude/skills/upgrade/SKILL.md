@@ -26,11 +26,9 @@ guessable.
 | `monorepo` | 3 - convert a standalone repository to a monorepo |
 | nothing | ask which; they touch different repositories |
 
-Operation 3 needs **no toolkit checkout** - an initialized repository carries
-both layout trees and both document templates, so it can describe a shape it
-does not yet have. Run it from inside the repository being converted. Run from
-a toolkit checkout instead, it first checks that the two agree, and declines
-rather than mixing a payload delta into a layout change.
+Operation 3 needs **no toolkit checkout**; run it from inside the repository
+being converted. Run from a toolkit checkout instead, it first checks that the
+two agree, and declines rather than mixing a payload delta into a layout change.
 
 ## Then
 

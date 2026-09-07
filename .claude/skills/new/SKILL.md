@@ -26,9 +26,8 @@ toolkit - say so and stop.
 | from a toolkit checkout, against a target path | confirm the two agree first - the toolkit's `repo/version-check.md` |
 | scaffolding **into** the dc-agentics toolkit itself | refuse; there are no C# components here to add to |
 
-The second case fails quietly: a newer procedure creates something the target's
-own documents do not describe. Every failing outcome has the same way out - run
-it from inside the target.
+When that check declines, the way out is always the same: run it from inside
+the target.
 
 ## Modes, from `$ARGUMENTS`
 

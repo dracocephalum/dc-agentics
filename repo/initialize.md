@@ -46,7 +46,7 @@ the worse question.
     src/, test/                  the first project and its tests (build.md)
     docs/templates/              AGENTS.template.md, README.template.md — the sources of the two above, kept
                                  component-README.md, category-README.md — used by /new
-                                 all four kept in both modes, so a layout conversion needs no toolkit
+                                 all four kept in both modes (documents.md)
     .editorconfig                editor conventions (root = true)
     .gitattributes               line-ending normalization  (dotnet new)
     .gitignore                   ignore rules               (dotnet new)

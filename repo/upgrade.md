@@ -211,16 +211,11 @@ Nothing above applies here. Operations 1 and 2 diff a recorded baseline and
 apply a delta; this moves files, rewrites paths, creates category folders and
 their map, and relocates the component's solution.
 
-**It needs no toolkit checkout.** An initialized repository carries
-`docs/rules/layout.md` with both trees and `docs/templates/` with the category
-map and both document templates — including the monorepo variant that was
-deleted from its generated `AGENTS.md`, which exists nowhere else. Run it from
-inside the repository.
+**It needs no toolkit checkout.** An initialized repository carries both
+layout trees and every template it would need — [`documents.md`](documents.md),
+*Why the template stays*. Run it from inside the repository.
 
 ### Preconditions, and only when run from the toolkit
-
-Run from inside the target there is nothing to check: it uses its own files,
-which are consistent with themselves by definition.
 
 Run from a toolkit checkout against a target, confirm the two agree first —
 [`version-check.md`](version-check.md) has the test and the four outcomes. Here

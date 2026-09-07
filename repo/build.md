@@ -19,15 +19,10 @@ It has been reconciled with `stylecop.ruleset`: the ruleset governs the build,
 stock `dotnet new editorconfig` here — its `insert_final_newline = false`
 contradicts `stylecop.json` and produces SA1518 on every file.
 
-For **strict** mode, apply the rule edits in
-[`stylecop.md`](stylecop.md) — note the XML
-comment-nesting trap documented there; the naive edit produces invalid XML.
-
-Strict mode requires a matching `.editorconfig` change: flip the four
-`dotnet_style_qualification_for_*` settings to `true`, because strict re-enables
-SA1101. Skipping this leaves the IDE offering to remove `this.` while the build
-errors for its absence. The STRICT MODE block at the end of `.editorconfig`
-spells this out.
+For **strict** mode, apply [`stylecop.md`](stylecop.md) in full — the ruleset
+edits, with their XML comment-nesting trap, and the matching `.editorconfig`
+change that strict requires. Doing the first without the second is the loop
+that document describes.
 
 ## 2. Generate the build files
 
@@ -65,9 +60,8 @@ transitive packages.
 For **strict** mode, also uncomment the entries in `BannedSymbols.txt` — see
 [`stylecop.md`](stylecop.md).
 
-If central package management is **off**, omit `Directory.Packages.props` and
-set the analyzer version via `$(StyleCopAnalyzersVersion)` in `StyleCop.props`
-instead.
+If central package management is **off**, omit `Directory.Packages.props`;
+[`stylecop.md`](stylecop.md) says where the analyzer version then comes from.
 
 If it is **on**, `Directory.Packages.props` must declare
 `StyleCop.Analyzers` — `StyleCop.props` deliberately omits the version under CPM

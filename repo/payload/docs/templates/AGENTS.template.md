@@ -69,10 +69,9 @@ version with the short commit hash (`1.2.3+abcdef12`, `-dirty` when the tree
 is not clean); it never fails the build.
 
 Never add a `Directory.Build.props`, `Directory.Build.targets`, or
-`Directory.Packages.props` inside a subfolder: resolution stops at the first
-file found walking upward, so a nested
-copy silently severs that subtree from central package management, StyleCop and
-warnings-as-errors — with a green build and no warning.
+`Directory.Packages.props` inside a subfolder — a nested copy silently severs
+that subtree from everything above, with a green build and no warning.
+[`docs/rules/layout.md`](docs/rules/layout.md), *Config lives at the root only*.
 
 ## Agent guidelines
 
@@ -120,9 +119,9 @@ nobody is pointed at will not be read.
 | Projects, assemblies, namespaces | PascalCase, prefixed | `{{PREFIX}}.ProxyGateway` |
 | Test projects | `test/<Project>.Tests/` mirrors `src/<Project>/` | `{{PREFIX}}.ProxyGateway.Tests` |
 
-A trailing `.Core` names the assembly, not the namespace: `{{PREFIX}}.Core` has
-namespace `{{PREFIX}}`, and `{{PREFIX}}.Core.Tests` has `{{PREFIX}}.Tests`. This
-is applied automatically by `Directory.Build.props`.
+A trailing `.Core` names the assembly, not the namespace — `{{PREFIX}}.Core` has
+namespace `{{PREFIX}}` — applied by `Directory.Build.props`; the full rule and
+its edge cases are in [`docs/rules/layout.md`](docs/rules/layout.md).
 
 ## Serena — use it when connected, fall back when not
 
@@ -147,9 +146,10 @@ for `error|warning|Passed|Failed` and report those lines, never a full log.
 **Warnings are errors.** StyleCop rules set to `Warning` fail the build; rules
 at `Info` never surface at build time and appear only in the editor.
 
-A `*.Tests` project inherits the whole test stack from `Tests.props`; its
-`.csproj` holds only `TargetFramework` and a `ProjectReference`.
+A `*.Tests` project inherits the whole test stack from `Tests.props`, so its
+`.csproj` holds only `TargetFramework` and a `ProjectReference` —
+[`docs/rules/coding/csharp/csharp-unit-tests-rules.md`](docs/rules/coding/csharp/csharp-unit-tests-rules.md).
 
 Do not report work as complete until `dotnet build` and `dotnet test` both pass,
-and confirm the test count is what you expect — a misconfigured runner reports
-zero tests and exits successfully.
+with the test count you expect: zero tests and a green exit is a misconfigured
+runner, not success.

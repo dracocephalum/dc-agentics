@@ -62,28 +62,11 @@ for `.gitignore` and `.gitattributes`. This is a different check from baseline
 drift: drift asks whether upstream moved, this asks whether *our* recorded
 baseline is still internally consistent.
 
-Run it whenever a forked file is edited at all — including a comment. Never
-edit an `.original`; they carry no explanatory header precisely because adding
-one would change the bytes they exist to verify.
-
-**The root `.gitattributes` carries `repo/baselines/** -text` for this reason.**
-Without it, `* text=auto` checks the baselines out as CRLF on Windows and this
-check fails on a clean clone with nothing actually wrong.
-
-Two things that rule depends on, both easy to undo by accident:
-
-- **Attributes in a subdirectory beat the root's** for everything beneath it.
-  While the baselines lived under `payload/`, that directory's own
-  `.gitattributes` overrode any root rule about them; the rule had to sit in
-  `payload/.gitattributes` and ship pointlessly to every target. Moving them to
-  `repo/baselines/`, which has no attributes file of its own, is what lets the
-  rule live at the root.
-- **The `.original` suffix is load-bearing.** A file named exactly
-  `.gitattributes`, `.gitignore` or `.editorconfig` is read as live
-  configuration for its directory — so a pristine `.gitattributes` stored under
-  its real name would apply its own `* text=auto` to the very directory the
-  root rule is trying to protect, and win. The suffix is what keeps the
-  baselines inert.
+Run it whenever a forked file is edited at all — including a comment. If it
+fails on a clean clone, the first suspect is line endings: the root
+`.gitattributes` rule `repo/baselines/** -text` and the `.original` suffix are
+what keep those files byte-exact, and [`copy.md`](copy.md), *Baseline drift
+check*, explains why each is load-bearing and what removing either costs.
 
 ## 3. Payload purity
 
