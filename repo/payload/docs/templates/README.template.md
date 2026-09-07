@@ -1,7 +1,12 @@
 <!--
-  TEMPLATE - transformed at initialization into the repository's README.md.
+  TEMPLATE - copied to the repository root and transformed there into README.md.
   Fill every double-brace placeholder, keep the variant that applies, delete
   every prompt comment as it is answered. Written for people; agents use AGENTS.md.
+
+  It stays here afterwards, unchanged, so a layout conversion has the variant
+  that was deleted from the generated copy. Every link below is relative to the
+  REPOSITORY ROOT, where the output lands - they do not resolve from this
+  directory, and that is correct.
 -->
 
 # {{REPO_NAME}}

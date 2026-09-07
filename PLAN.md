@@ -273,15 +273,39 @@ recorded baseline and apply a delta, while this moves files, rewrites paths,
 creates category folders and a category map, and relocates the component's
 solution.
 
-Three things it needs before it can be written:
+A target is now self-describing, so the conversion can run **without a toolkit
+checkout**: `docs/rules/layout.md` carries both trees, and `docs/templates/`
+keeps the category map and both document templates — including the monorepo
+variant that was deleted from the generated `AGENTS.md`, which exists nowhere
+else.
+
+That property decides the preconditions, because the self-contained path has
+no version relationship to check: a repository converting itself uses its own
+files, which are consistent with themselves by definition. So the comparison
+exists only for the toolkit-side invocation, and only to stop a payload delta
+being mixed into a layout change where neither could be blamed for a breakage.
+
+Hashes have no ordering, so it is an ancestry test in the toolkit checkout —
+`git cat-file -e` for resolvability, then `git merge-base --is-ancestor` both
+ways:
+
+| Outcome | Do |
+|---|---|
+| equal | convert |
+| target is an ancestor of `HEAD` | decline; offer a **toolkit upgrade** first, then the conversion |
+| `HEAD` is an ancestor of the target | decline — the toolkit is behind, and converting would be a regression |
+| neither, or the commit does not resolve | decline; point at the self-contained path, which sidesteps the question |
+
+Best-effort is the right standard precisely because that last row always has
+somewhere to go. The commit may legitimately be unresolvable: this repository
+squash-merges with branch deletion, so a target initialized from an unmerged
+branch records a hash that ceases to exist.
+
+Two things still open:
 
 - **A test subject that is not `dc-nightingale`.** Converting it would destroy
   the standalone baseline the second initialization trial established, which is
   the only conforming target there is.
-- **`docs/templates/category-README.md` back.** Standalone initialization
-  deletes it, on the grounds that a repository with no categories can never use
-  it — but the conversion is exactly when a category map is needed. Either keep
-  the file in both modes, or have the conversion restore it from the toolkit.
 - **The lessons from the toolkit's own restructure.** Moving `init/` to
   `machine/` and `repo/` produced the whole failure list this procedure would
   have to encode: path references living in files a markdown search never

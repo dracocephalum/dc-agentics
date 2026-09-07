@@ -35,7 +35,7 @@ reviewable.
 
 ### The analyzer and test-stack packages
 
-The procedure is *Keeping the test stack current* in [`layout.md`](layout.md),
+The procedure is *Keeping the test stack current* in [`payload/docs/rules/layout.md`](payload/docs/rules/layout.md),
 which already covers the part that matters: these packages are not independent,
 and their failures are compile-time ambiguities rather than version errors.
 Move families together, never package by package.
@@ -143,12 +143,13 @@ attention.
 
 ### Templates changed, so their output must change too
 
-`AGENTS.template.md` and `README.template.md` are never copied to a target —
-they were *transformed* into `AGENTS.md` and `README.md` at initialization,
-with placeholders filled and a layout variant deleted. A change to a template
-is therefore an instruction, not a file: read what changed in the template and
-make the equivalent edit to the target's generated document, in the target's
-own vocabulary.
+The templates in `docs/templates/` are replaced like any other file under
+`docs/` — but their *output* is not. `AGENTS.md` and `README.md` were generated
+from them at initialization, with placeholders filled and a layout variant
+deleted, so no mechanical mapping runs backwards. A change to a template is
+therefore two things: a file to replace, and an instruction to carry out. Read
+what changed in the template and make the equivalent edit to the target's
+generated document, in the target's own vocabulary.
 
 The common case is a new row in the *Agent guidelines* table, which is how a
 new rules document becomes reachable. **A document copied in without its row is
