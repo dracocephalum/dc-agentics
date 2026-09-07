@@ -10,7 +10,7 @@
 #   (sha256sum on Linux/Git Bash; shasum -a 256 on macOS; sha256 on FreeBSD)
 #
 # A mismatch means the SDK template moved. Stop and review before proceeding;
-# do not silently regenerate. See init/repo/README.md.
+# do not silently regenerate. See repo/initialize.md.
 # ---------------------------------------------------------------------------
 
 ## Ignore Visual Studio temporary files, build results, and

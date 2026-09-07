@@ -1,1 +1,1 @@
-extends: init/repo/payload/.markdownlint.yaml
+extends: repo/payload/.markdownlint.yaml

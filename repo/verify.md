@@ -1,6 +1,6 @@
 # Security, verification, and the closing summary
 
-Stage 5 of [`README.md`](README.md), the last: nothing is reported as done
+Stage 5 of [`initialize.md`](initialize.md), the last: nothing is reported as done
 before the security pass and a build that proves the analyzers are wired,
 and the last message is the summary of every value the repository carries.
 

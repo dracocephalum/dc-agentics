@@ -1,9 +1,18 @@
-# Local environment setup
+# Machine setup
 
 > Written and verified on **Windows**. Other platforms: see [`platforms.md`](platforms.md) — best effort, untested.
 
 Applies when setting up a developer machine from scratch — assume only Windows
 and an agent tool (Claude Code or similar) are present.
+
+**What "machine" means here.** This directory is named for the subject, not the
+audience: it is the setup a *machine* needs before the repository procedures
+can run on it. Every guide in it currently assumes an **interactive** machine —
+a person is present to answer a UAC prompt, approve a browser sign-in, and open
+a new terminal when PATH changes. A headless machine running the same
+procedures inside an automated pipeline needs the same tools and different
+answers, and belongs here as a sibling guide rather than as a new concept. See
+[`../PLAN.md`](../PLAN.md).
 
 Windows, using `winget`, which ships with Windows 10/11. Every step has a
 verification; do not move on until it passes. Installers need elevation — expect

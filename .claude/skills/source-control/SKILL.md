@@ -19,8 +19,8 @@ work from memory.
 
 | Rule | Initialized repository | dc-agentics toolkit |
 |---|---|---|
-| source control - branches, commits, size, opening, review, merge, agent guardrails; names the host file | `docs/rules/source-control/source-control.md` | `init/repo/payload/docs/rules/source-control/source-control.md` |
-| change tracking - the ticket that must exist first; names the tracker file | `docs/rules/change-tracking/change-tracking.md` | `init/repo/payload/docs/rules/change-tracking/change-tracking.md` |
+| source control - branches, commits, size, opening, review, merge, agent guardrails; names the host file | `docs/rules/source-control/source-control.md` | `repo/payload/docs/rules/source-control/source-control.md` |
+| change tracking - the ticket that must exist first; names the tracker file | `docs/rules/change-tracking/change-tracking.md` | `repo/payload/docs/rules/change-tracking/change-tracking.md` |
 
 ## Actions from `$ARGUMENTS`
 

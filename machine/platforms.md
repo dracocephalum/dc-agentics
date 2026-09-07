@@ -1,6 +1,6 @@
 # Other platforms — best effort, untested
 
-Every `init/local/` guide was written and verified on **Windows**. Nothing here
+Every `machine/` guide was written and verified on **Windows**. Nothing here
 has been run on Linux, macOS, or FreeBSD. This file maps each Windows step to
 its documented equivalent so that a user on another platform does not get a
 Windows path pasted at them — it is a starting point, not a verified procedure.
@@ -9,7 +9,7 @@ An agent on a non-Windows machine: read the relevant Windows guide for the
 *why*, use this file for the *how*, verify every step's expected output, and
 say plainly when something here turns out to be wrong.
 
-The repository payload (`init/repo/payload/`) is platform-neutral — MSBuild,
+The repository payload (`repo/payload/`) is platform-neutral — MSBuild,
 EditorConfig, git attributes — and needs nothing from this file.
 
 ## Support statement

@@ -1,6 +1,6 @@
 # Land the payload
 
-Stage 1 of [`README.md`](README.md): confirm what is at the target, check the
+Stage 1 of [`initialize.md`](initialize.md): confirm what is at the target, check the
 shipped baselines for drift, then copy. Nothing here edits an existing file;
 the stages after this one do.
 

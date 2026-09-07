@@ -99,6 +99,31 @@ assumes GitHub for source control and change tracking. Adding a second host for
 CI is a real coupling decision, not a detail: it doubles the accounts, the
 credentials, and the places a failure can hide.
 
+## Machines
+
+`machine/` is named for its subject, so it has room for more than one kind of
+machine. Everything in it today assumes an **interactive** one: a person
+answers the UAC prompt, completes a browser sign-in, and opens a new terminal
+after a PATH change. Several steps stop and ask outright.
+
+A **headless machine** — an agent running these procedures inside an automated
+pipeline, with no one to answer — needs the same tools and different answers:
+
+- **Non-interactive installs.** `winget` needs its own flags and an elevation
+  story that is not a UAC prompt; a container image may be the better answer
+  than installing at all.
+- **Credentials without a browser.** `gh auth login` is interactive by design.
+  A pipeline wants a token from the runner's secret store, or a GitHub App,
+  and commit signing wants a key that no human unlocks.
+- **PATH inside one process.** "Open a new terminal" is not available; the
+  session that installs is the session that must use the tool.
+- **What verification means.** Every step here ends in a check a person reads.
+  Headless, those become assertions that fail a build.
+
+Worth writing only when something actually runs this way — most likely
+alongside the *Pipelines* decision above, since a runner is the first headless
+machine the toolkit will meet.
+
 ## Skills
 
 ### `/new`
@@ -125,7 +150,7 @@ first needs a toolkit checkout to upgrade.
 
 The second is the one with a settled design already: the target's
 `.dc-agentics.yaml` records the commit it was initialized from, so the
-procedure is a diff of `init/repo/payload` between that commit and `HEAD`.
+procedure is a diff of `repo/payload` between that commit and `HEAD`.
 
 The third has a known snag, found in the second initialization trial:
 initialization **deletes** `docs/templates/category-README.md` in standalone

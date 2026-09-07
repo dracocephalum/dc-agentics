@@ -30,7 +30,7 @@
 # without changing its counterpart puts the editor and the build in conflict.
 #
 # Switching to strict mode requires edits here too - see the block at the end
-# of this file, and the toolkit's init/repo/stylecop.md.
+# of this file, and the toolkit's repo/stylecop.md.
 
 root = true
 
@@ -459,7 +459,7 @@ dotnet_naming_style.s_camelcase.capitalization = camel_case
 ##############################################################################
 # STRICT MODE
 #
-# the toolkit's init/repo/stylecop.md describes a strict mode that re-enables a set of
+# the toolkit's repo/stylecop.md describes a strict mode that re-enables a set of
 # StyleCop rules. Only one of those rules has an EditorConfig counterpart, but
 # leaving it unchanged makes the editor actively fight the build.
 #

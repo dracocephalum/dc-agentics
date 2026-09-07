@@ -18,7 +18,7 @@ then the tracker file it names. Never work from memory.
 
 | Rule | Initialized repository | dc-agentics toolkit |
 |---|---|---|
-| change tracking - the ticket rule, the setting, the initialization exception, boards; names the tracker file | `docs/rules/change-tracking/change-tracking.md` | `init/repo/payload/docs/rules/change-tracking/change-tracking.md` |
+| change tracking - the ticket rule, the setting, the initialization exception, boards; names the tracker file | `docs/rules/change-tracking/change-tracking.md` | `repo/payload/docs/rules/change-tracking/change-tracking.md` |
 
 ## Actions from `$ARGUMENTS`
 

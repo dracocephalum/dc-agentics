@@ -20,7 +20,7 @@ path stops being the trophy of a large engineering organization and becomes
 something one person can own and anyone can fork.
 
 Today it supports **C# / .NET 10** repositories, standalone or monorepo, on
-**Windows** (other platforms best-effort, see `init/local/platforms.md`).
+**Windows** (other platforms best-effort, see `machine/platforms.md`).
 
 ## A note on models
 
@@ -40,8 +40,8 @@ The two things you will ask for:
 
 | To … | Read |
 |---|---|
-| set up a developer machine | [`init/local/README.md`](init/local/README.md) |
-| initialize a repository | [`init/repo/README.md`](init/repo/README.md) |
+| set up a developer machine | [`machine/README.md`](machine/README.md) |
+| initialize a repository | [`repo/initialize.md`](repo/initialize.md) |
 
 Both are procedures an agent can run: "set up this machine", "initialize a repo
 at `<path>`".
@@ -50,11 +50,12 @@ at `<path>`".
 
 Three kinds of file, told apart by where they live:
 
-- **`init/repo/payload/`** — an exact mirror of a target repository root. Every
+- **`repo/payload/`** — an exact mirror of a target repository root. Every
   file in it lands verbatim in an initialized repository, including the rules
   under `docs/rules/`.
-- **`init/`** (everything else) — procedures and guides. Read here, never
-  copied.
+- **`machine/`** and **`repo/`** (everything else) — procedures and guides,
+  grouped by what they act on: a machine, or a target repository. Read here,
+  never copied.
 - **The root** — this file, `AGENTS.md`, `TODO.md`, `PLAN.md`, and the workspace config
   for working on the toolkit itself. `.claude/skills/` is the one thing shipped
   from outside the payload.
@@ -81,7 +82,7 @@ Three kinds of file, told apart by where they live:
 
 The toolkit is licensed under the [Apache License 2.0](LICENSE).
 
-Everything under `init/repo/payload/` and `.claude/skills/` is copied into the
+Everything under `repo/payload/` and `.claude/skills/` is copied into the
 repositories it initializes, so those files are **additionally** offered under
 the Zero-Clause BSD licence (0BSD): an initialized repository owes no notice
 and no attribution for them.

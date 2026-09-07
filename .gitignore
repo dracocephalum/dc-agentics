@@ -2,7 +2,7 @@
 # grow it when something actually needs ignoring rather than pre-emptively.
 #
 # Consuming .NET repos get the full official list instead, via
-# `dotnet new gitignore` - see init/repo/README.md.
+# `dotnet new gitignore` - see repo/initialize.md.
 
 # OS
 .DS_Store
