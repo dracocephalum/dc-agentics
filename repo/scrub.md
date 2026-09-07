@@ -53,7 +53,7 @@ second run is the one that catches what the first rewrite missed. Also check
 Each forked file has a pristine `.original` sibling that hashes **directly** to
 the marker in its live counterpart, with no newline normalization:
 
-    sha256sum < payload/.editorconfig.original
+    sha256sum < baselines/.editorconfig.original
 
 Compare against the `sha256=` field in `payload/.editorconfig`, and the same
 for `.gitignore` and `.gitattributes`. This is a different check from baseline
@@ -64,13 +64,24 @@ Run it whenever a forked file is edited at all — including a comment. Never
 edit an `.original`; they carry no explanatory header precisely because adding
 one would change the bytes they exist to verify.
 
-**`payload/.gitattributes` carries `*.original -text` for this reason.** Without
-it, `* text=auto` in the same file checks the baselines out as CRLF on Windows
-and this check fails on a clean clone with nothing actually wrong. The rule must
-live in `payload/.gitattributes`, not the root one: attributes in a
-subdirectory win over the root for everything beneath it, so a rule at the root
-is silently overridden. It is inert in an initialized repository, which has no
-`.original` files.
+**The root `.gitattributes` carries `repo/baselines/** -text` for this reason.**
+Without it, `* text=auto` checks the baselines out as CRLF on Windows and this
+check fails on a clean clone with nothing actually wrong.
+
+Two things that rule depends on, both easy to undo by accident:
+
+- **Attributes in a subdirectory beat the root's** for everything beneath it.
+  While the baselines lived under `payload/`, that directory's own
+  `.gitattributes` overrode any root rule about them; the rule had to sit in
+  `payload/.gitattributes` and ship pointlessly to every target. Moving them to
+  `repo/baselines/`, which has no attributes file of its own, is what lets the
+  rule live at the root.
+- **The `.original` suffix is load-bearing.** A file named exactly
+  `.gitattributes`, `.gitignore` or `.editorconfig` is read as live
+  configuration for its directory — so a pristine `.gitattributes` stored under
+  its real name would apply its own `* text=auto` to the very directory the
+  root rule is trying to protect, and win. The suffix is what keeps the
+  baselines inert.
 
 ## 3. Payload purity
 
@@ -119,7 +130,9 @@ It goes stale the moment a payload file is added without updating it — which i
 exactly what happened when `change-tracking/SKILL.md` was added and the listing
 kept naming three shims.
 
-    find payload -type f -not -name '*.original' | sed 's|^payload/||' | sort
+    find payload -type f | sed 's|^payload/||' | sort
     ls .claude/skills
 
-Compare against the listing, in both directions.
+Compare against the listing, in both directions. No exclusion is needed: since
+the baselines moved to `repo/baselines/`, everything under `payload/` is
+genuinely copied, which is what makes this a straight comparison.

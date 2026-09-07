@@ -56,30 +56,37 @@ pause to re-baseline.
 
 ### Showing what changed
 
-Each forked file has a pristine `.original` sibling — the generated template
-exactly as captured, with newlines normalized to LF:
+Each forked file has a pristine counterpart under [`baselines/`](baselines) —
+the generated template exactly as captured, newlines normalized to LF, at the
+path it mirrors in `payload/`. They live outside `payload/` precisely so that
+the copy needs no pruning afterwards:
 
-    payload/.editorconfig.original
-    payload/.gitignore.original
-    payload/.gitattributes.original
+    baselines/.editorconfig.original
+    baselines/.gitignore.original
+    baselines/.gitattributes.original
 
 They hash **directly** to the marker value, with no further normalization:
 
-    sha256sum < payload/.editorconfig.original
+    sha256sum < baselines/.editorconfig.original
 
 When drift fires and the user asks what changed, diff the freshly generated
 template against the original. That isolates the upstream change on its own:
 
-    diff <scratch>/.editorconfig payload/.editorconfig.original
+    diff <scratch>/.editorconfig baselines/.editorconfig.original
 
 Diffing against *our* version instead is not equivalent — it mixes the upstream
 change with our own edits, which is exactly what makes such a diff unreadable.
 
 From there the user can apply the upstream change by hand, and re-baseline by
-replacing the `.original` and updating the marker's `sdk=` and `sha256=` fields.
+replacing the file under `baselines/` and updating the marker's `sdk=` and
+`sha256=` fields.
 
-**Never edit an `.original` file.** They carry no header explaining this, because
-adding one would change their bytes and break the hash they exist to verify.
+**Never edit a baseline.** They carry no header explaining this, because adding
+one would change their bytes and break the hash they exist to verify. Keep the
+`.original` suffix too: under its real name, a pristine `.gitattributes`,
+`.gitignore` or `.editorconfig` would be read as live configuration for
+`baselines/` — including the `* text=auto` that the root's
+`repo/baselines/** -text` rule exists to override.
 
 A mismatch is not automatically a problem. It matters most for `.editorconfig`,
 whose reconciliation depends on the generated content — an upstream change can
@@ -91,14 +98,14 @@ something is wrong with the file, not the template. Say so rather than guessing.
 
 ## 3. Copy
 
-`payload/` is an exact mirror of a target repository root, so the copy is one
-command, plus `.claude/skills/` from the toolkit root. The target has no
-`.claude/` yet, so create it before copying into it:
+`payload/` is an exact mirror of a target repository root — everything in it is
+copied, and nothing has to be removed afterwards — so the copy is one command,
+plus `.claude/skills/` from the toolkit root. The target has no `.claude/` yet,
+so create it before copying into it:
 
     cp -r payload/. <target>/
     mkdir -p <target>/.claude
     cp -r .claude/skills <target>/.claude/
-    find <target> -name '*.original' -delete
 
 Everything from here on is what to *verify* or *edit* in what just landed:
 the build files ([`build.md`](build.md)), then the documents, settings, and

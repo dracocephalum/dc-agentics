@@ -124,28 +124,6 @@ Worth writing only when something actually runs this way — most likely
 alongside the *Pipelines* decision above, since a runner is the first headless
 machine the toolkit will meet.
 
-## Structure
-
-### The baselines sit inside a mirror they are not part of
-
-`repo/payload/` is described everywhere as "an exact mirror of a target
-repository root, copied verbatim". The three `*.original` baselines live in it
-and are *not* part of that mirror: `copy.md` deletes them from the target
-immediately after copying, with a `find` whose only purpose is to undo their
-presence.
-
-They also collide with the mirror's own rules. `payload/.gitattributes` sets
-`* text=auto` for everything beneath it, which checks the baselines out as CRLF
-on Windows and breaks the byte-for-byte hash they exist to support — fixed for
-now by an `*.original -text` rule in that same file, which then ships to every
-target, where it is inert.
-
-Moving them to something like `repo/baselines/` would make the mirror true,
-drop the deletion step, and put the attribute rule at the root where it
-belongs. The cost is touching the drift procedure in `copy.md`, the `AGENTS.md`
-description and `scrub.md` — worth folding into a change that already touches
-those, rather than doing on its own.
-
 ## Skills
 
 ### `/new`
@@ -175,6 +153,48 @@ but whether a skill is the right place, given that CI will eventually run all
 of them on every push. A full scrub may turn out to be most useful exactly
 where CI is not: before a first push, on a repository nobody has touched for a
 year, or when a toolchain has moved underneath one.
+
+### A compacting `/scrub`
+
+Documents cost context every time they are read, so trimming them has real
+value. But "compact" covers two very different operations, and only one of them
+is safe.
+
+**Removing genuine redundancy is safe and belongs here.** A rule stated in two
+documents is a drift hazard, not just length: the copies diverge and nothing
+says which is authoritative. So is prose that restates what a linked document
+already says, and instructions for things that no longer exist. These are
+verifiable — two documents saying the same thing is a fact, not a judgement —
+which is why *No rule stated twice* is now a shipped check rather than an idea.
+
+**Removing content because the model would do it anyway is a different
+proposition**, and the reasons to be careful are specific:
+
+- **It cannot be verified, only observed.** The toolkit's standard is
+  "verified, not asserted". "Opus does this by default" is an assertion whose
+  truth changes with the model, the version, the context length, and how much
+  of the document survived into the prompt. Nothing in the repository could
+  prove it still held six months later.
+- **The payload is tool-neutral by design.** `AGENTS.md` is a cross-tool
+  convention and the shipped rules are written for any agent. Compacting
+  against one vendor's defaults silently couples every initialized repository
+  to that vendor — a repo driven by a different tool would quietly lose rules
+  its model does not default to.
+- **The failure is invisible.** A dropped rule does not error. It shows up
+  months later as a repository that stopped meeting a standard nobody noticed
+  had gone.
+- **Instructions do more than change behaviour.** They also tell a *reader*
+  what the standard is, and make the rule reviewable in a diff. A rule the
+  model would have followed anyway still earns its place if a person needs to
+  know it is the rule.
+
+If it is ever attempted, the toolkit's own documents under `machine/` and
+`repo/` are the place to try it, not the payload: they are read by whatever
+agent the user runs today, and a mistake stays here rather than shipping. It
+would want a stated model baseline in `.dc-agentics.yaml`, a record of what was
+removed and why, and some way to re-test the claim when the baseline moves —
+which is most of an evaluation harness, and worth building only if the context
+saving turns out to be large.
 
 ### An automated `/scrub`
 

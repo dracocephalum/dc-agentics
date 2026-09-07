@@ -148,7 +148,30 @@ user decide. It matters most for `.editorconfig`, whose reconciliation with the
 ruleset depends on the generated content; for the other two the repository's
 changes are additive, so drift is informational.
 
-### 9. `TODO.md` is still true
+### 9. No rule stated twice
+
+Two documents stating the same rule is a drift hazard, not merely length: the
+copies diverge, and nothing marks which one is authoritative. Read for it rather
+than grepping — the duplicates that matter are paraphrases, not copy-paste.
+
+Three shapes worth reporting:
+
+| Shape | Why it matters |
+|---|---|
+| The same rule, stated in full in two documents | they will drift, and a reader cannot tell which won |
+| A document restating what the document it links to already says | the summary goes stale while the link stays correct |
+| An instruction for something that no longer exists | it reads as current, and costs a reader the time to find out otherwise |
+
+The fix is a pointer, not a second copy: name the document that owns the rule
+and delete the restatement. Report these; deciding which copy is authoritative
+is the user's call, not a mechanical one.
+
+**This is about duplication, not brevity.** Do not shorten a document because
+a model would probably behave correctly without the instruction — see *A
+compacting `/scrub`* in the toolkit's `PLAN.md` for why that is a different and
+far riskier operation.
+
+### 10. `TODO.md` is still true
 
 Read every entry and ask whether it is still open. An entry that is done, or
 that describes a state the repository has left, is worse than no entry: it is
