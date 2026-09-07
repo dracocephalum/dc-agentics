@@ -135,6 +135,20 @@ thing to this repository", each backed by the document that already governs it.
 Open: whether it replaces `/project` or wraps it, and whether the name invites
 confusion with `dotnet new`.
 
+**Not a context argument.** Measured while adding `/scrub` and `/upgrade`: a
+skill's `SKILL.md` body is loaded when the skill is invoked, not on every
+session — what is always present is its name and description. Six shims cost
+something like fifteen lines of descriptions, against `AGENTS.md` at 107 in a
+generated target. Consolidating skills therefore saves almost nothing in
+context, and the case for `/new` has to stand on clarity instead: fewer verbs
+to choose between, and no ambiguity about which one adds a thing.
+
+The same measurement is why the always-loaded budget in `AGENTS.md` names
+`AGENTS.md` first. For a target it is the single largest thing read every
+session — 107 lines, of which the layout table and the guideline rows are most
+of it — and the only lever on it is the number of rows, since each new rules
+document earns one.
+
 ### A full `/scrub`
 
 `/scrub` as shipped is a **consistency** pass: lint, links, placeholders, line
