@@ -35,6 +35,13 @@ appends a row there (step 7).
 | job | `worker` | replace `Worker.cs` with the shell below |
 | tool | `console` | nothing — the template is clean |
 
+**Then delete the properties the root already sets.** Every template writes
+`<ImplicitUsings>enable</ImplicitUsings>` and `<Nullable>enable</Nullable>`,
+both of which `Directory.Build.props` sets for the whole repository. Leaving
+them is not an error, but it hides which settings a project actually chose:
+a property in a `.csproj` reads as a deliberate local override, and these are
+not one.
+
 **Every template except `console` emits sample code that fails the ruleset**
 under warnings-as-errors. Do not patch the samples line by line — replace them
 with a minimal shell, build, and only then write real code. A build failure
@@ -99,6 +106,9 @@ Then:
   redundant and, under CPM, invalid. Delete the template's
   `<Using Include="Xunit" />` alongside them — `Tests.props` supplies that as
   well, so `[Fact]` and `[Theory]` still resolve with no `using` in the file.
+- **Delete `<ImplicitUsings>`, `<Nullable>` and `<IsPackable>`.** The first two
+  come from `Directory.Build.props`, and `Tests.props` already sets
+  `IsPackable=false` for every `*.Tests` project.
 - Delete `UnitTest1.cs` — it fails SA1505/SA1508.
 - Add `<ProjectReference Include="../../src/<Prefix>.<Name>/<Prefix>.<Name>.csproj" />`.
 - Write the first real test now, following

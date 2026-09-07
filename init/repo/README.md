@@ -67,6 +67,7 @@ the worse question.
       coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
       coding/markdown/markdown-review.md
     .claude/skills/
+      change-tracking/SKILL.md   Claude Code shim: /change-tracking new|find
       project/SKILL.md           Claude Code shim: /project <kind> <name>
       review/SKILL.md            Claude Code shim: /review [PR# | branch | paths | comments PR#]
       source-control/SKILL.md    Claude Code shim: /source-control start|commit|pr|setup

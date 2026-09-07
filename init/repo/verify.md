@@ -26,6 +26,8 @@ Then confirm the analyzers are actually wired, by introducing a deliberate
 violation of a rule the chosen mode leaves enabled. Add it as its own file under
 the new project's `src` folder:
 
+    namespace <Prefix>.<Name>;
+
     /// <summary>Temporary analyzer probe.</summary>
     public static class Probe
     {
@@ -34,10 +36,20 @@ the new project's `src` folder:
         public static (int, string) Run() => (1, "a");
     }
 
-Expect **exactly two `SA1414`**, and nothing else. The shape matters: an
-instance method raises `CA1822` as well, and an undocumented type or member
-raises `SA1600` in strict mode — extra errors that make a passing probe read
-as a broken build.
+Expect **exactly two `SA1414`**, and nothing else. Every line of that shape is
+load-bearing, and each omission adds an error that makes a passing probe read
+as a broken build:
+
+| Omit | And you also get |
+|---|---|
+| the `namespace` line | `CA1050`, declare types in namespaces |
+| the blank line after it | `SA1514`, documentation header should be preceded by a blank line |
+| `static` on the class | `CA1822`, member does not access instance state |
+| either `///` comment | `SA1600` in strict mode, elements should be documented |
+
+MSBuild prints each diagnostic twice — once as it builds, once in the closing
+summary — so count distinct source positions, not output lines. Two `SA1414`
+is four lines of output.
 
 A wrong `CodeAnalysisRuleSet` path produces **no error at all** — the build
 succeeds and every rule is silently ignored. A green build alone proves nothing;

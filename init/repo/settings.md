@@ -72,6 +72,11 @@ toolkit commit — `git -C <toolkit> rev-parse --short=12 HEAD`, with `-dirty`
 appended when `git -C <toolkit> status --porcelain` prints anything. `initialized`
 is today, `yyyy-mm-dd`.
 
+**Re-align the inline comments once the values are in.** The shipped file
+lines every `#` up at one column, and no placeholder is the same width as the
+value replacing it, so a literal fill leaves nearly every line ragged. It is
+a file people read.
+
 `source-control.mode` is `local` unless the user asked for another; the
 three modes are defined in
 [`source-control.md`](payload/docs/rules/source-control/source-control.md),

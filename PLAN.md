@@ -127,6 +127,15 @@ The second is the one with a settled design already: the target's
 `.dc-agentics.yaml` records the commit it was initialized from, so the
 procedure is a diff of `init/repo/payload` between that commit and `HEAD`.
 
+The third has a known snag, found in the second initialization trial:
+initialization **deletes** `docs/templates/category-README.md` in standalone
+mode, on the grounds that a repository with no categories can never use it —
+but `csharp-new-project.md` still tells the reader to copy that file when
+creating a category folder. Nothing is broken while the repository stays
+standalone; the conversion is where it bites, because the template it needs is
+the one that was removed. Either keep the file in both modes, or have the
+conversion restore it.
+
 ## Research
 
 Neighbouring projects and prior art, with what each is worth taking from.
