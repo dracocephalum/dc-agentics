@@ -125,8 +125,8 @@ Copying the files alone does nothing. `StyleCop.props` carries the wiring, but
       <Import Project="$(MSBuildThisFileDirectory)StyleCop.props" />
     </Project>
 
-If the repo already has a `Directory.Build.props`, add the `Import` to it rather
-than replacing the file.
+An existing `Directory.Build.props` is merged into, never replaced —
+[`copy.md`](copy.md), *Preconditions*.
 
 #### Why `$(MSBuildThisFileDirectory)`
 

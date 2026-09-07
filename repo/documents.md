@@ -106,15 +106,13 @@ At the repository root, **always passing the languages explicitly**:
     serena project create --language csharp
     serena project create --language csharp --language terraform   # monorepo with infrastructure/
 
-Never let it infer. On a tree with more than one language, inference picks a
-"main" language and then **prompts `[y/N]` for each additional one** — and
-with no interactive stdin it aborts with `Aborted!` and writes nothing.
-`--language` skips inference entirely. The toolkit knows the answer anyway:
-C#, plus `terraform` when the repository has an `infrastructure/` folder.
+Never let it infer — [`../machine/serena.md`](../machine/serena.md) says what
+inference does without a terminal. The toolkit knows the answer anyway: C#,
+plus `terraform` when the repository has an `infrastructure/` folder.
 
 That writes `.serena/project.yml`, alongside a `.serena/project.local.yml` for
-per-machine overrides. Commit `project.yml`; the shipped repository
-`.gitignore` already excludes `project.local.yml` and `.serena/cache/`.
+per-machine overrides. Commit `project.yml`; what the shipped `.gitignore`
+already covers is in `serena.md` as well.
 
 Serena writes its own `.serena/.gitignore` the first time an agent indexes or
 activates the project — which is after initialization, so it is not here yet

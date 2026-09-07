@@ -76,9 +76,9 @@ Three kinds of file, told apart by location:
         coding/code-review.md
         coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
         coding/markdown/markdown-review.md
-      docs/templates/              AGENTS.template.md, README.template.md - transformed at init, and KEPT
+      docs/templates/              AGENTS.template.md, README.template.md - transformed at init, and kept
                                    component-README.md, category-README.md - filled by /new
-                                   kept in both modes: a layout conversion needs them, with no toolkit present
+                                   all four stay in the target, both modes; repo/documents.md says why
 
     (2) the one thing copied from OUTSIDE payload/
     .claude/skills/                skill shims; live here, copied to a target's .claude/skills/
@@ -89,26 +89,13 @@ Three kinds of file, told apart by location:
       scrub/SKILL.md               /scrub   - consistency + drift pass; reports, does not fix
       upgrade/SKILL.md             /upgrade - toolkit pins, a target to the toolkit, or standalone -> monorepo
 
-Three payload files are forked from `dotnet new` templates and carry a
-`dc-agentics-baseline:` marker recording the source SDK and the SHA-256 of the
-pristine generated file: `.editorconfig`, `.gitignore`, `.gitattributes`.
-The copy stage (`repo/copy.md`) re-checks them and stops on drift. Hashes are over
-newline-normalized bytes - never raw, since `dotnet new` emits CRLF and
-`text=auto` checks out LF. Each has a pristine counterpart in
-`repo/baselines/`, at the path it mirrors in `payload/`, stored LF-normalized so
-it hashes directly to its marker; drift is isolated by diffing a freshly
-generated template against the baseline, never against our version. Never edit
-a baseline - they carry no header precisely because a header would change the
-bytes the hash verifies.
-
-`repo/baselines/` is **not payload**: nothing in it is ever copied to a target,
-which is what lets `payload/` be an exact mirror with no post-copy pruning. Two
-details there are deliberate. The root `.gitattributes` sets
-`repo/baselines/** -text`, because a converted line ending breaks a
-byte-for-byte hash; that rule can only live at the root because the directory
-has no attributes file of its own. And the `.original` suffix is load-bearing -
-a file named exactly `.gitattributes` or `.gitignore` would be read as live
-configuration for the directory it sits in, and would override that very rule.
+Three payload files are forked from `dotnet new` templates - `.editorconfig`,
+`.gitignore`, `.gitattributes` - and each carries a `dc-agentics-baseline:`
+marker with the SDK it came from and a hash of the pristine output, which lives
+in `repo/baselines/` and is never copied to a target. How the drift check
+works, why the hash is over normalized bytes, why the baselines are never
+edited, and why their `.original` suffix and the root `-text` rule are both
+load-bearing: [`repo/copy.md`](repo/copy.md), *Baseline drift check*.
 
 Rules documents keep their relative links correct by construction: `docs/rules/`
 inside `payload/` *is* the target layout. Only links up to the root `AGENTS.md`
@@ -143,6 +130,13 @@ somewhere the surrounding context no longer holds.
 - **Say when it applies, not just what to do.** A rule with no trigger gets
   applied everywhere or nowhere. The trigger is also what keeps a long document
   cheap: nobody pays for `csharp-ef-core-rules.md` unless they touch EF Core.
+- **One owner per rule, and a rule needed on both sides is owned by the
+  payload.** A toolkit document may link into `repo/payload/`; nothing shipped
+  may ever link out, because a target has no `repo/`. So when a rule is needed
+  here and in a target, the payload copy is the definition and the toolkit
+  copy is a link to it. A shim keeps only the instruction, never the reasoning.
+  The exception is the generated `AGENTS.md`, which restates the few rules an
+  agent must act on without opening anything - one sentence each, with a link.
 - **Budget by what is always loaded, not by total size.** `AGENTS.md` is read
   every session with no trigger to gate it, and so is each shim's name and
   description - a shim's body loads only when it is invoked. Everything under

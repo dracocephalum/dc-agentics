@@ -82,11 +82,25 @@ replacing the file under `baselines/` and updating the marker's `sdk=` and
 `sha256=` fields.
 
 **Never edit a baseline.** They carry no header explaining this, because adding
-one would change their bytes and break the hash they exist to verify. Keep the
-`.original` suffix too: under its real name, a pristine `.gitattributes`,
-`.gitignore` or `.editorconfig` would be read as live configuration for
-`baselines/` — including the `* text=auto` that the root's
-`repo/baselines/** -text` rule exists to override.
+one would change their bytes and break the hash they exist to verify.
+
+Two things keep them byte-exact, and both are easy to undo by accident. This is
+the one place that says why; everything else points here.
+
+- **The root `.gitattributes` sets `repo/baselines/** -text`.** Without it,
+  `* text=auto` checks the baselines out as CRLF on Windows and the hash fails
+  on a clean clone with nothing wrong. The rule can only live at the root
+  because attributes in a subdirectory beat the root's for everything beneath
+  it — while the baselines sat under `payload/`, that directory's own
+  `.gitattributes` overrode any root rule, and the fix had to ship to every
+  target, inert. `repo/baselines/` has no attributes file, which is what lets
+  the rule live at the root.
+- **The `.original` suffix is load-bearing.** A file named exactly
+  `.gitattributes`, `.gitignore` or `.editorconfig` is read as live
+  configuration for the directory it sits in — so a pristine `.gitattributes`
+  stored under its real name would apply its own `* text=auto` to the very
+  directory the root rule protects, and win. The suffix is what keeps them
+  inert.
 
 A mismatch is not automatically a problem. It matters most for `.editorconfig`,
 whose reconciliation depends on the generated content — an upstream change can

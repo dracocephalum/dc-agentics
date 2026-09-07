@@ -21,8 +21,8 @@ repository:
   copyright-holder: "{{COPYRIGHT_HOLDER}}"   # the legal owner named in LICENSE or NOTICE; empty when licence is none
 
 change-tracking:
-  # docs/rules/change-tracking/change-tracking.md. Tickets exist from the second commit on; the
-  # initialization itself has none. A Projects board is a view over issues and is not recorded.
+  # docs/rules/change-tracking/change-tracking.md - including the one exception, initialization,
+  # and why a Projects board is not recorded here.
   tracker: github-issues              # github-issues | none - none means branch names and PR titles carry no ticket
 
 source-control:

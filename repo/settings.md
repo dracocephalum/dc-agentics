@@ -8,11 +8,9 @@ records every choice made so far. Fill the settings file last.
 
 If a GitHub remote exists (or once it does), apply the merge behaviour the
 pull-request rules assume — squash only, delete the branch on merge — and,
-after the first push, the default-branch ruleset:
-
-    gh repo edit --delete-branch-on-merge --enable-squash-merge --enable-merge-commit=false --enable-rebase-merge=false
-    gh api -X PATCH repos/<owner>/<name> -f squash_merge_commit_title=PR_TITLE -f squash_merge_commit_message=PR_BODY
-    gh api repos/<owner>/<name>/rulesets --input .github/rulesets/protect-main.json
+after the first push, the default-branch ruleset. The three commands are in
+[`payload/docs/rules/source-control/github.md`](payload/docs/rules/source-control/github.md),
+*Repository settings*; `/source-control setup` runs them.
 
 The ruleset is refused on a private repository under GitHub Free; that is the
 user's choice to make (Pro, public, or none), not a step to skip silently —

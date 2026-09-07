@@ -13,8 +13,8 @@ any first push, check the commit identity:
 
     git var GIT_AUTHOR_IDENT
 
-Git does not refuse to commit when identity is unset — it silently derives
-`<username>@<hostname>` and writes it into history permanently.
+An unset identity does not stop a commit; it is written into history as a
+derived value instead — [`../machine/README.md`](../machine/README.md), *Git*.
 
 ## 2. Verify
 
@@ -51,9 +51,9 @@ MSBuild prints each diagnostic twice — once as it builds, once in the closing
 summary — so count distinct source positions, not output lines. Two `SA1414`
 is four lines of output.
 
-A wrong `CodeAnalysisRuleSet` path produces **no error at all** — the build
-succeeds and every rule is silently ignored. A green build alone proves nothing;
-the probe must actually fail. Delete the file once confirmed.
+A green build alone proves nothing, because a wrong ruleset path is silent —
+[`stylecop.md`](stylecop.md), *Why `$(MSBuildThisFileDirectory)`*. The probe
+must actually fail. Delete the file once confirmed.
 
 Finally, the licence check over the whole transitive graph:
 

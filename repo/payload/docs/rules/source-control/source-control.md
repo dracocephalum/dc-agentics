@@ -11,9 +11,10 @@ anyone else spends time on it.**
 
 ## A ticket first
 
-Every change is traceable to a ticket, and the ticket number leads — in the
-branch name and in the change-request title — so history, boards, and searches
-line up on one key. How a ticket is created and linked, and the form the
+Every change is traceable to a ticket, and the ticket number leads in the
+branch name and the change-request title — the rule and its reasoning are
+[`../change-tracking/change-tracking.md`](../change-tracking/change-tracking.md)'s.
+How a ticket is created and linked, and the form the
 names take when a repository tracks no tickets at all, is the tracker's
 business: [`../change-tracking/change-tracking.md`](../change-tracking/change-tracking.md).
 
@@ -173,8 +174,8 @@ branch or on an unnamed branch to get around that.
 In every mode:
 
 - Open change requests as **drafts** unless told otherwise, and never merge.
-- Write multi-line bodies to a file first; bodies on the command line get
-  mangled.
+- Write multi-line bodies to a file first — the host file says why a
+  command-line body is not safe.
 - Do not force-push, rebase, or close a request that has review activity
   without being asked.
 - The commit and push go through the signing and secret-scan setup as
