@@ -15,7 +15,7 @@ banned-API list. The authority for each item is
 | `userId`, `sessionId`, request id as a metric tag | Observability | `issue` |
 | New `DateTime` property, parameter, or return | Time | `issue` |
 | `new DateTimeOffset(dateTime)` on a value of unknown `Kind` | Time | `issue (blocking)` — silently assumes local |
-| `DateTime.Now` / `UtcNow` in production code (relaxed mode) | Time | `issue` |
+| `DateTime.Now` / `UtcNow` in production code — the build should have caught it; if it did not, `BannedSymbols.txt` is not attached | Time | `issue` |
 | `async` method without a `CancellationToken`, or one that drops it | Types and APIs | `issue` |
 | `.Result`, `.Wait()`, `.GetAwaiter().GetResult()` | Types and APIs | `issue (blocking)` |
 | Public API returning `List<T>` or `T[]` | Types and APIs | `suggestion` |

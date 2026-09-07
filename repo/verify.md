@@ -20,7 +20,14 @@ derived value instead — [`../machine/README.md`](../machine/README.md), *Git*.
 
 Never report success on an unbuilt repository.
 
+    dotnet format analyzers <solution>.slnx
     dotnet build
+
+The format pass runs once here, over everything the procedure just created.
+It costs about as much as a build — measured, and `--include` does not reduce
+it — which is why the shipped `AGENTS.md` makes it a repair step and a
+pre-commit step rather than a prefix to every build. Here it is also the first
+proof that the fixable rules and the fixer agree.
 
 Then confirm the analyzers are actually wired, by introducing a deliberate
 violation of a rule the chosen mode leaves enabled. Add it as its own file under
@@ -45,7 +52,7 @@ as a broken build:
 | the `namespace` line | `CA1050`, declare types in namespaces |
 | the blank line after it | `SA1514`, documentation header should be preceded by a blank line |
 | `static` on the class | `CA1822`, member does not access instance state |
-| either `///` comment | `SA1600` in strict mode, elements should be documented |
+| either `///` comment | nothing today — documentation rules are off — but `SA1600` the moment someone raises them |
 
 MSBuild prints each diagnostic twice — once as it builds, once in the closing
 summary — so count distinct source positions, not output lines. Two `SA1414`

@@ -1,120 +1,62 @@
-# StyleCop ruleset
+# StyleCop — the ruleset, its severities, and the wiring
 
-Applies when initializing a repository whose primary framework is .NET (dotnet core).
+Applies when a StyleCop severity needs changing, when someone asks why a rule
+is set the way it is, or when the analyzer has to be wired into a repository
+that was not initialized by the toolkit.
 
-Source files in this toolkit, all under `payload/`, landing at the target root
-under the same names:
+There is **one ruleset**, `payload/stylecop.ruleset`. Its header states the
+principle every severity was set against — a rule fails the build only when
+the toolchain can fix the violation or an agent follows it unprompted — and
+the comment on each rule says which case it is. Read the header before
+changing anything; it also says what raising a severity costs.
 
-| File | Purpose |
-|---|---|
-| `stylecop.ruleset` | rule severities; ships in relaxed mode |
-| `stylecop.json` | StyleCop settings |
-| `StyleCop.props` | package reference and wiring |
+## What each severity means here
 
-All three go to the repository root, together. They reference each other by
-`$(MSBuildThisFileDirectory)`, so splitting them across directories breaks the
-wiring.
-
-## Steps
-
-### 1. Know which mode
-
-At initialization the mode is `relaxed` unless the user asked for `strict` —
-[`initialize.md`](initialize.md) applies that default without asking and
-reports it. This procedure is for when the answer is known, or when a
-repository switches later; it never asks on its own:
-
-- **Relaxed** (default) — the ruleset as shipped. Ordering, `this.` prefixing,
-  bracket spacing and single-line-comment layout are off or informational.
-- **Strict** — the same file with a set of suppressions removed, so those rules
-  return to their default severity.
-
-### 2. Copy to the repo root
-
-`stylecop.ruleset` arrives with the payload copy, in relaxed mode. Its name is
-mode-neutral on purpose: the consuming repo should not care which mode it was
-generated from.
-
-### 3. For strict mode only, comment out these rules
-
-| Rule | Section in file | Relaxed action |
+| Action | Effect under warnings-as-errors | Used for |
 |---|---|---|
-| SA1512 | LayoutRules | `Info` |
-| SA1201 | OrderingRules | `Info` |
-| SA1202 | OrderingRules | `Info` |
-| SA1203 | OrderingRules | `Info` |
-| SA1204 | OrderingRules | `Info` |
-| SA1101 | ReadabilityRules | `None` |
-| SA1111 | ReadabilityRules | `None` |
-| SA1009 | SpacingRules | `None` |
-| SA1011 | SpacingRules | `None` |
+| `Error` | fails the build; severity is not negotiable in `.editorconfig` | `SA1414`, which is also the analyzer probe at initialization |
+| `Warning` | fails the build | rules `dotnet format analyzers` can fix, so the failure is never seen |
+| `Info` | shows in the editor; never fails the build | rules with no fix whose outcome is cosmetic — the ordering rules |
+| `None` | off | documentation on every member, `this.`, the underscore ban |
 
-**Comment out the `<Rule/>` element only — never the whole line.**
+Rules not listed take the analyzer package's default, which is `Warning` for
+most — and therefore a build failure. A rule that starts firing that is not in
+the file is a candidate for a row, with a decision.
 
-Each rule line ends with a trailing XML comment describing the rule. XML comments
-cannot nest: wrapping the entire line produces invalid XML, the ruleset fails to
-load, and the build breaks with a confusing error.
+## Changing a severity
 
-Wrong — the comment ends at the first `-->` and `-->` is left as stray text:
+Edit the `Action` attribute. **Never comment a `<Rule>` element out**: every
+line ends in a description comment, XML comments do not nest, and the result
+is a ruleset that fails to load with a confusing error.
 
-    <!-- <Rule Id="SA1201" Action="Info" /> <!-- SA1201: Elements should appear in the correct type-member order --> -->
+Before raising anything to `Warning`, answer the two questions in the header.
+`dotnet format analyzers <solution> --diagnostics <id>` answers the first
+directly: "no associated code fix found" means the cost is a manual round-trip
+on every violation. The ordering rules SA1201–SA1204 fail that test; the
+spacing rules pass it. That is measured, not assumed.
 
-Right — the description comment stays outside:
+Two rules have a dependency outside the file:
 
-    <!-- <Rule Id="SA1201" Action="Info" /> --> <!-- SA1201: Elements should appear in the correct type-member order -->
-
-After editing, confirm the file is still well-formed XML before continuing.
-
-Leave every other entry untouched. Strict mode is not "all rules on" — SA1200,
-SA1117, SA1118, the documentation rules and the compiler warning suppressions
-stay relaxed in both modes.
-
-#### Strict mode also requires an `.editorconfig` change
-
-`.editorconfig` is reconciled against this ruleset, so re-enabling a rule that
-has an editor counterpart puts the two in conflict until both are changed.
-
-Only SA1101 is affected. Flip all four to `true`:
-
-    dotnet_style_qualification_for_event    = true:silent
-    dotnet_style_qualification_for_field    = true:silent
-    dotnet_style_qualification_for_method   = true:silent
-    dotnet_style_qualification_for_property = true:silent
-
-Left at `false`, the IDE offers to strip `this.` while the build errors for its
-absence — an unpleasant loop for whoever hits it. The remaining strict rules
-(SA1201-SA1204, SA1512, SA1111, SA1009, SA1011) have no editor counterpart or
-are already satisfied by the spacing defaults.
+- **SA1101** (`this.`) is off. Turning it on also needs the four
+  `dotnet_style_qualification_for_*` settings in `.editorconfig` set to
+  `true`, or the IDE offers to strip `this.` while the build errors for its
+  absence.
+- **SA1309** (no leading underscore) is off because `_camelCase` private fields
+  are the convention, and `.editorconfig`'s naming style for private fields
+  says so. Turning it on means changing that style to plain `camelcase` too.
 
 Never express a StyleCop severity as `dotnet_diagnostic.SAxxxx.severity` in
-`.editorconfig` — that silently overrides this ruleset for that rule. Severities
-belong here.
+`.editorconfig` — that silently overrides the ruleset for that rule. Severities
+belong in the ruleset.
 
-#### Strict mode also enables the banned-API list
+## The banned-API list
 
-`BannedSymbols.txt` at the repository root ships with every entry commented
-out. Strict mode uncomments them:
+`BannedSymbols.txt` is live as shipped. It bans the clock APIs the coding
+rules already forbid in favour of `TimeProvider`, and is attached to non-test
+projects only. A hit is a defect, not style, which is why it has no relaxed
+form. The file's own header says the one thing that breaks it: a blank line.
 
-    P:System.DateTime.Now;Use TimeProvider.GetUtcNow()
-    P:System.DateTime.UtcNow;Use TimeProvider.GetUtcNow()
-    P:System.DateTime.Today;Use TimeProvider.GetUtcNow()
-    P:System.DateTimeOffset.Now;Use TimeProvider.GetUtcNow()
-    P:System.DateTimeOffset.UtcNow;Use TimeProvider.GetUtcNow()
-
-Each use then fails the build with `RS0030` and the message. Test projects are
-exempt by construction — `Directory.Build.props` does not attach the file to
-`*.Tests`. This is the enforced form of the *Time* rule in
-`csharp-coding-rules.md`; relaxed mode relies on review instead.
-
-Add further entries in the same format (`P:`, `M:`, `T:` prefixes) for anything
-else a team wants banned at build time.
-
-**Never leave a blank line in `BannedSymbols.txt`.** The parser reads an empty
-line as an empty symbol id; a second blank line is then "listed multiple
-times" and fails the build with `RS0031` — in *both* modes, since the file is
-always attached. `#` comment lines are tolerated; blank lines are not.
-
-### 4. Wire it into the build
+## Wiring it into a build
 
 Copying the files alone does nothing. `StyleCop.props` carries the wiring, but
 **MSBuild does not auto-import it** — only `Directory.Build.props` and
@@ -128,7 +70,7 @@ Copying the files alone does nothing. `StyleCop.props` carries the wiring, but
 An existing `Directory.Build.props` is merged into, never replaced —
 [`copy.md`](copy.md), *Preconditions*.
 
-#### Why `$(MSBuildThisFileDirectory)`
+### Why `$(MSBuildThisFileDirectory)`
 
 `CodeAnalysisRuleSet` is resolved **relative to the project directory**, not
 relative to the file that sets the property. A bare `stylecop.ruleset` written
@@ -141,7 +83,7 @@ available.
 in, with a trailing slash, so it is correct at any project depth. The same
 applies to the `stylecop.json` and `StyleCop.props` paths.
 
-#### Central package management
+### Central package management
 
 `StyleCop.props` omits the package `Version` when
 `$(ManagePackageVersionsCentrally)` is `true`, because supplying a version in
@@ -154,38 +96,17 @@ Otherwise the version comes from `$(StyleCopAnalyzersVersion)` in
 `StyleCop.props`. Check the current release rather than trusting the default
 pinned there.
 
-#### Verify
+### Verify
 
-Build once, then confirm StyleCop diagnostics actually appear. A quick check is
-to introduce a deliberate violation of a rule the chosen mode leaves enabled and
-confirm the build reports it. If nothing is reported, the ruleset path is the
-first thing to suspect.
+Build once, then confirm StyleCop diagnostics actually appear, by introducing
+a deliberate violation of a rule the ruleset leaves enabled and confirming the
+build reports it. If nothing is reported, the ruleset path is the first thing
+to suspect. `SA1414` is the convenient probe, since the ruleset sets it to
+`Error`:
 
-A convenient probe in relaxed mode is SA1414, which the ruleset sets to `Error`:
-
-    public (int, string) Probe() => (1, "a");   // expect: error SA1414
+    public static (int, string) Probe() => (1, "a");   // expect: error SA1414
 
 Known-good baseline: this layout was verified on .NET SDK 10.0.400 with
 StyleCop.Analyzers 1.2.0-beta.556, for a project at `src/Foo/`, with central
 package management both on and off. In both cases restore succeeded and SA1414
 was reported as an error.
-
-## What commenting out actually does
-
-Removing an entry does not force a rule on. It removes the *override*, so the
-rule falls back to its default severity from the StyleCop.Analyzers package,
-which may then be further modified by `.editorconfig` or MSBuild properties in
-the consuming repo.
-
-Practical consequences:
-
-- For a rule at `Action="None"` (SA1101, SA1111, SA1009, SA1011), removing the
-  override generally re-enables it.
-- For a rule at `Action="Info"` (SA1201-SA1204, SA1512), removing the override
-  generally raises it to warning level.
-- If the repo has an `.editorconfig` setting a severity for the same rule, that
-  is what wins. Check for one before assuming the ruleset is authoritative.
-
-Expect strict mode to produce a substantial number of new diagnostics on an
-existing codebase — SA1101 in particular fires on nearly every unqualified
-member access. Introduce it on a new project, or be prepared to fix broadly.

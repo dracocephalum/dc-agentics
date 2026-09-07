@@ -29,7 +29,6 @@ the worse question.
 | Namespace prefix | ask — e.g. `Contoso`; never invent one |
 | One-line purpose | ask — lands in `AGENTS.md` and `README.md`; never invent one |
 | Primary framework | .NET; the only one supported today, so it is not a question |
-| StyleCop mode | relaxed |
 | Central package management | on |
 | Source-control mode | `local` — `auto`, `local`, or `manual`; [`settings.md`](settings.md) |
 | Change tracking | ask — GitHub Issues, yes or no; `none` means branch names and PR titles carry no ticket; [`settings.md`](settings.md) |
@@ -54,7 +53,7 @@ the worse question.
     Directory.Build.targets      short commit hash + dirty marker in the informational version
     Directory.Packages.props     central package versions   (CPM only)
     Tests.props                  test-only packages (*.Tests projects)
-    BannedSymbols.txt            banned APIs; inert until strict mode
+    BannedSymbols.txt            banned clock APIs, live; non-test projects only
     nuget.config                 package sources + source mapping (supply chain)
     allowed-licenses.json        dependency licence allow-list (SPDX)
     license-overrides.json       verified licences for URL-only packages
@@ -99,4 +98,5 @@ step numbers restart per file.
 | 4 | [`settings.md`](settings.md) | merge settings and ruleset on the host, licence, `.dc-agentics.yaml` and `TODO.md` |
 | 5 | [`verify.md`](verify.md) | security pass, build and analyzer probe, licence and markdown checks, closing summary |
 
-Strict StyleCop mode is [`stylecop.md`](stylecop.md), referenced from stage 2.
+Changing a StyleCop severity later is [`stylecop.md`](stylecop.md), referenced
+from stage 2.

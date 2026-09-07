@@ -57,6 +57,49 @@ Metrics and spans:
   and keep to it. Everything else throws a specific domain type such as
   `ServerConnectionTimeoutException`, never bare `Exception`.
 
+## Naming
+
+- **`_camelCase` for private and internal fields**, PascalCase for everything
+  a type exposes, camelCase for locals and parameters — the `dotnet/runtime`
+  convention. The underscore is what makes a field recognizable at the point
+  of use, which is why **`this.` is not written**: a parameter `value` cannot
+  collide with a property `Value`, a field is already marked, and the compiler
+  catches the rest. `stylecop.ruleset` has both rules off on purpose and says
+  what turning either on would cost.
+
+## One type per file, and the feature file
+
+**One top-level type per file, named for it.** `SA1402` and `SA1649` enforce
+both halves, so the name on disk is the name in code and nothing ever needs a
+search. That is deterministic organization, and it is worth more to an agent
+than to a person: a file is found by the type it is asked about.
+
+The pattern that seems to fight it is CQRS — a request, its handler, its
+result, and often its validator belong together, and splitting them across
+four files is what makes a feature hard to hold in one read. They stay
+together **as nested types under one static class named for the feature**,
+which satisfies the rule because nested types are not counted:
+
+    public static class GetTodayWeather
+    {
+        public sealed record Query(CityId City);
+        public sealed record Result(Temperature Now, Forecast Next);
+        public sealed class Validator : AbstractValidator<Query> { ... }
+        public sealed class Handler(IWeatherSource source) : IRequestHandler<Query, Result> { ... }
+    }
+
+- **The outer class is a verb phrase**: `GetTodayWeather`, `SetLocation`,
+  `CancelOrder`. It is the file name, and it is what the feature is called
+  everywhere — in a ticket, a pull-request title, a log line.
+- **The nested names are fixed**: `Query` for a read, `Command` for a write,
+  then `Result`, `Handler`, and `Validator` when there is one. Never
+  `GetTodayWeatherQuery` inside `GetTodayWeather`; the outer name already says
+  it, and `GetTodayWeather.Query` reads as a sentence.
+- **Request and result are records**, per *Types and APIs*. The handler is a
+  sealed class and takes its dependencies through the primary constructor.
+- Registration by assembly scanning finds nested types; nothing extra is
+  needed for ConduitR to see them.
+
 ## Types and APIs
 
 - **Records for DTOs, messages, and events.** `init`, not `set`.
@@ -95,8 +138,8 @@ Metrics and spans:
   `DateTimeOffset.UtcNow` there — the testability rule already requires the
   `TimeProvider`. Tests may use `DateTimeOffset.UtcNow` for arbitrary
   timestamps in test data; anything the system under test *reads* still goes
-  through `FakeTimeProvider`. In strict mode this is enforced at build time
-  by `BannedSymbols.txt` (`RS0030`); in relaxed mode by review.
+  through `FakeTimeProvider`. Enforced at build time by `BannedSymbols.txt`
+  (`RS0030`) in non-test projects.
 
 ## Entity Framework Core
 

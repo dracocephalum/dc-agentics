@@ -162,8 +162,15 @@ one:
 
 ## 6. Verify — none of these are optional
 
+    dotnet format analyzers <solution>.slnx
     dotnet build <solution>.slnx
     dotnet test  <solution>.slnx
+
+`dotnet format` first, once: every spacing rule the ruleset enforces has a
+code fix, so this corrects anything the template or the first draft left
+before the build can fail on it. It takes about as long as a build, which is
+acceptable for a new project and is why it is not run before every build
+afterwards — see *Building and testing* in `AGENTS.md`.
 
 - Build is green with **zero warnings** (they are errors).
 - Test count equals the tests you wrote. Zero tests and a green exit means a

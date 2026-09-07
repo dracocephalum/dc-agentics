@@ -124,6 +124,4 @@ so create it before copying into it:
 Everything from here on is what to *verify* or *edit* in what just landed:
 the build files ([`build.md`](build.md)), then the documents, settings, and
 verification. The templates under `docs/templates/` become `AGENTS.md` and
-`README.md` in
-[`documents.md`](documents.md); strict mode edits three files in
-[`build.md`](build.md).
+`README.md` in [`documents.md`](documents.md).
