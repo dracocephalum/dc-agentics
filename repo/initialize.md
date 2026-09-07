@@ -40,6 +40,8 @@ the worse question.
     LICENSE, NOTICE              only if the user chose a licence (settings.md)
     README.md                    generated from agentics/templates/README.template.md; human entry point
     .agentics.yaml            settings agents read: source-control mode, every init choice, toolkit commit (settings.md)
+                                 the commit is what a later upgrade diffs from; upgrades are supported from the
+                                 toolkit's support.baseline onward, and re-initialization is the path below it
     TODO.md                      open items; init writes anything unresolved here (settings.md)
     <Prefix>.<Name>.slnx         the solution, named after the first project (build.md)
     src/, test/                  the first project and its tests (build.md)

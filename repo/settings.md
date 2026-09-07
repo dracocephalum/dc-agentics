@@ -64,7 +64,9 @@ it, so fill it last, when the choices are final.
 Two values are **not** filled in, because they describe the toolkit rather than
 the target and travel with the payload as fixed values. Leave both alone:
 `toolkit.payload-path`, which records where the payload lived at the recorded
-commit so a later upgrade diffs the right root; and the `guidelines:` block,
+commit so a later upgrade diffs the right root — its presence is also what
+marks the repository as above the upgrade's support floor; and the
+`guidelines:` block,
 which records the model line the shipped rules were written and verified
 against.
 

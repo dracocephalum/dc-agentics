@@ -23,10 +23,22 @@ under test:
 
 | Outcome | Do |
 |---|---|
+| the recorded commit is an ancestor of `support.baseline` in the toolkit's `.agentics.yaml` | decline — the repository predates what the upgrade supports; re-initialize it |
 | equal | proceed |
 | the target is an ancestor of `HEAD` | decline; offer a **toolkit upgrade** first, then the operation |
 | `HEAD` is an ancestor of the target | decline — the toolkit is behind, and proceeding would apply older rules to a newer repository |
 | neither, or the commit does not resolve | decline; say to run the operation from inside the target, which sidesteps the question entirely |
+
+**The baseline row comes first**, and it is why the procedures carry no
+knowledge of older layouts. The toolkit has restructured — `init/` became
+`machine/` and `repo/`, `docs/` became `agentics/`, the settings file changed
+its name — and every rule for handling those is generic: renames as moves,
+deletions before the loop, dropped keys removed. What is *not* kept is a table
+of where things used to live. A repository below the baseline is not upgraded
+through that history; it is re-initialized, which on a repository that old is
+the cheaper operation anyway.
+
+    git merge-base --is-ancestor <recorded> <support.baseline>   # true -> below the floor
 
 ## Why best-effort is the right standard
 
