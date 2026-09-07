@@ -13,11 +13,18 @@ carries settings that matter.
 If one exists, merge into it rather than replacing: add the `Import` line to the
 existing file, keep its current properties.
 
-Note whether the path is a git repository. **If it is not, run `git init`** —
-everything after this stage assumes one, and the build stamp, the ruleset and
-the first push each depend on it existing. **Never create a commit**: the
-payload is left in the working tree for the user to review and commit
-themselves.
+Note whether the path is a git repository. **If it is not, run
+`git init -b main`** — everything after this stage assumes one, and the build
+stamp, the ruleset and the first push each depend on it existing. **Never
+create a commit**: the payload is left in the working tree for the user to
+review and commit themselves.
+
+**Pass `-b main` explicitly.** A machine with no `init.defaultBranch` set
+still creates `master`, and the default branch is named `main` throughout —
+`.github/rulesets/protect-main.json`, the ruleset command in
+[`settings.md`](settings.md), and every `--base main` in the source-control
+rules. Renaming afterwards works, but only if someone notices; nothing later
+in the procedure fails loudly on the wrong name.
 
 ## 2. Baseline drift check
 
@@ -85,9 +92,12 @@ something is wrong with the file, not the template. Say so rather than guessing.
 ## 3. Copy
 
 `payload/` is an exact mirror of a target repository root, so the copy is one
-command, plus `.claude/skills/` from the toolkit root:
+command, plus `.claude/skills/` from the toolkit root. The target has no
+`.claude/` yet, so create it before copying into it:
 
     cp -r payload/. <target>/
+    mkdir -p <target>/.claude
+    cp -r .claude/skills <target>/.claude/
     find <target> -name '*.original' -delete
 
 Everything from here on is what to *verify* or *edit* in what just landed:

@@ -29,7 +29,11 @@ target root with the copy; transform it in place:
    and the prefix — a README in the repository, or one the user points at.
    Quote what you took back to them for confirmation; that is not inventing.
 2. Delete the layout variant that does not apply (standalone or monorepo), and
-   the surrounding `==== variant ====` comments.
+   the surrounding `==== variant ====` comments. **Take one adjoining blank
+   line with each comment.** Every variant comment sits with a blank line
+   either side, so removing the line alone leaves two consecutive blanks —
+   MD012, which stage 5 then reports against a file you have no reason to
+   suspect.
 3. Trim the folder table to folders that **actually exist**. A row for a folder
    you did not create is a false statement about the repository.
 4. Delete the instruction comment at the top of the template.
@@ -54,9 +58,16 @@ it can never be used there.
 
 Verify nothing was missed:
 
-    grep -n "{{" <repo>/AGENTS.md <repo>/README.md      # must return nothing
+    grep -n "{{" <repo>/AGENTS.md <repo>/README.md      # only the Licence section may still match
     ls <repo>/AGENTS.template.md <repo>/README.template.md   # both must NOT exist
-    grep -n "<!--" <repo>/AGENTS.md <repo>/README.md    # must return nothing: every prompt comment answered and removed
+    grep -n "<!--" <repo>/AGENTS.md <repo>/README.md    # only the Licence section may still match
+
+**The Licence section is stage 4's, not this stage's.** `README.md` keeps
+`{{LICENCE_NAME}}`, `{{YEAR}}`, `{{COPYRIGHT_HOLDER}}` and the
+*Delete this section if the repository has no LICENSE file* comment until
+[`settings.md`](settings.md) fills them or deletes the section — so those are
+the only matches either grep may return here, and `AGENTS.md` must be clean of
+both. Re-run both after stage 4, when nothing at all may match.
 
 ### Why the guideline rows are phrased as situations
 
