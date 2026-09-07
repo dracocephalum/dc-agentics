@@ -37,7 +37,7 @@ Each is a distinct verb, so a refusal can name exactly which one it means.
 
 | Term | In one line | Owned by |
 |---|---|---|
-| **component** | one solution, one deliverable, one `src/` and `test/` pair — however many projects it holds | [`repo/payload/docs/rules/layout.md`](repo/payload/docs/rules/layout.md) |
+| **component** | one solution and one `src/` + `test/` pair; its projects build and version together, and may produce more than one deliverable | [`repo/payload/docs/rules/layout.md`](repo/payload/docs/rules/layout.md) |
 | **standalone** | a single-component repository; the component *is* the repository | [`repo/payload/docs/rules/layout.md`](repo/payload/docs/rules/layout.md) |
 | **monorepo** | many components, each under a category folder, each with its own solution | [`repo/payload/docs/rules/layout.md`](repo/payload/docs/rules/layout.md) |
 | **category** | a root folder grouping components by kind — `services/`, `libraries/`, `jobs/`, `tools/`, `ui/`, `infrastructure/` | [`repo/payload/docs/rules/layout.md`](repo/payload/docs/rules/layout.md) |
