@@ -27,7 +27,7 @@ when they have a closing condition.
       shape already decided in `machine/python.md`.
 - [ ] **`dotnet-outdated-tool`** as a further entry in
       `repo/payload/.config/dotnet-tools.json` (4.8.1 at time of writing), so
-      "keep the stack current" in `layout.md` becomes one command. Verify it
+      "keep the stack current" in `docs/rules/layout.md` becomes one command. Verify it
       respects central package management before shipping.
 - [ ] **Meziantou.Analyzer** (MIT, 3.0.204) — overlaps the CancellationToken
       and ConfigureAwait rules usefully. Needs a build test on the template

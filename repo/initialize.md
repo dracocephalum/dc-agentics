@@ -24,7 +24,7 @@ the worse question.
 | Input | Default if unstated |
 |---|---|
 | Repository root path | *required — never guess* |
-| Layout mode | ask — `standalone` or `monorepo`, see [`layout.md`](layout.md) |
+| Layout mode | ask — `standalone` or `monorepo`, see [`payload/docs/rules/layout.md`](payload/docs/rules/layout.md) |
 | Namespace prefix | ask — e.g. `Contoso`; never invent one |
 | One-line purpose | ask — lands in `AGENTS.md` and `README.md`; never invent one |
 | Primary framework | .NET; the only one supported today, so it is not a question |
@@ -36,14 +36,16 @@ the worse question.
 
 ## What ends up in the repository root
 
-    AGENTS.md                    generated from AGENTS.template.md
+    AGENTS.md                    generated from docs/templates/AGENTS.template.md
     LICENSE, NOTICE              only if the user chose a licence (settings.md)
-    README.md                    generated from README.template.md; human entry point
+    README.md                    generated from docs/templates/README.template.md; human entry point
     .dc-agentics.yaml            settings agents read: source-control mode, every init choice, toolkit commit (settings.md)
     TODO.md                      open items; init writes anything unresolved here (settings.md)
     <Prefix>.<Name>.slnx         the solution, named after the first project (build.md)
     src/, test/                  the first project and its tests (build.md)
-    docs/templates/              component-README.md, and category-README.md in a monorepo — used by /project
+    docs/templates/              AGENTS.template.md, README.template.md — the sources of the two above, kept
+                                 component-README.md, category-README.md — used by /project
+                                 all four kept in both modes, so a layout conversion needs no toolkit
     .editorconfig                editor conventions (root = true)
     .gitattributes               line-ending normalization  (dotnet new)
     .gitignore                   ignore rules               (dotnet new)
@@ -61,6 +63,7 @@ the worse question.
     stylecop.json                StyleCop settings
     docs/rules/                  exactly as in payload/docs/rules/
       dependencies.md
+      layout.md                  standalone + monorepo trees, naming, test projects
       scrub.md                   the recurring consistency + drift checks
       security-reminders.md      privacy + data-security checklist
       change-tracking/         change-tracking.md (rules), github.md (mechanics)
@@ -90,7 +93,7 @@ step numbers restart per file.
 | Stage | File | What it does |
 |---|---|---|
 | 1 | [`copy.md`](copy.md) | preconditions, baseline drift check, the copy |
-| 2 | [`build.md`](build.md) | StyleCop and build files against the chosen mode, the two git files, the folder structure ([`layout.md`](layout.md)), the first project and its solution; known failure modes |
+| 2 | [`build.md`](build.md) | StyleCop and build files against the chosen mode, the two git files, the folder structure ([`payload/docs/rules/layout.md`](payload/docs/rules/layout.md)), the first project and its solution; known failure modes |
 | 3 | [`documents.md`](documents.md) | `AGENTS.md` and `README.md` from the templates, Serena project file, local tools |
 | 4 | [`settings.md`](settings.md) | merge settings and ruleset on the host, licence, `.dc-agentics.yaml` and `TODO.md` |
 | 5 | [`verify.md`](verify.md) | security pass, build and analyzer probe, licence and markdown checks, closing summary |

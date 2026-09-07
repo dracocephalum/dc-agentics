@@ -55,7 +55,8 @@ is why `Contoso.CoreBanking` is left alone. A naive string replace would turn it
 into `ContosoBanking`.
 
 `Contoso` is a placeholder: the prefix comes from the user, usually an
-organization or product name, and is never hard-coded into this toolkit.
+organization or product name, and is recorded in `.dc-agentics.yaml` under
+`repository.namespace`.
 
 ## Standalone
 
@@ -74,7 +75,7 @@ organization or product name, and is never hard-coded into this toolkit.
       stylecop.ruleset
       Contoso.Thing.slnx             named after the main project, not the repo
       docs/
-        rules/                     exactly as in payload/docs/rules/
+        rules/                     the rules this repository is held to
           coding/csharp/csharp-coding-rules.md
       src/
         Contoso.Thing/
@@ -166,9 +167,9 @@ files only apply to MSBuild projects.
 
 The procedure — templates, the sample code each one emits that fails the
 ruleset, central-package-management fixes, test wiring, verification — is
-[`payload/docs/rules/coding/csharp/csharp-new-project.md`](payload/docs/rules/coding/csharp/csharp-new-project.md),
-shipped to every repository as `docs/rules/coding/csharp/csharp-new-project.md`
-and backing `/project`. The first component at initialization follows it too.
+[`coding/csharp/csharp-new-project.md`](coding/csharp/csharp-new-project.md),
+which also backs `/project`. The first component created at initialization
+follows it too.
 
 ## Choices made here
 

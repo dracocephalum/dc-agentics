@@ -16,8 +16,18 @@ is the substance and `AGENTS.md` points every tool at it, so a team without
 Claude Code loses nothing by skipping the shims.
 
 Then generate the repository's own `AGENTS.md` at its root from
-[`payload/AGENTS.template.md`](payload/AGENTS.template.md) — it arrived at the
-target root with the copy; transform it in place:
+[`payload/docs/templates/AGENTS.template.md`](payload/docs/templates/AGENTS.template.md).
+It arrived with the copy at `<repo>/docs/templates/`, and **it stays there** —
+copy it to the root as `AGENTS.md` and transform the copy, leaving the template
+untouched.
+
+**Why the template stays.** A standalone repository that later converts to a
+monorepo needs the monorepo layout variant, and that text exists nowhere else.
+Keeping the template is what lets a repository describe a shape it does not
+yet have, without a toolkit checkout. A toolkit upgrade replaces anything under
+`docs/` that the repository has not modified, so it stays current on its own.
+
+Transform the copy:
 
 1. Fill every double-brace placeholder — `REPO_NAME`, `ONE_LINE_PURPOSE`,
    `PREFIX`, and `SOLUTION_NAME`, the main project the solution is named after
@@ -44,23 +54,32 @@ target root with the copy; transform it in place:
    the solution file name. In a monorepo it stays: there is no single solution
    there, and the command is generic on purpose.
 
-Then the repository's `README.md`, from `README.template.md` (it arrived at the
-target root with the copy) by the same transform: fill placeholders, keep the
-matching layout variant, delete the template comment. It is the human entry
-point; `AGENTS.md` is the agent's. The line under its title points at
-`.dc-agentics.yaml` for provenance and choices ([`settings.md`](settings.md)) and at `TODO.md`
-for open items; it has no placeholders of its own. In a monorepo, also give
-every category folder you create its map —
+Then the repository's `README.md`, copied out of `docs/templates/` the same way
+and transformed the same way: fill placeholders, keep the matching layout
+variant, delete the template comment. It is the human entry point; `AGENTS.md`
+is the agent's. The line under its title points at `.dc-agentics.yaml` for
+provenance and choices ([`settings.md`](settings.md)) and at `TODO.md` for open
+items; it has no placeholders of its own.
+
+In a monorepo, also give every category folder you create its map —
 `docs/templates/category-README.md` copied to `<category>/README.md` and
-filled. Component READMEs come from the new-project procedure. In standalone
-mode, delete `docs/templates/category-README.md`: there are no categories, so
-it can never be used there.
+filled. Component READMEs come from the new-project procedure.
+
+**Every template stays, in both modes**, `category-README.md` included. A
+standalone repository has no categories today and may have them tomorrow: the
+layout conversion needs that map, and a repository that has to fetch it from
+the toolkit is not self-describing. It also makes the reference in
+`csharp-new-project.md` true in both modes rather than only one.
 
 Verify nothing was missed:
 
     grep -n "{{" <repo>/AGENTS.md <repo>/README.md      # only the Licence section may still match
-    ls <repo>/AGENTS.template.md <repo>/README.template.md   # both must NOT exist
+    ls <repo>/docs/templates/                            # all four templates must still be there
     grep -n "<!--" <repo>/AGENTS.md <repo>/README.md    # only the Licence section may still match
+
+The generated documents must be clean; the templates they came from must be
+untouched, placeholders and all. Those are opposite conditions, and checking
+the wrong one is how a template gets transformed in place by accident.
 
 **The Licence section is stage 4's, not this stage's.** `README.md` keeps
 `{{LICENCE_NAME}}`, `{{YEAR}}`, `{{COPYRIGHT_HOLDER}}` and the

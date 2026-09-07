@@ -49,15 +49,12 @@ Three kinds of file, told apart by location:
       copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
       scrub.md                     consistency + drift pass for THIS repo; extends the payload checklist
       upgrade.md                   toolkit pins current; a target up to the current toolkit (ops 1+2)
-      layout.md                    standalone + monorepo folder structures
       stylecop.md                  StyleCop relaxed/strict procedure
       baselines/                   pristine `dotnet new` output, NEVER copied to a target
                                    path mirrors payload/; .original suffix keeps them inert
 
     (1)+(2) payload - an EXACT mirror of a target repository root; copied verbatim
     repo/payload/
-      AGENTS.template.md           transformed at init (-> AGENTS.md)
-      README.template.md           transformed at init (-> README.md); the human entry point
       .dc-agentics.yaml            settings agents read: source-control mode, init choices, toolkit commit; placeholders filled at init
       TODO.md                      the target's open-items file; init writes anything unresolved into it
       .editorconfig  .gitignore  .gitattributes   (forked; baselines live in repo/baselines/)
@@ -67,6 +64,7 @@ Three kinds of file, told apart by location:
       .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
       docs/rules/                  every rules document, exactly where it lands
         dependencies.md
+        layout.md                  standalone + monorepo trees, naming, test projects, stack currency
         scrub.md                   the consistency + drift checks every target gets
         security-reminders.md      privacy & data-security checklist; the review's security pass
         change-tracking/         change-tracking.md - the ticket rule, the yes/no setting, boards as views; github.md - issues, linked branches
@@ -74,7 +72,9 @@ Three kinds of file, told apart by location:
         coding/code-review.md
         coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
         coding/markdown/markdown-review.md
-      docs/templates/              component-README.md, category-README.md - filled by /project
+      docs/templates/              AGENTS.template.md, README.template.md - transformed at init, and KEPT
+                                   component-README.md, category-README.md - filled by /project
+                                   kept in both modes: a layout conversion needs them, with no toolkit present
 
     (2) the one thing copied from OUTSIDE payload/
     .claude/skills/                skill shims; live here, copied to a target's .claude/skills/

@@ -107,7 +107,7 @@ The template also sets `*.cs text diff=csharp` (better diff hunk headers) and
 
 ## 4. Create the folder structure
 
-Follow [`layout.md`](layout.md) for the chosen mode. It covers the standalone
+Follow [`payload/docs/rules/layout.md`](payload/docs/rules/layout.md) for the chosen mode. It covers the standalone
 and monorepo trees, the kebab-case-directory / PascalCase-project naming rule,
 per-folder conventions, and the two SDK-template defects that break the first
 build (CPM version conflicts, and placeholder files that violate StyleCop).

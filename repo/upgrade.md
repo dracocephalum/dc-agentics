@@ -35,7 +35,7 @@ reviewable.
 
 ### The analyzer and test-stack packages
 
-The procedure is *Keeping the test stack current* in [`layout.md`](layout.md),
+The procedure is *Keeping the test stack current* in [`payload/docs/rules/layout.md`](payload/docs/rules/layout.md),
 which already covers the part that matters: these packages are not independent,
 and their failures are compile-time ambiguities rather than version errors.
 Move families together, never package by package.
@@ -129,6 +129,27 @@ Everything else is genuinely comparable, and in practice most of it comes back
 untouched — which is what makes the handful that did change worth a human's
 attention.
 
+### Then check for what the diff cannot see
+
+The diff shows what changed **in the payload**. It says nothing about a file
+that never changed and is simply absent from the target — deleted at
+initialization, or removed later by someone. Those files are invisible to every
+step above and stay missing for ever.
+
+So after applying the diff, compare the payload's whole file list against the
+target:
+
+    git ls-tree -r --name-only HEAD -- <payload-root> | sed 's|^<payload-root>/||' | sort
+
+Anything present there and absent from the target is a finding: report it with
+what it is for, and ask before reintroducing it. Some absences are deliberate
+and should stay — a repository may have removed a rule it does not want.
+
+This is not hypothetical. Standalone initialization used to delete
+`docs/templates/category-README.md`, so every repository initialized that way
+is missing a file the payload has always contained, and no diff between two
+toolkit commits will ever mention it.
+
 ### The per-path policy
 
 | Path | Policy | Why |
@@ -143,12 +164,13 @@ attention.
 
 ### Templates changed, so their output must change too
 
-`AGENTS.template.md` and `README.template.md` are never copied to a target —
-they were *transformed* into `AGENTS.md` and `README.md` at initialization,
-with placeholders filled and a layout variant deleted. A change to a template
-is therefore an instruction, not a file: read what changed in the template and
-make the equivalent edit to the target's generated document, in the target's
-own vocabulary.
+The templates in `docs/templates/` are replaced like any other file under
+`docs/` — but their *output* is not. `AGENTS.md` and `README.md` were generated
+from them at initialization, with placeholders filled and a layout variant
+deleted, so no mechanical mapping runs backwards. A change to a template is
+therefore two things: a file to replace, and an instruction to carry out. Read
+what changed in the template and make the equivalent edit to the target's
+generated document, in the target's own vocabulary.
 
 The common case is a new row in the *Agent guidelines* table, which is how a
 new rules document becomes reachable. **A document copied in without its row is

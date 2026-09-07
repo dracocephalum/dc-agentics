@@ -8,7 +8,16 @@
   anywhere in the file.
 
   Named AGENTS.template.md rather than AGENTS.md so it is not picked up as live
-  agent instructions inside the toolkit itself.
+  agent instructions - by the toolkit, or by any tool that reads a nested
+  AGENTS.md as directory-scoped instructions. Keep the suffix.
+
+  This file is COPIED to the root and transformed there; it stays here
+  afterwards, unchanged, because a layout conversion needs the variant that was
+  deleted from the generated copy.
+
+  Every link below is relative to the REPOSITORY ROOT, where the output lands -
+  so they do not resolve from this directory. That is correct; do not "fix"
+  them to climb out of docs/templates/.
 -->
 
 # {{REPO_NAME}}
@@ -76,6 +85,7 @@ makes it selectable from a plain-language request.
 | Writing, reviewing or refactoring C# in this repository | [`docs/rules/coding/csharp/csharp-coding-rules.md`](docs/rules/coding/csharp/csharp-coding-rules.md) |
 | Touching an entity, a `DbContext`, or a migration | [`docs/rules/coding/csharp/csharp-ef-core-rules.md`](docs/rules/coding/csharp/csharp-ef-core-rules.md) |
 | Adding a project, component, or test project | [`docs/rules/coding/csharp/csharp-new-project.md`](docs/rules/coding/csharp/csharp-new-project.md) |
+| Asking where something goes, how it should be named, or what the other layout looks like | [`docs/rules/layout.md`](docs/rules/layout.md) — both modes, so this repository can describe a shape it does not currently have |
 | Checking a change for secrets, personal data, or local paths — or anything before a first push | [`docs/rules/security-reminders.md`](docs/rules/security-reminders.md) |
 | Adding, upgrading, or replacing a package (any ecosystem) | [`docs/rules/dependencies.md`](docs/rules/dependencies.md) |
 | Creating or finding a ticket, or asking which ticket a change is for | [`docs/rules/change-tracking/change-tracking.md`](docs/rules/change-tracking/change-tracking.md), then the tracker file it names |
