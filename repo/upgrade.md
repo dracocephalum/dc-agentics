@@ -110,6 +110,21 @@ first is the merge base, and it is what makes an overwrite defensible:
 | differs | the target customized it | stop, show both changes, ask |
 | missing | never copied, or deleted deliberately | ask before reintroducing it |
 
+**When the answer to "ask" is yes, do not merge text.** The files a repository
+customizes — `stylecop.ruleset`, `stylecop.json`, `.editorconfig`, the
+`Directory.*` files — are edited attribute by attribute, while the toolkit
+rewrites them wholesale. A three-way merge of one changed attribute against a
+72-line rewrite produces a mess. Apply the new file whole, then re-apply each
+of the repository's changes **by intent**: the severity it raised, the
+setting it flipped, the version it pinned. Verify each landed. That is what
+preserves the decision without preserving the old file around it.
+
+**Handle deletions before the loop.** A path the toolkit deleted appears in
+the diff as `D`, and `git show HEAD:<path>` fails for it. A loop that redirects
+that output into the target creates an *empty file* first — and the orphan
+check below then sees a modified file and keeps it. Take the `D` entries out,
+apply them as removals under the rule above, and only then write the rest.
+
 Never overwrite on the strength of the path alone. A repository that has been
 running for a year will have edited something, and the whole value of the
 recorded commit is that it can tell an edit from an untouched file.
@@ -168,7 +183,7 @@ purpose.
 | new files | add | a new rules document also needs its row — see below |
 | `.editorconfig`, `.gitignore`, `.gitattributes` | replace only when unmodified, else three-way | they carry baseline markers; a mismatch there is the drift procedure's business, not this one's |
 | `Directory.*.props`, `Tests.props`, `nuget.config`, `stylecop.*`, `allowed-licenses.json`, `.config/dotnet-tools.json` | three-way | routinely customized per repository |
-| `.dc-agentics.yaml` | merge keys, keep values | new settings arrive with their defaults; every recorded choice is the target's and survives |
+| `.dc-agentics.yaml` | merge keys, keep values, drop the dead | new settings arrive with their defaults; every recorded choice is the target's and survives; **a key the payload no longer defines is removed**, and the report names it — nothing reads it, and nothing would ever notice it otherwise |
 | `AGENTS.md`, `README.md`, `TODO.md` | by hand | generated from templates and then filled; there is no mechanical mapping back |
 
 ### Templates changed, so their output must change too
@@ -359,6 +374,9 @@ the root failing `MSB1003` as intended.
 |---|---|
 | Every payload file appears new | diffed the current root only, or without `-M`, across a toolkit restructure |
 | A customization silently disappears | overwrote on path alone, without comparing against the payload at the recorded commit |
+| A customized config file becomes a merge mess | three-way merged text; apply the new file and re-apply the repository's changes by intent instead |
+| A zero-byte file where the toolkit deleted one | the apply loop redirected a failing `git show` for a `D` path; handle deletions first |
+| A settings key nothing reads, in every target | the payload dropped it and "keep values" was read as "keep keys" |
 | A new rules document is never read | copied in without adding its row to the target's `AGENTS.md` |
 | `NU1008`, or a restore that cannot resolve | package versions moved without `Directory.Packages.props` moving with them |
 | The build breaks on rules nobody changed | a `docs/rules/**` replacement where the target had forked the document |
