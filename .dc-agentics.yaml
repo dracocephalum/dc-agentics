@@ -10,3 +10,15 @@ source-control:
   # auto | local | manual - docs/rules/source-control/source-control.md
   # (here: repo/payload/docs/rules/source-control/source-control.md), "For an agent".
   mode: auto
+
+guidelines:
+  # The model line docs/rules were written and verified against - see "A note on
+  # models" in README.md. This records what they say AND what they leave unsaid
+  # because these models do it by default. Not a requirement: another model
+  # works, but the rules it does not infer are the ones it will miss.
+  #
+  # It exists so that strange behaviour after a model change has something to be
+  # compared against. Same idea as dc-agentics-verified on the test stack: a
+  # combination known to have worked together, and when.
+  model-baseline: "claude-opus-5, claude-fable-5-1"
+  verified: "2026-09-07"              # last end-to-end initialization trial on that line

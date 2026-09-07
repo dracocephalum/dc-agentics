@@ -30,6 +30,13 @@ model has different defaults, and the difference shows up as rules it does not
 infer. Recommended: a model of at least 5T parameters. Below about 2.5T the
 gaps are large enough to degrade results markedly.
 
+The line, and the date it was last verified end to end, are recorded under
+`guidelines:` in [`.dc-agentics.yaml`](.dc-agentics.yaml) and carried into
+every repository this initializes. It is a record rather than a requirement —
+its purpose is that odd behaviour after a model change has a known-good
+combination to be compared against, the same way `dc-agentics-verified` pins
+the test stack.
+
 ## Use it
 
 Agents start at [`AGENTS.md`](AGENTS.md) — a task index mapping requests to

@@ -6,7 +6,7 @@ procedure.
 
 **Start with the shipped checklist**,
 [`payload/docs/rules/scrub.md`](payload/docs/rules/scrub.md), read as though
-this repository were a target — the toolkit is held to what it ships. Two
+this repository were a target — the toolkit is held to what it ships. Three
 adjustments, because it is not a target:
 
 - **Judge the payload's documents against `payload/AGENTS.template.md`, not
@@ -136,3 +136,20 @@ kept naming three shims.
 Compare against the listing, in both directions. No exclusion is needed: since
 the baselines moved to `repo/baselines/`, everything under `payload/` is
 genuinely copied, which is what makes this a straight comparison.
+
+## 7. Always-loaded documents stay within budget
+
+`AGENTS.md` and the skill shims are read every session with no trigger to gate
+them, so their length is a cost paid on every request. Everything under
+`payload/docs/rules/` is loaded on demand and is not measured here — depth
+there is cheap until its trigger fires.
+
+    wc -l AGENTS.md .claude/skills/*/SKILL.md | sort -n
+
+Shims are 30-40 lines and should stay there; a shim that has grown is usually
+carrying substance that belongs in the document it points at. `AGENTS.md` is
+the one to watch, since every row added to the task index is paid for
+everywhere.
+
+Report growth as a trend rather than a threshold: a shim that has doubled is a
+finding, a shim at 44 lines is not.

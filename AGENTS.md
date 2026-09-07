@@ -134,7 +134,15 @@ somewhere the surrounding context no longer holds.
 - **Self-contained.** Payload must not depend on a sibling file existing at a
   path that only holds inside this repo.
 - **Say when it applies, not just what to do.** A rule with no trigger gets
-  applied everywhere or nowhere.
+  applied everywhere or nowhere. The trigger is also what keeps a long document
+  cheap: nobody pays for `csharp-ef-core-rules.md` unless they touch EF Core.
+- **Budget by what is always loaded, not by total size.** `AGENTS.md` and the
+  skill shims are read every session and have no trigger to gate them, so they
+  stay tight - the shims are 30-40 lines and should remain so. Everything under
+  `docs/rules/` is loaded on demand, where depth costs nothing until its trigger
+  fires; length there is only a problem if the trigger is too broad. Splitting a
+  document that is always loaded saves nothing, and splitting one whose parts
+  share a single trigger just adds files to open.
 - **Examples must run.** A boilerplate that was never executed is a liability.
   If it can't be verified, mark it explicitly as untested.
 - **Prefer a real file over a snippet in prose.** Templates that are actual files

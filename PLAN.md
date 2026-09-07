@@ -154,6 +154,45 @@ of them on every push. A full scrub may turn out to be most useful exactly
 where CI is not: before a first push, on a repository nobody has touched for a
 year, or when a toolchain has moved underneath one.
 
+### Tree shaking against a model line
+
+The compaction problem inverted: instead of writing terse documents and hoping
+a model fills the gaps, keep a **comprehensive** set — every rule stated, no
+reliance on any default — and shake it down against a named model when someone
+asks to compact. The full text stays the source of truth; the compact form is
+generated output for one model line, regenerated when that line moves.
+
+It is the only version of compaction that fails safely, because nothing is ever
+lost: a regression after a model change is fixed by re-shaking, not by
+remembering what was deleted. It also makes the model dependency explicit
+rather than baked in.
+
+The cost is high enough to park it. Two forms of every document to keep in
+step, a shaking step that must itself be verified — the only honest test being
+whether an agent still reaches a conforming repository from the shaken
+version — and a comprehensive source set that does not exist today, because
+this toolkit began by writing against Opus and Fable rather than against
+nothing. Worth revisiting only if a second model line ever has to be supported
+properly.
+
+### Verbose multi-file rule sets
+
+Prior art worth reading before assuming our shape is right:
+[Aaronontheweb/dotnet-skills](https://github.com/Aaronontheweb/dotnet-skills/tree/master/skills/csharp-coding-standards)
+splits general C# coding standards across several files. Ours is one
+`csharp-coding-rules.md`, with EF Core and unit tests split out because each has
+its own trigger.
+
+The distinction that matters is not file count but **what fires a load**. Their
+split is by topic within one subject, so a request about C# plausibly pulls
+several files; ours splits by trigger, so touching EF Core loads EF Core rules
+and nothing else. Verbosity aimed at weaker models is the other half of it, and
+it is real cost on every request for a model that did not need it.
+
+Not a change to make now. Revisit if a second model line has to be supported,
+where the extra explicitness stops being waste — most likely together with
+*Tree shaking* above, which is the same problem approached from the other end.
+
 ### A compacting `/scrub`
 
 Documents cost context every time they are read, so trimming them has real
