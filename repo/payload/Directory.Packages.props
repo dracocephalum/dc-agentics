@@ -22,8 +22,9 @@
       3. <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
          in the .csproj - full opt-out, use sparingly. The project then carries
          its own Version attributes; the analyzers still arrive, with their
-         conditional versions. NOT for a *.Tests project: Tests.props carries no
-         versions, so restore fails with NU1015 - use option 1 there.
+         conditional versions. A *.Tests project that opts out also loses
+         Tests.props - it carries its own test stack, see
+         csharp-new-project.md, step 4.
 
     There is no repository-wide off. The toolkit initializes with this file
     present and does not support removing it.

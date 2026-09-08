@@ -224,19 +224,29 @@ name alone cannot carry that.
 ## Test projects
 
 Everything a test project needs lives in `Tests.props` at the repository root.
-It is imported from `Directory.Build.props` under a single condition:
+It is imported from `Directory.Build.targets` under one condition:
 
     <Import Project="$(MSBuildThisFileDirectory)Tests.props"
-            Condition="$(MSBuildProjectName.EndsWith('.Tests'))" />
+            Condition="$(MSBuildProjectName.EndsWith('.Tests')) and '$(ManagePackageVersionsCentrally)' != 'false'" />
 
 So any project named `*.Tests`, at any depth, picks up the whole stack and
 nothing else does. Verified: a `src/` project resolves 2 package references
-(the StyleCop and banned-API analyzers), a `.Tests` project resolves 13.
+(the StyleCop and banned-API analyzers), a `.Tests` project resolves 13. The
+second half of the condition is the escape hatch: a test project that opts out
+of central package management in its own `.csproj` is left alone and carries
+its own stack — [`csharp-new-project.md`](coding/csharp/csharp-new-project.md),
+step 4.
 
-**Why the condition lives in the root file** rather than a
-`Directory.Build.props` inside `test/`: a nested one would *replace* the root
-file for that subtree — first-found-wins, no merging — silently cutting test
-projects off from central package management, StyleCop and warnings-as-errors.
+**Why it is imported from the targets file**, not `Directory.Build.props`: the
+props file is evaluated before the project body, so a property the project
+sets is not visible there yet; the targets file comes after. Everything in
+`Tests.props` is consumed later than evaluation, so a project that does not
+opt out sees no difference.
+
+**Why the condition lives in a root file** rather than a `Directory.Build.*`
+inside `test/`: a nested one would *replace* the root file for that subtree —
+first-found-wins, no merging — silently cutting test projects off from central
+package management, StyleCop and warnings-as-errors.
 
 Test projects also get `IsPackable=false`, so they can never be published by
 accident.

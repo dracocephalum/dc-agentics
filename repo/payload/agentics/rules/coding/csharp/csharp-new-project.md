@@ -149,6 +149,17 @@ Then:
 A finished test `.csproj` contains a `TargetFramework` and a `ProjectReference`
 and nothing else.
 
+**Unless it opts out of central package management.** A test project that
+sets `<ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>`
+is not given `Tests.props` at all — the import is conditioned on it — and is
+on its own by choice. Then the deletions above are reversed: keep the
+template's package references *with* their versions and its
+`<Using Include="Xunit" />`, set `<IsPackable>false</IsPackable>` and
+`<NoWarn>$(NoWarn);CA1707</NoWarn>` yourself, and add whichever of the
+convenience libraries you want. The analyzers still arrive. Without the using,
+every `[Fact]` fails with `CS0246`; without the `NoWarn`, every test name
+fails `CA1707`. Verified on a real project.
+
 ## 5. The solution
 
 A solution is named after its **main project**, not its folder, so a component
