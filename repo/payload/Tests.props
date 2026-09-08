@@ -22,6 +22,15 @@
       if another appears, add it here rather than lowering AnalysisMode.
     -->
     <NoWarn>$(NoWarn);CA1707</NoWarn>
+
+    <!--
+      Coverage settings for coverlet.collector (referenced below). A runsettings
+      file is not found by searching upward the way this file is; naming it here
+      is what lets `dotnet test - -collect:"XPlat Code Coverage"` (two dashes,
+      joined) use it in both layouts with no - -settings flag. The exclusions
+      and the reasoning are in the file itself.
+    -->
+    <RunSettingsFilePath>$(MSBuildThisFileDirectory)coverlet.runsettings</RunSettingsFilePath>
   </PropertyGroup>
 
   <!--

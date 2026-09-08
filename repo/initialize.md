@@ -55,6 +55,7 @@ the worse question.
     Directory.Build.targets      short commit hash + dirty marker in the informational version
     Directory.Packages.props     central package versions   (CPM only)
     Tests.props                  test-only packages (*.Tests projects)
+    coverlet.runsettings         coverage settings; Tests.props names it, so dotnet test needs no --settings
     BannedSymbols.txt            banned clock APIs, live; non-test projects only
     nuget.config                 package sources + source mapping (supply chain)
     allowed-licenses.json        dependency licence allow-list (SPDX)

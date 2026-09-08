@@ -80,3 +80,29 @@ Layout, naming, and project wiring are defined in the repository's root
 
 Confirm the reported count matches the tests you expect — a misconfigured runner
 reports zero tests and exits green.
+
+### Coverage
+
+    dotnet test path/to/Project.Tests.csproj --collect:"XPlat Code Coverage"
+
+`coverlet.collector` is in every test project through `Tests.props`, which
+also names the settings: `coverlet.runsettings` at the repository root, picked
+up without a `--settings` flag. It excludes only code nobody writes by hand —
+generated and compiler-generated members, auto-properties, EF Core migrations
+— so the number is about the code that was written. Add an exclusion there
+for the same reason only; a class that is hard to test is a finding about the
+class, not an exclusion. Obsolete code is not excluded either: it is still in
+the build and still runs, so it is measured until it is deleted.
+
+Each run writes `TestResults/<guid>/coverage.cobertura.xml` under the test
+project and leaves earlier runs in place, so clear `TestResults/` before a run
+whose number you will report. Read the line rate from the root element rather
+than opening a viewer:
+
+    grep -om1 'line-rate="[0-9.]*"' $(find . -path '*/TestResults/*' -name coverage.cobertura.xml)
+
+Report the line rate against the two numbers under `coverage:` in
+`.agentics.yaml`: below `minimum` is a failure and is said so plainly, at or
+above `target` is green, and between the two is a warning. The collector
+cannot enforce them — it cannot fail a run on a threshold — so the report is
+where they bite until a pipeline reads the same numbers.

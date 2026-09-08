@@ -99,6 +99,16 @@ assumes GitHub for source control and change tracking. Adding a second host for
 CI is a real coupling decision, not a detail: it doubles the accounts, the
 credentials, and the places a failure can hide.
 
+**A coverage gate belongs here, not in the repository.** The shipped
+`coverlet.runsettings` measures; `coverlet.collector` cannot fail a run on a
+threshold. Enforcing one means either switching test projects to
+`coverlet.msbuild` (`/p:Threshold=`) or a report step in the pipeline over the
+cobertura files — the latter keeps the local run and the gate apart, which is
+the better default. The numbers are already recorded, under `coverage:` in
+each repository's `.agentics.yaml` (85 the hard limit, 90 green, shipped as
+defaults), so the pipeline step reads them from there rather than carrying its
+own copy.
+
 ## Machines
 
 `machine/` is named for its subject, so it has room for more than one kind of
