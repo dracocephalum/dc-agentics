@@ -33,6 +33,27 @@ when they have a closing condition.
       and ConfigureAwait rules usefully. Needs a build test on the template
       shells first; unlike `AnalysisMode`, it is not SDK-built-in and will have
       opinions of its own.
+- [ ] **Central package management off: support it or drop it.** Tested
+      2026-09-08 on a bogus repository: with `Directory.Packages.props`
+      omitted, every test project fails restore with `NU1015` because
+      `Tests.props` carries no versions — the analyzers have conditional
+      versions, the test stack has none. Two ways to close: conditional
+      `Version` elements in `Tests.props` (thirteen numbers duplicated from
+      `Directory.Packages.props`, which will drift), or drop the option and
+      make `central-package-management` a recorded fixed value like
+      `framework`. Until decided, `build.md` and the shipped settings say
+      *off is not supported today*.
+- [ ] **Procedure branches still untested.** Exercised so far: every
+      version-check outcome, a deleted payload file, drift firing, the ask
+      branch on `stylecop.ruleset`, a dropped settings key, a directory rename,
+      a new payload file, new settings keys, format-as-repair, MIT, Serena
+      absent, webapi via `/new`, standalone→monorepo, both convergence
+      proofs. Not yet: `worker` via `/new`; the `none` licence end to end
+      (the default, and the README section deletion it implies); a second
+      category via `/new component`; the ask branch on a three-way config
+      file that is not the ruleset; an upgrade with a template change and a
+      customized `AGENTS.md`. Close by: run each on a throwaway repository
+      and record the result here or as a ticket.
 
 ## CI — deferred as a group
 

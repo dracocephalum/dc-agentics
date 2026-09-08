@@ -60,6 +60,13 @@ under warnings-as-errors. Do not patch the samples line by line — replace them
 with a minimal shell, build, and only then write real code. A build failure
 straight after `dotnet new` is the template's, not yours.
 
+**`dotnet new` also restores as a post action, and under central package
+management that restore fails** — `NU1008` for `webapi` (a `Version`
+attribute), `NU1504` for `xunit` (its references duplicate `Tests.props`) —
+followed by *Post action failed*. That is the template's project file, before
+steps 2 and 4 rewrite it. Expected; ignore it and continue. The restore that
+counts is the one in step 6.
+
 `webapi` shell (`Program.cs`):
 
     var builder = WebApplication.CreateBuilder(args);
@@ -202,6 +209,7 @@ update it instead.
 
 | Symptom | Cause |
 |---|---|
+| `NU1008` or `NU1504`, *Post action failed*, straight from `dotnet new` | the template's own restore, before the `.csproj` is rewritten — expected, see step 1 |
 | `NU1008` at restore | a `Version` attribute survived in the `.csproj` |
 | package not found at restore | missing `<PackageVersion>` in `Directory.Packages.props` |
 | `SA1025`, `SA1110`, `SA1400`, `SA1413`, `SA1649` in `Program.cs` | `webapi` sample code — replace with the shell |

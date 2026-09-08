@@ -58,8 +58,13 @@ transitive packages.
 rules already forbid in favour of `TimeProvider`, for non-test projects only.
 A hit is a defect, not style.
 
-If central package management is **off**, omit `Directory.Packages.props`;
-[`stylecop.md`](stylecop.md) says where the analyzer version then comes from.
+Central package management **off is not supported today.** Omitting
+`Directory.Packages.props` leaves every `*.Tests` project failing restore
+with `NU1015`: `Tests.props` carries no versions, and only the analyzers have
+conditional ones ([`stylecop.md`](stylecop.md) says where theirs come from).
+Whether to support the option or drop it is in the toolkit's `TODO.md`; until
+then the answer is on, and a request for off is declined with this
+paragraph.
 
 If it is **on**, `Directory.Packages.props` must declare
 `StyleCop.Analyzers` — `StyleCop.props` deliberately omits the version under CPM
