@@ -1,6 +1,13 @@
 # Settings that agents read before acting in this repository - the toolkit
-# itself, so no provenance and no repository block. The shipped shape is
-# repo/payload/.agentics.yaml.
+# itself, so no provenance, and a repository block holding only publish-safe.
+# The shipped shape is repo/payload/.agentics.yaml.
+
+repository:
+  # repo/payload/agentics/rules/security-reminders.md, "Names that are not yours
+  # to publish". This repository is public: other repositories - the reference
+  # repositories the procedures are tested against included - are referred to
+  # by role, never by name.
+  publish-safe: true
 
 change-tracking:
   # repo/payload/agentics/rules/change-tracking/change-tracking.md

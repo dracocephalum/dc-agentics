@@ -122,6 +122,12 @@ somewhere the surrounding context no longer holds.
 
 - **No absolute paths.** Not to this machine, not to any machine. Use relative
   paths, environment variables, or a documented placeholder.
+- **No names that are not already here.** Reference repositories, other
+  projects, people: by role, never by name, in documents and in everything sent
+  to GitHub alike. Examples use `Contoso`. This is `publish-safe` in
+  `.agentics.yaml`; the rule and its test are in
+  [`repo/payload/agentics/rules/security-reminders.md`](repo/payload/agentics/rules/security-reminders.md),
+  *Names that are not yours to publish*.
 - **No assumed toolchain.** Don't assume a package manager, shell, OS, or editor
   unless the file explicitly scopes itself to one. State the assumption if you
   make it.

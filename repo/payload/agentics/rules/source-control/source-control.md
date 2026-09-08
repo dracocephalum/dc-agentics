@@ -49,6 +49,14 @@ Commits are signed (the machine setup enforces this) and contain no secrets
 (the pre-commit hook enforces this). A commit that fails either is not fixed
 by `--no-verify`.
 
+With `publish-safe: true` in `.agentics.yaml`, the message names no other
+repository, project, customer, system, or person that is not already in the
+tracked files — by role instead. Nothing enforces it; a message is published
+with the push, and history is not edited afterwards. The rule and its one test
+are in [`../security-reminders.md`](../security-reminders.md), *Names that are
+not yours to publish*, and the same holds for everything below that reaches
+the host.
+
 ## Size
 
 One concern per change request. As a guide, **under ~400 changed lines** of
@@ -68,6 +76,9 @@ Before opening:
    stray files, unrelated formatting.
 4. The description still matches the code — descriptions written at the
    start of a change drift by the end.
+5. With `publish-safe: true`, the title and body name nothing that is not
+   already in the tracked files — *Commits* above; the body is where the
+   context an agent worked in leaks most easily.
 
 Then:
 

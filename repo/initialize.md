@@ -30,6 +30,7 @@ the worse question.
 | One-line purpose | ask — lands in `AGENTS.md` and `README.md`; never invent one |
 | Primary framework | .NET; the only one supported today, so it is not a question |
 | Central package management | on |
+| Publish-safe | `true` — other repositories, projects, customers, systems and people are referred to by role; `false` only when the user says the repository will never be public; [`settings.md`](settings.md) |
 | Source-control mode | `local` — `auto`, `local`, or `manual`; [`settings.md`](settings.md) |
 | Change tracking | ask — GitHub Issues, yes or no; `none` means branch names and PR titles carry no ticket; [`settings.md`](settings.md) |
 | Licence | `none` — recorded, summarised, and left as a decision in `TODO.md`; [`settings.md`](settings.md) |

@@ -14,6 +14,15 @@ repository:
   framework: dotnet                   # the only value supported today
   layout: "{{LAYOUT}}"                # standalone | monorepo - AGENTS.md describes the chosen one; agentics/rules/layout.md describes both
   namespace: "{{PREFIX}}"             # PascalCase prefix of every assembly and namespace
+  # publish-safe - agentics/rules/security-reminders.md, "Names that are not yours to publish".
+  #   true   everything written here is fit to publish: other repositories, projects, customers,
+  #          systems and people are referred to by role, never by name, unless the name is already
+  #          in this repository's tracked files. Names only - credentials, local paths and personal
+  #          data are never allowed either way.
+  #   false  this repository will never be public, and may name internal things.
+  # One-way: true can become false at any time; false becomes true only for a new repository,
+  # because the history already holds what it holds.
+  publish-safe: true
   central-package-management: true    # Directory.Packages.props holds every package version
   host: github                        # where the remote lives - agentics/rules/source-control/<host>.md
   licence: "{{LICENCE}}"              # none | Apache-2.0 | MIT | <SPDX id>; matches the LICENSE file

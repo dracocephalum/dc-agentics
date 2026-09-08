@@ -74,7 +74,7 @@ Fill every quoted double-brace placeholder in `.agentics.yaml` — `LAYOUT`
 and `PREFIX` are the answers already given for the layout mode and the
 namespace prefix, and the rest are named below; the
 unquoted values are defaults, already correct unless a step above changed
-them (`central-package-management`, `source-control.mode`). Three
+them (`central-package-management`, `publish-safe`, `source-control.mode`). Three
 values are the agent's own and must not be guessed: the tool it runs in
 (`Claude Code`), the model identifier (`claude-fable-5-1` form), and the
 toolkit commit — `git -C <toolkit> rev-parse --short=12 HEAD`, with `-dirty`
@@ -90,6 +90,13 @@ a file people read.
 three modes are defined in
 [`source-control.md`](payload/agentics/rules/source-control/source-control.md),
 *For an agent*.
+
+`publish-safe` stays `true` unless the user says the repository will never be
+public. Never relax it on inference — private today is not the same as never
+public, and the flag is one-way once the history holds internal names. The rule
+it switches is
+[`security-reminders.md`](payload/agentics/rules/security-reminders.md), *Names
+that are not yours to publish*.
 
 `change-tracking.tracker` is the answer to the one yes-or-no question:
 `github-issues` when the repository tracks its work as GitHub Issues,
