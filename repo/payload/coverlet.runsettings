@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Coverage settings for coverlet.collector, which every *.Tests project carries
+  through Tests.props. Tests.props also names this file (RunSettingsFilePath),
+  so a plain
+
+      dotnet test <project> - -collect:"XPlat Code Coverage"
+
+  (two dashes, joined) uses it without a - -settings flag. This file is not
+  found by searching upward the way Directory.*.props are; the property is
+  what connects it.
+
+  What is excluded, and why the list is short: only code nobody writes by
+  hand. Every exclusion is an unmeasured file, and a long list drifts. A class
+  that is hard to test is a finding about the class, not a reason to add a row
+  here. Test assemblies are already out (IncludeTestAssembly=false), and
+  [ExcludeFromCodeCoverage] is honoured without being listed.
+
+  Filter syntax is coverlet's: [assembly]namespace.type, with * wildcards.
+  This is NOT the schema of the Microsoft "Code Coverage" collector
+  (<CodeCoverage>, <ModulePaths>, regular expressions over paths); the two
+  collectors ignore each other's settings, and a repository runs one of them.
+
+  The collector measures; it cannot fail a run on a threshold. A gate is
+  coverlet.msbuild or a pipeline step, and nothing here asks for one.
+-->
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+          <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+          <ExcludeByFile>**/Migrations/*.cs</ExcludeByFile>
+          <SkipAutoProps>true</SkipAutoProps>
+          <IncludeTestAssembly>false</IncludeTestAssembly>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

@@ -62,6 +62,18 @@ A green build alone proves nothing, because a wrong ruleset path is silent —
 [`stylecop.md`](stylecop.md), *Why `$(MSBuildThisFileDirectory)`*. The probe
 must actually fail. Delete the file once confirmed.
 
+Then the coverage wiring, which is silent when wrong: a missing or mistyped
+`RunSettingsFilePath` in `Tests.props` still gives a passing run and a coverage
+file, just with nothing excluded. Ask MSBuild what the property resolves to and
+check that the file is there:
+
+    test -f "$(dotnet msbuild <test project>.csproj -getProperty:RunSettingsFilePath)" && echo wired
+
+Verified once on a real project that the collector honours it: with the file,
+a positional record's generated getter vanished from the report, six valid
+lines instead of eight; without it, `get_Value` was counted. The command
+itself is in the shipped unit-test rules, *Coverage*.
+
 Finally, the licence check over the whole transitive graph:
 
     dotnet nuget-license -i <solution>.slnx -t -a allowed-licenses.json -override license-overrides.json
@@ -97,7 +109,7 @@ silently stays silent:
 | Namespace prefix | `Contoso` | asked | project names; recorded in `.agentics.yaml` |
 | First project | `Contoso.Widgets`, library | derived | rename now; it is one day old |
 | Solution | `Contoso.Widgets.slnx` | follows the project | rename with the project |
-| StyleCop mode | `relaxed` | default | `stylecop.ruleset` + [`stylecop.md`](stylecop.md); `.agentics.yaml` |
+| StyleCop | one ruleset, severities explicit | default | `stylecop.ruleset` + [`stylecop.md`](stylecop.md) |
 | Central package management | on | default | `Directory.Packages.props` |
 | Source-control mode | `local` | default | `.agentics.yaml` |
 | Change tracking | GitHub Issues | asked | `.agentics.yaml` |

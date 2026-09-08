@@ -80,3 +80,25 @@ Layout, naming, and project wiring are defined in the repository's root
 
 Confirm the reported count matches the tests you expect — a misconfigured runner
 reports zero tests and exits green.
+
+### Coverage
+
+    dotnet test path/to/Project.Tests.csproj --collect:"XPlat Code Coverage"
+
+`coverlet.collector` is in every test project through `Tests.props`, which
+also names the settings: `coverlet.runsettings` at the repository root, picked
+up without a `--settings` flag. It excludes only code nobody writes by hand —
+`[Obsolete]`, generated and compiler-generated members, auto-properties, EF
+Core migrations — so the number is about the code that was written. Add an
+exclusion there for the same reason only; a class that is hard to test is a
+finding about the class, not an exclusion.
+
+Each run writes `TestResults/<guid>/coverage.cobertura.xml` under the test
+project and leaves earlier runs in place, so clear `TestResults/` before a run
+whose number you will report. Read the line rate from the root element rather
+than opening a viewer:
+
+    grep -om1 'line-rate="[0-9.]*"' $(find . -path '*/TestResults/*' -name coverage.cobertura.xml)
+
+Coverage is a measurement, not a gate: the collector cannot fail a run on a
+threshold, and nothing here asks for one.
