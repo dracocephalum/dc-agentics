@@ -76,8 +76,17 @@ a placeholder looks like has to write one down.
 **Whole-file LF and whole-file CRLF are both correct.** `.gitattributes` sets
 `* text=auto`, so the repository stores LF and each platform checks out its
 own — which of the two a working copy holds says nothing. A file containing
-**both** is the defect, and it is what a partial `sed -i` or a mixed-ending
-paste leaves behind. It survives review because no diff renders it.
+**both** is the defect, and it survives review because no diff renders it.
+
+**`dotnet format` is the likeliest cause, not a stray `sed -i`.** When it
+inserts a line — the blank separator between using groups, say — it writes
+that line with the platform's ending, whatever the rest of the file uses.
+Measured: a pure-LF file at 0 CR and 20 LF came back from
+`dotnet format analyzers` at 1 CR and 21 LF, and built green. The trigger is
+ordinary: an agent writes a new file with LF into a working tree where
+`* text=auto` checked everything else out as CRLF, then runs the format step
+this repository asks for before each commit. So run this check after
+formatting a file you created, not only after a bulk rewrite.
 
 ### 5. Privacy
 
