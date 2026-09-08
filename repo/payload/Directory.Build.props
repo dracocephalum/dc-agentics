@@ -20,14 +20,10 @@
   <Import Project="$(MSBuildThisFileDirectory)StyleCop.props" />
 
   <!--
-    Test-only packages and settings, applied to any project whose name ends in
-    `.Tests` regardless of how deep it sits. Keeping the condition here (rather
-    than a Directory.Build.props inside test/) matters: a nested
-    Directory.Build.props would REPLACE this file for that subtree, silently
-    cutting those projects off from every setting above.
+    Tests.props is imported from Directory.Build.targets, not here: its
+    condition reads the project's own ManagePackageVersionsCentrally, which is
+    set in the project body and so is not visible yet at this point.
   -->
-  <Import Project="$(MSBuildThisFileDirectory)Tests.props"
-          Condition="$(MSBuildProjectName.EndsWith('.Tests'))" />
 
   <!--
     Namespace convention: a `.Core` segment names the assembly, not the

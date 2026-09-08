@@ -1,6 +1,24 @@
 <Project>
 
   <!--
+    Test-only packages and settings, applied to any project whose name ends in
+    `.Tests` regardless of how deep it sits - unless that project has opted out
+    of central package management, in which case it is left alone entirely and
+    carries its own stack (csharp-new-project.md, step 4).
+
+    Imported here, after the project body, rather than from Directory.Build.props,
+    because the condition reads ManagePackageVersionsCentrally as the project set
+    it - and a props-time import cannot see that. Everything in Tests.props is
+    consumed later than evaluation (restore, the compiler, pack), so the late
+    import changes nothing for a project that does not opt out. Keeping the
+    condition here rather than in a Directory.Build.* inside test/ matters: a
+    nested one would REPLACE the root file for that subtree, silently cutting
+    those projects off from every setting above.
+  -->
+  <Import Project="$(MSBuildThisFileDirectory)Tests.props"
+          Condition="$(MSBuildProjectName.EndsWith('.Tests')) and '$(ManagePackageVersionsCentrally)' != 'false'" />
+
+  <!--
     Stamp the informational version with the short commit hash and a dirty marker:
     1.2.3+abcdef12 or 1.2.3+abcdef12-dirty.
 

@@ -117,7 +117,6 @@ silently, because nothing enforces it:
 | `licence` | the `LICENSE` file — present, and the same licence |
 | `copyright-holder` | the holder named in `LICENSE` or `NOTICE` |
 | `layout` | the actual tree: `standalone` has one solution at the root, `monorepo` has category folders and none |
-| `central-package-management` | `Directory.Packages.props` exists and `ManagePackageVersionsCentrally` is `true` |
 
 ### 7. `AGENTS.md` index is complete in both directions
 

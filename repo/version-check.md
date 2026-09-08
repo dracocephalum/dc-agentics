@@ -38,7 +38,8 @@ of where things used to live. A repository below the baseline is not upgraded
 through that history; it is re-initialized, which on a repository that old is
 the cheaper operation anyway.
 
-    git merge-base --is-ancestor <recorded> <support.baseline>   # true -> below the floor
+    floor=$(grep -E '^  baseline:' <toolkit>/.agentics.yaml | cut -d'"' -f2)   # anchored: a bare "baseline:" also matches model-baseline
+    git merge-base --is-ancestor <recorded> $floor                            # true -> below the floor
 
 ## Why best-effort is the right standard
 
