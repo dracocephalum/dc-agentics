@@ -31,6 +31,38 @@ If a real path or identifier is genuinely needed to run something, put it in a
 gitignored local config file and reference that file instead. Commit a
 `.example` version with placeholder values.
 
+## Names that are not yours to publish
+
+Governed by `repository.publish-safe` in `.agentics.yaml`, default `true`.
+
+When it is `true`, everything that leaves the machine — code, comments,
+documents, examples, commit messages, issue and pull-request titles and bodies,
+review comments — refers to other repositories, projects, customers, systems,
+and people **by role, never by name**: "the standalone reference repository",
+"the upstream service", "the customer". Examples use `Contoso`. The context an
+agent works in is full of such names, and they land in a pull-request body
+without anyone deciding to publish them.
+
+**The test for a name is whether it is already here.** A name that appears in
+this repository's tracked files was published deliberately and is free to use;
+one that does not is treated as internal:
+
+    git grep -il '<name>' -- . ':!node_modules'      # any hit: already published
+
+That needs no list of internal terms. A list would itself be the most
+concentrated internal information in the repository, and could never be
+committed. The test is best effort by nature — a paraphrase carries no name to
+check — and the draft pull request is the backstop.
+
+When it is `false`, the repository will never be public, and its text may name
+internal things freely. **It governs names only.** Everything in the section
+above — paths, personal information, credentials, internal identifiers — is
+never allowed in either setting.
+
+**The flag is one-way.** `true` can become `false` at any time; nothing is
+lost by relaxing. `false` becomes `true` only for a new repository: the history
+already holds what it holds, and editing a value does not remove it.
+
 ## Commit identity
 
 Git writes an author identity into every commit object, and it is immutable.

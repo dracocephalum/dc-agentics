@@ -100,6 +100,13 @@ Windows path. A bracket expression has no escaping to get wrong.
 Findings here are reported, never quietly deleted: a real credential in history
 needs rotating, not removing.
 
+**And names, when `publish-safe` is `true`.** There is nothing to grep for, so
+read: other repositories, projects, customers, systems, or people named rather
+than referred to by role, in documents and in the commit messages of the range
+under review. The rule and its one test — is the name already in the tracked
+files — are in [`security-reminders.md`](security-reminders.md), *Names that
+are not yours to publish*.
+
 ### 6. `.agentics.yaml` still tells the truth
 
 It records what was chosen at initialization. A repository drifts away from it

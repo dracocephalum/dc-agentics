@@ -19,6 +19,7 @@ the document wins and the row is the bug.
 | **baseline** | the pristine `dotnet new` output in `repo/baselines/`, hash-verified byte-for-byte; never copied to a target | [`repo/copy.md`](repo/copy.md), *Baseline drift check* |
 | **marker** | a recorded "this was verified together, and when" — `agentics-baseline`, `agentics-verified`, `guidelines.verified` | [`repo/upgrade.md`](repo/upgrade.md), *The markers* |
 | **drift** | a recorded value no longer matching reality: an SDK that moved, settings that no longer describe the repository | [`repo/payload/agentics/rules/scrub.md`](repo/payload/agentics/rules/scrub.md) |
+| **publish-safe** | the setting under which other repositories, projects, customers, systems and people are referred to by role, never by name; one-way, `true` by default | [`repo/payload/agentics/rules/security-reminders.md`](repo/payload/agentics/rules/security-reminders.md), *Names that are not yours to publish* |
 
 ## Operations
 

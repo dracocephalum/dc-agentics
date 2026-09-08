@@ -111,6 +111,7 @@ silently stays silent:
 | Solution | `Contoso.Widgets.slnx` | follows the project | rename with the project |
 | StyleCop | one ruleset, severities explicit | default | `stylecop.ruleset` + [`stylecop.md`](stylecop.md) |
 | Central package management | on | default | `Directory.Packages.props` |
+| Publish-safe | `true` | default | `.agentics.yaml`; the rule is `agentics/rules/security-reminders.md` |
 | Source-control mode | `local` | default | `.agentics.yaml` |
 | Change tracking | GitHub Issues | asked | `.agentics.yaml` |
 | Licence | `none` | default | [`settings.md`](settings.md); `TODO.md` holds the decision |

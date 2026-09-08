@@ -288,8 +288,8 @@ claims about itself. Ask, offering the list from `layout.md`.
 
 **The folder name is derived, not asked** — the component's project name minus
 the namespace prefix, kebab-cased, exactly as the naming table has
-`Contoso.ProxyGateway` living in `proxy-gateway/`. So `Dracocephalum.Nightingale`
-becomes `nightingale/`. **Not the repository directory name**: `dc-nightingale`
+`Contoso.ProxyGateway` living in `proxy-gateway/`. So `Contoso.Widgets`
+becomes `widgets/`. **Not the repository directory name**: `contoso-widgets`
 is what the repository is called, not what the component is called, and the two
 stop being interchangeable the moment a second component exists. Report the
 derived name in the closing summary; renaming a folder on its first day is free.

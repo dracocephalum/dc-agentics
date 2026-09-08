@@ -30,8 +30,8 @@ and is the largest single gap.
 
 ### Packaging a library to NuGet
 
-`dc-nightingale` is the likely first packable library, so this is the one that
-will be needed first.
+The standalone reference repository is the likely first packable library, so
+this is the one that will be needed first.
 
 `csharp-new-project.md` already sets `IsPackable=false` for services, jobs and
 tools and leaves `libraries/` packable, which is the entry point. What a golden

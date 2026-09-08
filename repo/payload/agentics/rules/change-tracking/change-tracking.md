@@ -13,6 +13,12 @@ the branch name and the change-request title — so history, boards, and
 searches line up on one key. A ticket is a sentence of intent, not a design
 document: what and why, one line, with context and links in the body.
 
+A ticket is public the moment the repository is. With `publish-safe: true` in
+`.agentics.yaml`, title and body refer to other repositories, projects,
+customers, systems, and people by role, never by name —
+[`../security-reminders.md`](../security-reminders.md), *Names that are not
+yours to publish*.
+
 ## Settings
 
 `change-tracking.tracker` in the repository's `.agentics.yaml`, asked once
