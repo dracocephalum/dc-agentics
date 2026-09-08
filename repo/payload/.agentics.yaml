@@ -19,6 +19,14 @@ repository:
   licence: "{{LICENCE}}"              # none | Apache-2.0 | MIT | <SPDX id>; matches the LICENSE file
   copyright-holder: "{{COPYRIGHT_HOLDER}}"   # the legal owner named in LICENSE or NOTICE; empty when licence is none
 
+coverage:
+  # Line coverage per test run - agentics/rules/coding/csharp/csharp-unit-tests-rules.md, "Coverage".
+  # Nothing enforces these yet: coverlet.collector measures, the agent reports the line rate against
+  # them, and a pipeline can read them later. Below minimum is a failure; at or above target is green;
+  # between the two is a warning.
+  minimum: 85                         # percent - the hard limit
+  target: 90                          # percent - green
+
 change-tracking:
   # agentics/rules/change-tracking/change-tracking.md - including the one exception, initialization,
   # and why a Projects board is not recorded here.
@@ -35,7 +43,7 @@ source-control:
   mode: local
 
 guidelines:
-  # The model line the rules in docs/ were written and verified against, carried
+  # The model line the rules in agentics/ were written and verified against, carried
   # over from the toolkit at initialization. Not a requirement: another model
   # works, but rules it does not infer by default are the ones it will miss.
   # Fixed values, not placeholders - they describe the toolkit, not this repo.

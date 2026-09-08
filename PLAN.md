@@ -104,8 +104,10 @@ credentials, and the places a failure can hide.
 threshold. Enforcing one means either switching test projects to
 `coverlet.msbuild` (`/p:Threshold=`) or a report step in the pipeline over the
 cobertura files — the latter keeps the local run and the gate apart, which is
-the better default. Whichever, the number to gate on is a decision per
-repository, and the toolkit should ship the mechanism without the number.
+the better default. The numbers are already recorded, under `coverage:` in
+each repository's `.agentics.yaml` (85 the hard limit, 90 green, shipped as
+defaults), so the pipeline step reads them from there rather than carrying its
+own copy.
 
 ## Machines
 
