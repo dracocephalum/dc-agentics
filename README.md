@@ -34,7 +34,7 @@ The line, and the date it was last verified end to end, are recorded under
 `guidelines:` in [`.agentics.yaml`](.agentics.yaml) and carried into
 every repository this initializes. It is a record rather than a requirement —
 its purpose is that odd behaviour after a model change has a known-good
-combination to be compared against, the same way `dc-agentics-verified` pins
+combination to be compared against, the same way `agentics-verified` pins
 the test stack.
 
 ## Use it

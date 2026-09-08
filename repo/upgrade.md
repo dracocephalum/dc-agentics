@@ -81,8 +81,8 @@ session can tell a known-good combination from an untested one:
 
 | Marker | Lives in | Update when |
 |---|---|---|
-| `dc-agentics-verified: sdk= date=` | `payload/Directory.Packages.props` | the test stack was moved and verified |
-| `dc-agentics-baseline: sdk= sha256=` | each forked file | that file was re-baselined |
+| `agentics-verified: sdk= date=` | `payload/Directory.Packages.props` | the test stack was moved and verified |
+| `agentics-baseline: sdk= sha256=` | each forked file | that file was re-baselined |
 | `guidelines.model-baseline` | `.agentics.yaml` | the model line these rules target has changed |
 | `guidelines.verified` | `.agentics.yaml` | a full initialization trial completed on that line |
 
@@ -101,16 +101,12 @@ The target's `.agentics.yaml` records where it came from:
       payload-path: "repo/payload"
 
 `payload-path` is the payload root **as of that commit**, and it exists because
-the toolkit has restructured before and will again. A target written before it
-was introduced does not have it; fall back to the known former roots, newest
-first:
+the toolkit has restructured before and will again. Every supported target has
+it: a repository without one predates `support.baseline` and is declined by
+[`version-check.md`](version-check.md) before this step, so there is no table
+of former roots to consult.
 
-| Root | In use |
-|---|---|
-| `repo/payload` | since the `machine/` + `repo/` restructure |
-| `init/repo/payload` | before it |
-
-**Diff with rename detection across every root that applies.** Getting this
+**Diff with rename detection across both roots when they differ.** Getting this
 wrong is silent, not loud:
 
     git diff -M --name-status <commit>..HEAD -- <old-root> <new-root> .claude/skills
@@ -239,6 +235,13 @@ generated document, in the target's own vocabulary.
 The common case is a new row in the *Agent guidelines* table, which is how a
 new rules document becomes reachable. **A document copied in without its row is
 invisible**, and nothing later will notice.
+
+**Check the row is not already there before adding it.** An upgrade that spans
+several toolkit releases applies several template diffs, and a row added by one
+of them is easy to add again from the next — nothing in the lint or the scrub
+flags a duplicated table row. Read the target's table first; add only what it
+lacks. This happened on a real target, and the duplicate rows sat unnoticed
+through two further upgrades.
 
 ### Finish
 

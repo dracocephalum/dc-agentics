@@ -137,7 +137,7 @@ deciding to.
 A *full* scrub would add what `verify.md` runs once at initialization:
 `dotnet build` and `dotnet test` with the expected count, the analyzer probe,
 `nuget-license` over the transitive graph, lock files current, and the age of
-the `dc-agentics-verified` marker on the test stack.
+the `agentics-verified` marker on the test stack.
 
 The open question is not whether those checks are worth running — they are —
 but whether a skill is the right place, given that CI will eventually run all

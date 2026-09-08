@@ -121,6 +121,11 @@ pointing at nothing teaches an agent to distrust the table.
     find agentics/rules -name '*.md' | sort
     grep -oE '\(agentics/rules/[^)]*\.md\)' AGENTS.md | tr -d '()' | sort -u
 
+**And no row twice.** A table row that appears more than once is an upgrade
+that applied the same template change twice; nothing else flags it:
+
+    grep '^| ' AGENTS.md | sort | uniq -d
+
 **Reachable, not listed.** Several documents are deliberately reached through
 another — the C# and markdown checklists via `coding/code-review.md`, each host
 file via the rule document that names it. A document missing from the table is

@@ -17,7 +17,7 @@ the document wins and the row is the bug.
 | **shim** | a `.claude/skills/*/SKILL.md` — frontmatter plus a pointer to the document that holds the substance | [`AGENTS.md`](AGENTS.md), *Layout* |
 | **target** | a repository dc-agentics initialized, as distinct from the toolkit itself | [`repo/version-check.md`](repo/version-check.md) |
 | **baseline** | the pristine `dotnet new` output in `repo/baselines/`, hash-verified byte-for-byte; never copied to a target | [`repo/copy.md`](repo/copy.md), *Baseline drift check* |
-| **marker** | a recorded "this was verified together, and when" — `dc-agentics-baseline`, `dc-agentics-verified`, `guidelines.verified` | [`repo/upgrade.md`](repo/upgrade.md), *The markers* |
+| **marker** | a recorded "this was verified together, and when" — `agentics-baseline`, `agentics-verified`, `guidelines.verified` | [`repo/upgrade.md`](repo/upgrade.md), *The markers* |
 | **drift** | a recorded value no longer matching reality: an SDK that moved, settings that no longer describe the repository | [`repo/payload/agentics/rules/scrub.md`](repo/payload/agentics/rules/scrub.md) |
 
 ## Operations
