@@ -3,7 +3,7 @@
 # Generated from `dotnet new editorconfig` and then reconciled with the
 # StyleCop configuration that ships alongside it.
 #
-# dc-agentics-baseline: source=editorconfig sdk=10.0.400 sha256=65f15fcf24ab557f59e559ab600642d73fd91c99ce591606bc01875ee6912a90
+# agentics-baseline: source=editorconfig sdk=10.0.400 sha256=65f15fcf24ab557f59e559ab600642d73fd91c99ce591606bc01875ee6912a90
 #
 # The hash above is of the PRISTINE generated file with newlines normalized to
 # LF - not of this file. Hash raw bytes and it will false-positive on every

@@ -307,7 +307,7 @@ is the goal.
 ### Procedure
 
 1. **Check the marker.** `Directory.Packages.props` carries
-   `dc-agentics-verified: sdk=<version> date=<date>`. If it is recent and the
+   `agentics-verified: sdk=<version> date=<date>`. If it is recent and the
    SDK matches, there is little to gain — proceed.
 
 2. **Look up current versions** for the test packages:

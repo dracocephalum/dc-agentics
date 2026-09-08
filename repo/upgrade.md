@@ -81,8 +81,8 @@ session can tell a known-good combination from an untested one:
 
 | Marker | Lives in | Update when |
 |---|---|---|
-| `dc-agentics-verified: sdk= date=` | `payload/Directory.Packages.props` | the test stack was moved and verified |
-| `dc-agentics-baseline: sdk= sha256=` | each forked file | that file was re-baselined |
+| `agentics-verified: sdk= date=` | `payload/Directory.Packages.props` | the test stack was moved and verified |
+| `agentics-baseline: sdk= sha256=` | each forked file | that file was re-baselined |
 | `guidelines.model-baseline` | `.agentics.yaml` | the model line these rules target has changed |
 | `guidelines.verified` | `.agentics.yaml` | a full initialization trial completed on that line |
 

@@ -90,7 +90,7 @@ Three kinds of file, told apart by location:
       upgrade/SKILL.md             /upgrade - toolkit pins, a target to the toolkit, or standalone -> monorepo
 
 Three payload files are forked from `dotnet new` templates - `.editorconfig`,
-`.gitignore`, `.gitattributes` - and each carries a `dc-agentics-baseline:`
+`.gitignore`, `.gitattributes` - and each carries a `agentics-baseline:`
 marker with the SDK it came from and a hash of the pristine output, which lives
 in `repo/baselines/` and is never copied to a target. How the drift check
 works, why the hash is over normalized bytes, why the baselines are never

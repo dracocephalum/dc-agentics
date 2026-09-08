@@ -26,7 +26,7 @@ guidelines:
   # works, but the rules it does not infer are the ones it will miss.
   #
   # It exists so that strange behaviour after a model change has something to be
-  # compared against. Same idea as dc-agentics-verified on the test stack: a
+  # compared against. Same idea as agentics-verified on the test stack: a
   # combination known to have worked together, and when.
   model-baseline: "claude-opus-5, claude-fable-5-1"
   verified: "2026-09-07"              # last end-to-end initialization trial on that line

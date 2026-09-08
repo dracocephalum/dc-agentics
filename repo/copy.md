@@ -32,7 +32,7 @@ Three of the files we ship were forked from `dotnet new` templates. Each carries
 a marker naming the SDK it was captured from and the SHA-256 of the pristine
 generated file:
 
-    # dc-agentics-baseline: source=<name> sdk=<version> sha256=<hash>
+    # agentics-baseline: source=<name> sdk=<version> sha256=<hash>
 
 | File | Marker lives in |
 |---|---|

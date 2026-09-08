@@ -51,7 +51,7 @@
   <!--
     Test stack, consumed by Tests.props.
 
-    dc-agentics-verified: sdk=10.0.400 date=2026-09-04
+    agentics-verified: sdk=10.0.400 date=2026-09-04
     Last confirmed by a clean restore, build and `dotnet test` with this exact
     combination.
 
