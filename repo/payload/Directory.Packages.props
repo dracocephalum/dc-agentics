@@ -20,7 +20,13 @@
       1. <PackageReference Include="X" VersionOverride="1.2.3" />  - stays in CPM
       2. a nested Directory.Packages.props for a whole subtree
       3. <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
-         in the .csproj - full opt-out, use sparingly
+         in the .csproj - full opt-out, use sparingly. The project then carries
+         its own Version attributes; the analyzers still arrive, with their
+         conditional versions. NOT for a *.Tests project: Tests.props carries no
+         versions, so restore fails with NU1015 - use option 1 there.
+
+    There is no repository-wide off. The toolkit initializes with this file
+    present and does not support removing it.
   -->
 
   <PropertyGroup>

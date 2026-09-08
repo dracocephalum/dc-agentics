@@ -23,7 +23,7 @@ repository:
   # One-way: true can become false at any time; false becomes true only for a new repository,
   # because the history already holds what it holds.
   publish-safe: true
-  central-package-management: true    # Directory.Packages.props holds every package version; false is not supported today
+  central-package-management: true    # always; Directory.Packages.props holds every version, and says how one project opts out
   host: github                        # where the remote lives - agentics/rules/source-control/<host>.md
   licence: "{{LICENCE}}"              # none | Apache-2.0 | MIT | <SPDX id>; matches the LICENSE file
   copyright-holder: "{{COPYRIGHT_HOLDER}}"   # the legal owner named in LICENSE or NOTICE; empty when licence is none
