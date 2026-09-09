@@ -64,8 +64,23 @@ already decided on the local side that need their server-side half:
       run as a plain CI step, since it sees the whole graph.
 - [ ] **`THIRD-PARTY-NOTICES.txt` generation** for packable `libraries/` —
       `nuget-license` can emit the data; wire it into pack.
+- [ ] **Lock-file drift check** — restore the solution with `--locked-mode`,
+      so a `packages.lock.json` that disagrees with the root
+      `Directory.Packages.props` fails as `NU1004`, naming the package and both
+      version ranges. Verified: locks are per project, and a partial update —
+      one project restored rather than the solution, the rest left on the old
+      resolution — is reported for exactly the stale projects, while the
+      refreshed one passes. Close by: `--locked-mode` on every restore step,
+      **and** the root build files in every component pipeline's path filter.
+      The second half is not optional: a filter watching only a component's own
+      folder does not trigger on a root props change, so the drift produces
+      silence rather than a failure — the pipelines that would have caught it
+      never run and stay green from their last execution.
 - [ ] **Build only affected components** in a monorepo — the reason there is
-      no root solution.
+      no root solution. "Affected" has to include *depends on a changed root
+      file*, not only *has changed files under its own path*: a root
+      `Directory.*` change touches every component, and the entry above is what
+      goes wrong when it does not.
 - [ ] **Cross-platform verification via a runner matrix.** A workflow on
       `ubuntu-latest` and `macos-latest` that runs the local setup (minus the
       interactive steps) and the full repo-init procedure end to end is the
