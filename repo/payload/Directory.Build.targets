@@ -27,6 +27,21 @@
     runs first and, when git answers, supplies the short form instead. It never fails the
     build: no git on PATH, no repository, or a repository with no commits yet all leave
     SourceRevisionId empty and the SDK default takes over.
+
+    The dirty flag on `git describe` only looks at TRACKED files, so on its own it stamps a
+    binary as clean while an untracked .cs file is being compiled into it - a stamp asserting
+    a commit that does not contain the code. The second Exec closes that, using `git status`
+    in porcelain form, which counts untracked files too. Same rule as the clean-tree
+    precondition in the toolkit's upgrade procedure.
+
+    (No double hyphen appears anywhere in this comment: XML forbids it, and MSBuild reports
+    it as MSB4024 "could not be loaded" against every project, not as a typo here.)
+
+    It is short-circuited on purpose: it runs only when describe did NOT already say dirty.
+    This target runs once per project, and during development describe almost always says
+    dirty already, so the second call is skipped. It costs a process spawn (~100 ms here,
+    against a multi-second build) only on a clean tree - which is CI, where a binary is
+    actually kept.
   -->
   <Target Name="SetSourceRevisionId"
           BeforeTargets="InitializeSourceControlInformation"
@@ -43,6 +58,21 @@
     </Exec>
     <PropertyGroup Condition="'$(_GitDescribeExitCode)' == '0' and '$(_GitDescribeOutput)' != ''">
       <SourceRevisionId>$(_GitDescribeOutput)</SourceRevisionId>
+    </PropertyGroup>
+
+    <Exec Command="git status --porcelain"
+          Condition="'$(SourceRevisionId)' != '' and !$(SourceRevisionId.EndsWith('-dirty'))"
+          WorkingDirectory="$(MSBuildProjectDirectory)"
+          IgnoreExitCode="true"
+          ConsoleToMSBuild="true"
+          EchoOff="true"
+          StandardOutputImportance="low"
+          StandardErrorImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitStatusOutput" />
+      <Output TaskParameter="ExitCode" PropertyName="_GitStatusExitCode" />
+    </Exec>
+    <PropertyGroup Condition="'$(_GitStatusExitCode)' == '0' and '$(_GitStatusOutput)' != ''">
+      <SourceRevisionId>$(SourceRevisionId)-dirty</SourceRevisionId>
     </PropertyGroup>
   </Target>
 
