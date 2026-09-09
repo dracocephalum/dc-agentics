@@ -23,7 +23,7 @@ under test:
 
 | Outcome | Do |
 |---|---|
-| the recorded commit is an ancestor of `support.baseline` in the toolkit's `.agentics.yaml` | decline — the repository predates what the upgrade supports; re-initialize it |
+| the recorded commit is **strictly older** than `support.baseline` in the toolkit's `.agentics.yaml` | decline — the repository predates what the upgrade supports; re-initialize it |
 | equal | proceed |
 | the target is an ancestor of `HEAD` | decline; offer a **toolkit upgrade** first, then the operation |
 | `HEAD` is an ancestor of the target | decline — the toolkit is behind, and proceeding would apply older rules to a newer repository |
@@ -39,7 +39,16 @@ through that history; it is re-initialized, which on a repository that old is
 the cheaper operation anyway.
 
     floor=$(grep -E '^  baseline:' <toolkit>/.agentics.yaml | cut -d'"' -f2)   # anchored: a bare "baseline:" also matches model-baseline
-    git merge-base --is-ancestor <recorded> $floor                            # true -> below the floor
+    [ "$(git rev-parse <recorded>)" != "$(git rev-parse $floor)" ] \
+      && git merge-base --is-ancestor <recorded> $floor                        # true -> below the floor
+
+**The floor is inclusive, and the test has to say so.** `git merge-base
+--is-ancestor X X` exits 0, because a commit is its own ancestor — so an
+ancestry test alone declines a repository sitting exactly *on* the baseline,
+which is the one commit the floor is meant to admit. The equality check is not
+belt-and-braces; without it, every repository initialized at the baseline
+commit is refused an upgrade it is entitled to. Compare resolved hashes rather
+than the recorded string, which may be abbreviated to a different length.
 
 ## Why best-effort is the right standard
 

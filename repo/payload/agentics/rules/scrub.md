@@ -76,8 +76,29 @@ a placeholder looks like has to write one down.
 **Whole-file LF and whole-file CRLF are both correct.** `.gitattributes` sets
 `* text=auto`, so the repository stores LF and each platform checks out its
 own — which of the two a working copy holds says nothing. A file containing
-**both** is the defect, and it is what a partial `sed -i` or a mixed-ending
-paste leaves behind. It survives review because no diff renders it.
+**both** is the defect, and it survives review because no diff renders it.
+
+**Know what git launders and what it does not**, or this check reads as either
+paranoia or a false alarm:
+
+| The file | On commit | So a mixed file |
+|---|---|---|
+| ordinary, under `* text=auto` | CRLF normalized to LF | never reaches the repository — verified: a 2 CR / 3 LF file staged as 0 CR |
+| exempt from normalization (`-text`) | stored byte-for-byte | **persists**, and for anything hash-verified breaks the hash it exists to prove |
+| in a path or repository with no `text` attribute | stored as-is | persists |
+
+So the finding is real in the working tree you are about to commit from, and
+real for good in an exempt file.
+
+**`dotnet format` is the likeliest source, not a stray `sed -i`.** When it
+inserts a line — the blank separator between using groups, say — it writes
+that line with the OS-native ending, because nothing sets `end_of_line` in
+`.editorconfig`. Measured: a pure-LF file at 0 CR and 20 LF came back from
+`dotnet format analyzers` at 1 CR and 21 LF, and built green. Normally this is
+invisible, since git checks out native endings too and the inserted line
+matches the rest. It bites when something wrote **non-native** endings first —
+an agent creating a file with LF on Windows. So after formatting a file you
+created rather than checked out, run this check before committing.
 
 ### 5. Privacy
 

@@ -72,6 +72,11 @@ Layout, naming, and project wiring are defined in the repository's root
 - **No duplicates.** A second test for the same behaviour is maintenance
   without coverage.
 - **No PII or high-cardinality values** in test names, data, or log output.
+- **Never assert on a `Task` itself.** Shouldly's `ShouldNotBeNull()` on a
+  `Task` binds to its async overload and returns one, so the call is never
+  awaited and `CS4014` fails the build under warnings-as-errors. Await the
+  task and assert on the result, or assert on a value such as
+  `IsCompletedSuccessfully`.
 
 ## Running
 

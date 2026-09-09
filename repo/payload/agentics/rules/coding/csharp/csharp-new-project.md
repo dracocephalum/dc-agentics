@@ -146,6 +146,19 @@ Then:
   [`csharp-unit-tests-rules.md`](csharp-unit-tests-rules.md). An empty test
   project makes the count check in step 6 meaningless.
 
+**What the first test is, when the shell has no behaviour yet.** For a
+`classlib` there is real code to test. For the other two shells there is not,
+and the answer is a smoke test rather than a skipped one:
+
+| Shell | First test |
+|---|---|
+| `webapi` | `GET /health` returns 200 through `WebApplicationFactory<Program>` — no `public partial class Program` is needed on SDK 10 |
+| `worker` | `StartAsync` then `StopAsync` completes without throwing — `Should.NotThrowAsync` |
+
+**Do not assert on `BackgroundService.ExecuteTask`.** It is not completed
+synchronously once `StartAsync` returns, so the obvious assertion fails on a
+worker that is behaving correctly.
+
 A finished test `.csproj` contains a `TargetFramework` and a `ProjectReference`
 and nothing else.
 

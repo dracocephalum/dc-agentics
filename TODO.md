@@ -33,17 +33,20 @@ when they have a closing condition.
       and ConfigureAwait rules usefully. Needs a build test on the template
       shells first; unlike `AnalysisMode`, it is not SDK-built-in and will have
       opinions of its own.
-- [ ] **Procedure branches still untested.** Exercised so far: every
-      version-check outcome, a deleted payload file, drift firing, the ask
-      branch on `stylecop.ruleset`, a dropped settings key, a directory rename,
-      a new payload file, new settings keys, format-as-repair, MIT, Serena
-      absent, webapi via `/new`, standalone→monorepo, both convergence
-      proofs. Not yet: `worker` via `/new`; the `none` licence end to end
-      (the default, and the README section deletion it implies); a second
-      category via `/new component`; the ask branch on a three-way config
-      file that is not the ruleset; an upgrade with a template change and a
-      customized `AGENTS.md`. Close by: run each on a throwaway repository
-      and record the result here or as a ticket.
+- [ ] **Procedure branches still untested.** Every branch listed here before
+      2026-09-09 has now been exercised at least once: every version-check
+      outcome, a deleted payload file, drift firing, the ask branch on the
+      ruleset and on a non-ruleset config file, a dropped settings key, a
+      directory rename, a new payload file, new settings keys,
+      format-as-repair, MIT and `none` licences, Serena absent, `webapi`,
+      `worker` and a second category through `/new`, standalone→monorepo, a
+      template change carried into a customized `AGENTS.md`, and both
+      convergence proofs. What has no test yet: an upgrade against a target
+      whose `AGENTS.md` table row *conflicts* with a template row rather than
+      merely coexisting; a component removed from a category map; a target on
+      a platform other than Windows, which needs the runner matrix in the CI
+      group below. Close by: run each on a throwaway repository and record the
+      result here or as a ticket.
 
 ## CI — deferred as a group
 
