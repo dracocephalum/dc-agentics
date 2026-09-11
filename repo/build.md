@@ -32,7 +32,17 @@ Already at the target root after the payload copy: `Directory.Build.props`,
 the short commit hash — `1.2.3+abcdef12`, `-dirty` when the tree is not clean —
 via `git describe` ahead of the SDK's own source-control step. Verified
 fail-safe: no repository or no commits build clean as `1.2.3`; no `git` on
-`PATH` leaves the SDK's full hash. Read it back with:
+`PATH` leaves the SDK's full hash.
+
+**Untracked files count as dirty**, which takes a second git call. `git
+describe` reports only tracked modifications, so on its own it stamps a binary
+as clean while a brand-new `.cs` file — untracked, in no commit — is being
+compiled into it: the SDK globs `**/*.cs`, and git's own dirty flag never sees
+it. A false *clean* stamp is worse than a dirty one, because the stamp exists
+to say which commit a binary came from. So the target follows with `git status`
+in porcelain form, and only when `describe` did not already report dirty — in
+ordinary development it has, so the second call is skipped. Building does not
+itself dirty a tree: `bin/` and `obj/` are ignored. Read the result back with:
 
     dotnet msbuild <project> -t:Build -getProperty:InformationalVersion
 

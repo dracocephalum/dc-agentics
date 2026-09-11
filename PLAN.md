@@ -63,6 +63,32 @@ it is published.
 add a dependency the current stamp does not have, which is the tradeoff to
 weigh — not obviously worth it until something is actually published.
 
+**A host can supply the version instead, and that is worth knowing before
+choosing.** Azure Pipelines is the example to reason from, because its
+auto-incrementing package versions are a common first encounter with the
+problem. Two separate mechanisms combine there:
+
+| Piece | What it is |
+|---|---|
+| `$(Rev:r)` in the pipeline's build-number format | a counter the host maintains, resetting per unique prefix per day — this is what produces the incrementing last part |
+| `versioningScheme: byBuildNumber` on the pack task | passes that build number to `dotnet pack` as an MSBuild property |
+
+**Neither edits a file**, which is the question worth settling: the version
+arrives as a property at pack time, the working tree stays clean, and nothing
+about it makes the stamp above report dirty.
+
+Two cautions if we go that way. A four-part `1.0.0.42` is **not** a SemVer
+prerelease — NuGet treats it as a stable version *greater than* `1.0.0`, so a
+CI build published to a shared feed outranks the release it came after; a
+prerelease form such as `1.0.0-ci.42` does not. And a host-supplied version
+sets the *package* version, leaving the assembly's informational version to
+the stamp, so the two can disagree unless the pipeline sets both.
+
+The tradeoff against MinVer and Nerdbank is portability: a host-supplied
+version is one pipeline setting and no dependency, but it lives outside the
+repository, cannot be reproduced by building locally, and has to be
+reimplemented on every CI host. Deciding this belongs with *Pipelines* below.
+
 ### Code signing
 
 Three artifact kinds, and they do not share an answer:
