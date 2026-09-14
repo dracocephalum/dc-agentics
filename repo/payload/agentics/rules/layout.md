@@ -52,7 +52,7 @@ implicit:
 | Thing | Convention | Example |
 |---|---|---|
 | Directories | lowercase, hyphenated | `proxy-gateway` |
-| Component folder | the main project's **last** name segment, kebab-cased | `Contoso.Ordering.Core` → `core/` |
+| Component folder | the main project's **last** name segment, kebab-cased | `Contoso.ProxyGateway.Core` → `core/` |
 | Solution file | its component's main project | `Contoso.ProxyGateway.slnx` |
 | .NET project + assembly | PascalCase, prefixed | `Contoso.ProxyGateway` |
 | Default namespace | project name, minus `.Core` | `Contoso.ProxyGateway` |
