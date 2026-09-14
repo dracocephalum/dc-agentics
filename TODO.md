@@ -76,6 +76,14 @@ already decided on the local side that need their server-side half:
       folder does not trigger on a root props change, so the drift produces
       silence rather than a failure — the pipelines that would have caught it
       never run and stay green from their last execution.
+- [ ] **Cross-component references are not a pipeline's to police.** The
+      layout rule is packages between components, with a recorded
+      `ProjectReference` workaround until a feed exists. A pipeline builds its
+      component as though the references were packages; while the workaround
+      stands, the component's trigger must include the referenced components'
+      paths, and nothing more is asked of CI. Close by: the feed, and the
+      `TODO.md` entries in each consuming repository that name the switch —
+      not a CI check for stray project references.
 - [ ] **Build only affected components** in a monorepo — the reason there is
       no root solution. "Affected" has to include *depends on a changed root
       file*, not only *has changed files under its own path*: a root

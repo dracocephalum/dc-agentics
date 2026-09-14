@@ -45,6 +45,7 @@ appends a row there (step 7).
 |---|---|---|
 | library | `classlib` | delete `Class1.cs` |
 | service | `webapi` | replace `Program.cs` with the shell below; delete the `.http` file |
+| service library | `webapi` | as *service*, but the explicit `Program` shell further below, and it stays packable — a host **and** a package |
 | job | `worker` | replace `Worker.cs` with the shell below |
 | tool | `console` | nothing — the template is clean |
 
@@ -90,6 +91,50 @@ The template's `Worker.cs` also uses `Task.Delay` and `DateTimeOffset.Now`,
 which the coding rules forbid in time-dependent code. The shell sidesteps that;
 real work should take a `TimeProvider`.
 
+**A service library** is a backend that a later host will wrap — a daemon, a
+Windows service, a container entry point — and that should still run on its own
+today. One project serves both: the Web SDK builds it to an `.exe` *and* an
+assembly, `dotnet pack` produces an ordinary library package whose
+`frameworkReference` to `Microsoft.AspNetCore.App` flows to consumers, and
+another host can mount its endpoints beside its own. Verified end to end. The
+library surface is extension methods — `AddThing()` / `MapThing()` — and `Main`
+is a thin default host that calls them:
+
+    using Microsoft.AspNetCore.Routing;
+
+    namespace <Prefix>.<Name>;
+
+    /// <summary>What a host mounts.</summary>
+    public static class <Name>Endpoints
+    {
+        /// <summary>Maps the endpoints.</summary>
+        public static IEndpointRouteBuilder Map<Name>(this IEndpointRouteBuilder app)
+        {
+            app.MapGet("/health", () => Results.Ok());
+            return app;
+        }
+    }
+
+    /// <summary>The default host, so the assembly also runs on its own.</summary>
+    public static class Program
+    {
+        /// <summary>Entry point.</summary>
+        public static void Main(string[] args)
+        {
+            var app = WebApplication.CreateBuilder(args).Build();
+            app.Map<Name>();
+            app.Run();
+        }
+    }
+
+Two things bite here and nowhere else: `IEndpointRouteBuilder` needs that
+explicit `Microsoft.AspNetCore.Routing` using, and the Web SDK's implicit
+usings exist only because `Directory.Build.props` sets `ImplicitUsings` — a
+project outside this repository's root gets neither. An entry point in a
+library costs nothing: only the executing assembly's `Main` runs, so a host
+wrapping the package keeps its own. The package leaves `appsettings.json`
+behind, which is right — configuration belongs to whatever hosts it.
+
 ## 2. Central package management
 
 Templates write `<PackageReference Include="X" Version="..." />`. Central
@@ -111,6 +156,16 @@ everything shared is inherited from the root.
 |---|---|
 | `libraries/` | nothing — packable by default |
 | `services/`, `jobs/`, `tools/` | `<IsPackable>false</IsPackable>` |
+| a *service library*, whichever category | nothing — it is packable on purpose, see step 1 |
+
+**Referencing another component** — say the client and the server of one
+product, each its own component — is a `PackageReference`, per
+[`layout.md`](../../layout.md), *Components reference each other as packages*.
+While no feed exists, the `ProjectReference` workaround there is permitted
+exactly as that section states it: the verbatim comment above the reference,
+and the `TODO.md` entry. Relative paths climb out of the component:
+`../../../core/src/<Prefix>.Core/<Prefix>.Core.csproj` from a project under
+`<component>/src/`.
 
 The namespace is derived automatically: a trailing `.Core` is dropped
 (`<Prefix>.Core` → namespace `<Prefix>`).

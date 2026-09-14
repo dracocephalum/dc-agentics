@@ -286,8 +286,8 @@ could be blamed for a breakage.
 distinguishable from the code, and the answer changes what the repository
 claims about itself. Ask, offering the list from `layout.md`.
 
-**The folder name is derived, not asked** — the component's project name minus
-the namespace prefix, kebab-cased, exactly as the naming table has
+**The folder name is derived, not asked** — the main project's last name
+segment, kebab-cased, exactly as the naming table in `layout.md` has
 `Contoso.ProxyGateway` living in `proxy-gateway/`. So `Contoso.Widgets`
 becomes `widgets/`. **Not the repository directory name**: `contoso-widgets`
 is what the repository is called, not what the component is called, and the two
