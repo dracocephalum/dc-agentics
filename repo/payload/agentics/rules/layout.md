@@ -10,6 +10,27 @@ same solution, each with its own pipeline and its own release cadence.
 What makes it one component is that its projects **build and version together**,
 not that they deploy together. The solution boundary is a build decision; when
 each artifact ships is a pipeline decision, and the two are allowed to differ.
+
+**Components reference each other as packages, never as projects.** A
+`ProjectReference` across component folders builds, and that is the problem: it
+quietly makes the two components one — a change to either rebuilds both, and
+neither can be released without the other — while the folders still claim they
+are separate. So a component consumes another through a `PackageReference`, at
+a version, from a feed.
+
+Until a feed exists, a `ProjectReference` is allowed as a **recorded**
+workaround, and the record is what keeps it temporary: this comment above each
+one, verbatim, and one entry under *Decisions pending* in `TODO.md` naming the
+switch to packages as what closes it.
+
+    <!-- TEMPORARY: cross-component project reference. Components reference each
+         other as packages (agentics/rules/layout.md); this stands in until a
+         package feed exists. Listed in TODO.md. -->
+
+It is not a pipeline's job to police this. A pipeline builds its component as
+though the references were packages; while the workaround stands, its trigger
+has to include the referenced components' paths, and that is the whole of the
+pipeline's involvement.
 Split into two components when the code genuinely diverges — separate
 dependencies, separate lifecycles, a change to one that cannot break the
 other — not merely because there are two things to deploy.
@@ -31,6 +52,7 @@ implicit:
 | Thing | Convention | Example |
 |---|---|---|
 | Directories | lowercase, hyphenated | `proxy-gateway` |
+| Component folder | the main project's **last** name segment, kebab-cased | `Contoso.ProxyGateway.Core` → `core/` |
 | Solution file | its component's main project | `Contoso.ProxyGateway.slnx` |
 | .NET project + assembly | PascalCase, prefixed | `Contoso.ProxyGateway` |
 | Default namespace | project name, minus `.Core` | `Contoso.ProxyGateway` |
@@ -42,6 +64,16 @@ name is what appears in every build command, in the IDE title bar, and in the
 component README, so it takes the main project's name rather than the folder's.
 Where a component holds several projects, the main one is the deliverable the
 others support.
+
+**The folder takes the last segment only**, because the repository already
+carries the rest: `Contoso.Ordering.Core` in a repository called
+`contoso-ordering` lives in `core/`, not `ordering-core/`, which would repeat
+what every path under the repository already says. Use more segments only
+when two components would otherwise collide — `Contoso.Ordering.Api` and
+`Contoso.Billing.Api` in one repository become `ordering-api/` and
+`billing-api/`. Never the repository's own directory name: that names the
+repository, not a component, and the two stop being interchangeable the
+moment a second component exists.
 
 **When there is no single main deliverable** — two peer APIs, say, an internal
 and an external face of the same service — name the solution after the project
