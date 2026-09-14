@@ -256,7 +256,7 @@ through two further upgrades.
 Not optional, and mostly already written:
 
     dotnet build <solution> --nologo -v:q
-    dotnet test  <solution> --nologo
+    dotnet test  <solution>
 
 Then the scrub, [`payload/agentics/rules/scrub.md`](payload/agentics/rules/scrub.md),
 which is exactly the post-upgrade check: links that no longer resolve, a
@@ -374,7 +374,7 @@ the layout.
 ### Verify the conversion
 
     dotnet build <category>/<component>/<Prefix>.<Name>.slnx --nologo -v:q
-    dotnet test  <category>/<component>/<Prefix>.<Name>.slnx --nologo
+    dotnet test  <category>/<component>/<Prefix>.<Name>.slnx
 
 Then confirm the **root** build fails:
 

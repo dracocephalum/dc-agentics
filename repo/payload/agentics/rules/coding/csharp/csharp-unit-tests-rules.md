@@ -19,7 +19,7 @@ Layout, naming, and project wiring are defined in the repository's root
 
 | Concern | Use |
 |---|---|
-| Framework | xUnit — `[Fact]`, `[Theory]` |
+| Framework | xUnit v3 — `[Fact]`, `[Theory]`; on Microsoft.Testing.Platform, so test projects are executables |
 | Theory data | `[InlineData]`, `[MemberData]`, `[CombinatorialData]` |
 | Assertions | Shouldly — `ShouldBe`, `ShouldNotBeNull`, `Should.Throw<T>` |
 | Structural equality | DeepEqual — `ShouldDeepEqual` for mapping and DTO tests |
@@ -80,31 +80,51 @@ Layout, naming, and project wiring are defined in the repository's root
 
 ## Running
 
-    dotnet test path/to/Project.Tests.csproj
-    dotnet test path/to/Project.Tests.csproj --filter "FullyQualifiedName~ClassName"
+Test projects are executables on Microsoft.Testing.Platform — xunit v3's home,
+and on .NET 10 SDK the only one `dotnet test` supports. `global.json` opts the
+command in; `Tests.props` sets the three properties per project.
 
-Confirm the reported count matches the tests you expect — a misconfigured runner
-reports zero tests and exits green.
+    dotnet test path/to/Project.Tests.csproj
+    dotnet test path/to/Project.Tests.csproj -- --filter-method "*.ClassName.*"
+    dotnet run  --project path/to/Project.Tests.csproj     # the same tests, as a program
+
+Arguments after `--` go to the platform, and the xunit filters are its own —
+`--filter-class`, `--filter-method`, `--filter-namespace`, `--filter-trait` —
+not the old `--filter` expression, which the platform does not accept.
+
+Confirm the reported total matches the tests you expect — a misconfigured
+runner reports zero tests and exits green, and under the platform the summary
+reads `total:` rather than `Passed!`.
+
+### Two things xunit v3 changes in the code
+
+- **`IAsyncLifetime` uses `ValueTask`** — `ValueTask InitializeAsync()` and
+  `ValueTask DisposeAsync()`. The v2 `Task` signatures do not compile.
+- **Pass `TestContext.Current.CancellationToken`** to anything in a test that
+  accepts a cancellation token. Analyzer `xUnit1051` requires it so a cancelled
+  run stops promptly, and warnings-as-errors makes the omission fatal.
 
 ### Coverage
 
-    dotnet test path/to/Project.Tests.csproj --collect:"XPlat Code Coverage"
+    dotnet test --solution <solution>.slnx -- --coverage --coverage-output-format cobertura --coverage-output TestResults/coverage.cobertura.xml --coverage-settings coverage.config
 
-`coverlet.collector` is in every test project through `Tests.props`, which
-also names the settings: `coverlet.runsettings` at the repository root, picked
-up without a `--settings` flag. It excludes only code nobody writes by hand —
-generated and compiler-generated members, auto-properties, EF Core migrations
-— so the number is about the code that was written. Add an exclusion there
-for the same reason only; a class that is hard to test is a finding about the
-class, not an exclusion. Obsolete code is not excluded either: it is still in
-the build and still runs, so it is measured until it is deleted.
+The collector is the platform's own, `Microsoft.Testing.Extensions.CodeCoverage`,
+in every test project through `Tests.props`; `coverage.config` at the
+repository root is its settings and is passed each time — it is not found on
+its own. It excludes only code nobody writes by hand: test assemblies, anything
+compiled from `obj/` (generated code, which carries no attribute the collector
+would see), and the generated and excluded-member attributes. Measured: with
+defaults the report counted the test assembly and the generated gRPC code;
+with the file, only hand-written sources. Add an exclusion there for the same
+reason only; a class that is hard to test is a finding about the class, not an
+exclusion. Obsolete code is not excluded either: it is still in the build and
+still runs, so it is measured until it is deleted.
 
-Each run writes `TestResults/<guid>/coverage.cobertura.xml` under the test
-project and leaves earlier runs in place, so clear `TestResults/` before a run
-whose number you will report. Read the line rate from the root element rather
-than opening a viewer:
+Each run overwrites the output path you name; give it a path under
+`TestResults/`, which is ignored, and read the line rate from the root element
+rather than opening a viewer:
 
-    grep -om1 'line-rate="[0-9.]*"' $(find . -path '*/TestResults/*' -name coverage.cobertura.xml)
+    grep -om1 'line-rate="[0-9.]*"' TestResults/coverage.cobertura.xml
 
 Report the line rate against the two numbers under `coverage:` in
 `.agentics.yaml`: below `minimum` is a failure and is said so plainly, at or

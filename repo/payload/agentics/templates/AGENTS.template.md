@@ -136,7 +136,7 @@ or ask about it mid-task. Its C# language server needs a restored solution —
 ## Building and testing
 
     dotnet build <solution> --nologo -v:q
-    dotnet test  <solution> --nologo
+    dotnet test  <solution>
 
 **If the build fails only on spacing rules** — `SA1009`, `SA1011`, `SA1111`,
 `SA1028`, `SA1518` — do not fix them by hand:
@@ -148,8 +148,10 @@ regardless. It costs about as much as a build, and `--include` does not make
 it cheaper, so it is a repair and a pre-commit step rather than a prefix to
 every build.
 
-**Keep build output out of context.** Always `--nologo -v:q`; grep the output
-for `error|warning|Passed|Failed` and report those lines, never a full log.
+**Keep build output out of context.** Build with `--nologo -v:q` and grep for
+`error|warning`. Test output is already terse — the platform's `dotnet test`
+rejects `--nologo` — so grep it for `total:|failed:|error` and report those
+lines, never a full log.
 
 **Warnings are errors.** StyleCop rules set to `Warning` fail the build; rules
 at `Info` never surface at build time and appear only in the editor.
