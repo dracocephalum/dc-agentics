@@ -29,7 +29,7 @@ repository:
 
 coverage:
   # Line coverage per test run - agentics/rules/coding/csharp/csharp-unit-tests-rules.md, "Coverage".
-  # Nothing enforces these yet: coverlet.collector measures, the agent reports the line rate against
+  # Nothing enforces these yet: the coverage extension measures, the agent reports the line rate against
   # them, and a pipeline can read them later. Below minimum is a failure; at or above target is green;
   # between the two is a warning.
   minimum: 85                         # percent - the hard limit

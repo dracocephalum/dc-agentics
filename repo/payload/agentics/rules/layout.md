@@ -287,18 +287,20 @@ accident.
 
 | Package | Role |
 |---|---|
-| `Microsoft.NET.Test.Sdk` | test host |
-| `xunit`, `xunit.runner.visualstudio` | framework and VS/CLI runner |
-| `coverlet.collector` | coverage collection |
+| `xunit.v3` | the framework, and with it Microsoft.Testing.Platform — every test project is an executable |
+| `Microsoft.Testing.Extensions.CodeCoverage` | coverage, cobertura out, settings in `coverage.config` |
 | `FakeItEasy` | faking |
 | `FakeItEasy.Analyzer.CSharp` | catches FakeItEasy misuse at compile time |
 | `AutoFixture` | test data generation |
 | `Shouldly` | assertions |
 | `DeepEqual` | structural comparison |
 
-`xunit.runner.visualstudio`, `coverlet.collector` and
-`FakeItEasy.Analyzer.CSharp` carry `PrivateAssets=all` plus the analyzer asset
-list — they are build-time tooling and must not flow anywhere.
+`FakeItEasy.Analyzer.CSharp` carries `PrivateAssets=all` plus the analyzer
+asset list — it is build-time tooling and must not flow anywhere. There is no
+test host package and no VSTest adapter: on .NET 10 SDK, xunit v3 runs on the
+platform and the SDK refuses the VSTest path, so `Tests.props` sets
+`OutputType=Exe` with the two platform properties, and `global.json` opts
+`dotnet test` in.
 
 Since test projects are never shipped, the bar for adding a package here is
 low: a redundant reference costs a restore entry and nothing else. Still confirm
@@ -315,10 +317,12 @@ actually referenced by the application:
 
 ### Do not bump these piecemeal
 
-`xunit` 2.x pairs with `xunit.runner.visualstudio` **3.x**. Version 4.x of the
-runner targets `xunit.v3` and does not belong with `xunit` 2.9.3 — taking
-"latest" for each package independently produces exactly that mismatch. Move
-the whole set together, and run `dotnet test` afterwards to confirm.
+`xunit.v3` pairs with `Xunit.Combinatorial` **2.x** (1.x is the xunit 2 line)
+and brings Microsoft.Testing.Platform with it, which is why the coverage
+collector is the platform's own extension and not coverlet — a VSTest data
+collector cannot run there. Taking "latest" for each package independently
+produces exactly those mismatches. Move the whole set together, and run
+`dotnet test` afterwards to confirm.
 
 ## Keeping the test stack current
 
@@ -343,6 +347,11 @@ attempting exactly that:
       -> error CS0433: 'TheoryAttribute' exists in both xunit.core
          and xunit.v3.core
 
+    xunit.v3 4.0.1 + Microsoft.NET.Test.Sdk + coverlet.collector
+      -> "Testing with VSTest target is no longer supported by
+         Microsoft.Testing.Platform on .NET 10 SDK and later"; the
+         collector never runs
+
 "Latest of everything" is not a valid combination. **Latest mutually compatible**
 is the goal.
 
@@ -358,9 +367,10 @@ is the goal.
 
 3. **Move families together, not package by package.** The couplings recorded
    in `Directory.Packages.props` are the ones known to matter:
-   the xunit family, `Xunit.Combinatorial`, and `Mvc.Testing` against the TFM.
-   Treat a major-version jump in `xunit` as a decision to discuss, not a bump —
-   moving to xunit v3 changes package identities, not just numbers.
+   the xunit family, `Xunit.Combinatorial`, the coverage extension, and
+   `Mvc.Testing` against the TFM. Treat a major-version jump in `xunit.v3` as
+   a decision to discuss, not a bump — the 3.x to 4.x move changed the test
+   platform underneath, not just numbers.
 
 4. **Verify by running, not by reading.** A restore that succeeds proves
    nothing:

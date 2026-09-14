@@ -62,17 +62,20 @@ A green build alone proves nothing, because a wrong ruleset path is silent —
 [`stylecop.md`](stylecop.md), *Why `$(MSBuildThisFileDirectory)`*. The probe
 must actually fail. Delete the file once confirmed.
 
-Then the coverage wiring, which is silent when wrong: a missing or mistyped
-`RunSettingsFilePath` in `Tests.props` still gives a passing run and a coverage
-file, just with nothing excluded. Ask MSBuild what the property resolves to and
-check that the file is there:
+Then the test platform, which fails loudly when the opt-in is missing but
+silently when it is half there: `dotnet test` on .NET 10 SDK refuses the VSTest
+path for xunit v3, and a test project the platform does not own reports zero
+tests with a green exit. Confirm both halves:
 
-    test -f "$(dotnet msbuild <test project>.csproj -getProperty:RunSettingsFilePath)" && echo wired
+    test -f global.json && grep -q Microsoft.Testing.Platform global.json && echo "command opted in"
+    dotnet msbuild <test project>.csproj -getProperty:UseMicrosoftTestingPlatformRunner   # true
 
-Verified once on a real project that the collector honours it: with the file,
-a positional record's generated getter vanished from the report, six valid
-lines instead of eight; without it, `get_Value` was counted. The command
-itself is in the shipped unit-test rules, *Coverage*.
+Then one coverage run exactly as the shipped unit-test rules give it, under
+*Coverage*, and read the report: it should count only hand-written sources.
+Verified on a real project that `coverage.config` is what makes that true —
+with the platform's defaults the report counted the test assembly and the
+generated gRPC code and read 7.6%; with the file, only the hand-written files,
+and 100%.
 
 Finally, the licence check over the whole transitive graph:
 

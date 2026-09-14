@@ -58,28 +58,32 @@
   <!--
     Test stack, consumed by Tests.props.
 
-    agentics-verified: sdk=10.0.400 date=2026-09-04
+    agentics-verified: sdk=10.0.400 date=2026-09-14
     Last confirmed by a clean restore, build and `dotnet test` with this exact
-    combination.
+    combination, on a four-component monorepo.
 
     These are a KNOWN-GOOD FLOOR, not a ceiling. At repository initialization,
     try to move the whole set forward - see "Keeping the test stack current" in
     agentics/rules/layout.md. Update the marker above when you do.
 
     Known couplings - these move together or not at all:
-      xunit 2.x           <-> xunit.runner.visualstudio 3.x
-                              (runner 4.x targets xunit.v3)
-      xunit 2.x           <-> Xunit.Combinatorial 1.x
-                              (2.x pulls xunit.v3.core -> CS0433 ambiguity)
+      xunit.v3 4.x        <-> Microsoft.Testing.Platform
+                              (on .NET 10 SDK the VSTest path is refused, so
+                              there is no Microsoft.NET.Test.Sdk and no
+                              xunit.runner.visualstudio; Tests.props and
+                              global.json carry the opt-in)
+      xunit.v3            <-> Xunit.Combinatorial 2.x
+                              (1.x is the xunit 2 line)
+      coverage            <-> Microsoft.Testing.Extensions.CodeCoverage
+                              (coverlet.collector is a VSTest data collector
+                              and does not run under the platform)
       Mvc.Testing 10.0.x  <-> net10.0
                               (tracks the ASP.NET Core version of the TFM)
   -->
   <ItemGroup>
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageVersion Include="xunit" Version="2.9.3" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4" />
-    <PackageVersion Include="Xunit.Combinatorial" Version="1.7.31" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="xunit.v3" Version="4.0.1" />
+    <PackageVersion Include="Xunit.Combinatorial" Version="2.1.41" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.11.2" />
 
     <PackageVersion Include="FakeItEasy" Version="9.0.1" />
     <PackageVersion Include="FakeItEasy.Analyzer.CSharp" Version="6.1.1" />

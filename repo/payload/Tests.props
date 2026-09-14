@@ -27,13 +27,16 @@
     <NoWarn>$(NoWarn);CA1707</NoWarn>
 
     <!--
-      Coverage settings for coverlet.collector (referenced below). A runsettings
-      file is not found by searching upward the way this file is; naming it here
-      is what lets `dotnet test - -collect:"XPlat Code Coverage"` (two dashes,
-      joined) use it in both layouts with no - -settings flag. The exclusions
-      and the reasoning are in the file itself.
+      xunit v3 runs on Microsoft.Testing.Platform: every test project is an
+      executable that runs its own tests, and on .NET 10 SDK the old VSTest path
+      is refused outright. These three make `dotnet test` use the platform;
+      global.json at the root opts the command itself in. Coverage is the
+      platform's own extension (referenced below), configured by coverage.config
+      at the root and passed on the command line - the unit-test rules say how.
     -->
-    <RunSettingsFilePath>$(MSBuildThisFileDirectory)coverlet.runsettings</RunSettingsFilePath>
+    <OutputType>Exe</OutputType>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
   </PropertyGroup>
 
   <!--
@@ -46,22 +49,15 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <!-- Test host and runner. Required for the project to run at all. -->
+  <!--
+    Framework, platform and coverage. xunit.v3 brings the platform with it;
+    there is no separate test host package and no VSTest adapter any more.
+  -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="xunit" />
-    <PackageReference Include="xunit.runner.visualstudio">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
 
-    <!-- [CombinatorialData] / [PairwiseData] theories. Must stay on 1.x while
-         xunit is 2.x - Xunit.Combinatorial 2.x pulls xunit.v3.core and the
-         duplicate TheoryAttribute fails the build with CS0433. -->
+    <!-- [CombinatorialData] / [PairwiseData] theories; 2.x is the xunit v3 line. -->
     <PackageReference Include="Xunit.Combinatorial" />
   </ItemGroup>
 

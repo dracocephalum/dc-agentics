@@ -26,7 +26,7 @@
 ## Run it locally
 
     dotnet build {{SOLUTION_NAME}}.slnx --nologo -v:q
-    dotnet test  {{SOLUTION_NAME}}.slnx --nologo
+    dotnet test  {{SOLUTION_NAME}}.slnx
 
 <!-- Anything beyond build and test: configuration to set, a database to start, a URL to open. -->
 

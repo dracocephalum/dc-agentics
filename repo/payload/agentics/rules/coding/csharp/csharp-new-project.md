@@ -185,6 +185,10 @@ names trip `CA1707`. Mirror `src/`: `test/<Prefix>.<Name>.Tests/`.
 
     dotnet new xunit -o test/<Prefix>.<Name>.Tests -n <Prefix>.<Name>.Tests
 
+The template is xunit **v2**'s and that does not matter: everything it writes
+into the project file is deleted below, and `Tests.props` supplies xunit v3,
+the platform and the executable output type.
+
 Then:
 
 - **Delete every `<PackageReference>` the template wrote.** `Tests.props`

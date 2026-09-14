@@ -22,7 +22,7 @@
 ## Run it
 
     dotnet build {{PREFIX}}.{{PROJECT_NAME}}.slnx --nologo -v:q
-    dotnet test  {{PREFIX}}.{{PROJECT_NAME}}.slnx --nologo
+    dotnet test  {{PREFIX}}.{{PROJECT_NAME}}.slnx
 
 <!-- Beyond build and test: required configuration, local dependencies, how to start it, where it listens. -->
 
