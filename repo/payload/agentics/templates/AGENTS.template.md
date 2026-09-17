@@ -159,6 +159,9 @@ at `Info` never surface at build time and appear only in the editor.
 A `*.Tests` project inherits the whole test stack from `Tests.props`, so its
 `.csproj` holds only `TargetFramework` and a `ProjectReference` —
 [`agentics/rules/coding/csharp/csharp-unit-tests-rules.md`](agentics/rules/coding/csharp/csharp-unit-tests-rules.md).
+It holds unit tests only. A `*.Tests.Integration` project holds tests that
+need a live dependency; a plain `dotnet test` builds it and runs none of it —
+pass `-p:RunIntegrationTests=true` to run them.
 
 Do not report work as complete until `dotnet build` and `dotnet test` both pass,
 with the test count you expect: zero tests and a green exit is a misconfigured

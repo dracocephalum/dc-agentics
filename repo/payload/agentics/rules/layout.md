@@ -259,10 +259,17 @@ Everything a test project needs lives in `Tests.props` at the repository root.
 It is imported from `Directory.Build.targets` under one condition:
 
     <Import Project="$(MSBuildThisFileDirectory)Tests.props"
-            Condition="$(MSBuildProjectName.EndsWith('.Tests')) and '$(ManagePackageVersionsCentrally)' != 'false'" />
+            Condition="($(MSBuildProjectName.EndsWith('.Tests')) or $(MSBuildProjectName.EndsWith('.Tests.Integration'))) and '$(ManagePackageVersionsCentrally)' != 'false'" />
 
-So any project named `*.Tests`, at any depth, picks up the whole stack and
-nothing else does. Verified: a `src/` project resolves 2 package references
+So any project named `*.Tests` or `*.Tests.Integration`, at any depth, picks
+up the whole stack and nothing else does. The second name is for tests that
+need a live dependency: `Tests.props` leaves such a project an ordinary
+executable, `IsTestingPlatformApplication=false`, unless the run passes
+`-p:RunIntegrationTests=true`, so a plain `dotnet test` builds it and runs
+none of it. Verified on a real repository: `IsTestProject=false` alone does
+not stop the platform's `dotnet test`, and xunit v3 refuses
+`OutputType=Library`; the platform flag is the one lever that skips the
+project while it still compiles. Verified: a `src/` project resolves 2 package references
 (the StyleCop and banned-API analyzers), a `.Tests` project resolves 13. The
 second half of the condition is the escape hatch: a test project that opts out
 of central package management in its own `.csproj` is left alone and carries

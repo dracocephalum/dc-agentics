@@ -116,4 +116,15 @@
     <!-- <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" /> -->
   </ItemGroup>
 
+  <!--
+    Integration tests live in a project named *.Tests.Integration. They get the same stack, but a
+    plain `dotnet test` runs none of them: the project is only a test project when the run asks for
+    it with -p:RunIntegrationTests=true, so a live dependency is never hit by accident.
+  -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests.Integration')) and '$(RunIntegrationTests)' != 'true'">
+    <IsTestProject>false</IsTestProject>
+    <IsTestingPlatformApplication>false</IsTestingPlatformApplication>
+    <TestingPlatformDotnetTestSupport>false</TestingPlatformDotnetTestSupport>
+  </PropertyGroup>
+
 </Project>

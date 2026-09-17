@@ -179,11 +179,19 @@ without them has no evidence its runner works.
 
 A test project can also be created on its own, for a `src/` project that
 already exists. The naming is the whole of it: `Tests.props` is imported on
-`$(MSBuildProjectName.EndsWith('.Tests'))`, so a project named anything else
-gets **no test stack at all** — `[Fact]` does not resolve, and test method
-names trip `CA1707`. Mirror `src/`: `test/<Prefix>.<Name>.Tests/`.
+`$(MSBuildProjectName.EndsWith('.Tests'))` or `.Tests.Integration`, so a
+project named anything else gets **no test stack at all** — `[Fact]` does not
+resolve, and test method names trip `CA1707`. Mirror `src/`:
+`test/<Prefix>.<Name>.Tests/`.
 
     dotnet new xunit -o test/<Prefix>.<Name>.Tests -n <Prefix>.<Name>.Tests
+
+A `*.Tests` project holds unit tests only. Tests that need a live dependency
+go in a second project, `test/<Prefix>.<Name>.Tests.Integration/`, created the
+same way under that name; `Tests.props` makes it a test project only when the
+run passes `-p:RunIntegrationTests=true` — see *Integration tests* in
+[`csharp-unit-tests-rules.md`](csharp-unit-tests-rules.md). Never create it by
+default: only when the request names a dependency the tests must reach.
 
 The template is xunit **v2**'s and that does not matter: everything it writes
 into the project file is deleted below, and `Tests.props` supplies xunit v3,
@@ -301,4 +309,5 @@ update it instead.
 | `CA1707` on a test method name | the project is not named `*.Tests`, so `Tests.props` (which suppresses it) was never applied |
 | `NU1100`/`NU1101` package not found, on a private package | `nuget.config` source mapping has no pattern routing it to the private feed |
 | zero tests, green exit | wrong runner version, or no tests written yet |
+| a `*.Tests.Integration` project builds but `dotnet test` reports none of its tests | by design — run with `-p:RunIntegrationTests=true` |
 | `CS0246` on `Fact`, `Theory` or `InlineData` | the project is not named `*.Tests`, so `Tests.props` — which supplies the `Xunit` global using — was never applied |
