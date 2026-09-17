@@ -16,7 +16,7 @@
     those projects off from every setting above.
   -->
   <Import Project="$(MSBuildThisFileDirectory)Tests.props"
-          Condition="$(MSBuildProjectName.EndsWith('.Tests')) and '$(ManagePackageVersionsCentrally)' != 'false'" />
+          Condition="($(MSBuildProjectName.EndsWith('.Tests')) or $(MSBuildProjectName.EndsWith('.Tests.Integration'))) and '$(ManagePackageVersionsCentrally)' != 'false'" />
 
   <!--
     Stamp the informational version with the short commit hash and a dirty marker:

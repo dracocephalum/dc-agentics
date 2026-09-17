@@ -14,6 +14,9 @@ Layout, naming, and project wiring are defined in the repository's root
 - Every `*.Tests` project inherits the full test stack from `Tests.props`. A
   test `.csproj` holds a `TargetFramework` and a `ProjectReference` and
   **nothing else** — add no package references.
+- A `*.Tests` project is **unit tests only**: nothing in it may need a live
+  dependency, so `dotnet test` runs everywhere, always. Tests that need one
+  live in `test/<Project>.Tests.Integration/` — see *Integration tests*.
 
 ## Stack
 
@@ -77,6 +80,35 @@ Layout, naming, and project wiring are defined in the repository's root
   awaited and `CS4014` fails the build under warnings-as-errors. Await the
   task and assert on the result, or assert on a value such as
   `IsCompletedSuccessfully`.
+
+## Integration tests
+
+A unit test is preferred whenever one can state the behaviour; an integration
+test earns its place when only a real dependency can — a database, a broker,
+a server hosted for real. Those live in a sibling project named
+`test/<Project>.Tests.Integration/`, which gets the same stack as a `*.Tests`
+project and follows the same rules, with three differences:
+
+- **A plain `dotnet test` runs none of them.** The project builds, so the
+  tests are always compiled, but it is not a test project until the run asks:
+
+      dotnet test <solution>.slnx -p:RunIntegrationTests=true
+
+  An accidental `dotnet test` on a machine without the dependency therefore
+  still passes, and the unit run stays fast.
+- **They own what they touch.** A test creates the resource it needs under a
+  recognisable name — a database with a fixed prefix and a random suffix — and
+  removes it when the run ends, pass or fail. Where the dependency lives comes
+  from an environment variable with a documented local default, never from a
+  tracked file.
+- **They are marked** `[Trait("Category", "Integration")]` on the class, so a
+  report can tell the two kinds apart.
+
+Until a pipeline runs them, automated integration tests are worth less than a
+sample program that exercises the same path and can be read. A repository with
+an `examples/` category keeps its end-to-end runs there, each sample with a
+test that runs it, and puts only backend-level checks in a
+`*.Tests.Integration` project.
 
 ## Running
 
