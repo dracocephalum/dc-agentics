@@ -211,6 +211,27 @@ configuration — with a green build and no warning.
 Non-.NET folders (`infrastructure/`, `ui/`, `docs/`, `agentics/`) are unaffected: MSBuild
 files only apply to MSBuild projects.
 
+## Root documents
+
+Four documents live at the repository root, each answering one question, so
+nothing is said twice:
+
+| Document | Question | When |
+|---|---|---|
+| `README.md` | what is this and how do I run it | always |
+| `AGENTS.md` | which rule applies to what I am about to do | always |
+| `TODO.md` | what is owed, blocked or undecided | always |
+| `DESIGN.md` | why is the code shaped the way it is | the day a reader could not infer it |
+
+`DESIGN.md` is written once the first non-obvious seam exists — a wrapper that
+defeats a framework default, a schema patched rather than replaced, a
+lifecycle the code enforces at startup — and kept short: the seams and the
+reasons, not a restatement of the type comments, which already say what. It
+is the page an agent reads before changing anything, so `AGENTS.md` points at
+it. A repository that mirrors a reference product may add `VARIANCES.md` for
+the deliberate differences and `PENDING.md` for features deferred with their
+approach decided; both leave `TODO.md` for what is owed soon.
+
 ## Creating a component
 
 The procedure — templates, the sample code each one emits that fails the

@@ -191,6 +191,37 @@ other files to learn why this one exists.
 - Pattern matching and `switch` expressions where they read more clearly than
   `if`/`else` chains — not as a reflex.
 
+### Configuration
+
+- A component binds its settings from one configuration section named after
+  it, into one options class, and reads nothing else from configuration.
+- Connection strings live under `ConnectionStrings`, where every .NET host and
+  tool expects them, never inside the section. The section carries a
+  `ConnectionStringName` setting, resolved with `GetConnectionString(name)`,
+  with the component's own name as the default; that is what the reference
+  libraries do and what an operator looks for.
+- A setting that shapes something created once — a schema, a store, a queue —
+  is recorded where it was applied and compared on every later start, so a
+  changed setting is refused rather than silently disagreeing with what
+  exists.
+
+### gRPC contracts
+
+- The proto package is the component's namespace plus `Protocol.V1`, and the
+  version is part of the package from the first draft: renaming a package
+  later changes every generated type.
+- Services are named by area — `Streams`, `Subscriptions` — never after the
+  product, which clashes with the namespace, and never after a domain type,
+  which clashes with the type. Enums and messages that mirror a domain type
+  get a wire-specific name (`ReadDirection`, `StreamBounds`).
+- One folder holds every `.proto`, split by area the way the reference
+  protocol is; the `Protobuf` item sets `ProtoRoot` to that folder so the
+  files can import each other, and a file that holds only messages sets
+  `GrpcServices="None"`, or its empty generated file fails `SA1518`.
+- Errors cross the wire as `google.rpc.Status` with an `ErrorInfo` detail
+  whose reason is an enum in the contract; the client maps reasons to the
+  shared exceptions and leaves unknown reasons as the transport exception.
+
 ## Testing
 
 For writing and validating unit tests — stack, naming, fakes, in-memory
