@@ -100,6 +100,9 @@ which satisfies the rule because nested types are not counted:
 - Registration by assembly scanning finds nested types; nothing extra is
   needed for ConduitR to see them.
 
+The second case is a settings tree: an options class owns the types of its
+sub-sections as nested classes — *Configuration*, below.
+
 ## Types and APIs
 
 - **Records for DTOs, messages, and events.** `init`, not `set`.
@@ -195,6 +198,12 @@ other files to learn why this one exists.
 
 - A component binds its settings from one configuration section named after
   it, into one options class, and reads nothing else from configuration.
+- **The options class is the whole settings tree.** A sub-section's type is
+  nested under the property that binds it — `ThingOptions.StoreSettings`,
+  and `ThingOptions.StoreSettings.PartitioningMode` for an enum only that
+  sub-section uses — as deep as the tree goes. One file then holds every
+  setting, its default and its reason, and a nested name never repeats the
+  outer one. A type used by more than one options class is not nested.
 - Connection strings live under `ConnectionStrings`, where every .NET host and
   tool expects them, never inside the section. The section carries a
   `ConnectionStringName` setting, resolved with `GetConnectionString(name)`,
