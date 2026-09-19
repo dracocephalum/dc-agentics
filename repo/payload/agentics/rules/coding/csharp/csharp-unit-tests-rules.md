@@ -87,7 +87,7 @@ A unit test is preferred whenever one can state the behaviour; an integration
 test earns its place when only a real dependency can — a database, a broker,
 a server hosted for real. Those live in a sibling project named
 `test/<Project>.Tests.Integration/`, which gets the same stack as a `*.Tests`
-project and follows the same rules, with three differences:
+project and follows the same rules, with four differences:
 
 - **A plain `dotnet test` runs none of them.** The project builds, so the
   tests are always compiled, but it is not a test project until the run asks:
@@ -103,6 +103,11 @@ project and follows the same rules, with three differences:
   tracked file.
 - **They are marked** `[Trait("Category", "Integration")]` on the class, so a
   report can tell the two kinds apart.
+- **Tests that each create a database share one collection**, so they run
+  one at a time. A test class runs in parallel with every other class by
+  default, and a database server short of memory hands out one memory grant
+  at a time for the catalog queries a schema apply runs; parallel creations
+  then stall each other until the command timeout, which reads as a hang.
 
 Until a pipeline runs them, automated integration tests are worth less than a
 sample program that exercises the same path and can be read. A repository with

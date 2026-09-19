@@ -91,6 +91,7 @@ makes it selectable from a plain-language request.
 | Scrubbing, sweeping or auditing this repository for drift or inconsistency — or after any move, rename or restructure | [`agentics/rules/scrub.md`](agentics/rules/scrub.md) |
 | Bringing this repository up to a newer version of the toolkit it was initialized with | the toolkit's own `repo/upgrade.md` — it diffs two commits of dc-agentics, so a checkout of it must be present; `.agentics.yaml` records which commit this repository came from |
 | Finding what exists — which component does what, where something lives | `README.md` here; in a monorepo, each category's `README.md` is the map of its components, and each component's `README.md` says how to run it |
+| Understanding how the pieces fit, or why the code is shaped the way it is | `DESIGN.md` at the root — the seams and the reasons; type comments say what, it says why. Written the day a reader could not infer it; see *Root documents* in [`agentics/rules/layout.md`](agentics/rules/layout.md) |
 | Starting any source-control action, or asked what this repository's settings and defaults are | [`.agentics.yaml`](.agentics.yaml) — the mode the agent works in (`auto`, `local`, `manual`) and every choice made at initialization |
 | Leaving something unfinished, blocked, or undecided — or asked what is still open | [`TODO.md`](TODO.md) — add it there; a remark in a conversation is lost |
 

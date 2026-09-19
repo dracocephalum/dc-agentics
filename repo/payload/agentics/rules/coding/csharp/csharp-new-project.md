@@ -97,8 +97,9 @@ today. One project serves both: the Web SDK builds it to an `.exe` *and* an
 assembly, `dotnet pack` produces an ordinary library package whose
 `frameworkReference` to `Microsoft.AspNetCore.App` flows to consumers, and
 another host can mount its endpoints beside its own. Verified end to end. The
-library surface is extension methods — `AddThing()` / `MapThing()` — and `Main`
-is a thin default host that calls them:
+library surface is extension methods — `AddThing()` / `MapThing()` — in a file
+of their own, and `Program.cs` is a thin default host that calls them, in
+top-level statements:
 
     using Microsoft.AspNetCore.Routing;
 
@@ -115,24 +116,25 @@ is a thin default host that calls them:
         }
     }
 
-    /// <summary>The default host, so the assembly also runs on its own.</summary>
-    public static class Program
-    {
-        /// <summary>Entry point.</summary>
-        public static void Main(string[] args)
-        {
-            var app = WebApplication.CreateBuilder(args).Build();
-            app.Map<Name>();
-            app.Run();
-        }
-    }
+`Program.cs`:
+
+    // The default host, so the assembly also runs on its own.
+    using <Prefix>.<Name>;
+
+    var app = WebApplication.CreateBuilder(args).Build();
+    app.Map<Name>();
+    app.Run();
 
 Two things bite here and nowhere else: `IEndpointRouteBuilder` needs that
 explicit `Microsoft.AspNetCore.Routing` using, and the Web SDK's implicit
 usings exist only because `Directory.Build.props` sets `ImplicitUsings` — a
-project outside this repository's root gets neither. An entry point in a
-library costs nothing: only the executing assembly's `Main` runs, so a host
-wrapping the package keeps its own. The package leaves `appsettings.json`
+project outside this repository's root gets neither. The entry point is
+top-level statements, not a `static class Program`: the tests host the
+assembly through `WebApplicationFactory<Program>`, and a static class is not
+allowed as a type argument (`CS0718`), while the class the compiler generates
+for top-level statements is. An entry point in a library costs nothing: only
+the executing assembly's entry point runs, so a host wrapping the package
+keeps its own. The package leaves `appsettings.json`
 behind, which is right — configuration belongs to whatever hosts it.
 
 ## 2. Central package management
@@ -311,3 +313,7 @@ update it instead.
 | zero tests, green exit | wrong runner version, or no tests written yet |
 | a `*.Tests.Integration` project builds but `dotnet test` reports none of its tests | by design — run with `-p:RunIntegrationTests=true` |
 | `CS0246` on `Fact`, `Theory` or `InlineData` | the project is not named `*.Tests`, so `Tests.props` — which supplies the `Xunit` global using — was never applied |
+| `CS0718` naming `Program` as a type argument of `WebApplicationFactory<Program>` | `Program` is a static class — the service-library shell uses top-level statements, see step 1 |
+| `SA1518` in a generated `*Grpc.cs` that is empty | a proto holding only messages was compiled with `GrpcServices="Both"` — set `GrpcServices="None"` on it with a `<Protobuf Update=...>` item |
+| `import "x.proto"` not found when the protos are in one folder | protos that import each other need `ProtoRoot="<folder>"` on the `Protobuf` item |
+| `CS0234` or an ambiguity between a generated gRPC service and a namespace or domain type | the proto package or a service is named after the product or a type — see *gRPC contracts* in `csharp-coding-rules.md` |

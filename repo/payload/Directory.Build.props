@@ -132,6 +132,18 @@
   </ItemGroup>
 
   <!--
+    Internals visible to the project's own tests. Every non-test project grants
+    InternalsVisibleTo to <Project>.Tests and <Project>.Tests.Integration, so a
+    test reaches an internal type without the author adding the attribute by
+    hand. Granting it to an assembly that does not exist is harmless. Assemblies
+    are not strong-named here; a signed assembly would need the public key.
+  -->
+  <ItemGroup Condition="!$(MSBuildProjectName.EndsWith('.Tests')) and !$(MSBuildProjectName.EndsWith('.Tests.Integration'))">
+    <InternalsVisibleTo Include="$(MSBuildProjectName).Tests" />
+    <InternalsVisibleTo Include="$(MSBuildProjectName).Tests.Integration" />
+  </ItemGroup>
+
+  <!--
     Deliberately NOT set here:
 
     TargetFramework - varies per project; set it in each .csproj.
