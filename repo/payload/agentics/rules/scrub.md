@@ -18,7 +18,7 @@ a file to rewrite — and a check that silently edits is a check nobody trusts.
 
     | # | Check | Result | Detail |
     |---|---|---|---|
-    | 1 | Markdown lint | pass | 0 issues in 0 files |
+    | 1 | Markdown lint | pass | 0 issues, 41 files linted |
     | 4 | Line endings | **fail** | AGENTS.md: 12 CRLF lines, 160 LF |
 
 State `pass`, `fail`, or `skipped` with the reason, and for every failure what
@@ -31,8 +31,13 @@ change.
 
     npx --yes markdownlint-cli2@0.23.2 "**/*.md" "#node_modules"
 
-**Read the `Summary:` line, not the exit code.** The configuration is
-`.markdownlint.yaml`; every rule left enabled points at a real defect.
+**Read the `Summary:` line, not the exit code — and the `Linting:` line above
+it.** `Summary: 0 issues in 0 files` counts the files *with issues*, so it
+reads the same when every file is clean and when the pattern matched no file
+at all. `Linting: N files` is how many were looked at; zero there is a failed
+check, not a clean one, and the usual cause is a pattern the shell or the
+working directory did not resolve. The configuration is `.markdownlint.yaml`;
+every rule left enabled points at a real defect.
 
 ### 2. Relative links resolve
 
@@ -208,3 +213,18 @@ Read every entry and ask whether it is still open. An entry that is done, or
 that describes a state the repository has left, is worse than no entry: it is
 the file agents are told to trust for what is unfinished. Report the stale ones
 rather than deleting them — closing an item is the user's call.
+
+The same reading applies to `PENDING.md` where the repository has one: an
+entry that describes what has since shipped, or an approach since dropped.
+
+**A reversed decision is the cheap moment.** When a change abandons an
+approach that the documents had named — a design replaced, a planned slice
+dropped for another — search for the abandoned approach's own words in that
+same change, not at the next scrub:
+
+    grep -rn --include='*.md' -i '<the abandoned term>' .
+
+The sentences it finds are rarely the entry about the decision itself, which
+gets rewritten. They are the other entries that leaned on it: a "close by"
+that names the dropped slice as next, a pending item waiting on work that
+will now never happen.

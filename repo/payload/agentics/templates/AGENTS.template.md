@@ -52,6 +52,7 @@ exist.
 | `libraries/` | packages published to NuGet |
 | `jobs/` | scheduled executables (Kubernetes CronJobs and similar) |
 | `tools/` | internal tooling, never shipped to production |
+| `examples/` | runnable samples of this repository's own libraries, never shipped |
 | `infrastructure/` | provisioning (Terraform and similar) |
 | `ui/` | front-end applications |
 | `agentics/` | what agents follow — `rules/` this repository is held to, see *Agent guidelines* below, and `templates/` |
@@ -150,9 +151,11 @@ it cheaper, so it is a repair and a pre-commit step rather than a prefix to
 every build.
 
 **Keep build output out of context.** Build with `--nologo -v:q` and grep for
-`error|warning`. Test output is already terse — the platform's `dotnet test`
-rejects `--nologo` — so grep it for `total:|failed:|error` and report those
-lines, never a full log.
+`error|warning`. Test output is already terse, so grep it for
+`total:|failed:|error` and report those lines, never a full log. **Never pass
+`--nologo` to `dotnet test`**: the platform's test host rejects it, and not
+with a message about the flag — it reports `Zero tests ran` and exit code 5,
+which reads as a flake and is not one.
 
 **Warnings are errors.** StyleCop rules set to `Warning` fail the build; rules
 at `Info` never surface at build time and appear only in the editor.
