@@ -6,7 +6,9 @@ a release, and whenever the toolchain has moved underneath the repository.
 
 **This finds inconsistency, not bugs and not rule violations.** The bug pass is
 the built-in `/code-review`; the rules pass is
-[`coding/code-review.md`](coding/code-review.md). Building and testing are in
+[`coding/code-review.md`](coding/code-review.md). What the documents cost to
+read, and making them smaller, is [`optimize.md`](optimize.md), and no part of
+it runs here. Building and testing are in
 `AGENTS.md` under *Building and testing*, and are deliberately not repeated
 here: a scrub should be cheap enough to run without thinking about it.
 
@@ -202,10 +204,11 @@ The fix is a pointer, not a second copy: name the document that owns the rule
 and delete the restatement. Report these; deciding which copy is authoritative
 is the user's call, not a mechanical one.
 
-**This is about duplication, not brevity.** Do not shorten a document because
-a model would probably behave correctly without the instruction — see *A
-compacting `/scrub`* in the toolkit's `PLAN.md` for why that is a different and
-far riskier operation.
+**This is about duplication, not brevity.** The scrub reports the duplicate;
+shortening documents, whether by removing redundancy or because a model would
+probably behave correctly without the instruction, is
+[`optimize.md`](optimize.md), which says why the second is a different and far
+riskier operation.
 
 ### 10. `TODO.md` is still true
 

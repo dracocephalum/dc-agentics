@@ -28,7 +28,8 @@ adjustments, because it is not a target:
   a hit there is a real finding.
 
 Then the checks below, which exist only here. Report as the shipped file says:
-a findings table, no fixes without being asked.
+a findings table, no fixes without being asked. What the documents cost to
+read is not checked here: that is [`optimize.md`](optimize.md).
 
 ## 1. Stale paths across every file type
 
@@ -89,8 +90,8 @@ toolkit's own directory structure does not exist. So:
 
 Each `.claude/skills/*/SKILL.md` names the document it follows — for the rules
 shims, the target's `agentics/rules/...` then the toolkit's
-`repo/payload/agentics/rules/...`; for `scrub` and `upgrade`, a toolkit document
-under `repo/` as well. The shims are copied into targets, so a wrong path
+`repo/payload/agentics/rules/...`; for `scrub`, `optimize` and `upgrade`, a
+toolkit document under `repo/` as well. The shims are copied into targets, so a wrong path
 ships. Also confirm each frontmatter is valid YAML: an `argument-hint` such as
 `[a] [b]` opens a flow sequence and continues past it, the whole block fails to
 parse, and the skill's description degrades to its body's first line — which is
@@ -126,20 +127,3 @@ kept naming three shims.
 Compare against the listing, in both directions. No exclusion is needed: since
 the baselines moved to `repo/baselines/`, everything under `payload/` is
 genuinely copied, which is what makes this a straight comparison.
-
-## 7. Always-loaded documents stay within budget
-
-`AGENTS.md` is read every session with no trigger to gate it, and so is each
-shim's **name and description** — the shim body loads only when the skill is
-invoked. Everything under `payload/agentics/rules/` is loaded on demand and is not
-measured here; depth there is cheap until its trigger fires.
-
-    wc -l AGENTS.md .claude/skills/*/SKILL.md | sort -n
-
-`AGENTS.md` is the one to watch, since every row added to the task index is
-paid for everywhere. Shims sit around 40 lines; one that has grown well past
-that is usually carrying substance that belongs in the document it points at,
-which is a clarity problem rather than a context one.
-
-Report growth as a trend rather than a threshold: a shim that has doubled is a
-finding, a shim at 44 lines is not.
