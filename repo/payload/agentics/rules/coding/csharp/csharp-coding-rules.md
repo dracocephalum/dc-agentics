@@ -235,8 +235,9 @@ other files to learn why this one exists.
       {
           public static JsonSerializerOptions Default { get; } = Configure(new JsonSerializerOptions());
 
-          public static JsonSerializerOptions Configure(JsonSerializerOptions options)
+          public static JsonSerializerOptions Configure(JsonSerializerOptions options, IHostEnvironment? environment = null)
           {
+              options.WriteIndented = environment is not null && !environment.IsProduction();
               options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
               options.PropertyNameCaseInsensitive = true;
               options.NumberHandling = JsonNumberHandling.AllowReadingFromString;
@@ -250,16 +251,26 @@ other files to learn why this one exists.
           }
       }
 
-      public static IServiceCollection AddThingJson(this IServiceCollection services)
+      public static IServiceCollection AddThingJson(this IServiceCollection services, IHostEnvironment? environment = null)
       {
-          services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(o => ThingJson.Configure(o.SerializerOptions));
-          services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(o => ThingJson.Configure(o.JsonSerializerOptions));
+          services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(o => ThingJson.Configure(o.SerializerOptions, environment));
+          services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(o => ThingJson.Configure(o.JsonSerializerOptions, environment));
           return services;
       }
 
   The settings are written out rather than taken from
   `JsonSerializerDefaults.Web`, because the host's options already exist when
   they are configured and cannot be constructed from a default.
+- **Indented for a person, outside production, and only the host's JSON.**
+  The initializer takes the host's environment as an optional argument:
+  given, and anything but production, the JSON is written indented, which is
+  what someone reading a response while working on the service wants. Not
+  given, it is compact, and the static default is always built without it:
+  indentation is part of the bytes, so options that pass a document through
+  must never have it. In a repository whose defining component must not
+  reference hosting, a client built on it for one, the initializer takes a
+  plain `bool` and the extension method, which lives with the host, works it
+  out from the environment.
 - **A variation is derived, never defined again.** JSON whose property names
   are read as configuration paths keeps them as declared, so they match a
   settings file: `new JsonSerializerOptions(ThingJson.Default) { PropertyNamingPolicy = null }`,
