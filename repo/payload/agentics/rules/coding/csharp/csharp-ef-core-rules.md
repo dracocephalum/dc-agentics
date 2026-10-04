@@ -96,8 +96,9 @@ loop. The fix is always the explicit configuration the message names.
   `.HasConversion<string>().HasMaxLength(64)` on every enum property — longer
   for an enum whose member names exceed 64 characters. Without the conversion
   the column is `int`; without the length it is `nvarchar(max)`.
-- **Same on the wire.** Register `JsonStringEnumConverter` globally so HTTP
-  payloads carry names, not numbers. Put `[EnumDataType(typeof(T))]` on
+- **Same on the wire.** Enums are names in JSON too, through the repository's
+  one set of serializer options; see *JSON* in
+  [csharp-coding-rules.md](csharp-coding-rules.md). Put `[EnumDataType(typeof(T))]` on
   **request DTO** enum properties — it rejects undefined values such as `999`
   during model validation. It has no effect on EF; do not put it on entities
   for that purpose.

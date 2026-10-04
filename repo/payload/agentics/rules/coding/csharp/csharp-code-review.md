@@ -24,6 +24,7 @@ banned-API list. The authority for each item is
 | AutoMapper / reflection mapper introduced | Types and APIs | `issue (blocking)` |
 | `!` to silence a nullable warning | Types and APIs | `issue` |
 | `throw new Exception(...)` or `catch (Exception)` swallowing | Design | `issue` |
+| `JsonSerializer` called without the repository's options, or `new JsonSerializerOptions` outside the one class that defines them | Conventions, JSON | `issue` |
 | Validation or not-found expressed as a throw where the component uses result records | Design | `suggestion` |
 | Entity or `DbSet` type crossing the API boundary | Design | `issue` |
 | Enum property without `.HasConversion<string>().HasMaxLength(…)` | EF Core, Model | `issue` |
