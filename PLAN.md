@@ -219,47 +219,22 @@ Not a change to make now. Revisit if a second model line has to be supported,
 where the extra explicitness stops being waste — most likely together with
 *Tree shaking* above, which is the same problem approached from the other end.
 
-### A compacting `/scrub`
+### Re-testing a trim to a model's defaults
 
-Documents cost context every time they are read, so trimming them has real
-value. But "compact" covers two very different operations, and only one of them
-is safe.
+Compaction left this file when `/optimize` shipped: measuring, compacting
+with no rule lost, and removing what a named model does unprompted are all in
+`repo/payload/agentics/rules/optimize.md`, with the reasons the last is
+guarded the way it is.
 
-**Removing genuine redundancy is safe and belongs here.** A rule stated in two
-documents is a drift hazard, not just length: the copies diverge and nothing
-says which is authoritative. So is prose that restates what a linked document
-already says, and instructions for things that no longer exist. These are
-verifiable — two documents saying the same thing is a fact, not a judgement —
-which is why *No rule stated twice* is now a shipped check rather than an idea.
-
-**Removing content because the model would do it anyway is a different
-proposition**, and the reasons to be careful are specific:
-
-- **It cannot be verified, only observed.** The toolkit's standard is
-  "verified, not asserted". "Opus does this by default" is an assertion whose
-  truth changes with the model, the version, the context length, and how much
-  of the document survived into the prompt. Nothing in the repository could
-  prove it still held six months later.
-- **The payload is tool-neutral by design.** `AGENTS.md` is a cross-tool
-  convention and the shipped rules are written for any agent. Compacting
-  against one vendor's defaults silently couples every initialized repository
-  to that vendor — a repo driven by a different tool would quietly lose rules
-  its model does not default to.
-- **The failure is invisible.** A dropped rule does not error. It shows up
-  months later as a repository that stopped meeting a standard nobody noticed
-  had gone.
-- **Instructions do more than change behaviour.** They also tell a *reader*
-  what the standard is, and make the rule reviewable in a diff. A rule the
-  model would have followed anyway still earns its place if a person needs to
-  know it is the rule.
-
-If it is ever attempted, the toolkit's own documents under `machine/` and
-`repo/` are the place to try it, not the payload: they are read by whatever
-agent the user runs today, and a mistake stays here rather than shipping. It
-would want a stated model baseline in `.agentics.yaml`, a record of what was
-removed and why, and some way to re-test the claim when the baseline moves —
-which is most of an evaluation harness, and worth building only if the context
-saving turns out to be large.
+What is still only an idea is the missing half of that last operation. Its
+removals are asserted, not verified, and the log it keeps makes them
+reversible but does nothing to say *when* to reverse them. Re-testing a claim
+when the model line moves — does an agent still reach a conforming repository
+without the removed text — is most of an evaluation harness: a set of tasks,
+a way to run them against the trimmed and untrimmed documents, and a
+definition of conforming that a machine can check. Worth building only if
+the measured saving from the operation turns out to be large, which the
+`measure` report is there to say.
 
 ### An automated `/scrub`
 

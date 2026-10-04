@@ -25,6 +25,7 @@ them.
 | Start work on a ticket, name a branch, publish a repository, commit, or open / update / merge a pull request, set merge behaviour (`/source-control`) | [`repo/payload/agentics/rules/source-control/source-control.md`](repo/payload/agentics/rules/source-control/source-control.md), then the host file it names |
 | Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`repo/payload/agentics/rules/coding/code-review.md`](repo/payload/agentics/rules/coding/code-review.md), then the C# or markdown checklist |
 | Scrub, sweep, or audit a repository for drift or inconsistency (`/scrub`) | [`repo/scrub.md`](repo/scrub.md) here; [`repo/payload/agentics/rules/scrub.md`](repo/payload/agentics/rules/scrub.md) is the part every target gets |
+| Measure what a repository's documents cost to read, or compact them (`/optimize`) | [`repo/optimize.md`](repo/optimize.md) here; [`repo/payload/agentics/rules/optimize.md`](repo/payload/agentics/rules/optimize.md) is the part every target gets |
 | Add a project, a test project, or a whole component to an initialized repo (`/new`) | [`repo/payload/agentics/rules/coding/csharp/csharp-new-project.md`](repo/payload/agentics/rules/coding/csharp/csharp-new-project.md) — from a toolkit checkout, [`repo/version-check.md`](repo/version-check.md) first |
 | Initialize / scaffold / set up a repo at a path | [`repo/initialize.md`](repo/initialize.md) |
 | Upgrade this toolkit's pinned versions, bring an initialized repo up to the current toolkit, or convert one from standalone to monorepo (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — three operations; the conversion needs no toolkit checkout |
@@ -51,6 +52,7 @@ Three kinds of file, told apart by location:
       initialize.md                repo initialization: inputs, what lands, the five stages
       copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
       scrub.md                     consistency + drift pass for THIS repo; extends the payload checklist
+      optimize.md                  what THIS repo's documents cost to read; extends the payload document
       upgrade.md                   toolkit pins, a target up to the toolkit, standalone -> monorepo
       version-check.md             does a target agree with this toolkit; used by /upgrade and /new
       stylecop.md                  the ruleset: what each severity means, how to change one, the wiring
@@ -70,6 +72,7 @@ Three kinds of file, told apart by location:
         dependencies.md
         layout.md                  standalone + monorepo trees, naming, test projects, stack currency
         scrub.md                   the consistency + drift checks every target gets
+        optimize.md                what the documents cost to read: measure, compact, defaults
         security-reminders.md      privacy & data-security checklist; the review's security pass
         change-tracking/         change-tracking.md - the ticket rule, the yes/no setting, boards as views; github.md - issues, linked branches
         source-control/          source-control.md - the rules, host-neutral; github.md - reaching GitHub, publishing, PRs, review, settings
@@ -87,6 +90,7 @@ Three kinds of file, told apart by location:
       change-tracking/SKILL.md     /change-tracking - create or find a ticket
       source-control/SKILL.md      /source-control - ticket-linked branch, commit, draft PR, merge settings
       scrub/SKILL.md               /scrub   - consistency + drift pass; reports, does not fix
+      optimize/SKILL.md            /optimize - what documents cost to read; measures unless asked for more
       upgrade/SKILL.md             /upgrade - toolkit pins, a target to the toolkit, or standalone -> monorepo
 
 Three payload files are forked from `dotnet new` templates - `.editorconfig`,

@@ -69,6 +69,7 @@ the worse question.
       dependencies.md
       layout.md                  standalone + monorepo trees, naming, test projects
       scrub.md                   the recurring consistency + drift checks
+      optimize.md                what the documents cost to read: measure, compact, defaults
       security-reminders.md      privacy + data-security checklist
       change-tracking/         change-tracking.md (rules), github.md (mechanics)
       source-control/            source-control.md (rules), github.md (mechanics)
@@ -78,6 +79,7 @@ the worse question.
     .claude/skills/
       change-tracking/SKILL.md   Claude Code shim: /change-tracking new|find
       new/SKILL.md               Claude Code shim: /new [project|component] <name>
+      optimize/SKILL.md          Claude Code shim: /optimize [measure | compact | defaults <model>]
       review/SKILL.md            Claude Code shim: /review [PR# | branch | paths | comments PR#]
       scrub/SKILL.md             Claude Code shim: /scrub [paths...]
       source-control/SKILL.md    Claude Code shim: /source-control start|commit|pr|setup

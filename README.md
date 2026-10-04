@@ -50,10 +50,12 @@ What you will ask for:
 | set up a developer machine | [`machine/README.md`](machine/README.md) |
 | initialize a repository | [`repo/initialize.md`](repo/initialize.md) |
 | check a repository for drift | [`repo/scrub.md`](repo/scrub.md) |
+| measure or reduce what its documents cost to read | [`repo/optimize.md`](repo/optimize.md) |
 | upgrade a repository, or the toolkit itself | [`repo/upgrade.md`](repo/upgrade.md) |
 
-All four are procedures an agent can run: "set up this machine", "initialize a
-repo at `<path>`", "scrub this repo", "bring it up to the current toolkit".
+All five are procedures an agent can run: "set up this machine", "initialize a
+repo at `<path>`", "scrub this repo", "measure what the documents cost",
+"bring it up to the current toolkit".
 
 ## What is in here
 

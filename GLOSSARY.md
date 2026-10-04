@@ -31,7 +31,8 @@ Each is a distinct verb, so a refusal can name exactly which one it means.
 | **toolkit version** | which toolkit commit a repository currently carries — `toolkit.commit` in its settings | [`repo/settings.md`](repo/settings.md) |
 | **toolkit upgrade** | bringing a target up to a newer toolkit commit; operation 2 | [`repo/upgrade.md`](repo/upgrade.md) |
 | **layout conversion** | changing a target from standalone to monorepo; operation 3, and the one that needs no toolkit checkout | [`repo/upgrade.md`](repo/upgrade.md) |
-| **scrub** | a consistency and drift pass that reports and changes nothing | [`repo/payload/agentics/rules/scrub.md`](repo/payload/agentics/rules/scrub.md) |
+| **scrub** | a consistency and drift pass: is the repository still true. Reports, and corrects only when asked | [`repo/payload/agentics/rules/scrub.md`](repo/payload/agentics/rules/scrub.md) |
+| **optimize** | a cost pass: what the documents cost an agent to read. Measures, and compacts or trims only when asked | [`repo/payload/agentics/rules/optimize.md`](repo/payload/agentics/rules/optimize.md) |
 | **re-baselining** | replacing a pristine baseline after an upstream template changed, and updating its marker | [`repo/copy.md`](repo/copy.md) |
 
 ## How a repository is shaped
