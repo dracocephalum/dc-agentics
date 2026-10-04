@@ -471,3 +471,10 @@ dotnet_naming_style.s_camelcase.capitalization = camel_case
 #   one for an SA rule would silently override stylecop.ruleset for that rule.
 #   Change severities in the ruleset instead.
 ##############################################################################
+
+# EF Core migrations are written by `dotnet ef migrations add`. The analyzers
+# treat them as generated code rather than hold the generator to the ruleset;
+# what a migration does is still reviewed, see
+# agentics/rules/coding/csharp/csharp-ef-core-rules.md, *Migrations*.
+[**/Migrations/*.cs]
+generated_code = true
