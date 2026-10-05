@@ -33,8 +33,11 @@ Metrics and spans:
 - **Secure by default.** Least privilege, safe defaults, validate at boundaries.
 - **Resilient.** A timeout on every external call. Retries only for idempotent
   operations. Explicit fallbacks.
+- **Fails fast.** A failure reaches whoever is waiting on its result, with its
+  cause; see *Waits, delays and timeouts* below.
 - **Testable.** Retry, polling, and time-dependent logic take a `TimeProvider`
-  and overridable timeouts, so tests never wait on real time.
+  and overridable timeouts, so tests never wait on real time; the same
+  section says how.
 - **Extensible without speculation.** Extract shared behaviour on the third
   concrete use — not "just in case". Prefer composition and constructor
   injection. Keep abstractions small and domain-shaped.
@@ -56,6 +59,56 @@ Metrics and spans:
   `IExceptionHandler` producing `ProblemDetails`. Pick one style per component
   and keep to it. Everything else throws a specific domain type such as
   `ServerConnectionTimeoutException`, never bare `Exception`.
+
+## Waits, delays and timeouts
+
+- **A timeout needs a reason of its own.** Two good ones: the wait holds
+  something that should not be held for long, a database command, a lock, a
+  connection; or the caller has something better to do than wait, such as
+  reporting progress and waiting again. "So that a hang shows up" is not one.
+  A hang is a fault with a cause, and a limit added to expose it hides the
+  cause behind a number and fails on a slow day. Find what never arrived.
+- **A background loop never ends in silence.** A loop that follows, polls or
+  renews for others, and that ends for any reason but being stopped, records
+  why, logs it, and fails everyone waiting on what it produces, at once and
+  from then on. The quiet alternative is a caller that waits for good on
+  something that will never come, with nothing in any log.
+
+      try
+      {
+          while (!stopping.IsCancellationRequested) { await FollowOnceAsync(stopping); }
+      }
+      catch (Exception) when (stopping.IsCancellationRequested) { }   // stopped
+      catch (Exception exception) { Fail(exception); }                // not stopped: say so
+
+  Catch a cancellation as "stopping" only when the loop's own token asked for
+  it. One that came from anywhere else is a failure like any other.
+- **Know what a dependency's wait does when nothing happens.** A library
+  call that waits for an event often gives up after a time of its own and
+  throws. On a quiet system that is the normal case, once per interval, and
+  a loop that takes it for its end stops for good the first time nothing
+  happens for that long. Read what the call throws when idle before writing
+  the loop around it, and test the idle case.
+- **Ask, then look; never look, then ask.** A reader that finds nothing and
+  then asks "is there more to come?" can be told "no" about something that
+  arrived between its look and its question, and wait behind it for good.
+  Take the answer first: if it was "nothing more" before the look began, the
+  look saw everything.
+- **No long duration is a literal at its call site.** A lease, an interval, a
+  wait given to a library: each is a named value in one place, with what it
+  is for.
+- **Where the code owns the wait, time goes through `TimeProvider`**:
+  `Task.Delay(interval, timeProvider, token)`, `WaitAsync(timeout,
+  timeProvider, token)`. A test then moves the clock and waits for nothing.
+- **Where a library owns the wait, the duration is passed in** and kept as a
+  value a test can shorten. `internal`, reached through `InternalsVisibleTo`,
+  when no host has a reason to change it: not every duration is a setting,
+  and a public option is a promise.
+- **Durations that depend on each other are derived, not set side by side.**
+  A lease renewed at a third of its length is `lease / 3`, not a second
+  constant: shortened for a test, the lease keeps the room it had for two
+  failed renewals. Two constants that only happen to be in ratio stop being
+  so the first time one of them is changed.
 
 ## Naming
 
