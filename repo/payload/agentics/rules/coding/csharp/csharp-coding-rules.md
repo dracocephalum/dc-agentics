@@ -31,8 +31,9 @@ Metrics and spans:
 ## Design
 
 - **Secure by default.** Least privilege, safe defaults, validate at boundaries.
-- **Resilient.** A timeout on every external call. Retries only for idempotent
-  operations. Explicit fallbacks.
+- **Resilient.** A call that can block on something outside the process is
+  given a time to give up in; see *Waits, delays and timeouts* below. Retries
+  only for idempotent operations. Explicit fallbacks.
 - **Fails fast.** A failure reaches whoever is waiting on its result, with its
   cause; see *Waits, delays and timeouts* below.
 - **Testable.** Retry, polling, and time-dependent logic take a `TimeProvider`
@@ -64,10 +65,29 @@ Metrics and spans:
 
 - **A timeout needs a reason of its own.** Two good ones: the wait holds
   something that should not be held for long, a database command, a lock, a
-  connection; or the caller has something better to do than wait, such as
-  reporting progress and waiting again. "So that a hang shows up" is not one.
+  connection, or waits on someone outside the process who may never answer;
+  or the caller has something better to do than wait, such as reporting
+  progress and waiting again. "So that a hang shows up" is not one.
   A hang is a fault with a cause, and a limit added to expose it hides the
   cause behind a number and fails on a slow day. Find what never arrived.
+- **A call that can block on something outside the process takes the
+  overload with a timeout, where there is one.** That is the first reason
+  above: an awaited call to a database, a network service or another process
+  holds a connection while it waits, and the other side may never answer.
+  Most such calls offer it, a command timeout, a deadline, a `timeout`
+  argument; prefer that to a wait built around the call, because the callee
+  can then stop its own work and release what it holds. Where the duration
+  is long, it is a named value a test can shorten, as below.
+- **A stream has no single call to put a timeout on.** An `IAsyncEnumerable`,
+  a subscription, a channel reader waits between items for as long as there
+  is nothing to send, which is what it is for; a quiet stream is not a slow
+  one. Do not wrap each `MoveNextAsync` in a timeout to find out whether the
+  other end is alive. If the code must know that, and only then, the source
+  sends a heartbeat on an interval and the reader gives up when several are
+  missed: the wait is then for something that is promised to arrive. A
+  heartbeat is machinery on both ends and a reason to disconnect a healthy
+  peer on a bad day, so it is for the critical case where silence cannot be
+  told from failure any other way, with the reason written beside it.
 - **A background loop never ends in silence.** A loop that follows, polls or
   renews for others, and that ends for any reason but being stopped, records
   why, logs it, and fails everyone waiting on what it produces, at once and

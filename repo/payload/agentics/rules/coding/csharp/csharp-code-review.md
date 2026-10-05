@@ -16,6 +16,8 @@ banned-API list. The authority for each item is
 | New `DateTime` property, parameter, or return | Time | `issue` |
 | `new DateTimeOffset(dateTime)` on a value of unknown `Kind` | Time | `issue (blocking)` — silently assumes local |
 | A timeout added to make a hang visible, with no reason of its own | Waits, delays and timeouts | `issue` |
+| An awaited call to a database, a network service or another process with no time to give up in, where an overload offers one | Waits, delays and timeouts | `issue` |
+| A timeout around each read of a stream to tell a quiet peer from a dead one; a heartbeat with no stated reason | Waits, delays and timeouts | `suggestion` |
 | A background loop that can end without failing its waiters; a cancellation caught as "stopping" that its own token did not ask for | Waits, delays and timeouts | `issue (blocking)` |
 | A long duration as a literal at its call site, or two dependent durations as separate constants | Waits, delays and timeouts | `suggestion` |
 | `DateTime.Now` / `UtcNow` in production code — the build should have caught it; if it did not, `BannedSymbols.txt` is not attached | Time | `issue` |
