@@ -23,8 +23,10 @@ support:
   # whose recorded commit predates this is declined with "re-initialize" - see
   # repo/version-check.md. Set when the layout settled (machine/ + repo/,
   # agentics/ in the payload, .agentics.yaml, one ruleset); nobody had
-  # initialized from an older state, so nothing older is carried.
-  baseline: "b2e45957bb5a"
+  # initialized from an older state, so nothing older is carried. Moved to the commit
+  # that put the guidelines block into AGENTS.md: the sync expects the block, and a
+  # target from before it adopts the block once by hand (repo/upgrade.md).
+  baseline: "e5100f52b206"
 
 guidelines:
   # The model line agentics/rules were written and verified against - see "A note on

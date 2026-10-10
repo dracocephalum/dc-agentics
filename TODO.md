@@ -9,12 +9,6 @@ when they have a closing condition.
 
 ## Toolkit
 
-- [ ] **`support.baseline` to the commit that introduced the guidelines block.**
-      A target from before it cannot be synced until the block is adopted by
-      hand (`repo/upgrade.md`, *Adopting the block*), so the floor moves to
-      that merge commit; the hash exists only once it is on `main`. Close by:
-      the one-line change in `.agentics.yaml`, in the pull request after the
-      merge.
 - [ ] **Global `pre-push` hook refusing direct pushes to the default branch** —
       the fallback protection for a private repository on GitHub Free, where
       the shipped ruleset is refused. Shape decided: sits beside the gitleaks
