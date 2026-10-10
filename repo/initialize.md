@@ -74,6 +74,7 @@ the worse question.
       change-tracking/         change-tracking.md (rules), github.md (mechanics)
       source-control/            source-control.md (rules), github.md (mechanics)
       coding/code-review.md
+      coding/architecture.md     boundaries: the core, its adapters, what crosses a seam
       coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
       coding/markdown/markdown-review.md
     .claude/skills/
