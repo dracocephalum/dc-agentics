@@ -32,11 +32,13 @@ under test:
 **The baseline row comes first**, and it is why the procedures carry no
 knowledge of older layouts. The toolkit has restructured — `init/` became
 `machine/` and `repo/`, `docs/` became `agentics/`, the settings file changed
-its name — and every rule for handling those is generic: renames as moves,
-deletions before the loop, dropped keys removed. What is *not* kept is a table
-of where things used to live. A repository below the baseline is not upgraded
-through that history; it is re-initialized, which on a repository that old is
-the cheaper operation anyway.
+its name, the guidelines block arrived in `AGENTS.md` — and the sync handles
+none of that history: it replaces the toolkit's folders whole and expects the
+block to be there. What is *not* kept is a table of where things used to live.
+A repository below the baseline is not upgraded through that history; it is
+re-initialized, which on a repository that old is the cheaper operation anyway.
+A repository at or above it that predates the block adopts it once by hand
+(`upgrade.md`, *Adopting the block*).
 
     floor=$(grep -E '^  baseline:' <toolkit>/.agentics.yaml | cut -d'"' -f2)   # anchored: a bare "baseline:" also matches model-baseline
     [ "$(git rev-parse <recorded>)" != "$(git rev-parse $floor)" ] \
@@ -68,8 +70,9 @@ self-contained path is always available and always correct.
 
 ## What this is not
 
-It is not a safety check on the *target*. Nothing here prevents damage; the
-per-file evidence in `upgrade.md` does that. This prevents **mixing two
+It is not a safety check on the *target*. Nothing here prevents damage: a sync
+replaces the toolkit's folders whole by design, and the clean tree
+`upgrade.md` requires is what makes that reversible. This prevents **mixing two
 changes** — a payload delta and whatever the operation was actually asked to
 do — into one result where neither can be blamed for a breakage.
 

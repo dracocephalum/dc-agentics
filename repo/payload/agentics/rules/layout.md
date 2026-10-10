@@ -121,9 +121,10 @@ organization or product name, and is recorded in `.agentics.yaml` under
       stylecop.json
       stylecop.ruleset
       Contoso.Thing.slnx             named after the main project, not the repo
+      agentics/                      the toolkit's: rules/ this repository is held to, and templates/; replaced whole by a sync
       docs/
-        rules/                     the rules this repository is held to
-          coding/csharp/csharp-coding-rules.md
+        rules/
+          AGENTS.md                  the repository's own rules, beside their index
       src/
         Contoso.Thing/
           Contoso.Thing.csproj
@@ -147,8 +148,8 @@ noise, and a folder that exists implies a decision that has not been made:
 | `examples/` | runnable samples of the repository's own libraries, a component per subject holding its scenarios; never shipped — see *Samples* below |
 | `infrastructure/` | Terraform and similar provisioning |
 | `ui/` | front-end applications that are **deployed** — a shared component library is a package and belongs in `libraries/` |
-| `docs/` | documentation written for people — architecture, decisions, guides; created only when there is some |
-| `agentics/` | what agents follow: `rules/` and `templates/`; ships with every repository |
+| `docs/` | documentation written for people — architecture, decisions, guides — and `rules/`, the repository's own rules with their index |
+| `agentics/` | what agents follow: `rules/` and `templates/`; the toolkit's, shipped with every repository and replaced whole by a sync |
 | `build/` | CI/CD pipeline definitions |
 
 Each C# component gets a kebab-case folder, and **inside it the standalone
@@ -211,6 +212,35 @@ configuration — with a green build and no warning.
 
 Non-.NET folders (`infrastructure/`, `ui/`, `docs/`, `agentics/`) are unaffected: MSBuild
 files only apply to MSBuild projects.
+
+## The toolkit's rules and the repository's
+
+Two folders are the toolkit's, and a sync replaces them whole: `agentics/` —
+the rules under `rules/` and the templates — and the toolkit's shims under
+`.claude/skills/`, a shim of the same name included. Nothing in either is
+edited in place. A change to a rule that should hold everywhere is a pull
+request to the toolkit; one that holds only here is a rule of the repository's
+own.
+
+The repository's own rules live in the folders `rules.local` in
+`.agentics.yaml` names — `docs/rules/` by default — each with an `AGENTS.md`
+index: the same two-column table as the root's, links relative to the
+repository root, pointing at anything — a rule beside it, `DESIGN.md`, a
+folder's README. The sync copies those rows into the generated block of the
+root `AGENTS.md`, after the toolkit's, so adding a rule is a file and a row in
+the index and never an edit of the root. A shim of the repository's own keeps a
+name no toolkit shim has.
+
+Opting out of a toolkit rule is declared: its path under `agentics/rules/` in
+`rules.excluded`. The sync removes the file and its row; a link to it from
+another toolkit document then fails the link check, which is the honest
+statement that this repository does not hold that rule. Deleting the file
+instead is undone by the next sync.
+
+The root `AGENTS.md` is the repository's, except the block between
+`<!-- agentics:guidelines -->` and `<!-- /agentics:guidelines -->`, which the
+sync regenerates from the toolkit's template and the local indexes. Anything
+outside the block — a section, a second table, a sentence — is never touched.
 
 ## Root documents
 

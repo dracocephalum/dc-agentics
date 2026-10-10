@@ -10,9 +10,10 @@ verb.
 | 2 | Upgrade a target repository to the current toolkit | a target, with a toolkit checkout | below |
 | 3 | Convert a target from standalone to monorepo | a target, no toolkit needed | below |
 
-Operation 2 needs both repositories present, because it diffs two commits of
-the toolkit. Running it "from the target" still means a toolkit checkout exists
-somewhere; ask for its path rather than guessing.
+Operation 2 needs both repositories present: its script runs from the toolkit
+checkout, copies from it, and reads the recorded commit against its history.
+Running it "from the target" still means a toolkit checkout exists somewhere;
+ask for its path rather than guessing.
 
 **The tree must be clean before anything is applied.** Every operation
 rewrites many files at once, so it starts only from a repository where
@@ -38,9 +39,10 @@ uncommitted for review. Both serve the same end: initialization produces the
 diff to inspect, an upgrade requires a clean base so that it can.
 
 **Report before applying.** Every operation produces a plan first — what
-changed, what it would do to each file, and what needs a decision. Applying is
-a second step, and `source-control.mode` in the target's `.agentics.yaml`
-governs what may be committed without asking.
+changed, what it would do to each file, and what needs a decision; for
+operation 2 that is the script's `--plan`. Applying is a second step, and
+`source-control.mode` in the target's `.agentics.yaml` governs what may be
+committed without asking.
 
 ## 1. Bring the toolkit's own pins current
 
@@ -90,166 +92,90 @@ session can tell a known-good combination from an untested one:
 last shown to produce a conforming repository, and moving it without running
 the trial removes the only evidence anyone has.
 
-## 2. Upgrade a target repository to the current toolkit
+## 2. Sync a target repository to the current toolkit
 
-### Find the merge base
+`agentics/` and the toolkit's shims under `.claude/skills/` in a target are the
+toolkit's: a sync replaces them whole, and nothing in them is the target's to
+edit. That one rule is what makes the operation a script rather than a
+procedure. There is no merge base to find, no per-file evidence to weigh, no
+orphan or missing file to reason about, because the target's copy is *defined*
+as the payload at the recorded commit. The repository's own rules live outside,
+in the folders `rules.local` names in its `.agentics.yaml` (`docs/rules/` by
+default), each with an `AGENTS.md` index whose rows the sync copies into the
+root `AGENTS.md`; opting out of a toolkit rule is `rules.excluded`, never a
+deletion. The rule a target reads is
+[`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md), *The
+toolkit's rules and the repository's*.
 
-The target's `.agentics.yaml` records where it came from:
+### Run it
 
-    toolkit:
-      commit: "<12-char hash>"
-      payload-path: "repo/payload"
+    sh repo/sync.sh --plan <target>      # reports: what changed, what it would do
+    sh repo/sync.sh <target>             # applies, then verifies
 
-`payload-path` is the payload root **as of that commit**, and it exists because
-the toolkit has restructured before and will again. Every supported target has
-it: a repository without one predates `support.baseline` and is declined by
-[`version-check.md`](version-check.md) before this step, so there is no table
-of former roots to consult.
+From the toolkit checkout, against a clean target. POSIX `sh` and `awk`, so it
+runs wherever git does; nothing to install and nothing to fall back from. In
+order:
 
-**Diff with rename detection across both roots when they differ.** Getting this
-wrong is silent, not loud:
-
-    git diff -M --name-status <commit>..HEAD -- <old-root> <new-root> .claude/skills
-
-Without `-M`, or against the current root alone, a restructure between the two
-commits reports every file as added and every old path as deleted — a
-plausible-looking diff that would have the upgrade rewrite files that never
-changed. `R100` entries are pure renames and carry no content change; a target
-sees nothing from them.
-
-### Decide per file, using the target's own copy as evidence
-
-For each changed path, compare **three** versions: the payload at the recorded
-commit, the payload at `HEAD`, and the file as it exists in the target. The
-first is the merge base, and it is what makes an overwrite defensible:
-
-| Target's copy vs payload at the recorded commit | Meaning | Do |
+| Step | Does | Reports |
 |---|---|---|
-| identical | the target never touched it | apply the new version |
-| differs | the target customized it | stop, show both changes, ask |
-| missing | never copied, or deleted deliberately | ask before reintroducing it |
+| refuse | not a git repository; no `.agentics.yaml`; a dirty tree; an `AGENTS.md` without the guidelines block | the one reason, and where the fix is |
+| changes | — | the toolkit's log between the recorded commit and `HEAD` over the payload and the shims; the payload files *outside* `agentics/` that changed, which are yours to apply by intent |
+| replace | deletes `agentics/` and every toolkit shim under `.claude/skills/` — the names at the recorded commit and the names now — then copies the payload's `agentics/` and the toolkit's shims | — |
+| exclude | removes each `rules.excluded` path from `agentics/rules/` | a path the payload does not have |
+| block | regenerates the block between `<!-- agentics:guidelines -->` and `<!-- /agentics:guidelines -->`: the template's rows minus the excluded ones, then the rows of every `rules.local` index, then the template's closing paragraphs — in the file's own line endings | a local folder with no index |
+| settings | `toolkit.commit` to the toolkit's `HEAD`, `-dirty` when the checkout is not clean; a top-level block the payload has and the target lacks is appended with its defaults | the appended block; a top-level key the payload no longer defines, for you to remove |
+| verify | markdownlint over the target when `npx` is on `PATH`; the relative-link check from `scrub.md`, with a local index's links resolved from the root, where its rows land | the summary line; every unresolved link |
 
-**When the answer to "ask" is yes, do not merge text.** The files a repository
-customizes — `stylecop.ruleset`, `stylecop.json`, `.editorconfig`, the
-`Directory.*` files — are edited attribute by attribute, while the toolkit
-rewrites them wholesale. A three-way merge of one changed attribute against a
-72-line rewrite produces a mess. Apply the new file whole, then re-apply each
-of the repository's changes **by intent**: the severity it raised, the
-setting it flipped, the version it pinned. Verify each landed. That is what
-preserves the decision without preserving the old file around it.
+It never commits. Review `git status` and the diff, then commit under the
+target's `source-control.mode`: the diff *is* the sync, and
+`git checkout -- . && git clean -fd` is the whole undo. A recorded commit the
+checkout cannot resolve — a squashed branch, a shallow clone — costs the change
+list and the removal of shims the toolkit has since renamed; the script says so,
+and the rest proceeds.
 
-**Apply renames as moves, before anything else.** When the toolkit renames a
-directory — `docs/` became `agentics/` — every file under it shows as `R100`,
-a pure rename with no content change. That does *not* mean the target sees
-nothing: the directory has to move. `git mv` it in the target first, so the
-history survives as a rename and the completeness check does not then report
-the entire old tree as orphans and the entire new tree as missing. Only after
-the move do the per-file decisions above apply, to whatever also changed.
+A dangling link after an exclusion is reported and is correct: a toolkit rule
+that links to the excluded one now points at nothing, which is the honest
+statement that this repository does not hold that rule. Deleting the file by
+hand instead is undone by the next sync.
 
-A rename also leaves the old path in files the upgrade does not own: the
-generated `AGENTS.md` links to every rules document by path, the generated
-`README.md` and any category map name the folder, and the repository's own
-prose may too. None of those are in the diff. After the move, sweep the whole
-target for the old path — every file type, not only markdown — and replace it.
-This is safe to do mechanically, because the old path no longer exists and so
-every occurrence is stale by definition. Measured on a real target: seventeen
-links in `AGENTS.md` alone.
+### The rest of the payload
 
-**Handle deletions before the loop.** A path the toolkit deleted appears in
-the diff as `D`, and `git show HEAD:<path>` fails for it. A loop that redirects
-that output into the target creates an *empty file* first — and the orphan
-check below then sees a modified file and keeps it. Take the `D` entries out,
-apply them as removals under the rule above, and only then write the rest.
+Everything the payload ships outside `agentics/` is the target's once copied:
+`.editorconfig`, `.gitignore`, `.gitattributes`, the `Directory.*` files,
+`Tests.props`, `nuget.config`, the StyleCop files, the licence lists,
+`.config/dotnet-tools.json`, `.github/`, `.markdownlint.yaml`, and
+`docs/rules/AGENTS.md`. The script lists which of them changed between the two
+commits; apply each **by intent** — the severity it raised, the version it
+pinned, the key it added — rather than by text merge. A target edits these
+files attribute by attribute while the toolkit rewrites them wholesale, and a
+three-way merge of one changed attribute against a 72-line rewrite produces a
+mess. Apply the new file whole where the target never touched it; otherwise
+take the change across and verify it landed. `.editorconfig`, `.gitignore` and
+`.gitattributes` carry baseline markers, and a mismatch there is the drift
+procedure's business, not this one's.
 
-Never overwrite on the strength of the path alone. A repository that has been
-running for a year will have edited something, and the whole value of the
-recorded commit is that it can tell an edit from an untouched file.
+`.agentics.yaml` is never replaced: it carries the target's choices. The script
+merges a new top-level block and names a dead one; a new key *inside* an
+existing block is in the change list for you to add by hand, with the
+payload's comment beside it.
 
-**Two kinds of file the comparison cannot judge**, and reporting them as
-conflicts is noise:
+### Adopting the block
 
-- **`.agentics.yaml` always differs.** Initialization filled its
-  placeholders, so it is never byte-identical to the payload and never will be.
-  Skip the comparison and go straight to its policy below — merge new keys,
-  keep every recorded value.
-- **`AGENTS.md` and `README.md` have no counterpart to compare against.** They
-  were generated from templates, not copied, so no payload path corresponds to
-  them. The template's diff is read as an instruction instead; see below.
+A target initialized before the block existed has the same table with no
+markers, and the script refuses it until, once, by hand:
 
-Everything else is genuinely comparable, and in practice most of it comes back
-untouched — which is what makes the handful that did change worth a human's
-attention.
-
-### Then check for what the diff cannot see
-
-The diff shows what changed **in the payload**. It says nothing about a file
-that never changed and is simply absent from the target — deleted at
-initialization, or removed later by someone. Those files are invisible to every
-step above and stay missing for ever.
-
-So after applying the diff, compare the payload's whole file list against the
-target:
-
-    git ls-tree -r --name-only HEAD -- <payload-root> | sed 's|^<payload-root>/||' | sort
-
-Anything present there and absent from the target is a finding: report it with
-what it is for, and ask before reintroducing it. Some absences are deliberate
-and should stay — a repository may have removed a rule it does not want.
-
-This is not hypothetical. Standalone initialization used to delete
-`agentics/templates/category-README.md`, so every repository initialized that way
-is missing a file the payload has always contained, and no diff between two
-toolkit commits will ever mention it.
-
-**And the other direction.** A file the target has that the payload no longer
-does is an orphan — most often the old half of a rename that git reported as a
-delete and an add, because too little content survived. The `/project` to
-`/new` rename did exactly that, and a target kept `project/SKILL.md` with
-nothing to ever remove it. For each file under the payload's paths that exists
-in the target and not in the payload at `HEAD`: unmodified since the recorded
-commit — remove it; modified — ask, because the target may be keeping it on
-purpose.
-
-### The per-path policy
-
-| Path | Policy | Why |
-|---|---|---|
-| `agentics/rules/**` | replace when unmodified | the standard is the toolkit's; a target that edited one has forked it, which is a decision to surface |
-| `.claude/skills/**` | replace when unmodified | thin shims; the substance lives in the documents |
-| new files | add | a new rules document also needs its row — see below |
-| `.editorconfig`, `.gitignore`, `.gitattributes` | replace only when unmodified, else three-way | they carry baseline markers; a mismatch there is the drift procedure's business, not this one's |
-| `Directory.*.props`, `Tests.props`, `nuget.config`, `stylecop.*`, `allowed-licenses.json`, `.config/dotnet-tools.json` | three-way | routinely customized per repository |
-| `.agentics.yaml` | merge keys, keep values, drop the dead | new settings arrive with their defaults; every recorded choice is the target's and survives; **a key the payload no longer defines is removed**, and the report names it — nothing reads it, and nothing would ever notice it otherwise |
-| `AGENTS.md`, `README.md`, `TODO.md` | by hand | generated from templates and then filled; there is no mechanical mapping back |
-
-### Templates changed, so their output must change too
-
-The templates in `agentics/templates/` are replaced like any other file under
-`agentics/` — but their *output* is not. `AGENTS.md` and `README.md` were generated
-from them at initialization, with placeholders filled and a layout variant
-deleted, so no mechanical mapping runs backwards. A change to a template is
-therefore two things: a file to replace, and an instruction to carry out. Read
-what changed in the template and make the equivalent edit to the target's
-generated document, in the target's own vocabulary.
-
-The common case is a new row in the *Agent guidelines* table, which is how a
-new rules document becomes reachable. **A document copied in without its row is
-invisible**, and nothing later will notice.
-
-**Check the row is not already there before adding it.** An upgrade that spans
-several toolkit releases applies several template diffs, and a row added by one
-of them is easy to add again from the next — nothing in the lint or the scrub
-flags a duplicated table row. Read the target's table first; add only what it
-lacks. This happened on a real target, and the duplicate rows sat unnoticed
-through two further upgrades.
-
-### Finish
-
-1. Rewrite `toolkit.commit` and `payload-path` to what was applied.
-2. Carry over the `guidelines:` block, which describes the toolkit rather than
-   the target.
-3. Put anything that needed a decision and did not get one into the target's
-   `TODO.md`, each with what would close it.
+1. Put `<!-- agentics:guidelines -->` on its own line, with a blank line after
+   it, above the `| When you are | Read |` header; put
+   `<!-- /agentics:guidelines -->`, with a blank line before it, after the
+   paragraph that ends "will not be read". The table and the two paragraphs
+   after it are the block.
+2. Move every row that is the repository's own — one the template does not
+   have — into `docs/rules/AGENTS.md`, created from the payload's copy, and
+   delete it from the root table. A row the template *does* have, reworded,
+   is replaced by the template's wording; keep the rewording in the index as
+   a second row only if it says something the template's does not.
+3. Commit, then run the sync. The `rules:` block is appended to
+   `.agentics.yaml` with its defaults on that first run.
 
 ### Verify
 
@@ -259,9 +185,9 @@ Not optional, and mostly already written:
     dotnet test  <solution>
 
 Then the scrub, [`payload/agentics/rules/scrub.md`](payload/agentics/rules/scrub.md),
-which is exactly the post-upgrade check: links that no longer resolve, a
-document with no row, a `.agentics.yaml` that no longer matches the
-repository, a placeholder in a file that arrived mid-transform.
+which is exactly the post-sync check: links that no longer resolve, a document
+with no row, a `.agentics.yaml` that no longer matches the repository, a
+placeholder in a file that arrived mid-transform.
 
 ## 3. Convert a target from standalone to monorepo
 
@@ -415,15 +341,15 @@ the root failing `MSB1003` as intended.
 
 | Symptom | Cause |
 |---|---|
-| Every payload file appears new | diffed the current root only, or without `-M`, across a toolkit restructure |
-| No way to tell the upgrade's changes from the user's | applied to a dirty tree; the precondition exists so that `git checkout -- . && git clean -fd` is the whole undo |
-| A customization silently disappears | overwrote on path alone, without comparing against the payload at the recorded commit |
+| The script refuses with "no guidelines block" | a target from before the block existed; adopt it once, *Adopting the block* |
+| No way to tell the sync's changes from the user's | applied to a dirty tree; the precondition exists so that `git checkout -- . && git clean -fd` is the whole undo |
+| An edit under `agentics/` is gone after a sync | by design: the folder is the toolkit's; the edit belongs in `docs/rules/`, or in a toolkit pull request |
+| A row typed into the root `AGENTS.md` table is gone after a sync | it was inside the generated block; a row of the repository's own goes in `docs/rules/AGENTS.md` |
 | A customized config file becomes a merge mess | three-way merged text; apply the new file and re-apply the repository's changes by intent instead |
-| A zero-byte file where the toolkit deleted one | the apply loop redirected a failing `git show` for a `D` path; handle deletions first |
-| A settings key nothing reads, in every target | the payload dropped it and "keep values" was read as "keep keys" |
-| A new rules document is never read | copied in without adding its row to the target's `AGENTS.md` |
+| A settings key nothing reads, in every target | the payload dropped it and the script's "no longer defines" line was ignored |
+| A new rules document is never read | the block was edited by hand instead of regenerated, or the local index lacks the row |
+| Mixed line endings in `AGENTS.md` | the block was spliced by hand from a checkout with the other ending; the script writes the file's own |
 | `NU1008`, or a restore that cannot resolve | package versions moved without `Directory.Packages.props` moving with them |
-| The build breaks on rules nobody changed | a `agentics/rules/**` replacement where the target had forked the document |
 | Versions written but never proven | bumped in the toolkit, which has no project to build |
 | A component silently loses StyleCop, CPM and warnings-as-errors | a `Directory.*` file was moved into the component instead of left at the root |
 | The component's own description vanished | the root README was regenerated before its content was moved down |

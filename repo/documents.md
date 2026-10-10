@@ -24,9 +24,9 @@ untouched.
 **Why the template stays.** A standalone repository that later converts to a
 monorepo needs the monorepo layout variant, and that text exists nowhere else.
 Keeping the template is what lets a repository describe a shape it does not
-yet have, without a toolkit checkout. A toolkit upgrade replaces anything under
-`agentics/` that the repository has not modified, so it stays current on its
-own.
+yet have, without a toolkit checkout. A sync replaces `agentics/` whole, so it
+stays current on its own — and so nothing in it is ever the repository's to
+edit.
 
 Transform the copy:
 
@@ -48,9 +48,15 @@ Transform the copy:
 3. Trim the folder table to folders that **actually exist**. A row for a folder
    you did not create is a false statement about the repository.
 4. Delete the instruction comment at the top of the template.
-5. Add a table row for any further rules documents, then delete the
-   `ADDITIONAL_GUIDELINE_ROWS` line — it sits below the table as a reminder,
-   not as a row.
+5. Leave the block between `<!-- agentics:guidelines -->` and
+   `<!-- /agentics:guidelines -->` exactly as it is. It is the generated part:
+   every later sync rewrites it from the template and from the repository's
+   own index, `docs/rules/AGENTS.md`, which arrived with the payload holding an
+   empty table. A rule of the repository's own is a file under `docs/rules/`
+   and a row in that index, never a row typed into the root table —
+   [`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md),
+   *The toolkit's rules and the repository's*. At initialization the index is
+   empty, so the block is the template's, unchanged.
 6. In standalone mode, replace `<solution>` under *Building and testing* with
    the solution file name. In a monorepo it stays: there is no single solution
    there, and the command is generic on purpose.

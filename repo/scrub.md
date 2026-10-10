@@ -108,8 +108,8 @@ This repository runs on its own payload, through two files that claim to follow
 the shipped shape:
 
 - `.agentics.yaml` — same keys as `payload/.agentics.yaml`, minus the
-  provenance and repository blocks. A key added to the payload and not
-  considered here is a divergence.
+  provenance, repository and rules blocks (the toolkit has no `agentics/` to
+  sync). A key added to the payload and not considered here is a divergence.
 - `.markdownlint.yaml` — one line, extending the payload copy, so the two
   cannot drift. If it has grown rules of its own, that is the finding.
 

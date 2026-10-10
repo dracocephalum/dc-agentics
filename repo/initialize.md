@@ -40,9 +40,11 @@ the worse question.
     LICENSE, NOTICE              only if the user chose a licence (settings.md)
     README.md                    generated from agentics/templates/README.template.md; human entry point
     .agentics.yaml            settings agents read: source-control mode, every init choice, toolkit commit (settings.md)
-                                 the commit is what a later upgrade diffs from; upgrades are supported from the
+                                 the commit is what a later sync reports from; syncs are supported from the
                                  toolkit's support.baseline onward, and re-initialization is the path below it
     TODO.md                      open items; init writes anything unresolved here (settings.md)
+    docs/rules/AGENTS.md         the repository's own rules and their index; a sync copies its rows into AGENTS.md
+                                 and never touches the folder (documents.md)
     <Prefix>.<Name>.slnx         the solution, named after the first project (build.md)
     src/, test/                  the first project and its tests (build.md)
     agentics/templates/              AGENTS.template.md, README.template.md — the sources of the two above, kept
@@ -65,7 +67,7 @@ the worse question.
     StyleCop.props               analyzer reference + wiring
     stylecop.ruleset             rule severities
     stylecop.json                StyleCop settings
-    agentics/rules/                  exactly as in payload/agentics/rules/
+    agentics/rules/                  exactly as in payload/agentics/rules/; the toolkit's, replaced whole by a sync
       dependencies.md
       layout.md                  standalone + monorepo trees, naming, test projects
       scrub.md                   the recurring consistency + drift checks

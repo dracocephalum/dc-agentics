@@ -9,6 +9,12 @@ when they have a closing condition.
 
 ## Toolkit
 
+- [ ] **`support.baseline` to the commit that introduced the guidelines block.**
+      A target from before it cannot be synced until the block is adopted by
+      hand (`repo/upgrade.md`, *Adopting the block*), so the floor moves to
+      that merge commit; the hash exists only once it is on `main`. Close by:
+      the one-line change in `.agentics.yaml`, in the pull request after the
+      merge.
 - [ ] **Global `pre-push` hook refusing direct pushes to the default branch** —
       the fallback protection for a private repository on GitHub Free, where
       the shipped ruleset is refused. Shape decided: sits beside the gitleaks
@@ -39,12 +45,11 @@ when they have a closing condition.
       ruleset and on a non-ruleset config file, a dropped settings key, a
       directory rename, a new payload file, new settings keys,
       format-as-repair, MIT and `none` licences, Serena absent, `webapi`,
-      `worker` and a second category through `/new`, standalone→monorepo, a
-      template change carried into a customized `AGENTS.md`, and both
-      convergence proofs. What has no test yet: an upgrade against a target
-      whose `AGENTS.md` table row *conflicts* with a template row rather than
-      merely coexisting; a component removed from a category map; a target on
-      a platform other than Windows, which needs the runner matrix in the CI
+      `worker` and a second category through `/new`, standalone→monorepo, and
+      both convergence proofs; the sync script against a target with local
+      rows, an exclusion, and a second run that changes nothing. What has no
+      test yet: a component removed from a category map; the sync on a
+      platform other than Windows, which needs the runner matrix in the CI
       group below. Close by: run each on a throwaway repository and record the
       result here or as a ticket.
 
