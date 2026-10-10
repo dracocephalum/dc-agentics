@@ -53,6 +53,11 @@ Metrics and spans:
   packages, so treat a migration as a port, not a package swap.
 - **Never expose the persistence schema.** Queries return DTOs or projections;
   entities stay behind the boundary.
+- **The core knows no transport and no storage.** Where a type lives, what
+  an assembly may reference, how a generated or third-party type is kept off
+  the core's surface, and what crosses a seam (copy, view or stream) are in
+  [`../architecture.md`](../architecture.md); the C#-specific spellings are
+  *Naming* and *gRPC contracts* here.
 - **Expected failures are values or well-known exceptions; unexpected ones are
   exceptions.** Validation, not-found, conflict, business-rule rejections: either
   return a domain-specific result record carrying an error code, or throw a
@@ -389,7 +394,9 @@ other files to learn why this one exists.
   package is the versioned API name (`<org>.<product>.v1`), named for the
   API and not the transport, because the package is what goes on the wire.
   Both carry the version from the first draft: renaming either later changes
-  every generated type, and renaming the package changes the wire.
+  every generated type, and renaming the package changes the wire. The
+  language-neutral rule, and what crosses between the generated types and the
+  domain, is [`../architecture.md`](../architecture.md).
 - Services are named by area — `Streams`, `Subscriptions` — never after the
   product, which clashes with the namespace, and never after a domain type,
   which clashes with the type. Enums and messages that mirror a domain type

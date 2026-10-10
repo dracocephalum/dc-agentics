@@ -77,6 +77,7 @@ Three kinds of file, told apart by location:
         change-tracking/         change-tracking.md - the ticket rule, the yes/no setting, boards as views; github.md - issues, linked branches
         source-control/          source-control.md - the rules, host-neutral; github.md - reaching GitHub, publishing, PRs, review, settings
         coding/code-review.md
+        coding/architecture.md     boundaries: the core, its adapters, what crosses a seam; language-neutral
         coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
         coding/markdown/markdown-review.md
       agentics/templates/              AGENTS.template.md, README.template.md - transformed at init, and kept
