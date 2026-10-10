@@ -50,6 +50,17 @@ source-control:
   # value for that session and is never written back here.
   mode: local
 
+rules:
+  # What the toolkit owns and what this repository adds - agentics/rules/layout.md,
+  # "The toolkit's rules and the repository's". agentics/ and the toolkit's shims under
+  # .claude/skills/ are the toolkit's: a sync replaces them whole, and an edit there is lost.
+  local:                              # folders holding this repository's own rules, once it has any; each has an
+    - docs/rules                      # AGENTS.md index (from agentics/templates/rules-AGENTS.md) the sync reads
+  excluded: []                        # toolkit rules opted out of, as paths under agentics/rules/
+                                      # (coding/csharp/csharp-ef-core-rules.md); the sync removes the file and its
+                                      # row. Excluding and writing a local replacement is the one override that
+                                      # holds; a local rule beside a toolkit rule it contradicts has no referee
+
 guidelines:
   # The model line the rules in agentics/ were written and verified against, carried
   # over from the toolkit at initialization. Not a requirement: another model

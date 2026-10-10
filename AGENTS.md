@@ -28,7 +28,7 @@ them.
 | Measure what a repository's documents cost to read, or compact them (`/optimize`) | [`repo/optimize.md`](repo/optimize.md) here; [`repo/payload/agentics/rules/optimize.md`](repo/payload/agentics/rules/optimize.md) is the part every target gets |
 | Add a project, a test project, or a whole component to an initialized repo (`/new`) | [`repo/payload/agentics/rules/coding/csharp/csharp-new-project.md`](repo/payload/agentics/rules/coding/csharp/csharp-new-project.md) — from a toolkit checkout, [`repo/version-check.md`](repo/version-check.md) first |
 | Initialize / scaffold / set up a repo at a path | [`repo/initialize.md`](repo/initialize.md) |
-| Upgrade this toolkit's pinned versions, bring an initialized repo up to the current toolkit, or convert one from standalone to monorepo (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — three operations; the conversion needs no toolkit checkout |
+| Upgrade this toolkit's pinned versions, sync an initialized repo to the current toolkit (`sh repo/sync.sh --plan <target>`, then `--apply`), or convert one from standalone to monorepo (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — three operations; the sync is a script, the conversion needs no toolkit checkout |
 | Change a StyleCop severity, or asked why a rule is set the way it is | [`repo/stylecop.md`](repo/stylecop.md) — the ruleset's own header carries the principle |
 | Check privacy/security before a first push | [`repo/payload/agentics/rules/security-reminders.md`](repo/payload/agentics/rules/security-reminders.md) |
 | Asked what a term here means — payload, baseline, component, toolkit upgrade, drift | [`GLOSSARY.md`](GLOSSARY.md) — an index to the document that owns each term, never a second definition |
@@ -54,6 +54,8 @@ Three kinds of file, told apart by location:
       scrub.md                     consistency + drift pass for THIS repo; extends the payload checklist
       optimize.md                  what THIS repo's documents cost to read; extends the payload document
       upgrade.md                   toolkit pins, a target up to the toolkit, standalone -> monorepo
+      sync.sh                      the sync: replaces agentics/ and the shims in a target whole, regenerates its
+                                   guidelines block, records the commit, verifies; POSIX sh, never commits
       version-check.md             does a target agree with this toolkit; used by /upgrade and /new
       stylecop.md                  the ruleset: what each severity means, how to change one, the wiring
       baselines/                   pristine `dotnet new` output, NEVER copied to a target
@@ -68,7 +70,7 @@ Three kinds of file, told apart by location:
       Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props  BannedSymbols.txt
       nuget.config  allowed-licenses.json  license-overrides.json
       .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
-      agentics/rules/                  every rules document, exactly where it lands
+      agentics/rules/                  every rules document, exactly where it lands; the toolkit's, replaced whole by a sync
         dependencies.md
         layout.md                  standalone + monorepo trees, naming, test projects, stack currency
         scrub.md                   the consistency + drift checks every target gets
@@ -82,7 +84,9 @@ Three kinds of file, told apart by location:
         coding/markdown/markdown-review.md
       agentics/templates/              AGENTS.template.md, README.template.md - transformed at init, and kept
                                    component-README.md, category-README.md - filled by /new
-                                   all four stay in the target, both modes; repo/documents.md says why
+                                   rules-AGENTS.md - copied to docs/rules/AGENTS.md with the target's first own
+                                   rule; the one file the sync reads from outside agentics/ and never writes
+                                   all five stay in the target, both modes; repo/documents.md says why
 
     (2) the one thing copied from OUTSIDE payload/
     .claude/skills/                skill shims; live here, copied to a target's .claude/skills/
