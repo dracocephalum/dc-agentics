@@ -52,6 +52,8 @@ yaml_list() {
 }
 
 # --- refuse early, with the one reason ------------------------------------------------
+[ "$target" != "$toolkit" ] || refuse "the target is this toolkit checkout; a sync runs against a repository the toolkit initialized"
+[ ! -d "$target/repo/payload" ] || refuse "$target is a toolkit checkout, not a target"
 git -C "$target" rev-parse --git-dir > /dev/null 2>&1 || refuse "$target is not a git repository"
 [ -f "$target/.agentics.yaml" ] || refuse "no .agentics.yaml at $target: not an initialized repository"
 [ -z "$(git -C "$target" status --porcelain)" ] || refuse "the target tree is not clean; commit or stash first - the diff must be the sync alone"
@@ -155,8 +157,13 @@ target_keys=$(awk '{ sub(/\r$/, "") } /^[a-z][a-z-]*:/ { sub(/:.*/, ""); print }
 for k in $payload_keys; do
   echo "$target_keys" | grep -qx "$k" && continue
   if [ $plan = 1 ]; then say "== plan: append the settings block '$k:' with its defaults"; continue; fi
+  # One blank line before the block; the block's own trailing blank lines dropped, or the file ends with two.
   { printf '%s' "$(printf "$(endings "$settings")")"
-    awk -v k="$k" -v ORS="$(endings "$settings")" '{ sub(/\r$/, "") } /^[a-z]/ { f = ($0 ~ "^" k ":") } f { print }' "$payload/.agentics.yaml"
+    awk -v k="$k" -v ORS="$(endings "$settings")" '
+      { sub(/\r$/, "") }
+      /^[a-z]/ { f = ($0 ~ "^" k ":") }
+      f { n++; lines[n] = $0 }
+      END { while (n > 0 && lines[n] == "") n--; for (i = 1; i <= n; i++) print lines[i] }' "$payload/.agentics.yaml"
   } >> "$settings"
   say "== appended the settings block '$k:' with its defaults - review the values"
 done
