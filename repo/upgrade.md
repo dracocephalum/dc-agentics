@@ -123,7 +123,7 @@ to fall back from. In order:
 | changes | — | the toolkit's log between the recorded commit and `HEAD` over the payload and the shims; the payload files *outside* `agentics/` that changed, which are yours to apply by intent |
 | replace | deletes `agentics/` and every toolkit shim under `.claude/skills/` — the names at the recorded commit and the names now — then copies the payload's `agentics/` and the toolkit's shims | — |
 | exclude | removes each `rules.excluded` path from `agentics/rules/` | a path the payload does not have |
-| block | regenerates the block between `<!-- agentics:guidelines -->` and `<!-- /agentics:guidelines -->`: the template's rows minus the excluded ones, then the rows of every `rules.local` index, then the template's closing paragraphs — in the file's own line endings | a local folder with no index; a trigger stated twice, which is a local row competing with a toolkit row — see *Precedence* in `layout.md` |
+| block | regenerates the block between `<!-- agentics:guidelines -->` and `<!-- /agentics:guidelines -->`: the template's rows minus the excluded ones, then the rows of every `rules.local` index, then the template's closing paragraphs — in the file's own line endings | that there is no local index yet, which is the normal state until the repository adds a rule; a trigger stated twice, which is a local row competing with a toolkit row — see *Precedence* in `layout.md` |
 | settings | `toolkit.commit` to the toolkit's `HEAD`, `-dirty` when the checkout is not clean; a top-level block the payload has and the target lacks is appended with its defaults | the appended block; a top-level key the payload no longer defines, for you to remove |
 | verify | markdownlint over the target when `npx` is on `PATH`; the relative-link check from `scrub.md`, with a local index's links resolved from the root, where its rows land | the summary line; every unresolved link |
 
@@ -144,8 +144,8 @@ hand instead is undone by the next sync.
 Everything the payload ships outside `agentics/` is the target's once copied:
 `.editorconfig`, `.gitignore`, `.gitattributes`, the `Directory.*` files,
 `Tests.props`, `nuget.config`, the StyleCop files, the licence lists,
-`.config/dotnet-tools.json`, `.github/`, `.markdownlint.yaml`, and
-`docs/rules/AGENTS.md`. The script lists which of them changed between the two
+`.config/dotnet-tools.json`, `.github/` and `.markdownlint.yaml`. The script
+lists which of them changed between the two
 commits; apply each **by intent** — the severity it raised, the version it
 pinned, the key it added — rather than by text merge. A target edits these
 files attribute by attribute while the toolkit rewrites them wholesale, and a
@@ -171,7 +171,8 @@ markers, and the script refuses it until, once, by hand:
    paragraph that ends "will not be read". The table and the two paragraphs
    after it are the block.
 2. Move every row that is the repository's own — one the template does not
-   have — into `docs/rules/AGENTS.md`, created from the payload's copy, and
+   have — into `docs/rules/AGENTS.md`, created from
+   `agentics/templates/rules-AGENTS.md`, and
    delete it from the root table. A row the template *does* have, reworded,
    is replaced by the template's wording; keep the rewording in the index as
    a second row only if it says something the template's does not.

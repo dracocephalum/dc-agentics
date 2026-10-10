@@ -70,7 +70,6 @@ Three kinds of file, told apart by location:
       Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props  BannedSymbols.txt
       nuget.config  allowed-licenses.json  license-overrides.json
       .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
-      docs/rules/AGENTS.md         the target's own rules index, empty at init; the one folder the sync reads and never writes
       agentics/rules/                  every rules document, exactly where it lands; the toolkit's, replaced whole by a sync
         dependencies.md
         layout.md                  standalone + monorepo trees, naming, test projects, stack currency
@@ -85,7 +84,9 @@ Three kinds of file, told apart by location:
         coding/markdown/markdown-review.md
       agentics/templates/              AGENTS.template.md, README.template.md - transformed at init, and kept
                                    component-README.md, category-README.md - filled by /new
-                                   all four stay in the target, both modes; repo/documents.md says why
+                                   rules-AGENTS.md - copied to docs/rules/AGENTS.md with the target's first own
+                                   rule; the one file the sync reads from outside agentics/ and never writes
+                                   all five stay in the target, both modes; repo/documents.md says why
 
     (2) the one thing copied from OUTSIDE payload/
     .claude/skills/                skill shims; live here, copied to a target's .claude/skills/

@@ -51,12 +51,13 @@ Transform the copy:
 5. Leave the block between `<!-- agentics:guidelines -->` and
    `<!-- /agentics:guidelines -->` exactly as it is. It is the generated part:
    every later sync rewrites it from the template and from the repository's
-   own index, `docs/rules/AGENTS.md`, which arrived with the payload holding an
-   empty table. A rule of the repository's own is a file under `docs/rules/`
-   and a row in that index, never a row typed into the root table —
+   own index, `docs/rules/AGENTS.md`, which exists only once the repository
+   adds a rule of its own — a file under `docs/rules/` and a row in that index,
+   started from `agentics/templates/rules-AGENTS.md`, never a row typed into
+   the root table —
    [`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md),
-   *The toolkit's rules and the repository's*. At initialization the index is
-   empty, so the block is the template's, unchanged.
+   *The toolkit's rules and the repository's*. At initialization there is no
+   index, so the block is the template's, unchanged.
 6. In standalone mode, replace `<solution>` under *Building and testing* with
    the solution file name. In a monorepo it stays: there is no single solution
    there, and the command is generic on purpose.
@@ -83,7 +84,7 @@ the toolkit is not self-describing. It also makes the reference in
 Verify nothing was missed:
 
     grep -n "{{" <repo>/AGENTS.md <repo>/README.md      # only the Licence section may still match
-    ls <repo>/agentics/templates/                            # all four templates must still be there
+    ls <repo>/agentics/templates/                            # all five templates must still be there
     grep -n "<!--" <repo>/AGENTS.md <repo>/README.md    # only the Licence section may still match
 
 The generated documents must be clean; the templates they came from must be

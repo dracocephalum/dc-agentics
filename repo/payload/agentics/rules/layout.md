@@ -123,8 +123,7 @@ organization or product name, and is recorded in `.agentics.yaml` under
       Contoso.Thing.slnx             named after the main project, not the repo
       agentics/                      the toolkit's: rules/ this repository is held to, and templates/; replaced whole by a sync
       docs/
-        rules/
-          AGENTS.md                  the repository's own rules, beside their index
+        rules/                     the repository's own rules and their index, AGENTS.md - once it has any
       src/
         Contoso.Thing/
           Contoso.Thing.csproj
@@ -226,10 +225,12 @@ The repository's own rules live in the folders `rules.local` in
 `.agentics.yaml` names — `docs/rules/` by default — each with an `AGENTS.md`
 index: the same two-column table as the root's, links relative to the
 repository root, pointing at anything — a rule beside it, `DESIGN.md`, a
-folder's README. The sync copies those rows into the generated block of the
-root `AGENTS.md`, after the toolkit's, so adding a rule is a file and a row in
-the index and never an edit of the root. A shim of the repository's own keeps a
-name no toolkit shim has.
+folder's README. Neither the folder nor the index exists until the first rule
+does; that day, the index starts as a copy of
+`agentics/templates/rules-AGENTS.md`. The sync copies its rows into the
+generated block of the root `AGENTS.md`, after the toolkit's, so adding a rule
+is a file and a row in the index and never an edit of the root. A shim of the
+repository's own keeps a name no toolkit shim has.
 
 Opting out of a toolkit rule is declared: its path under `agentics/rules/` in
 `rules.excluded`. The sync removes the file and its row; a link to it from

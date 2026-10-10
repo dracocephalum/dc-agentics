@@ -1,3 +1,14 @@
+<!--
+  TEMPLATE - copied to docs/rules/AGENTS.md (or to the folder rules.local in
+  .agentics.yaml names) the day this repository adds its first rule of its own.
+  Delete this comment in the copy; nothing else needs filling. It stays here
+  afterwards, unchanged. Named rules-AGENTS.md so it is not read as live agent
+  instructions where it sits; keep the name.
+
+  Links in the copy are relative to the REPOSITORY ROOT, where the sync puts
+  its rows - not to docs/rules/.
+-->
+
 # Rules of this repository
 
 The rules this repository adds to the toolkit's. The toolkit's live under

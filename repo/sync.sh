@@ -115,7 +115,7 @@ for d in $local_dirs; do
   if [ -f "$target/$d/AGENTS.md" ]; then
     awk '{ sub(/\r$/, "") } /^\|[ ]*-+/ { f = 1; next } f && /^\| / { print }' "$target/$d/AGENTS.md" >> "$rows"
   else
-    say "rules.local names $d, which has no AGENTS.md index; no rows from it"
+    say "no local rules: $d/AGENTS.md does not exist (the first one starts from agentics/templates/rules-AGENTS.md)"
   fi
 done
 # Local rows go after the last table row of the block, before its closing paragraphs.

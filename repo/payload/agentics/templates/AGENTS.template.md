@@ -40,7 +40,7 @@ Primary framework: .NET. Namespace prefix: `{{PREFIX}}`.
 | `src/` | production code |
 | `test/` | test projects, one per project under test |
 | `agentics/` | the toolkit's — `rules/` this repository is held to, see *Agent guidelines* below, and `templates/`; replaced whole by a sync, never edited in place |
-| `docs/rules/` | this repository's own rules, and `AGENTS.md` there is their index — the sync copies its rows into the table below |
+| `docs/rules/` | this repository's own rules, once it has any, and `AGENTS.md` there is their index — started from `agentics/templates/rules-AGENTS.md`; the sync copies its rows into the table below |
 | `.claude/skills/` | Claude Code shims; the toolkit's are replaced whole by a sync, a shim of the same name included |
 | `{{SOLUTION_NAME}}.slnx` | the solution — this repository is a single component |
 
@@ -63,7 +63,7 @@ exist.
 | `infrastructure/` | provisioning (Terraform and similar) |
 | `ui/` | front-end applications |
 | `agentics/` | the toolkit's — `rules/` this repository is held to, see *Agent guidelines* below, and `templates/`; replaced whole by a sync, never edited in place |
-| `docs/rules/` | this repository's own rules, and `AGENTS.md` there is their index — the sync copies its rows into the table below |
+| `docs/rules/` | this repository's own rules, once it has any, and `AGENTS.md` there is their index — started from `agentics/templates/rules-AGENTS.md`; the sync copies its rows into the table below |
 | `.claude/skills/` | Claude Code shims; the toolkit's are replaced whole by a sync, a shim of the same name included |
 | `build/` | CI/CD pipeline definitions |
 

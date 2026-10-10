@@ -43,13 +43,13 @@ the worse question.
                                  the commit is what a later sync reports from; syncs are supported from the
                                  toolkit's support.baseline onward, and re-initialization is the path below it
     TODO.md                      open items; init writes anything unresolved here (settings.md)
-    docs/rules/AGENTS.md         the repository's own rules and their index; a sync copies its rows into AGENTS.md
-                                 and never touches the folder (documents.md)
     <Prefix>.<Name>.slnx         the solution, named after the first project (build.md)
     src/, test/                  the first project and its tests (build.md)
     agentics/templates/              AGENTS.template.md, README.template.md — the sources of the two above, kept
                                  component-README.md, category-README.md — used by /new
-                                 all four kept in both modes (documents.md)
+                                 rules-AGENTS.md — the start of docs/rules/AGENTS.md, the repository's own
+                                 rules index, created with its first rule; a sync reads it, never writes it
+                                 all five kept in both modes (documents.md)
     .editorconfig                editor conventions (root = true)
     .gitattributes               line-ending normalization  (dotnet new)
     .gitignore                   ignore rules               (dotnet new)
