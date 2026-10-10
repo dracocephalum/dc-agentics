@@ -125,7 +125,10 @@ This block is generated: the toolkit's rows, then the rows of every index the
 sync rewrites it. A rule of this repository's own is a file under `docs/rules/`
 and a row in that index, never a row typed here — one typed here is gone at
 the next sync. Everything outside the block is this repository's and no sync
-touches it. A document nobody is pointed at will not be read.
+touches it. A document nobody is pointed at will not be read. A local rule
+that disagrees with a toolkit rule has no referee: replace by excluding, amend
+by saying so in the document — *Precedence* in
+[`agentics/rules/layout.md`](agentics/rules/layout.md).
 
 <!-- /agentics:guidelines -->
 

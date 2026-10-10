@@ -4,14 +4,20 @@
 # repo/upgrade.md, operation 2, is the procedure; this is its mechanism. POSIX sh and
 # awk only, so it runs wherever git does. It never commits.
 #
-#   sh repo/sync.sh <target>           apply, then verify
-#   sh repo/sync.sh --plan <target>    report only; the target is not touched
+#   sh repo/sync.sh --plan <target>    report what changed and what would be done; nothing is touched
+#   sh repo/sync.sh --apply <target>   apply, then verify
+#   sh repo/sync.sh                    this help
 
 set -eu
 
-plan=0
-if [ "${1-}" = "--plan" ]; then plan=1; shift; fi
-[ $# -eq 1 ] || { echo "usage: sh repo/sync.sh [--plan] <target-repository>" >&2; exit 2; }
+usage() { sed -n 's/^#   \(sh repo\/sync.sh.*\)$/  \1/p' "$0" >&2; exit 2; }
+case "${1-}" in
+  --plan) plan=1 ;;
+  --apply) plan=0 ;;
+  *) usage ;;
+esac
+[ $# -eq 2 ] || usage
+shift
 refuse() { echo "sync: $*" >&2; exit 1; }
 target=$(cd "$1" 2> /dev/null && pwd) || refuse "$1 is not a directory"
 toolkit=$(cd "$(dirname "$0")/.." && pwd)
@@ -121,6 +127,10 @@ awk -v rows="$rows" '
       if (i == last) while ((getline l < rows) > 0) print l
     }
   }' "$block" > "$block.x" && mv "$block.x" "$block"
+# Two rows with one trigger compete, and nothing decides between them: exclude and replace instead.
+awk -F'|' '/^\| / { t = $2; gsub(/^ +| +$/, "", t); print t }' "$block" | sort | uniq -d | while read -r t; do
+  say "trigger stated twice: '$t' - a local row competes with a toolkit row; exclude the toolkit rule and replace it, or change the trigger"
+done
 if [ $plan = 1 ]; then
   say "== plan: the block would hold $(grep -c '^| ' "$block") rows, $(wc -l < "$rows" | tr -d ' ') of them local"
 else

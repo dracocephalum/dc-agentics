@@ -7,7 +7,11 @@ same two columns as the root `AGENTS.md` table, with links relative to the
 repository root — the sync copies the rows into the guidelines block of the
 root `AGENTS.md`, so a rule added here is reachable without editing that file.
 `agentics/rules/layout.md`, *The toolkit's rules and the repository's*, is the
-rule.
+rule, and its *Precedence* is the warning: a rule here that disagrees with a
+toolkit rule has no referee. To replace one, exclude it in `.agentics.yaml`
+and write the replacement; to amend one, say so in the document's first lines
+and give the row a trigger of its own. Nothing guarantees an amendment holds
+against a toolkit rule that still exists.
 
 | When you are | Read |
 |---|---|

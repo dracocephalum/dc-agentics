@@ -242,6 +242,27 @@ The root `AGENTS.md` is the repository's, except the block between
 sync regenerates from the toolkit's template and the local indexes. Anything
 outside the block — a section, a second table, a sentence — is never touched.
 
+### Precedence
+
+A local rule and a toolkit rule that disagree have no referee: an agent reads
+whichever row its request matched, and reconciling two documents it was not
+told are in conflict is a hope, not a mechanism. So precedence is declared,
+never implied:
+
+- **To replace a toolkit rule, exclude it and write the replacement.** Then
+  one rule exists, and the question does not arise. This is the only override
+  with a guarantee.
+- **To narrow or extend one, the local document names the toolkit rule it
+  amends in its first lines** — "applies on top of `agentics/rules/x.md`;
+  where they differ, this one holds" — and its row keeps a trigger of its own,
+  so the agent arrives at the amendment from the index rather than at the
+  original. A local row whose trigger a toolkit row already has is a competing
+  row, and the sync reports it. Local rows sit after the toolkit's in the
+  table; that order is not precedence, and nothing reads it as such.
+- **No fine-tuning is guaranteed to hold** against a toolkit rule that still
+  exists, and the toolkit cannot test the combination: the rules are verified
+  as shipped. A repository that amends one owns the result.
+
 ## Root documents
 
 Four documents live at the repository root, each answering one question, so

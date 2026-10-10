@@ -22,7 +22,7 @@ one-time adoption of the guidelines block are all there.
 | Arguments | Operation |
 |---|---|
 | `toolkit` | 1 - bring the toolkit's own pins current |
-| `target <path>`, or a path | 2 - sync that repository to the current toolkit: `sh repo/sync.sh --plan <path>`, then without `--plan` |
+| `target <path>`, or a path | 2 - sync that repository to the current toolkit: `sh repo/sync.sh --plan <path>`, read, then `--apply` |
 | `monorepo` | 3 - convert a standalone repository to a monorepo |
 | nothing | ask which; they touch different repositories |
 

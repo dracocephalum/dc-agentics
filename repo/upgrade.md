@@ -109,12 +109,13 @@ toolkit's rules and the repository's*.
 
 ### Run it
 
-    sh repo/sync.sh --plan <target>      # reports: what changed, what it would do
-    sh repo/sync.sh <target>             # applies, then verifies
+    sh repo/sync.sh --plan <target>      # reports: what changed, what it would do; nothing is touched
+    sh repo/sync.sh --apply <target>     # applies, then verifies
+    sh repo/sync.sh                      # the help; neither flag means nothing happens
 
-From the toolkit checkout, against a clean target. POSIX `sh` and `awk`, so it
-runs wherever git does; nothing to install and nothing to fall back from. In
-order:
+From the toolkit checkout, against a clean target: plan, read, apply. POSIX
+`sh` and `awk`, so it runs wherever git does; nothing to install and nothing
+to fall back from. In order:
 
 | Step | Does | Reports |
 |---|---|---|
@@ -122,7 +123,7 @@ order:
 | changes | — | the toolkit's log between the recorded commit and `HEAD` over the payload and the shims; the payload files *outside* `agentics/` that changed, which are yours to apply by intent |
 | replace | deletes `agentics/` and every toolkit shim under `.claude/skills/` — the names at the recorded commit and the names now — then copies the payload's `agentics/` and the toolkit's shims | — |
 | exclude | removes each `rules.excluded` path from `agentics/rules/` | a path the payload does not have |
-| block | regenerates the block between `<!-- agentics:guidelines -->` and `<!-- /agentics:guidelines -->`: the template's rows minus the excluded ones, then the rows of every `rules.local` index, then the template's closing paragraphs — in the file's own line endings | a local folder with no index |
+| block | regenerates the block between `<!-- agentics:guidelines -->` and `<!-- /agentics:guidelines -->`: the template's rows minus the excluded ones, then the rows of every `rules.local` index, then the template's closing paragraphs — in the file's own line endings | a local folder with no index; a trigger stated twice, which is a local row competing with a toolkit row — see *Precedence* in `layout.md` |
 | settings | `toolkit.commit` to the toolkit's `HEAD`, `-dirty` when the checkout is not clean; a top-level block the payload has and the target lacks is appended with its defaults | the appended block; a top-level key the payload no longer defines, for you to remove |
 | verify | markdownlint over the target when `npx` is on `PATH`; the relative-link check from `scrub.md`, with a local index's links resolved from the root, where its rows land | the summary line; every unresolved link |
 
