@@ -40,5 +40,5 @@ Report growth as a trend rather than a threshold: a shim that has doubled is a
 finding, a shim at 44 lines is not.
 
 The same applies to the template a target's `AGENTS.md` is made from,
-`payload/agentics/templates/AGENTS.template.md`: a row added there is paid
+`payload/agentics/templates/root-AGENTS.md`: a row added there is paid
 for in every session of every target.

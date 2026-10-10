@@ -59,7 +59,7 @@ git -C "$target" rev-parse --git-dir > /dev/null 2>&1 || refuse "$target is not 
 [ -z "$(git -C "$target" status --porcelain)" ] || refuse "the target tree is not clean; commit or stash first - the diff must be the sync alone"
 grep -q "^$open" "$target/AGENTS.md" 2> /dev/null && grep -q "^$close" "$target/AGENTS.md" \
   || refuse "AGENTS.md has no guidelines block; adopt it once by hand - repo/upgrade.md, 'Adopting the block'"
-template=$payload/agentics/templates/AGENTS.template.md
+template=$payload/agentics/templates/root-AGENTS.md
 if awk -v o="$open" -v c="$close" '{ sub(/\r$/, "") } $0 == o { f = 1; next } $0 == c { f = 0 } f' "$template" | grep -q '{{'; then
   refuse "the template's guidelines block carries a placeholder; the toolkit is at fault, not the target"
 fi

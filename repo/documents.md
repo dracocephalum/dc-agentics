@@ -16,7 +16,7 @@ is the substance and `AGENTS.md` points every tool at it, so a team without
 Claude Code loses nothing by skipping the shims.
 
 Then generate the repository's own `AGENTS.md` at its root from
-[`payload/agentics/templates/AGENTS.template.md`](payload/agentics/templates/AGENTS.template.md).
+[`payload/agentics/templates/root-AGENTS.md`](payload/agentics/templates/root-AGENTS.md).
 It arrived with the copy at `<repo>/agentics/templates/`, and **it stays there** —
 copy it to the root as `AGENTS.md` and transform the copy, leaving the template
 untouched.

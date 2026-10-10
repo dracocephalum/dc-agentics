@@ -9,7 +9,7 @@ procedure.
 this repository were a target — the toolkit is held to what it ships. Three
 adjustments, because it is not a target:
 
-- **Judge the payload's documents against `payload/agentics/templates/AGENTS.template.md`, not
+- **Judge the payload's documents against `payload/agentics/templates/root-AGENTS.md`, not
   against this repository's `AGENTS.md`.** The template is the table a target
   actually gets; this repository's own index lists only what an agent working
   *here* needs, and it correctly omits the C# rules because there is no C# code
