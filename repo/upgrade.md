@@ -257,7 +257,7 @@ has to produce all of them from that one file:
 |---|---|---|
 | `<category>/<component>/README.md` | the existing root README's content, into `agentics/templates/component-README.md` | what it is, how to run it, configuration |
 | `<category>/README.md` | `agentics/templates/category-README.md` | one row per component, this one added |
-| root `README.md` | the monorepo variant of `agentics/templates/README.template.md` | the map of categories |
+| root `README.md` | the monorepo variant of `agentics/templates/root-README.md` | the map of categories |
 
 **Move the content down before regenerating the root.** Regenerating first
 destroys the only copy of the component's own description, and nothing later
@@ -282,7 +282,7 @@ false statement about the repository.
 ### Swap the layout variant in AGENTS.md
 
 `AGENTS.md` was generated with the standalone variant kept and the monorepo one
-deleted. Take the monorepo variant from `agentics/templates/AGENTS.template.md`,
+deleted. Take the monorepo variant from `agentics/templates/root-AGENTS.md`,
 fill its placeholders from `.agentics.yaml`, and replace the standalone
 table with it — trimming the folder rows to categories that now exist.
 

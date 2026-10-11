@@ -7,7 +7,7 @@
   Delete this comment block, then confirm no double-brace token remains
   anywhere in the file.
 
-  Named AGENTS.template.md rather than AGENTS.md so it is not picked up as live
+  Named root-AGENTS.md rather than AGENTS.md so it is not picked up as live
   agent instructions - by the toolkit, or by any tool that reads a nested
   AGENTS.md as directory-scoped instructions. Keep the suffix.
 

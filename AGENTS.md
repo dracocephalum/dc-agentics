@@ -82,7 +82,7 @@ Three kinds of file, told apart by location:
         coding/architecture.md     boundaries: the core, its adapters, what crosses a seam; language-neutral
         coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
         coding/markdown/markdown-review.md
-      agentics/templates/              AGENTS.template.md, README.template.md - transformed at init, and kept
+      agentics/templates/              root-AGENTS.md, root-README.md - transformed at init, and kept
                                    component-README.md, category-README.md - filled by /new
                                    rules-AGENTS.md - copied to docs/rules/AGENTS.md with the target's first own
                                    rule; the one file the sync reads from outside agentics/ and never writes

@@ -36,16 +36,16 @@ the worse question.
 
 ## What ends up in the repository root
 
-    AGENTS.md                    generated from agentics/templates/AGENTS.template.md
+    AGENTS.md                    generated from agentics/templates/root-AGENTS.md
     LICENSE, NOTICE              only if the user chose a licence (settings.md)
-    README.md                    generated from agentics/templates/README.template.md; human entry point
+    README.md                    generated from agentics/templates/root-README.md; human entry point
     .agentics.yaml            settings agents read: source-control mode, every init choice, toolkit commit (settings.md)
                                  the commit is what a later sync reports from; syncs are supported from the
                                  toolkit's support.baseline onward, and re-initialization is the path below it
     TODO.md                      open items; init writes anything unresolved here (settings.md)
     <Prefix>.<Name>.slnx         the solution, named after the first project (build.md)
     src/, test/                  the first project and its tests (build.md)
-    agentics/templates/              AGENTS.template.md, README.template.md — the sources of the two above, kept
+    agentics/templates/              root-AGENTS.md, root-README.md — the sources of the two above, kept
                                  component-README.md, category-README.md — used by /new
                                  rules-AGENTS.md — the start of docs/rules/AGENTS.md, the repository's own
                                  rules index, created with its first rule; a sync reads it, never writes it
