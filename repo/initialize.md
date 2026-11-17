@@ -87,7 +87,7 @@ the worse question.
       source-control/SKILL.md    Claude Code shim: /source-control start|commit|pr|setup
       upgrade/SKILL.md           Claude Code shim: /upgrade — the layout conversion needs no toolkit checkout
     .github/
-      PULL_REQUEST_TEMPLATE.md   GitHub fills PR bodies from it
+      PULL_REQUEST_TEMPLATE.md   prompts for a PR opened in the web form; the source-control rule governs the body
       rulesets/protect-main.json default-branch ruleset: PR-only, squash, no force-push
     .markdownlint.yaml           markdown mechanics; the review checklist relies on it
     .serena/
