@@ -239,7 +239,7 @@ mistake available here:
     Directory.Build.props   Directory.Build.targets   Directory.Packages.props
     Tests.props   StyleCop.props   stylecop.ruleset   stylecop.json
     BannedSymbols.txt   nuget.config   .editorconfig
-    allowed-licenses.json   license-overrides.json   .config/
+    allowed-licenses.json   license-overrides.json   license-exceptions.json   licenses/   .config/
     AGENTS.md   TODO.md   LICENSE   NOTICE   agentics/   docs/   .github/   .claude/
 
 `layout.md` explains why: all three `Directory.*` files resolve by searching

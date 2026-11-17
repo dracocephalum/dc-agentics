@@ -61,7 +61,7 @@ the worse question.
     BannedSymbols.txt            banned clock APIs, live; non-test projects only
     nuget.config                 package sources + source mapping (supply chain)
     allowed-licenses.json        dependency licence allow-list (SPDX)
-    license-overrides.json       verified licences for URL-only packages
+    license-overrides.json       verified licences for URL-only packages, and the claims behind accepted exceptions
     .config/dotnet-tools.json    local tool manifest: nuget-license
     StyleCop.props               analyzer reference + wiring
     stylecop.ruleset             rule severities
