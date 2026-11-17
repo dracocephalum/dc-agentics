@@ -100,7 +100,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.11" />
 
     <!-- Referenced only when Tests.props enables them. -->
-    <PackageVersion Include="FluentValidation" Version="12.1.1" />
+    <PackageVersion Include="FluentValidation" Version="12.2.0" />
     <PackageVersion Include="Serilog.Sinks.TestCorrelator" Version="4.0.2" />
     <!-- Tracks the EF Core major the application uses. -->
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.11" />
