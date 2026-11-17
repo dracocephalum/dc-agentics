@@ -107,6 +107,6 @@ to suspect. `SA1414` is the convenient probe, since the ruleset sets it to
     public static (int, string) Probe() => (1, "a");   // expect: error SA1414
 
 Known-good baseline: this layout was verified on .NET SDK 10.0.400 with
-StyleCop.Analyzers 1.2.0-beta.556, for a project at `src/Foo/`, with central
+StyleCop.Analyzers 1.3.180, for a project at `src/Foo/`, with central
 package management both on and off. In both cases restore succeeded and SA1414
 was reported as an error.
