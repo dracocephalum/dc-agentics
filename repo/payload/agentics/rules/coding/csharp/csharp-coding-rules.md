@@ -146,11 +146,11 @@ Metrics and spans:
   what turning either on would cost.
 - **Acronyms: a two-letter acronym keeps both capitals** (`IOControl`,
   `UIElement`); **a longer one is cased as a word** (`XmlReader`,
-  `HtmlParser`); **an abbreviation is a word** (`Id`, `Ok`). In camelCase
-  the leading one is all lower case: `ioControl`, `xmlReader`, `id`. A name
-  that comes from a framework keeps the framework's casing, which is why a
-  context is `OrdersDbContext`: EF Core's base type is `DbContext`, and the
-  BCL treats `Db` as an abbreviation throughout (`DbConnection`).
+  `HtmlParser`); **an abbreviation is a word** (`Id`, `Ok`, `Db`). The
+  difference is what was shortened: an acronym takes the initials of several
+  words, input/output, and an abbreviation shortens one, database, so it is
+  `DbContext` and never `DBContext`. In camelCase the leading one is all
+  lower case: `ioControl`, `xmlReader`, `dbContext`.
 - **A method name opens with a verb, or with `To`, `From`, `Is`, `Has`,
   `Can` or `Try`; never with the noun it returns.** `GetLeaseName(id)`,
   `ToInfo(summary)`, `ParseIds(text)`, `RequireGroupName(name)`, not
