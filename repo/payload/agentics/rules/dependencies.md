@@ -75,7 +75,9 @@ places, so that it is neither invisible nor a false claim:
    and agreed to; the file in a later version can change with nothing to flag
    it. `.gitattributes` keeps `licenses/` byte-exact, so its hash holds on
    every checkout.
-2. **The record**, an entry in `license-exceptions.json`: what was accepted,
+2. **The record**, an entry in `license-exceptions.json` at the repository
+   root, a file made with the first exception as `licenses/` is, so that
+   neither exists where nothing was accepted: what was accepted,
    where the text came from so it can be fetched again, its hash, when, for
    what use, and the conditions the terms set.
 
