@@ -72,10 +72,9 @@ tests with a green exit. Confirm both halves:
 
 Then one coverage run exactly as the shipped unit-test rules give it, under
 *Coverage*, and read the report: it should count only hand-written sources.
-Verified on a real project that `coverage.config` is what makes that true —
-with the platform's defaults the report counted the test assembly and the
-generated gRPC code and read 7.6%; with the file, only the hand-written files,
-and 100%.
+Verified on a real project that the command's exclusion is what makes that
+true — without it one report counted 95 generated gRPC files and read 15.9%;
+with it, only the hand-written files, and 30.1%.
 
 Finally, the licence check over the whole transitive graph:
 

@@ -57,7 +57,6 @@ the worse question.
     Directory.Build.targets      short commit hash + dirty marker in the informational version
     Directory.Packages.props     central package versions   (CPM only)
     Tests.props                  test-only packages (*.Tests projects)
-    coverage.config              coverage settings for the platform's collector; passed on the command line
     global.json                  opts dotnet test into Microsoft.Testing.Platform, which xunit v3 runs on
     BannedSymbols.txt            banned clock APIs, live; non-test projects only
     nuget.config                 package sources + source mapping (supply chain)
