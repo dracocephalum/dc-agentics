@@ -66,5 +66,5 @@ guidelines:
   # over from the toolkit at initialization. Not a requirement: another model
   # works, but rules it does not infer by default are the ones it will miss.
   # Fixed values, not placeholders - they describe the toolkit, not this repo.
-  model-baseline: "claude-opus-5, claude-fable-5-1"
-  verified: "2026-09-07"              # last end-to-end initialization trial on that line
+  model-baseline: "claude-opus-5, claude-fable-5-1, claude-fable-5-2"
+  verified: "2026-11-17"              # last end-to-end initialization trial on that line

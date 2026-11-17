@@ -209,6 +209,6 @@ Don't infer conventions from a near-empty tree — if a convention isn't written
 down here, it hasn't been decided.
 
 The .NET initialization path was verified end to end on SDK 10.0.400 with
-StyleCop.Analyzers 1.2.0-beta.556: clean build, inherited properties reaching a
+StyleCop.Analyzers 1.3.180: clean build, inherited properties reaching a
 nested project, `stylecop.json` registered, and SA1414 failing the build as a
 liveness probe.
