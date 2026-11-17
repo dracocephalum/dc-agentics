@@ -144,6 +144,13 @@ Metrics and spans:
   collide with a property `Value`, a field is already marked, and the compiler
   catches the rest. `stylecop.ruleset` has both rules off on purpose and says
   what turning either on would cost.
+- **Acronyms: a two-letter acronym keeps both capitals** (`IOControl`,
+  `UIElement`); **a longer one is cased as a word** (`XmlReader`,
+  `HtmlParser`); **an abbreviation is a word** (`Id`, `Ok`). In camelCase
+  the leading one is all lower case: `ioControl`, `xmlReader`, `id`. A name
+  that comes from a framework keeps the framework's casing, which is why a
+  context is `OrdersDbContext`: EF Core's base type is `DbContext`, and the
+  BCL treats `Db` as an abbreviation throughout (`DbConnection`).
 - **A method name opens with a verb, or with `To`, `From`, `Is`, `Has`,
   `Can` or `Try`; never with the noun it returns.** `GetLeaseName(id)`,
   `ToInfo(summary)`, `ParseIds(text)`, `RequireGroupName(name)`, not
