@@ -80,6 +80,7 @@ Three kinds of file, told apart by location:
         source-control/          source-control.md - the rules, host-neutral; github.md - reaching GitHub, publishing, PRs, review, settings
         coding/code-review.md
         coding/architecture.md     boundaries: the core, its adapters, what crosses a seam; language-neutral
+        coding/where-facts-live.md one home per fact: doc comment, body, design document, README; language-neutral
         coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
         coding/markdown/markdown-review.md
       agentics/templates/              root-AGENTS.md, root-README.md - transformed at init, and kept
