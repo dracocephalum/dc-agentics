@@ -54,6 +54,7 @@ or install .NET on FreeBSD.
 | uv | `winget install astral-sh.uv` | `curl -LsSf https://astral.sh/uv/install.sh \| sh` | `brew install uv` | `pkg install uv` if packaged, else `pip install uv` |
 | Python | `uv python install 3.13` | same | same | `pkg install python313`; uv-managed builds may not exist |
 | Serena | `uv tool install -p 3.13 serena-agent` | same | same | same; the C# language server is unlikely to run |
+| LSP tool (Claude Code) | `dotnet tool install --global csharp-ls`, then `claude plugin install csharp-lsp@claude-plugins-official` | same | same, or `brew install csharp-ls` | same if the .NET SDK runs |
 | gitleaks | `winget install Gitleaks.Gitleaks` | release binary from GitHub, or distro package | `brew install gitleaks` | `pkg install gitleaks` |
 | `pre-commit` | `uv tool install pre-commit` | same | same | same |
 
