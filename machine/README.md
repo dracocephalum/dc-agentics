@@ -146,7 +146,7 @@ The full rationale — why `uv`, what `.venv` is, what gets committed — is in
 Two tools let an agent ask about symbols instead of text: Claude Code's `LSP`
 tool and Serena. Both are optional and both can be on together, at a cost in
 memory for as long as a session is open — about 370 MB for the LSP tool, about
-790 MB for Serena, about 1.2 GB for both, on one C# solution. Which to install
+790 MB for Serena, about 1.2 GB for both, on about 45,000 lines of C#. Which to install
 is the user's choice: put the table in [`lsp.md`](lsp.md) to them, then follow
 [`lsp.md`](lsp.md) and [`serena.md`](serena.md) for what they answered. Do not
 install either unasked.

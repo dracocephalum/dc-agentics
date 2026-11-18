@@ -157,7 +157,9 @@ is required, and neither is recorded in `.agentics.yaml`.
   definitions, references, implementations, symbols, and diagnostics after an
   edit. **Connected:** prefer it over grep for "where is this used" and "what
   implements this". A first call that fails with `server is starting` is
-  called again.
+  called again. In a repository of several solutions it may hold one of them
+  and answer for that one only: for a symbol other solutions can reach,
+  confirm the references with Serena or a text search.
 - **[Serena](https://github.com/oraios/serena)**, for which this repository
   carries a project file (`.serena/project.yml`). Reads the same and also
   edits by symbol. **Connected:** call `initial_instructions` once per coding
