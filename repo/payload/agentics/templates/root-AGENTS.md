@@ -157,9 +157,12 @@ is required, and neither is recorded in `.agentics.yaml`.
   definitions, references, implementations, symbols, and diagnostics after an
   edit. **Connected:** prefer it over grep for "where is this used" and "what
   implements this". A first call that fails with `server is starting` is
-  called again. In a repository of several solutions it may hold one of them
-  and answer for that one only: for a symbol other solutions can reach,
-  confirm the references with Serena or a text search.
+  called again; the server loads on the first question. In a repository of
+  several solutions the C# server holds one — the one listing the most
+  projects — and answers for that one only, without saying so: a type its
+  workspace symbol search does not find is in a solution it does not hold,
+  and for a symbol other solutions can reach, the references are confirmed
+  with Serena or a text search.
 - **[Serena](https://github.com/oraios/serena)**, for which this repository
   carries a project file (`.serena/project.yml`). Reads the same and also
   edits by symbol. **Connected:** call `initial_instructions` once per coding

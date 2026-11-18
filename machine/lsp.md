@@ -52,10 +52,12 @@ files, about 45,000 lines of C# — after a handful of questions:
 Lines are every line of the tracked `.cs` files, blank lines and comments
 included, generated code excluded. Memory is the working set of the process.
 
-For either language server that is about 10 MB for each thousand lines. Use it
-to place a repository — a tenth of the size, ten times the size — and not as a
-rate: it is one repository, and part of the memory is the server and the
-packages the projects reference, which does not grow with the code.
+For either language server that is about 10 MB for each thousand lines, and
+most of it is not the code: the server and the packages the projects reference
+are there whatever the size. `csharp-ls` started by hand and asked the same few
+questions took 331 MB with the 37,000 lines and 364 MB with all 45,000 — about
+4 MB for each thousand lines added. Use the figures to place a repository, a
+tenth of the size or ten times the size, and not as a rate.
 
 How to read the numbers:
 
@@ -102,10 +104,8 @@ Four things seen in the comparison, worth knowing before trusting a result:
 - **A repository with several solutions.** The LSP tool held one of the four
   and answered for that one only, without saying so: for a type used in 11
   files it reported the 8 inside its solution and none of the 3 in the other
-  two solutions that use it. Serena, holding all four, found those. To see
-  what the LSP tool holds, ask its workspace symbol search for a type from
-  another solution; for a symbol that other solutions can reach, confirm the
-  references with Serena or a text search.
+  two solutions that use it. Serena, holding all four, found those. The next
+  section says why and what to do.
 - The first call in a session can fail with `server is starting`. Call again.
 - A symbol's line in a file's symbol list is at or just above its doc comment,
   some lines before its name. The workspace symbol search gives the line of
@@ -113,6 +113,47 @@ Four things seen in the comparison, worth knowing before trusting a result:
 - A rename changes the symbol and its uses, and nothing named after it: a test
   method called `GetThing_WhenAsked_ShouldAnswer` keeps its name when
   `GetThing` is renamed.
+
+## How the LSP tool loads a repository
+
+From the source of `csharp-ls` 0.28.0, and confirmed by starting it by hand on
+the same monorepo and reading its log:
+
+- **Nothing loads at start.** The first question starts the load and waits for
+  it — about 20 seconds for the 37,000 lines. Claude Code starts the server
+  itself only when a C# file is first touched. This is where
+  `server is starting` comes from, and why a session that never touches C#
+  pays nothing.
+- **It searches the whole workspace folder**, every subfolder, for `.sln` and
+  `.slnx` files.
+- **Of several solutions it loads exactly one: the one that lists the most
+  projects.** Not the nearest to the root, and not the one holding the file
+  asked about.
+- **With no solution at all** it loads every project file under the folder.
+- **It never loads more later.** Opening a file of another solution loads
+  nothing; questions about that file get no answer, and references from it are
+  missing from every other answer.
+
+So in a repository of several solutions:
+
+- **Check what is held.** Ask the workspace symbol search for a type from each
+  solution. A type that is not found is in a solution that is not loaded.
+- **Do not trust a reference count for a shared symbol.** For anything another
+  solution can reach — a public type of a library the others use — confirm
+  with Serena or a text search.
+- **To have all of it held, give the repository one solution that lists every
+  project.** It then lists the most, so it is the one chosen, with no setting
+  on any machine. Tried with a solution of all 14 projects: types from all
+  four solutions were found, for the 33 MB above. This is the repository's
+  decision and not a machine's: `dotnet build` and `dotnet test` run in the
+  folder holding that file will take it too.
+- **Open the session on the repository, not on a folder of several.** The
+  search covers the whole workspace folder, and the largest solution of any
+  repository under it would be the one loaded. Which folder Claude Code hands
+  the server as its workspace folder was not established.
+
+`csharp-ls` also takes `--solution <path>`, which the `csharp-lsp` plugin does
+not pass; using it means a plugin of one's own, and was not tried.
 
 ## Install
 
