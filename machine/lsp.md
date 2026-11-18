@@ -141,12 +141,7 @@ So in a repository of several solutions:
 - **Do not trust a reference count for a shared symbol.** For anything another
   solution can reach — a public type of a library the others use — confirm
   with Serena or a text search.
-- **To have all of it held, give the repository one solution that lists every
-  project.** It then lists the most, so it is the one chosen, with no setting
-  on any machine. Tried with a solution of all 14 projects: types from all
-  four solutions were found, for the 33 MB above. This is the repository's
-  decision and not a machine's: `dotnet build` and `dotnet test` run in the
-  folder holding that file will take it too.
+- **To have all of it held, write the local solution** — the next section.
 - **Open the session on the repository, not on a folder of several.** The
   search covers the whole workspace folder, and the largest solution of any
   repository under it would be the one loaded. Which folder Claude Code hands
@@ -154,6 +149,43 @@ So in a repository of several solutions:
 
 `csharp-ls` also takes `--solution <path>`, which the `csharp-lsp` plugin does
 not pass; using it means a plugin of one's own, and was not tried.
+
+## The local solution, for a repository of several
+
+A solution that lists every project lists the most, so it is the one the
+server chooses — with no setting anywhere. It is kept **local**: in `.lsp/`,
+which the shipped `.gitignore` ignores, so it is never committed and never the
+solution anyone builds. The server does not read `.gitignore` and finds it all
+the same.
+
+The command that writes it is in the repository's own `AGENTS.md`, under *Code
+intelligence*
+([the template](../repo/payload/agentics/templates/root-AGENTS.md)), because
+that is where a session reads it. It is one line of shell, needs no `dotnet`,
+and lists every project file git tracks or would track.
+
+- **It is rewritten, never checked.** Writing it takes no measurable time and
+  the result depends only on the project files there are, so there is nothing
+  to compare and nothing to keep in step: an agent writes it before its first
+  question in a session, and again after adding a project.
+- **Why a folder and not the root.** The server searches every subfolder, so
+  the place makes no difference to it. At the root, a bare `dotnet build` or
+  `dotnet test` would take the file and run everything in the repository at
+  once.
+- **A repository with one solution does not need it.** The command is harmless
+  there and changes nothing the server loads.
+- **A machine without it** gets the behaviour above: one solution held, the
+  rest confirmed by other means.
+
+Tried on the same monorepo: of five solutions found the server loaded
+`.lsp/All.slnx`, and types from all four of the repository's solutions were
+found, for the 33 MB above.
+
+Not established: whether a server that has already loaded takes up a rewritten
+file. The server loads on the first question, so a file written before that is
+always the one read; after adding a project in the middle of a session, the
+workspace symbol search says whether the new project is held, and a new
+session is the sure way.
 
 ## Install
 
