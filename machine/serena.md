@@ -10,6 +10,11 @@ wiring. Verified on Windows with Serena 1.7.0, Claude Code 2.1.
 Serena is **agent tooling**: installed once per machine with `uv tool`, never
 as a repository dependency. See [`python.md`](python.md) for why.
 
+Claude Code also has a built-in LSP tool that reads code the same way and does
+not edit it. The two can be on together. [`lsp.md`](lsp.md) has the question to
+ask first — both, one or neither — with what each costs in memory, about
+790 MB for Serena on about 45,000 lines of C#.
+
 ## Install
 
     uv tool install -p 3.13 serena-agent

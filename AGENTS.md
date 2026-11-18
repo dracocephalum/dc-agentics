@@ -17,6 +17,7 @@ them.
 |---|---|
 | Set up a developer machine, install tooling, or fix Python/Git setup | [`machine/README.md`](machine/README.md) |
 | Install or wire Serena (or another MCP server) into Claude Code | [`machine/serena.md`](machine/serena.md) |
+| Install Claude Code's LSP tool for C#, or choose between it and Serena | [`machine/lsp.md`](machine/lsp.md) |
 | Set up GitHub access, SSH keys, commit signing, or `gh` | [`machine/github.md`](machine/github.md) |
 | Set up or troubleshoot secret scanning / git hooks | [`machine/gitleaks.md`](machine/gitleaks.md) |
 | Set up a machine that is **not Windows** (Linux, macOS, FreeBSD) | [`machine/platforms.md`](machine/platforms.md) — untested, read first |
@@ -46,7 +47,7 @@ Three kinds of file, told apart by location:
     GLOSSARY.md                    index of terms to the document that owns each; never a second definition
     .agentics.yaml              this repository's own settings (source-control mode); same shape as the payload's
     .markdownlint.yaml             one line: extends the payload copy (so it cannot drift)
-    machine/                       setting up a machine (README.md, then github/gitleaks/python/serena)
+    machine/                       setting up a machine (README.md, then github/gitleaks/python/serena/lsp)
                                    Windows and interactive today; platforms.md for other platforms
     repo/                          acting on a target repository
       initialize.md                repo initialization: inputs, what lands, the five stages
