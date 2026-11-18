@@ -11,8 +11,9 @@ Serena is **agent tooling**: installed once per machine with `uv tool`, never
 as a repository dependency. See [`python.md`](python.md) for why.
 
 Claude Code also has a built-in LSP tool that reads code the same way and does
-not edit it. [`lsp.md`](lsp.md) installs it and compares the two; they can be
-on together.
+not edit it. The two can be on together. [`lsp.md`](lsp.md) has the question to
+ask first — both, one or neither — with what each costs in memory, about
+790 MB for Serena on one C# solution.
 
 ## Install
 

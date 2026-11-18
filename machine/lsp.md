@@ -13,6 +13,53 @@ It is **Claude Code only**. Another agent tool takes
 [Serena](serena.md), which is an MCP server and works with any client. Both are
 optional, and both can be on at once.
 
+## Which to install — ask before installing either
+
+**Which code-intelligence tools should this machine have?** It is a decision,
+not a default: each holds memory for as long as a session is open. Put the
+table to the user and install what they answer.
+
+| Answer | Memory | Gets | Gives up | Choose when |
+|---|---|---|---|---|
+| **Both** | about 1.2 GB | short answers and unasked diagnostics from the LSP tool, edits by symbol from Serena, and each covers reading when the other is absent or fails to start | nothing | Claude Code, and memory to spare; the usual answer |
+| **LSP tool only** | about 370 MB | reading and unasked diagnostics | rename and the other edits by symbol; a rename is search and replace again | Claude Code, and memory is tight |
+| **Serena only** | about 790 MB | reading and edits by symbol | the shorter answers; diagnostics come only when asked for | an agent tool other than Claude Code, or one tool is wanted and renames matter |
+| **Neither** | none | nothing to install or keep current | answers about symbols; text search and ordinary edits do the work | a small repository, or a machine with no memory to spare |
+
+No answer is permanent, and nothing in the toolkit requires either tool. To
+change it later without uninstalling:
+
+    claude plugin disable csharp-lsp@claude-plugins-official     # enable turns it back on
+    claude mcp remove serena -s user                             # serena.md registers it again
+
+When memory runs short with both on, turn Serena off first: it is the larger,
+and what only it does — rename — is the rarer need.
+
+## What each costs in memory
+
+Measured on Windows, one C# solution loaded, after a handful of questions:
+
+| Tool | Process | Memory |
+|---|---|---|
+| LSP tool | `csharp-ls` | about 370 MB |
+| Serena | its C# language server | about 470 MB |
+| Serena | the Serena server itself, in Python | about 320 MB |
+| **Both** | all three | **about 1.2 GB** |
+
+Read the numbers as a floor for a solution of that size, not as a limit:
+
+- They are one reading. A language server grows with the size of the solution
+  and as more files are opened.
+- With both on, two language servers hold the same solution. Nothing is shared
+  between them.
+- The memory is held while the session is open, not only while a question is
+  being answered.
+- It was measured with one session open. Whether two sessions on the same
+  repository share a server was not measured; budget for one set per session.
+
+Count it beside what else the machine runs at the same time: the build, the
+test run, a local database.
+
 ## Which one does what
 
 Measured on a C# monorepo of four solutions, the same questions put to each:
@@ -25,15 +72,15 @@ Measured on a C# monorepo of four solutions, the same questions put to each:
 | Diagnostics | pushed after a file is opened or edited, unasked | asked for, per file |
 | Rename a symbol | not offered | declaration and every call site, line endings kept |
 | Insert or replace at a symbol, safe delete | not offered | offered |
-| Memory, one solution loaded | about 370 MB | about 470 MB for its language server, 320 MB for the server itself |
+| Works with | Claude Code | any MCP client |
 
 So the two are not a first choice and a spare:
 
-- **Reading code** — either. The LSP tool answers in less text; Serena's answer
-  saves the next read when the surrounding code is what was wanted.
+- **Reading code** — either. The LSP tool answers in less text, which is less
+  of the session's context spent on each question; Serena's answer saves the
+  next read when the surrounding code is what was wanted.
 - **Changing code by symbol** — Serena. The LSP tool only reads.
-- **Neither installed** — text search and ordinary edits. Nothing in the
-  toolkit requires either.
+- **Neither installed** — text search and ordinary edits.
 
 Three things seen in the comparison, worth knowing before trusting a result:
 
@@ -45,9 +92,6 @@ Three things seen in the comparison, worth knowing before trusting a result:
   method called `GetThing_WhenAsked_ShouldAnswer` keeps its name when
   `GetThing` is renamed.
 
-With both on, two language servers hold the same solution. On a machine short
-of memory, or a very large solution, turn one off.
-
 ## Install
 
 The language server is a .NET tool, the plugin a Claude Code plugin:
@@ -58,7 +102,9 @@ The language server is a .NET tool, the plugin a Claude Code plugin:
 `csharp-ls` must resolve by name: the plugin starts it as `csharp-ls`, so the
 .NET tools folder has to be on `PATH`, which the .NET SDK installer arranges.
 
-## One question to ask before installing the plugin
+Serena's install is in [`serena.md`](serena.md).
+
+## One more question before installing the plugin
 
 **Scope — where should the plugin be enabled?**
 
