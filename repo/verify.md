@@ -24,10 +24,11 @@ Never report success on an unbuilt repository.
     dotnet build
 
 The format pass runs once here, over everything the procedure just created.
-It costs about as much as a build — measured, and `--include` does not reduce
-it — which is why the shipped `AGENTS.md` makes it a repair step and a
-pre-commit step rather than a prefix to every build. Here it is also the first
-proof that the fixable rules and the fixer agree.
+It costs as much as a build on a new repository and several times that on a
+grown one — measured, and `--include` does not reduce it — which is why the
+shipped `AGENTS.md` makes it a repair step and a step of the pull request
+rather than of every commit or build. Here it is also the first proof that
+the fixable rules and the fixer agree.
 
 Then confirm the analyzers are actually wired, by introducing a deliberate
 violation of a rule the chosen mode leaves enabled. Add it as its own file under
