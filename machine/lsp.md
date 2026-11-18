@@ -28,6 +28,16 @@ measurement and how to place another repository against it.
 | **Serena only** | about 790 MB | reading and edits by symbol | the shorter answers; diagnostics come only when asked for | an agent tool other than Claude Code, or one tool is wanted and renames matter |
 | **Neither** | none | nothing to install or keep current | answers about symbols; text search and ordinary edits do the work | a small repository, or a machine with no memory to spare |
 
+**Say this with the question when the answer includes the LSP tool.** It works
+as installed in a **standalone** repository, which has one solution. In a
+**monorepo**, which has one solution for each component, the C# server holds
+only one of them — the one listing the most projects — and leaves the others
+out of its answers without saying so. Holding all of them takes a workaround:
+a local, uncommitted solution of every project, written by a one-line command
+that an agent runs at the start of a session and after adding a project.
+[*The local solution*](#the-local-solution-for-a-repository-of-several) has
+it. Serena needs no such step.
+
 No answer is permanent, and nothing in the toolkit requires either tool. To
 change it later without uninstalling:
 
@@ -142,10 +152,17 @@ So in a repository of several solutions:
   solution can reach — a public type of a library the others use — confirm
   with Serena or a text search.
 - **To have all of it held, write the local solution** — the next section.
-- **Open the session on the repository, not on a folder of several.** The
-  search covers the whole workspace folder, and the largest solution of any
-  repository under it would be the one loaded. Which folder Claude Code hands
-  the server as its workspace folder was not established.
+- **Be in the repository when the first question is asked, not in a folder of
+  several.** The workspace folder Claude Code hands the server is the
+  session's working directory at the moment the server starts. Seen with a
+  session opened on a folder of 13 repositories: the server loaded the largest
+  solution of any of them, 92 projects of another repository, took 810 MB, let
+  the first three questions time out at 60 seconds each, and knew nothing of
+  the repository being worked on.
+- **To start over, end the `csharp-ls` process.** Claude Code starts a new one
+  on the next question, in the working directory of that moment. After the
+  above, ending it and asking again from the repository root gave a server on
+  that repository, at 370 MB.
 
 `csharp-ls` also takes `--solution <path>`, which the `csharp-lsp` plugin does
 not pass; using it means a plugin of one's own, and was not tried.
@@ -181,11 +198,14 @@ Tried on the same monorepo: of five solutions found the server loaded
 `.lsp/All.slnx`, and types from all four of the repository's solutions were
 found, for the 33 MB above.
 
+In a Claude Code session, with the file written and the server started from
+the repository root, the type that had 8 of its 11 files reported had all 11.
+
 Not established: whether a server that has already loaded takes up a rewritten
-file. The server loads on the first question, so a file written before that is
-always the one read; after adding a project in the middle of a session, the
-workspace symbol search says whether the new project is held, and a new
-session is the sure way.
+file by itself. The server loads on the first question, so a file written
+before that is always the one read; after adding a project in the middle of a
+session, the workspace symbol search says whether the new project is held, and
+ending the `csharp-ls` process makes the next question load the file afresh.
 
 ## Install
 

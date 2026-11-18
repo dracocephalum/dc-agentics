@@ -151,6 +151,12 @@ is the user's choice: put the table in [`lsp.md`](lsp.md) to them, then follow
 [`lsp.md`](lsp.md) and [`serena.md`](serena.md) for what they answered. Do not
 install either unasked.
 
+Tell them one thing with the question: the LSP tool works as installed in a
+standalone repository, and in a monorepo it holds one component's solution
+only until a local solution of every project is written — a one-line step an
+agent repeats each session, described in [`lsp.md`](lsp.md). Serena needs no
+such step.
+
 ## Windows quirks an agent will hit
 
 Recorded because each one cost time to discover; none is obvious from an error

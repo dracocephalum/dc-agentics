@@ -157,7 +157,10 @@ is required, and neither is recorded in `.agentics.yaml`.
   definitions, references, implementations, symbols, and diagnostics after an
   edit. **Connected:** prefer it over grep for "where is this used" and "what
   implements this". A first call that fails with `server is starting` is
-  called again; the server loads on the first question.
+  called again; the server loads on the first question, and searches the
+  session's working directory of that moment. Be at the repository root
+  then: from a folder of several repositories it loads the largest solution
+  of any of them.
 
   **Several solutions:** the C# server holds one — the one listing the most
   projects — and answers for that one only, without saying so. A local
