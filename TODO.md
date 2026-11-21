@@ -126,10 +126,12 @@ half:
       never run and stay green from their last execution.
 - [ ] **Cross-component references are not a pipeline's to police.** The
       layout rule is packages between components, with a recorded
-      `ProjectReference` workaround until a feed exists. A pipeline builds its
-      component as though the references were packages; while the workaround
-      stands, the component's trigger must include the referenced components'
-      paths, and nothing more is asked of CI. Close by: the feed, and the
+      `ProjectReference` workaround until a feed exists, and a standing
+      leave for a component that is never released to reference
+      another by project. A pipeline builds its component as though
+      the references were packages; where a project reference stands, the
+      component's trigger must include the referenced components' paths,
+      and nothing more is asked of CI. Close by: the feed, and the
       `TODO.md` entries in each consuming repository that name the switch —
       not a CI check for stray project references.
 - [ ] **Build only affected components** in a monorepo — the reason there is
