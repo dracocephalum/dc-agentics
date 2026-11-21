@@ -87,6 +87,14 @@ demand, and the agent checks `gh auth status` and hands over
 permission model is in `agentics/rules/change-tracking/github.md` of any
 initialized repository.
 
+The package scope (`read:packages`) is handled the same way, and offered
+when a repository adopts a pipeline that publishes to GitHub Packages:
+without it `gh` cannot list what the registry holds. The agent hands over
+`gh auth refresh -h github.com -s read:packages` then, and the `-h` is not
+optional where the command is not run at a terminal. Restoring a package is
+another matter and takes a token of its own; both are in
+`agentics/rules/delivery/github.md`, *Reading a package*.
+
 ### Step 9 — the trap
 
 GitHub keeps **authentication keys and signing keys as separate lists**. Step 4

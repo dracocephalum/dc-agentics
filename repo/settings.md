@@ -107,6 +107,30 @@ tracker exists only once the repository does, and
 [`change-tracking.md`](payload/agentics/rules/change-tracking/change-tracking.md)
 states that as the one exception.
 
+The `delivery:` block is the answer to *Versioning and a pipeline*. Asked
+for now, follow
+[`delivery.md`](payload/agentics/rules/delivery/delivery.md), *Adopting it*,
+once the first project builds; it asks its own questions and sets the three
+values. **The pipeline is not in the first push.** The versioning steps are
+done here, with `pipeline: none`; the workflow is the repository's first
+pull request, opened once the first push and the ruleset of step 1 are
+done, and that change sets `pipeline`. Where initialization ends before
+then — no remote yet, or a mode in which the agent does not push — the
+entry below is left in `TODO.md`, reworded to the pipeline alone.
+
+Left for later, which is the default, the block stays as shipped, and
+`TODO.md` gets the entry that keeps the offer open:
+
+    - [ ] **The repository has no version of its own and no pipeline.** It
+          builds as the SDK's default `1.0.0`, and nothing builds it but its
+          developers. Offered at initialization and left for later. Close
+          by: `agentics/rules/delivery/delivery.md`, *Adopting it*, when
+          there is something to publish or a build worth checking on every
+          change - versioning first, since the pipeline needs it.
+
+An agent asked later to add a pipeline, publish a package or set a version
+finds the entry and the rule, and asks the same questions then.
+
 Then `TODO.md`: by now the earlier stages have added their entries — a skipped
 Serena config, a refused or not-yet-applicable ruleset, the licence decision.
 Anything else that was not finished, could not be verified, or was left for

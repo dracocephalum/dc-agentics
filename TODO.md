@@ -49,8 +49,37 @@ when they have a closing condition.
 
 ## CI — deferred as a group
 
-Nothing under `build/` exists yet. When CI is picked up, these are the pieces
-already decided on the local side that need their server-side half:
+A first pipeline exists, as a template a repository adopts:
+`repo/payload/agentics/templates/ci.yml`, described in
+`repo/payload/agentics/rules/delivery/`. It builds, tests, packs, and
+publishes `ci` packages to the host's registry. These are the pieces it does
+not have yet, each decided on the local side and needing its server-side
+half:
+
+- [ ] **The delivery rule is verified on one repository.** One personal
+      account, one private repository, one solution, two packages, and a
+      restore of one of them from a scratch project on Windows through the
+      two ignored files. Not yet seen: the removal of an old `ci` version,
+      an organization's repository, a repository with several solutions or
+      with no package, another repository's workflow reading a package, and
+      the ignored files on Linux, macOS or in an editor's restore. Close by:
+      each seen once, and the *Not yet verified* notes in
+      `repo/payload/agentics/rules/delivery/github.md` removed as they are.
+- [ ] **A release is not written.** `PLAN.md`, *Release versioning*, has
+      what is decided about it. Close by: a second workflow template, the
+      checks before it publishes, and the rule's section on nuget.org.
+- [ ] **A sync does not say that a template changed.** A repository that
+      copied `ci.yml` or `Packaging.props` out of `agentics/templates/`
+      keeps its copy when the template moves on. Close by: the sync's plan
+      listing the templates that changed since the recorded commit, beside
+      the payload files it already lists.
+- [ ] **Adopting it has no shim, and the offer at initialization has not
+      been tried.** Initialization asks, and an opt-out leaves an entry in
+      the target's `TODO.md`; the adoption itself is a procedure in the
+      rule, followed by hand, and so far it was followed once, in a
+      repository that existed before the rule did. Close by: an
+      initialization trial that takes each answer, and deciding whether
+      `/new` or a shim of its own should run the adoption.
 
 - [ ] **Secret scanning in CI** — `gitleaks/gitleaks-action` on push and PR
       with `fetch-depth: 0`. Free for personal accounts; an organization
