@@ -157,8 +157,9 @@ target_keys=$(awk '{ sub(/\r$/, "") } /^[a-z][a-z-]*:/ { sub(/:.*/, ""); print }
 for k in $payload_keys; do
   echo "$target_keys" | grep -qx "$k" && continue
   if [ $plan = 1 ]; then say "== plan: append the settings block '$k:' with its defaults"; continue; fi
-  # One blank line before the block; the block's own trailing blank lines dropped, or the file ends with two.
-  { printf '%s' "$(printf "$(endings "$settings")")"
+  # One blank line before the block, printed as the format itself: a command substitution around it strips the
+  # line ending. The block's own trailing blank lines are dropped, or the file ends with two.
+  { printf "$(endings "$settings")"
     awk -v k="$k" -v ORS="$(endings "$settings")" '
       { sub(/\r$/, "") }
       /^[a-z]/ { f = ($0 ~ "^" k ":") }
