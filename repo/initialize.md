@@ -33,6 +33,7 @@ the worse question.
 | Source-control mode | `local` — `auto`, `local`, or `manual`; [`settings.md`](settings.md) |
 | Change tracking | ask — GitHub Issues, yes or no; `none` means branch names and PR titles carry no ticket; [`settings.md`](settings.md) |
 | Licence | `none` — recorded, summarised, and left as a decision in `TODO.md`; [`settings.md`](settings.md) |
+| Versioning and a pipeline | ask — now or later; later is the default and a complete answer. Now adds what [`payload/agentics/rules/delivery/delivery.md`](payload/agentics/rules/delivery/delivery.md), *Adopting it*, asks; later leaves an entry in `TODO.md`; [`settings.md`](settings.md) |
 
 ## What ends up in the repository root
 
@@ -49,7 +50,9 @@ the worse question.
                                  component-README.md, category-README.md — used by /new
                                  rules-AGENTS.md — the start of docs/rules/AGENTS.md, the repository's own
                                  rules index, created with its first rule; a sync reads it, never writes it
-                                 all five kept in both modes (documents.md)
+                                 Version.props, Packaging.props, ci.yml — copied out when versioning and a
+                                 pipeline are adopted, now or later (agentics/rules/delivery/delivery.md)
+                                 all of them kept in both modes (documents.md)
     .editorconfig                editor conventions (root = true)
     .gitattributes               line-ending normalization  (dotnet new)
     .gitignore                   ignore rules               (dotnet new)

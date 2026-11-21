@@ -51,6 +51,17 @@ path would still owe:
 
 ### Release versioning
 
+**Decided for everything short of a release**, and shipped as an opt-in:
+the number is kept in a file, the build says what kind it is, and the
+pipeline's counter arrives as a property —
+[`repo/payload/agentics/rules/delivery/delivery.md`](repo/payload/agentics/rules/delivery/delivery.md).
+What is left open here is the release itself: what starts it (a pushed tag,
+`v1.2.0`, or `<component>/v1.2.0` for a component versioned apart, is the
+leaning), the checks before it publishes (the tag is the version in the
+code, the commit is on the default branch, the version is not published
+already), and nuget.org's trusted publishing. The rest of this section is
+the reasoning that led there.
+
 The stamp in `Directory.Build.targets` handles development builds and
 deliberately attempts nothing more: `git describe`, no dependency, fail-safe
 when there is no repository, no commits, or no `git`. Release versions are a
@@ -110,8 +121,13 @@ and money. Worth knowing before it is urgent.
 
 ### Pipelines
 
-Nothing under `build/` exists yet; the CI group in `TODO.md` lists the
-server-side halves already decided on.
+A first pipeline is shipped as an opt-in template, a GitHub Actions workflow
+of two jobs —
+[`repo/payload/agentics/rules/delivery/github.md`](repo/payload/agentics/rules/delivery/github.md).
+It builds every solution on every change, which is right for one component
+and wasteful for many; the CI group in `TODO.md` lists what it does not do
+yet. The comparison below was written before it and still holds for the
+question it leaves open, a monorepo of many components.
 
 **Azure Pipelines** is friendlier to a monorepo than most: a `.yaml` per
 component, path-filtered triggers, and several pipelines against a single

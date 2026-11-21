@@ -84,7 +84,7 @@ the toolkit is not self-describing. It also makes the reference in
 Verify nothing was missed:
 
     grep -n "{{" <repo>/AGENTS.md <repo>/README.md      # only the Licence section may still match
-    ls <repo>/agentics/templates/                            # all five templates must still be there
+    ls <repo>/agentics/templates/                            # every template must still be there
     grep -n "<!--" <repo>/AGENTS.md <repo>/README.md    # only the Licence section may still match
 
 The generated documents must be clean; the templates they came from must be
