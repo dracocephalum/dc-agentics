@@ -52,8 +52,8 @@ source-control:
 
 delivery:
   # Versions, pipelines and registries - agentics/rules/delivery/delivery.md. Opt-in: a repository has
-  # none of it until it adopts it, at initialization or later, by "Adopting it" there. A pipeline needs
-  # versioning; versioning stands without a pipeline.
+  # none of it until it adopts it, at initialization or later, by "Adopting it" there. A pipeline that
+  # publishes needs versioning; versioning stands without a pipeline.
   versioning: false                   # true once Version.props and Packaging.props are at the root
   pipeline: none                      # github | none - none means nothing builds the repository but its developers
   packages-token-variable: "GITHUB_PACKAGES_TOKEN"   # the environment variable a developer's machine keeps its token for

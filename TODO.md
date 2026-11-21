@@ -57,14 +57,34 @@ not have yet, each decided on the local side and needing its server-side
 half:
 
 - [ ] **The delivery rule is verified on one repository.** One personal
-      account, one private repository, one solution, two packages, and a
-      restore of one of them from a scratch project on Windows through the
-      two ignored files. Not yet seen: the removal of an old `ci` version,
-      an organization's repository, a repository with several solutions or
-      with no package, another repository's workflow reading a package, and
-      the ignored files on Linux, macOS or in an editor's restore. Close by:
+      account, one private repository, one solution, two packages, a
+      restore of them on Windows through the two ignored files, and a
+      second repository's workflow restoring them on Linux. Not yet seen: a
+      change outside the workflow's list of paths starting no run, the
+      removal of an old `ci` version, an organization's repository, a
+      repository with several solutions or with no package, and the
+      ignored files on macOS or in an editor's restore. Close by:
       each seen once, and the *Not yet verified* notes in
       `repo/payload/agentics/rules/delivery/github.md` removed as they are.
+- [ ] **The exception for a package with no release is tried, and no
+      procedure makes its offer.** `delivery.md`, *A committed reference
+      names a release*, has its two places and when each is offered, and
+      both are verified in a second repository: a committed `-ci.`
+      reference restored on a developer's machine, and that repository's
+      pipeline restoring it, as `github.md`, *Another repository's
+      pipeline*, has it. That pipeline was a trial written by hand, which
+      builds and tests and publishes nothing. Its three additions are in
+      the template commented out; the template's own wording of the
+      second, which takes the pattern from a variable, was run on a
+      machine and not on the host. Close by: that seen in a run, then the
+      offer worded where it is made: for the first place where a package
+      is added, `dependencies.md`, and for the second in the steps that
+      add the pipeline.
+- [ ] **Nothing warns that a committed `-ci.` reference is about to
+      expire.** The registry keeps the newest few, and a repository that
+      names an older one stops restoring. Close by: a scrub check that
+      compares the committed version with what the registry still has, or
+      a longer keep for a version something names.
 - [ ] **A release is not written.** `PLAN.md`, *Release versioning*, has
       what is decided about it. Close by: a second workflow template, the
       checks before it publishes, and the rule's section on nuget.org.
