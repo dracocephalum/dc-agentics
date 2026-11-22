@@ -291,8 +291,8 @@ Each step leaves every initialized repository syncing clean.
 
 1. **Done.** The sentences of *General but for a sentence*, and the
    toolchain each scrub check is skipped without. It moved nothing.
-2. `repository.toolchains`, read with `framework` as its fallback, and the
-   scrub's check 6 comparing it with the tree.
+2. **Done.** `repository.toolchains`, with a sync renaming `framework` to
+   it, and the scrub's check 6 comparing it with the tree.
 3. `layout.md` and `delivery.md` cut in two; the .NET templates moved; the
    links, the index rows and the shims that name them.
 4. `root-AGENTS.md` as a frame and a block per toolchain, and the sync

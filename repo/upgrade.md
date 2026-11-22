@@ -158,7 +158,9 @@ procedure's business, not this one's.
 `.agentics.yaml` is never replaced: it carries the target's choices. The script
 merges a new top-level block and names a dead one; a new key *inside* an
 existing block is in the change list for you to add by hand, with the
-payload's comment beside it.
+payload's comment beside it. One key it renames itself, since nothing is
+chosen: `repository.framework` became `repository.toolchains`, a list, and a
+file that has the old key gets the new one with its one value.
 
 ### Adopting the block
 
