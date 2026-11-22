@@ -90,8 +90,9 @@ Three kinds of file, told apart by location:
                                    component-README.md, category-README.md - filled by /new
                                    rules-AGENTS.md - copied to docs/rules/AGENTS.md with the target's first own
                                    rule; the one file the sync reads from outside agentics/ and never writes
-                                   Version.props, Packaging.props, ci.yml - copied out when a repository adopts versioning
-                                   and a pipeline, agentics/rules/delivery/delivery.md; at initialization only when asked for there
+                                   Version.props, Packaging.props, build.yml, dev.yml, ci.yml - copied out when a repository
+                                   adopts versioning and a pipeline, agentics/rules/delivery/delivery.md; at initialization only
+                                   when asked for there
                                    all of them stay in the target, both modes; repo/documents.md says why
 
     (2) the one thing copied from OUTSIDE payload/

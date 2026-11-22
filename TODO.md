@@ -49,13 +49,24 @@ when they have a closing condition.
 
 ## CI — deferred as a group
 
-A first pipeline exists, as a template a repository adopts:
-`repo/payload/agentics/templates/ci.yml`, described in
-`repo/payload/agentics/rules/delivery/`. It builds, tests, packs, and
-publishes `ci` packages to the host's registry. These are the pieces it does
-not have yet, each decided on the local side and needing its server-side
-half:
+Two pipelines exist, as templates a repository adopts, with the steps they
+share: `dev.yml`, `ci.yml` and `build.yml` under
+`repo/payload/agentics/templates/`, described in
+`repo/payload/agentics/rules/delivery/`. `dev` builds and tests a change
+request and reaches nothing; `ci` builds, tests, packs, and publishes `ci`
+packages to the host's registry. These are the pieces they do not have yet,
+each decided on the local side and needing its server-side half:
 
+- [ ] **The pipelines as three files have not run.** What is verified was
+      one workflow of two jobs. Split by kind, a pipeline calls the shared
+      steps as a called workflow, with its permissions and its outputs
+      passed across, and that is written from what the host documents.
+      Close by: both seen in a repository, a pull request that shows one
+      check and no deploy, with the check's name as the host gives it
+      written into `github.md`, a merge that deploys, a merge
+      of a change to a tool or a test alone that starts no `ci` run, and
+      the *Not yet verified* note in `github.md` reworded to what was
+      seen.
 - [ ] **The delivery rule is verified on one repository.** One personal
       account, one private repository, one solution, two packages, a
       restore of them on Windows through the two ignored files, and a
@@ -86,10 +97,12 @@ half:
       compares the committed version with what the registry still has, or
       a longer keep for a version something names.
 - [ ] **A release is not written.** `PLAN.md`, *Release versioning*, has
-      what is decided about it. Close by: a second workflow template, the
-      checks before it publishes, and the rule's section on nuget.org.
+      what is decided about it, and `delivery.md` has its place: the
+      third pipeline, `release`, which calls the same shared steps. Close
+      by: `release.yml`, the checks before it publishes, and the rule's
+      section on nuget.org.
 - [ ] **A sync does not say that a template changed.** A repository that
-      copied `ci.yml` or `Packaging.props` out of `agentics/templates/`
+      copied a pipeline or `Packaging.props` out of `agentics/templates/`
       keeps its copy when the template moves on. Close by: the sync's plan
       listing the templates that changed since the recorded commit, beside
       the payload files it already lists.
