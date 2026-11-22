@@ -150,6 +150,183 @@ each repository's `.agentics.yaml` (85 the hard limit, 90 green, shipped as
 defaults), so the pipeline step reads them from there rather than carrying its
 own copy.
 
+## Toolchains
+
+The toolkit supports one toolchain, .NET, and says so in every second
+document. A second one is wanted, Go first, and one day a monorepo that
+holds both. This is where each document would be cut so that a toolchain is
+something a repository lists, and what is not about a toolchain is written
+once. Nothing below is done; the order at the end starts with what costs
+least and is useful with .NET alone.
+
+A toolchain is named for what builds, `dotnet` and `go`, not for a
+language: the build files, the package rules and the pipeline are .NET's,
+and only the coding rules are C#'s.
+
+### What is taken as settled
+
+- **A repository lists its toolchains.** `repository.toolchains: [dotnet]`
+  in `.agentics.yaml` in place of `repository.framework: dotnet`; a list
+  from the first day, since one value would have to be migrated the day a
+  second toolchain joins. An empty list is a repository that takes the
+  general rules alone.
+- **Which toolchain a component is, is read from the tree** and recorded
+  nowhere: a `.slnx` or a `go.mod` in its folder says it. The scrub checks
+  the list against what the tree holds.
+- **A file that every repository gets stays one file and holds every
+  toolchain**, where that is the easier thing: `.gitignore`,
+  `.gitattributes`, `.editorconfig`, and a rule that is mostly general with
+  a section per toolchain. A Go repository carrying lines that ignore `bin/`
+  and `obj/` loses nothing.
+- **A rule that is half a toolchain's is cut in two**, the way a host is
+  already cut from its rule: `source-control.md` beside `github.md`.
+- **The Go half is written against the first Go repository**, not ahead of
+  it. What is done before then is the room for it.
+
+### The component, in both
+
+The component is what carries over: what builds and versions together, in
+its own folder under a category. Its inside is the toolchain's.
+
+| | .NET | Go, as it looks from here |
+|---|---|---|
+| A component is | one solution | one module, the folder with `go.mod` |
+| Inside it | `src/` and `test/`, a project each | packages as folders, `cmd/<name>/` for each executable, `internal/` for what is private; tests beside the code as `_test.go` |
+| Another component is reached | as a package at a version, never by `ProjectReference` | as a module at a version, never by a `replace` to a sibling folder |
+| The recorded workaround | a commented `ProjectReference`, listed in `TODO.md` | a `replace`, or a `go.work` that is not committed |
+| Nothing spans the repository | no root solution | no committed root `go.work`, for the same reasons |
+| Shared configuration | `Directory.*.props`, once at the root | a linter's configuration at the root; nothing is inherited by the build |
+| A version | `Version.props` and the kind of build | a git tag, `<folder>/v1.2.3` for a module in a subfolder |
+| Published to | a package registry | nowhere: a module is fetched from its repository |
+| Names | PascalCase projects and namespaces, kebab-case folders | the module path and lowercase package names, kebab-case folders above the module |
+
+Every row of the Go column is a guess until a repository tries it. The
+last three are where the rules differ most, and they are all in
+`delivery.md` and the naming table of `layout.md`.
+
+### Where each document is cut
+
+**General already, and left alone:** `change-tracking/`,
+`source-control/github.md`, `security-reminders.md`,
+`coding/where-facts-live.md`, `coding/markdown/`, `optimize.md`, the pull
+request template, the ruleset, `.markdownlint.yaml`, the payload's
+`TODO.md`, and the templates `rules-AGENTS.md` and `category-README.md`.
+
+**General but for a sentence**, each mended in place:
+
+| Document | What names .NET | Becomes |
+|---|---|---|
+| `source-control/source-control.md` | "`dotnet build` and `dotnet test` green" before a change request | the build and the tests green, by the commands `AGENTS.md` gives |
+| `coding/code-review.md` | StyleCop and the analyzers as what a review does not repeat | what the build already enforces; the list of language checklists at its end grows by one |
+| `coding/architecture.md` | four pointers to the C# rules for the language's half | a list of the language files at its end, as the review has |
+
+**One file, a section per toolchain**, as the user of it reads all of it
+anyway:
+
+| Document | General | A toolchain's |
+|---|---|---|
+| `dependencies.md` | the policy by SPDX identifier, and pull requests | already cut: *Enforcement — .NET*, *Enforcement — npm*; Go adds a third |
+| `scrub.md` | checks 1 to 3, 5 to 7, 9, 10 | the `dotnet format` note in check 4; check 8, the files forked from `dotnet new`; the list of what a build reads in check 11; the registry's package type in check 12. Each says which toolchain it is skipped without |
+| `.gitignore`, `.gitattributes`, `.editorconfig` | the whole file | Go's lines are added below the forked part; the baseline hash is of the pristine file and does not move |
+
+**Cut in two**, a general rule and a toolchain file beside it:
+
+| Document | Stays general | Moves to the .NET file |
+|---|---|---|
+| `layout.md`, 553 lines | the component and what makes it one; references between components as a principle; the two modes; folder naming; the categories; *The toolkit's rules and the repository's*; *Root documents*; *Samples*; the choices of `agentics/`, `docs/` and `ui/` | the naming rows for solution, project, namespace and test project; *The `.Core` exception*; the trees with their build files; *One solution per component*; *Config lives at the root only*; the choices of `test/` and `.slnx`; all of *Test projects* and *Keeping the test stack current*, over a quarter of the file |
+| `delivery/delivery.md` | the three kinds of build and how far each reaches; a registry for each kind; a pipeline for each kind and its list; *A committed reference names a release*; the shape of adopting it | `Version.props` and `Packaging.props`; the kind as a build property; how NuGet orders `ci.9` and why never four numbers; nuget.org; the `dotnet pack` steps of adopting |
+| `templates/root-AGENTS.md` | the head, the rows of the general rules, *Conventions* in part | the layout variants' build files, the rows for the C# rules, *Code intelligence*, *Building and testing*. The template becomes a frame and a block per toolchain, and the sync leaves out a row whose rule the repository does not have, as it does for an excluded one |
+| `templates/component-README.md`, `root-README.md` | everything but the commands | two lines of build commands and the solution's name |
+
+**A toolchain's whole**, and moved as they are: `coding/csharp/`; the
+templates `Version.props`, `Packaging.props` and `build.yml`, the last
+under a name that says whose steps they are; at the root, the
+`Directory.*` files, `Tests.props`, the StyleCop files, `BannedSymbols.txt`,
+`nuget.config`, `global.json`, `.config/dotnet-tools.json` and the two
+licence lists, whose format is the .NET tool's.
+
+**A host's and a toolchain's at once:** `delivery/github.md`. The workflow
+mechanics are the host's. *Reading a package*, the two ignored files and *A
+package's visibility is its own* are the host's NuGet registry, and mean
+nothing to a toolchain that publishes no package. They stay where they are
+under headings that say NuGet until a second toolchain shows whether they
+want a file of their own.
+
+**The settings file:** `repository.framework` becomes the list.
+`repository.namespace` is .NET's and says so. `coverage` keeps its two
+numbers and names a collector per toolchain. `delivery.versioning` is
+worded for `Version.props` and is reworded for "the repository has a
+version of its own".
+
+**The toolkit's own side:** `repo/build.md` is the .NET stage of an
+initialization and becomes one stage document per toolchain;
+`repo/copy.md`, `repo/verify.md` and `repo/upgrade.md` each have a general
+frame and .NET steps; `repo/stylecop.md`, `repo/version-check.md` and
+`repo/baselines/` are .NET's. `/new` names the C# procedure and comes to
+ask which toolchain. `repo/sync.sh` copies `agentics/` whole and comes to
+leave out what belongs to a toolchain the repository does not list.
+
+### Where a toolchain's files live
+
+Two questions, and the first decides more than the second.
+
+- **In a repository**, where an agent reads them: beside the general rule,
+  in a file named for the toolchain. `delivery/dotnet.md` joins
+  `delivery/github.md`; `layout.md` keeps its path, which a comment in
+  consumers' project files names verbatim, and gains `layout/dotnet.md`.
+  `coding/csharp/` stays, named for the language because its rules are the
+  language's. Templates go under `templates/dotnet/`.
+- **In the toolkit**, where a sync copies them from: one payload tree as
+  now, or one tree for the general files and one per toolchain, each a
+  mirror of a repository's root and laid over one another. The rules do
+  not need the second: a folder named for a toolchain is enough for a sync
+  to leave it out. The root files do, since nothing in `nuget.config` says
+  whose it is. `toolkit.payload-path` in the settings exists for a move of
+  this kind. It is the last step and not the first: it is mechanical, and
+  it proves nothing until a second tree has something in it.
+
+### Order
+
+Each step leaves every initialized repository syncing clean.
+
+1. The sentences of *General but for a sentence*, and the toolchain each
+   scrub check is skipped without. Useful today, and it moves nothing.
+2. `repository.toolchains`, read with `framework` as its fallback, and the
+   scrub's check 6 comparing it with the tree.
+3. `layout.md` and `delivery.md` cut in two; the .NET templates moved; the
+   links, the index rows and the shims that name them.
+4. `root-AGENTS.md` as a frame and a block per toolchain, and the sync
+   leaving out a toolchain's rules and rows where it is not listed. Proved
+   by a sync of a .NET repository that changes only the paths that moved,
+   and by an initialization with an empty list.
+5. The payload as trees laid over one another, once a second toolchain
+   has files of its own to put in one.
+6. The Go files, against the first Go repository.
+
+### Beside it: a component that follows an upstream
+
+The first Go candidates are forks that are to stop merging their upstream
+and review its changes instead. That is a rule of its own and no
+toolchain's: the last upstream release looked at is recorded in the
+component; each new release is read as a diff from that one; every change
+is sorted into what does not concern the component, what is taken by hand,
+and what is a security fix; and nothing is merged, so the component's
+paths are its own. It wants a home in `layout.md` or beside it, and a
+scrub check that says how far behind the record is.
+
+### Not settled
+
+- Whether `layout/dotnet.md` beside `layout.md` reads better than the test
+  stack moving to `coding/csharp/`, where its trigger already is.
+- A pipeline in a repository with two toolchains: one called workflow of
+  shared steps per toolchain is likely, and whether `dev` and `ci` are
+  then one file with a job each or a file per toolchain is open.
+- What `ci` means for a toolchain with no registry. A Go module's
+  unreleased commit already has a version anyone can fetch, so the kind
+  may have nothing to publish and only something to test.
+- Whether an empty list is worth supporting on its own, or only as the
+  state between a repository's first commit and its first component.
+
 ## Machines
 
 `machine/` is named for its subject, so it has room for more than one kind of
