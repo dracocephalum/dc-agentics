@@ -1,13 +1,14 @@
 # The build files and the first project
 
-Stage 2 of [`initialize.md`](initialize.md): the payload is at the target root. Check
+Stage 2 of [`initialize.md`](initialize.md): the payload is at the target root, and
+the .NET root files with it, copied out of `agentics/templates/dotnet/root/`. Check
 the StyleCop and build files against the chosen mode, understand the two git
 files, create the folder structure, and create the first project so that there
 is something for stage 5 to build.
 
 ## 1. The StyleCop files
 
-Already at the target root after the payload copy: `stylecop.ruleset`,
+Already at the target root after stage 1: `stylecop.ruleset`,
 `stylecop.json`, `StyleCop.props`, `.editorconfig`. There is one ruleset, and
 its header says how every severity was chosen; [`stylecop.md`](stylecop.md)
 says how to change one.
@@ -23,7 +24,7 @@ contradicts `stylecop.json` and produces SA1518 on every file.
 
 ## 2. Generate the build files
 
-Already at the target root after the payload copy: `Directory.Build.props`,
+Already at the target root after stage 1: `Directory.Build.props`,
 `Directory.Build.targets`, `Directory.Packages.props`, `Tests.props`,
 `BannedSymbols.txt`, `nuget.config`. The props files reference each other by
 `$(MSBuildThisFileDirectory)` and must stay together.

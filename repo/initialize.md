@@ -57,6 +57,7 @@ the worse question.
     .editorconfig                editor conventions (root = true)
     .gitattributes               line-ending normalization  (dotnet new)
     .gitignore                   ignore rules               (dotnet new)
+                                 and, for .NET, out of agentics/templates/dotnet/root/ (copy.md):
     Directory.Build.props        build defaults + StyleCop import
     Directory.Build.targets      short commit hash + dirty marker in the informational version
     Directory.Packages.props     central package versions   (CPM only)

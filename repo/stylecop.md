@@ -4,7 +4,7 @@ Applies when a StyleCop severity needs changing, when someone asks why a rule
 is set the way it is, or when the analyzer has to be wired into a repository
 that was not initialized by the toolkit.
 
-There is **one ruleset**, `payload/stylecop.ruleset`. Its header states the
+There is **one ruleset**, `payload/agentics/templates/dotnet/root/stylecop.ruleset`. Its header states the
 principle every severity was set against — a rule fails the build only when
 the toolchain can fix the violation or an agent follows it unprompted — and
 the comment on each rule says which case it is. Read the header before

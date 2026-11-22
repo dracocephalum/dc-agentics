@@ -75,8 +75,16 @@ say "== sync $target: $recorded -> $head"
 if git -C "$toolkit" cat-file -e "$base" 2> /dev/null; then
   say "== toolkit changes since $recorded"
   git -C "$toolkit" log --oneline "$base..HEAD" -- repo/payload .claude/skills
-  say "== payload files outside agentics/ that changed - yours to apply by intent (repo/upgrade.md, 'The rest of the payload')"
-  git -C "$toolkit" diff --name-status "$base..HEAD" -- repo/payload | grep -v 'repo/payload/agentics/' | sed 's|repo/payload/||' || true
+  say "== root files that changed - yours to apply by intent; a toolchain's are in agentics/templates/<toolchain>/root/ to compare with (repo/upgrade.md, 'The rest of the payload')"
+  # A root file is the payload's own, or a toolchain's under its templates. One that only moved between the
+  # two is not a change, and is passed over.
+  git -C "$toolkit" diff --name-status -M "$base..HEAD" -- repo/payload | awk -F '\t' '
+    { p = $NF }
+    p !~ /^repo\/payload\/agentics\// || p ~ /^repo\/payload\/agentics\/templates\/[^\/]+\/root\// {
+      if ($1 == "R100") next
+      sub(/^repo\/payload\/agentics\/templates\/[^\/]+\/root\//, "", p); sub(/^repo\/payload\//, "", p)
+      print substr($1, 1, 1) "\t" p
+    }' || true
   old_skills=$(git -C "$toolkit" ls-tree --name-only "$base:.claude/skills" 2> /dev/null || true)
 else
   say "== the recorded commit $recorded does not resolve in this checkout (a squashed branch, or shallow); no change list"
