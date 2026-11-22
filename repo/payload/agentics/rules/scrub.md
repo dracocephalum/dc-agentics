@@ -23,6 +23,10 @@ a file to rewrite — and a check that silently edits is a check nobody trusts.
     | 1 | Markdown lint | pass | 0 issues, 41 files linted |
     | 4 | Line endings | **fail** | AGENTS.md: 12 CRLF lines, 160 LF |
 
+Most checks are any repository's. A check, or a part of one, that is one
+toolchain's says so where it stands, and is skipped in a repository that
+holds no code of that toolchain.
+
 State `pass`, `fail`, or `skipped` with the reason, and for every failure what
 would close it. Apply fixes only when asked, and then as a separate, reviewable
 change.
@@ -97,7 +101,7 @@ paranoia or a false alarm:
 So the finding is real in the working tree you are about to commit from, and
 real for good in an exempt file.
 
-**`dotnet format` is the likeliest source, not a stray `sed -i`.** When it
+**For .NET: `dotnet format` is the likeliest source, not a stray `sed -i`.** When it
 inserts a line — the blank separator between using groups, say — it writes
 that line with the OS-native ending, because nothing sets `end_of_line` in
 `.editorconfig`. Measured: a pure-LF file at 0 CR and 20 LF came back from
@@ -144,7 +148,7 @@ silently, because nothing enforces it:
 |---|---|
 | `licence` | the `LICENSE` file — present, and the same licence |
 | `copyright-holder` | the holder named in `LICENSE` or `NOTICE` |
-| `layout` | the actual tree: `standalone` has one solution at the root, `monorepo` has category folders and none |
+| `layout` | the actual tree: `standalone` has its one component at the root, for .NET a solution there; `monorepo` has category folders and no component at the root |
 | `delivery.pipeline` | the pipeline files git tracks: `none` has none, a host's name has that host's |
 
 ### 7. `AGENTS.md` index is complete in both directions
@@ -178,7 +182,8 @@ does not exist is always a defect.
 
 ### 8. Baseline drift
 
-Three files were forked from `dotnet new` templates and carry a marker naming
+For .NET, and for a machine that has its SDK: skipped, saying which,
+without either. Three files were forked from `dotnet new` templates and carry a marker naming
 the SDK they were captured from and the SHA-256 of the pristine original:
 `.editorconfig`, `.gitignore`, `.gitattributes`.
 
@@ -286,6 +291,11 @@ last run.
       done
     fi
 
+The names the script takes for what a build reads, in its long `grep -E`
+line, are .NET's: sources, projects, solutions, the build files and the
+lock files. Another toolchain's are added to that line when the repository
+holds its code.
+
 It prints nothing when the lists stand, but for the last line, which it
 prints for whatever is left off the publishing list on purpose. What it
 prints is one of four:
@@ -334,7 +344,9 @@ again, so this is looked at while there is still nothing to regret.
     gh api --paginate "$scope/packages?package_type=nuget" \
       --jq ".[] | select(.repository.full_name == \"$repo\") | \"\(.name) \(.visibility)\""
 
-Every line is to end in `private`. A line that ends otherwise is a
+`nuget` is the host's name for .NET's packages; a toolchain that publishes
+no package to the host has nothing here to list. Every line is to end in
+`private`. A line that ends otherwise is a
 finding, and never one to fix: it is the user's to say whether the
 package was meant to be seen. A package the list has and no project of
 the repository packs any more is a second finding, a name left behind by
