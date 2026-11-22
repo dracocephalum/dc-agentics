@@ -148,6 +148,7 @@ silently, because nothing enforces it:
 |---|---|
 | `licence` | the `LICENSE` file — present, and the same licence |
 | `copyright-holder` | the holder named in `LICENSE` or `NOTICE` |
+| `toolchains` | the actual tree: every toolchain listed has code here, and no code is of one that is not. `dotnet` is known by a `.csproj`, `go` by a `go.mod`, and the folder that holds one says which its component is. A file that still says `framework` is from before the list; the next sync renames the key |
 | `layout` | the actual tree: `standalone` has its one component at the root, for .NET a solution there; `monorepo` has category folders and no component at the root |
 | `delivery.pipeline` | the pipeline files git tracks: `none` has none, a host's name has that host's |
 

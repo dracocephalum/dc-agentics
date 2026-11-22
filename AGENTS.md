@@ -36,7 +36,7 @@ them.
 | Asked what a term here means — payload, baseline, component, toolkit upgrade, drift | [`GLOSSARY.md`](GLOSSARY.md) — an index to the document that owns each term, never a second definition |
 | Capture an idea that is not committed work, or asked what might be built later | [`PLAN.md`](PLAN.md) — `TODO.md` is for decided work; see the table at the top of either |
 
-Supported frameworks today: **.NET (dotnet core)** only. For anything else, say
+Supported toolchains today: **.NET (dotnet core)** only. For anything else, say
 so rather than improvising.
 
 ## Layout

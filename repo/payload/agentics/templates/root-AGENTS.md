@@ -29,7 +29,7 @@
 
 {{ONE_LINE_PURPOSE}}
 
-Primary framework: .NET. Namespace prefix: `{{PREFIX}}`.
+Toolchain: .NET. Namespace prefix: `{{PREFIX}}`.
 
 ## Repository layout
 

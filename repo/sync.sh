@@ -152,6 +152,16 @@ else
   rewrite "$settings" '/^  commit:/ { sub(/"[^"]*"/, "\"" c "\"") } { print }' -v c="$head"
   say "== toolkit.commit -> $head"
 fi
+# repository.framework became repository.toolchains, a list. The one key a sync renames: the value carries
+# over, so there is no choice in it for anyone to make.
+if grep -q '^  framework:' "$settings" && ! grep -q '^  toolchains:' "$settings"; then
+  if [ $plan = 1 ]; then say "== plan: repository.framework -> repository.toolchains, a list of the one value"
+  else
+    rewrite "$settings" '/^  framework:/ { v = $2; sub(/\[[^]]*\]/, "[" v "]", l); print l; next } { print }' \
+      -v l="$(grep '^  toolchains:' "$payload/.agentics.yaml" | tr -d '\r')"
+    say "== repository.framework -> repository.toolchains, a list of the one value"
+  fi
+fi
 payload_keys=$(awk '{ sub(/\r$/, "") } /^[a-z][a-z-]*:/ { sub(/:.*/, ""); print }' "$payload/.agentics.yaml")
 target_keys=$(awk '{ sub(/\r$/, "") } /^[a-z][a-z-]*:/ { sub(/:.*/, ""); print }' "$settings")
 for k in $payload_keys; do

@@ -3,8 +3,8 @@
 Applies when asked to initialize, scaffold, or set up a repository at a given
 root path.
 
-Currently supports **.NET (dotnet core)** as the primary framework. For any
-other framework, stop and say so rather than improvising.
+Currently supports **.NET (dotnet core)** as the one toolchain. For any
+other, stop and say so rather than improvising.
 
 ## Confirm before doing anything
 
@@ -28,7 +28,7 @@ the worse question.
 | Category of the first component | ask, **monorepo only** — `libraries/`, `services/`, and so on from `layout.md`; standalone has no categories, so it is not a question there |
 | Namespace prefix | ask — e.g. `Contoso`; never invent one |
 | One-line purpose | ask — lands in `AGENTS.md` and `README.md`; never invent one |
-| Primary framework | .NET; the only one supported today, so it is not a question |
+| Toolchains | .NET; the only one supported today, so it is not a question. Recorded as a list, `repository.toolchains` |
 | Publish-safe | `true` — other repositories, projects, customers, systems and people are referred to by role; `false` only when the user says the repository will never be public; [`settings.md`](settings.md) |
 | Source-control mode | `local` — `auto`, `local`, or `manual`; [`settings.md`](settings.md) |
 | Change tracking | ask — GitHub Issues, yes or no; `none` means branch names and PR titles carry no ticket; [`settings.md`](settings.md) |
