@@ -75,6 +75,12 @@ removed, and whoever finds it should be able to take it for finished. A
 `dev` package goes to neither. A release is not written yet in this
 toolkit; until it is, a repository publishes `ci` builds only.
 
+**A `ci` package is meant to stay private**, in a repository that is
+public too: it is what a pipeline leaves on its way, and whoever found it
+beside the code would take it for what the repository publishes. A
+repository that wants its `ci` packages seen says so. The host file has
+how a package's visibility is decided there and how it is checked.
+
 ## A pipeline for each kind
 
 A pipeline is named for the kind of build it makes, and the kind says how
