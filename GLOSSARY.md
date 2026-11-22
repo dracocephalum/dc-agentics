@@ -41,11 +41,11 @@ Each is a distinct verb, so a refusal can name exactly which one it means.
 
 | Term | In one line | Owned by |
 |---|---|---|
-| **component** | one solution and one `src/` + `test/` pair; its projects build and version together, and may produce more than one deliverable | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
+| **component** | what builds and versions together, in a folder of its own, and may produce more than one deliverable; for .NET one solution and one `src/` + `test/` pair | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
 | **standalone** | a single-component repository; the component *is* the repository | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
-| **monorepo** | many components, each under a category folder, each with its own solution | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
+| **monorepo** | many components, each under a category folder, each built by itself | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
 | **category** | a root folder grouping components by kind — `services/`, `libraries/`, `jobs/`, `tools/`, `ui/`, `infrastructure/` | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
-| **solution** | the `.slnx`, named after its component's **main project**, never after the folder | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md), *Naming rules* |
+| **solution** | the `.slnx`, named after its component's **main project**, never after the folder | [`repo/payload/agentics/rules/layout/dotnet.md`](repo/payload/agentics/rules/layout/dotnet.md), *Naming rules* |
 
 ## Settings
 

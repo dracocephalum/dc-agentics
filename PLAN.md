@@ -294,7 +294,9 @@ Each step leaves every initialized repository syncing clean.
 2. **Done.** `repository.toolchains`, with a sync renaming `framework` to
    it, and the scrub's check 6 comparing it with the tree.
 3. `layout.md` and `delivery.md` cut in two; the .NET templates moved; the
-   links, the index rows and the shims that name them.
+   links, the index rows and the shims that name them. **`layout.md` is
+   done**, as `layout/dotnet.md` beside it; `delivery.md` and the templates
+   are not.
 4. `root-AGENTS.md` as a frame and a block per toolchain, and the sync
    leaving out a toolchain's rules and rows where it is not listed. Proved
    by a sync of a .NET repository that changes only the paths that moved,
@@ -316,8 +318,6 @@ scrub check that says how far behind the record is.
 
 ### Not settled
 
-- Whether `layout/dotnet.md` beside `layout.md` reads better than the test
-  stack moving to `coding/csharp/`, where its trigger already is.
 - A pipeline in a repository with two toolchains: one called workflow of
   shared steps per toolchain is likely, and whether `dev` and `ci` are
   then one file with a job each or a file per toolchain is open.

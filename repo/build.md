@@ -117,8 +117,9 @@ The template also sets `*.cs text diff=csharp` (better diff hunk headers) and
 
 ## 4. Create the folder structure
 
-Follow [`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md) for the chosen mode. It covers the standalone
-and monorepo trees, the kebab-case-directory / PascalCase-project naming rule,
+Follow [`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md) for the chosen mode, and
+[`payload/agentics/rules/layout/dotnet.md`](payload/agentics/rules/layout/dotnet.md) with it. Between them
+they cover the standalone and monorepo trees, the kebab-case-directory / PascalCase-project naming rule,
 and per-folder conventions. The two SDK-template defects that break the first
 build — CPM version conflicts, and sample files that violate StyleCop — are in
 `csharp-new-project.md`, which it points at.
