@@ -1,34 +1,44 @@
 # Delivery on GitHub
 
-The mechanics of [`delivery.md`](delivery.md) on GitHub: the pipeline is a
+The mechanics of [`delivery.md`](delivery.md) on GitHub: a pipeline is a
 GitHub Actions workflow, and the registry for `ci` builds is GitHub Packages.
 
-Verified on a private repository of a personal account, with two packages:
-the build job, the publishing, the listing of versions, a restore of a
-published package on a developer's machine, and the list of paths as it is
-written, started by a pull request that changes one of them; and, in a
+Verified on a private repository of a personal account, with two packages,
+as one workflow of two jobs: the build job, the publishing, the listing of
+versions, a restore of a published package on a developer's machine, the
+list of paths as it is written, started by a pull request that changes one
+of them, and a change to none of the paths starting nothing; and, in a
 second repository, its workflow restoring the first one's packages. **Not
-yet verified:** a change to none of the paths starting nothing; the removal
-of a version, which first happens when a package has more `ci` versions
-than are kept; a deploy run a second time; an organization's repository; a
-repository with several solutions.
+yet verified:** the three workflows as they are now, each calling the
+shared steps; the removal of a version, which first happens when a package
+has more `ci` versions than are kept; a deploy run a second time; an
+organization's repository; a package kept private while its repository
+goes public, and a deploy to it afterwards.
 
-## Adding the pipeline
+## Adding the pipelines
 
-Copy `agentics/templates/ci.yml` to `.github/workflows/ci.yml`. One part of
-it is the repository's: the list under `on:` of what the build reads, *It
-runs for what it builds* below. It comes as a standalone repository's; a
-monorepo puts its category folders where `src/**` and `test/**` stand, and
-an entry for a file the repository does not have, `NOTICE` where there is
-no licence, is taken out. The rest is used as it is, and builds every
-solution git tracks. It deploys from `main`, and a repository whose default
-branch has another name changes that one line, under `on:`. Open a pull
-request with it; *Build and test* runs on that pull request, and *Deploy*
-first runs when it is merged. Never push it to the default branch directly,
-a new repository's first push included: that push deploys at once.
+Three files go to `.github/workflows/`, from `agentics/templates/`:
+
+| File | Is | Taken by |
+|---|---|---|
+| `build.yml` | the steps the others share, never started by itself | every repository that takes either of the others |
+| `dev.yml` | the `dev` pipeline: every pull request, build and test | every repository |
+| `ci.yml` | the `ci` pipeline: every push to the default branch, build, test, pack, deploy | a repository that publishes a package |
+
+One part of `dev.yml` and of `ci.yml` is the repository's: the list under
+`on:` of what the pipeline is started by, *It runs for what it builds*
+below. Each comes as a standalone repository's; a monorepo puts its
+category folders where `src/**` and `test/**` stand, and an entry for a
+file the repository does not have, `NOTICE` where there is no licence, is
+taken out. The rest is used as it is, and builds every solution git tracks.
+`ci.yml` deploys from `main`, and a repository whose default branch has
+another name changes that one line, under `on:`. Open a pull request with
+them; `dev` runs on that pull request, and `ci` first runs when it is
+merged. Never push `ci.yml` to the default branch directly, a new
+repository's first push included: that push deploys at once.
 
 A repository may have any number of workflows, one file each, and each
-with a list of its own. This one is the only one the toolkit ships.
+with a list of its own. These are the ones the toolkit ships.
 
 **What is the user's to do**, and to be reminded of when the pipeline is
 added:
@@ -45,15 +55,25 @@ None of it is needed for the pipeline itself to build and publish.
 
 ## What the workflow does, and why
 
+- **The steps are written once**, in `build.yml`, which the other two call
+  with the kind of build they want. A check is then named by three parts,
+  the workflow, the job that calls and the job called: *Dev / Build and
+  test / Solutions* on a pull request, as far as the host documents it;
+  it has not been seen.
 - **The kind of build is set once**, as the environment variables
   `BuildKind` and `BuildNumber`, the second from the run's number. MSBuild
   reads its properties from the environment, so every `dotnet` command of the
   run builds the same version without being told.
+- **A pull request has no deploy**, not one that is passed over: `dev.yml`
+  has no such job. Nothing a pull request starts can reach a registry.
 - **Restore is `--locked-mode`.** A restore that would change a lock file
   fails.
-- **Deploy publishes the artifact of the first job**, not a second build, so
-  what is published is what was tested. The artifact is kept one day: it
-  shares the account's storage with the packages.
+- **Deploy publishes the artifact of the build it follows**, not a second
+  build, so what is published is what was tested. The artifact is kept one
+  day: it shares the account's storage with the packages.
+- **A called workflow has the permissions of the job that calls it**, so
+  `build.yml` names none, and what a pipeline may do is read in the
+  pipeline's own file.
 - **Deploy is skipped when nothing was packed**, so the workflow suits a
   repository with no package.
 - **Deploy can be run again.** A run that is started again keeps its number,
@@ -67,25 +87,31 @@ None of it is needed for the pipeline itself to build and publish.
 
 ## It runs for what it builds
 
-The workflow starts for a change to a path on its list, `paths:` under
+A workflow starts for a change to a path on its list, `paths:` under
 `on:`, and for no other.
 
-- **On the list**: the workflow itself; the root files every project
-  inherits, with `.editorconfig`, which the analyzers read, and
-  `.gitattributes`, which decides the bytes of a checkout; what is packed
-  beside the assemblies; and the folders of code. The root files are not
-  optional: a list of the code alone stays silent when a root file changes
-  what every project builds as.
-- **Not on it**: documents, `agentics/`, the settings and whatever no step
+- **On `dev.yml`'s list**: the workflow itself and `build.yml`; the root
+  files every project inherits, with `.editorconfig`, which the analyzers
+  read, and `.gitattributes`, which decides the bytes of a checkout; what is
+  packed beside the assemblies; and every folder of code. The root files are
+  not optional: a list of the code alone stays silent when a root file
+  changes what every project builds as.
+- **On `ci.yml`'s list**: the same, less what no package is built from: the
+  tests and `Tests.props`, and in a monorepo the categories that are never
+  published. A change to those alone is built and tested as a pull request
+  and publishes nothing when it is merged.
+- **On neither**: documents, `agentics/`, the settings and whatever no step
   reads. A file that a new step reads is added in the change that adds the
   step.
-- **Written once.** The list is under `pull_request` with a YAML anchor, and
-  `push` names the anchor, so the two events cannot come to differ.
+- **Two lists, kept in step by hand.** A file cannot share a list with
+  another, so a root build file added to one is added to the other in the
+  same change. The scrub prints what `dev.yml` has and `ci.yml` lacks, for
+  a reader to tell what is left out on purpose from what was forgotten.
 - **Order matters.** The last entry, `'!**/*.md'`, takes every markdown file
   away again, a component's `README.md` among them. An entry after it puts
   one back: a readme that is packed is named there.
 - **A pull request that touches nothing on the list has no run and shows no
-  check.** That is the point of it, and it is why the workflow cannot be a
+  check.** That is the point of it, and it is why `dev` cannot be a
   required status check as it stands: such a pull request would wait for a
   check that never reports. A repository that requires the check moves the
   filter into the job, which then starts every time and ends at once.
@@ -104,6 +130,42 @@ A package pushed with that token, from a build whose `Packaging.props` sets
 `PublishRepositoryUrl`, belongs to the repository that pushed it: it is
 private while the repository is, and the repository's workflows may
 administer it.
+
+## Before the repository goes public
+
+A package takes its access from its repository unless it is told not to,
+so the day a private repository is made public its `ci` packages are
+public with it. They are what a pipeline leaves on its way, not something
+to offer: a visitor who finds `0.1.0-ci.42` beside the code takes it for
+what the repository publishes.
+
+**Check before the visibility is changed**, whoever asks for the change
+and for whatever reason; the ruleset of
+[`../source-control/github.md`](../source-control/github.md), *Repository
+settings*, is one such reason:
+
+    gh api --paginate "users/<owner>/packages?package_type=nuget" \
+      --jq '.[] | select(.repository.full_name == "<owner>/<name>") | "\(.name) \(.visibility)"'
+
+An organization's are under `orgs/<owner>`. The stored login needs
+`read:packages`, *Reading a package* below. Where the list is empty there
+is nothing to do.
+
+**Where it is not, the step is the user's and no agent's.** Name each
+package and its settings page,
+`https://github.com/users/<owner>/packages/nuget/<package>/settings`, with
+`orgs` for `users` in an organization, and ask the user to turn off
+*Inherit access from source repository* on every one. The setting is on
+by default, and no command changes it. Wait until the user says it is
+done; the repository is not made public before that.
+
+- The packages then stay private, each with the access its own page
+  lists, and the repository's pipeline goes on publishing to them.
+- A package first published after the repository is public is public
+  from its first version. The same step is taken for it then, and what was
+  downloaded in between cannot be taken back.
+- A repository that wants its `ci` packages seen leaves the setting as it
+  is. That is the user's choice to state, never the default.
 
 ## Limits to know
 
@@ -231,15 +293,17 @@ is offered at initialization:
    package included, and again for a package added later. The same page
    has *Manage Codespaces access* beside it, which looks alike and does
    nothing here.
-3. **The pipeline is added**, as a change request of its own, with three
-   things the template carries commented out, each marked `TEMPORARY`.
-   Take the comment marks off all three and fill in the one value, the
-   pattern of the packages that come from the registry:
-   - `packages: read` under the build job's `permissions`;
-   - a step before the restore that writes the two files of the section
-     above, since they are in no checkout;
-   - the variable those files name, set on the restore step to the run's
-     own token, `${{ github.token }}`. No stored secret is added.
+3. **The pipelines are added**, as a change request of their own, with
+   three things the templates carry commented out, each marked
+   `TEMPORARY`. Take the comment marks off all three and fill in the one
+   value, the pattern of the packages that come from the registry:
+   - `packages: read` under `permissions` of the job that calls
+     `build.yml`, in `dev.yml` and in `ci.yml` where the repository has it;
+   - in `build.yml`, a step before the restore that writes the two files
+     of the section above, since they are in no checkout;
+   - in `build.yml`, the variable those files name, set on the restore
+     step to the run's own token, `${{ github.token }}`. No stored secret
+     is added.
 4. **Two entries in `TODO.md`**, one for the committed `-ci.` reference and
    one for the pipeline's three additions, both closed by the package's
    first release: the reference then names it, and the additions go.

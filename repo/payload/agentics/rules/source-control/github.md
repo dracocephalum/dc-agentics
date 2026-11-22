@@ -141,6 +141,11 @@ commit to the default branch, [`source-control.md`](source-control.md)) plus
 the agent guardrails; report the branch as **unprotected**, never as
 protected.
 
+**Before a repository is made public**, for this or any other reason, and
+where it has a pipeline that publishes: its packages become public with
+it. [`../delivery/github.md`](../delivery/github.md), *Before the
+repository goes public*, has the check and the step that is the user's.
+
 Verified: the shipped file was applied unchanged to a public repository and
 `GET /repos/{owner}/{repo}/rules/branches/main` listed all four rules in
 force (`deletion`, `non_fast_forward`, `required_linear_history`,

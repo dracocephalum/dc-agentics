@@ -50,8 +50,9 @@ the worse question.
                                  component-README.md, category-README.md — used by /new
                                  rules-AGENTS.md — the start of docs/rules/AGENTS.md, the repository's own
                                  rules index, created with its first rule; a sync reads it, never writes it
-                                 Version.props, Packaging.props, ci.yml — copied out when versioning and a
-                                 pipeline are adopted, now or later (agentics/rules/delivery/delivery.md)
+                                 Version.props, Packaging.props, and the pipelines build.yml, dev.yml and
+                                 ci.yml — copied out when versioning and a pipeline are adopted, now or
+                                 later (agentics/rules/delivery/delivery.md)
                                  all of them kept in both modes (documents.md)
     .editorconfig                editor conventions (root = true)
     .gitattributes               line-ending normalization  (dotnet new)

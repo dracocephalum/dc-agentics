@@ -253,8 +253,8 @@ will now never happen.
 Skipped where the repository tracks no pipeline; one that is tracked while
 `.agentics.yaml` says `delivery.pipeline: none` is a finding of check 6. A pipeline
 names the paths its build reads and starts for no other
-([`delivery/delivery.md`](delivery/delivery.md), *The pipeline is two
-jobs*). Nothing fails when the list falls behind the tree: the pipeline is
+([`delivery/delivery.md`](delivery/delivery.md), *A pipeline for each
+kind*). Nothing fails when the list falls behind the tree: the pipeline is
 only never started for the file it does not name, and stays green from its
 last run.
 
@@ -266,25 +266,38 @@ last run.
     }
 
     for w in $(git ls-files '.github/workflows/*.yml'); do
+      grep -q '^  workflow_call:' "$w" && ! grep -q -E '^  (push|pull_request):' "$w" && continue
       [ -n "$(triggers "$w")" ] || { echo "$w: no list, so every change starts it"; continue; }
       triggers "$w" | grep -v '^!' | while read -r p; do
         [ -n "$(git ls-files -- ":(glob)$p")" ] || echo "$w: matches nothing: $p"
       done
+      grep -q '^  pull_request:' "$w" || continue
       git ls-files -- . $(triggers "$w" | grep -v '^!' | sed 's/^/:(exclude,glob)/') \
         | grep -v '^agentics/' \
         | grep -E '\.(cs|csproj|slnx?|props|targets|ruleset)$|(^|/)(packages\.lock\.json|BannedSymbols\.txt|\.editorconfig|\.gitattributes|global\.json|nuget\.config|stylecop\.json)$' \
         | sed "s|^|$w: read by a build, and no entry matches it: |"
     done
 
-It prints nothing when the list stands. What it prints is one of three:
+    # What the change request's list has and the publishing one lacks.
+    d=.github/workflows/dev.yml; c=.github/workflows/ci.yml
+    if [ -f "$d" ] && [ -f "$c" ]; then
+      triggers "$d" | grep -v -e '^!' -e '^\.github/workflows/' | while read -r p; do
+        triggers "$c" | grep -qxF -- "$p" || echo "$c: on $d's list and not on this one: $p"
+      done
+    fi
+
+It prints nothing when the lists stand, but for the last line, which it
+prints for whatever is left off the publishing list on purpose. What it
+prints is one of four:
 
 | Line | Means |
 |---|---|
+| `on dev.yml's list and not on this one` | a path the publishing pipeline is not started by. Right for tests, `Tests.props` and a category that is never published; a finding for a root build file or a folder of published code |
 | `matches nothing` | an entry for a path that was moved, renamed or never there; the folder it was meant for is the one to look for |
 | `read by a build, and no entry matches it` | a project, a source, a lock file or a root build file whose change starts nothing |
 | `no list` | a workflow every change starts; a finding for one that builds, not for one that is meant to |
 
-**Then read what no entry matches**, since the second line knows a build
+**Then read what no entry matches**, since `read by a build` knows a build
 file only by its name:
 
     git ls-files -- . $(triggers <workflow> | grep -v '^!' | sed 's/^/:(exclude,glob)/')
@@ -294,6 +307,14 @@ packed, or one a step of the workflow reads. Read the entries that begin
 with `!` as well: each takes away what an earlier one gave, and a file a
 build reads may be among them.
 
+**Which workflow is asked what.** One that is only called by others, the
+shared steps, has no list and is passed over. One that a change request
+starts is to name everything a build reads, so `matches nothing` and
+`read by a build` are both asked of it. One that only a push starts, the
+pipeline that publishes, names what a package is built from and leaves
+out tools, samples and tests on purpose, so only `matches nothing` is
+asked of it, and `on dev.yml's list and not on this one` sets its list
+beside the change request's.
+
 The entries are matched as git matches a glob, which agrees with the host
-for a name, a folder and `**`. The check reads the first list of each file,
-which is the only one where the events share it.
+for a name, a folder and `**`. The check reads the first list of each file.

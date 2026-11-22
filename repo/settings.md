@@ -126,7 +126,8 @@ Left for later, which is the default, the block stays as shipped, and
           developers. Offered at initialization and left for later. Close
           by: `agentics/rules/delivery/delivery.md`, *Adopting it*, when
           there is something to publish or a build worth checking on every
-          change - versioning first, since the pipeline needs it.
+          change - the `dev` pipeline alone for the second, and versioning
+          first for the first, since the pipeline that publishes needs it.
 
 An agent asked later to add a pipeline, publish a package or set a version
 finds the entry and the rule, and asks the same questions then.
