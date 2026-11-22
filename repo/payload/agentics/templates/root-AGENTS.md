@@ -55,8 +55,8 @@ exist.
 
 | Path | Purpose |
 |---|---|
-| `services/` | deployable C# services |
-| `libraries/` | packages published to NuGet |
+| `services/` | deployable services |
+| `libraries/` | packages published for others to consume |
 | `jobs/` | scheduled executables (Kubernetes CronJobs and similar) |
 | `tools/` | internal tooling, never shipped to production |
 | `examples/` | runnable samples of this repository's own libraries, never shipped |
@@ -79,7 +79,7 @@ is not clean); it never fails the build.
 Never add a `Directory.Build.props`, `Directory.Build.targets`, or
 `Directory.Packages.props` inside a subfolder — a nested copy silently severs
 that subtree from everything above, with a green build and no warning.
-[`agentics/rules/layout.md`](agentics/rules/layout.md), *Config lives at the root only*.
+[`agentics/rules/layout/dotnet.md`](agentics/rules/layout/dotnet.md), *Config lives at the root only*.
 
 ## Agent guidelines
 
@@ -96,7 +96,7 @@ makes it selectable from a plain-language request.
 | Writing a comment or a document, or unsure whether something belongs in the code or in a document | [`agentics/rules/coding/where-facts-live.md`](agentics/rules/coding/where-facts-live.md) — one home per fact; language-neutral |
 | Touching an entity, a `DbContext`, or a migration | [`agentics/rules/coding/csharp/csharp-ef-core-rules.md`](agentics/rules/coding/csharp/csharp-ef-core-rules.md) |
 | Adding a project, component, or test project | [`agentics/rules/coding/csharp/csharp-new-project.md`](agentics/rules/coding/csharp/csharp-new-project.md) |
-| Asking where something goes, how it should be named, or what the other layout looks like | [`agentics/rules/layout.md`](agentics/rules/layout.md) — both modes, so this repository can describe a shape it does not currently have |
+| Asking where something goes, how it should be named, or what the other layout looks like | [`agentics/rules/layout.md`](agentics/rules/layout.md) — both modes, so this repository can describe a shape it does not currently have; then [`agentics/rules/layout/dotnet.md`](agentics/rules/layout/dotnet.md) for what is .NET's: solutions, projects, namespaces, the build files, test projects and their stack |
 | Checking a change for secrets, personal data, or local paths — or anything before a first push | [`agentics/rules/security-reminders.md`](agentics/rules/security-reminders.md) |
 | Adding, upgrading, or replacing a package (any ecosystem) | [`agentics/rules/dependencies.md`](agentics/rules/dependencies.md) |
 | Creating or finding a ticket, or asking which ticket a change is for | [`agentics/rules/change-tracking/change-tracking.md`](agentics/rules/change-tracking/change-tracking.md), then the tracker file it names |
@@ -146,7 +146,7 @@ by saying so in the document — *Precedence* in
 
 A trailing `.Core` names the assembly, not the namespace — `{{PREFIX}}.Core` has
 namespace `{{PREFIX}}` — applied by `Directory.Build.props`; the full rule and
-its edge cases are in [`agentics/rules/layout.md`](agentics/rules/layout.md).
+its edge cases are in [`agentics/rules/layout/dotnet.md`](agentics/rules/layout/dotnet.md).
 
 ## Code intelligence — use what is connected, fall back when it is not
 

@@ -60,7 +60,7 @@ reviewable.
 
 ### The analyzer and test-stack packages
 
-The procedure is *Keeping the test stack current* in [`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md),
+The procedure is *Keeping the test stack current* in [`payload/agentics/rules/layout/dotnet.md`](payload/agentics/rules/layout/dotnet.md),
 which already covers the part that matters: these packages are not independent,
 and their failures are compile-time ambiguities rather than version errors.
 Move families together, never package by package.
@@ -244,7 +244,7 @@ mistake available here:
     allowed-licenses.json   license-overrides.json   license-exceptions.json   licenses/   .config/
     AGENTS.md   TODO.md   LICENSE   NOTICE   agentics/   docs/   .github/   .claude/
 
-`layout.md` explains why: all three `Directory.*` files resolve by searching
+`layout/dotnet.md` explains why: all three `Directory.*` files resolve by searching
 upward and stop at the first hit, so a copy inside the component silently cuts
 it off from central package management, StyleCop and warnings-as-errors — with
 a green build and no warning. Moving one is not a visible failure.

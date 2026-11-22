@@ -74,7 +74,8 @@ Three kinds of file, told apart by location:
       .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
       agentics/rules/                  every rules document, exactly where it lands; the toolkit's, replaced whole by a sync
         dependencies.md
-        layout.md                  standalone + monorepo trees, naming, test projects, stack currency
+        layout.md                  the component, standalone + monorepo, categories, naming of folders, whose rules are whose
+        layout/dotnet.md           the .NET half: solutions, projects, namespaces, build files, test projects, stack currency
         scrub.md                   the consistency + drift checks every target gets
         optimize.md                what the documents cost to read: measure, compact, defaults
         security-reminders.md      privacy & data-security checklist; the review's security pass

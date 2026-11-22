@@ -72,7 +72,8 @@ the worse question.
     stylecop.json                StyleCop settings
     agentics/rules/                  exactly as in payload/agentics/rules/; the toolkit's, replaced whole by a sync
       dependencies.md
-      layout.md                  standalone + monorepo trees, naming, test projects
+      layout.md                  the component, standalone + monorepo, categories, naming of folders
+      layout/dotnet.md           the .NET half: solutions, projects, build files, test projects
       scrub.md                   the recurring consistency + drift checks
       optimize.md                what the documents cost to read: measure, compact, defaults
       security-reminders.md      privacy + data-security checklist
