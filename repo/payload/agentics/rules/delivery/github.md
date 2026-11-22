@@ -3,17 +3,18 @@
 The mechanics of [`delivery.md`](delivery.md) on GitHub: a pipeline is a
 GitHub Actions workflow, and the registry for `ci` builds is GitHub Packages.
 
-Verified on a private repository of a personal account, with two packages,
-as one workflow of two jobs: the build job, the publishing, the listing of
-versions, a restore of a published package on a developer's machine, the
-list of paths as it is written, started by a pull request that changes one
-of them, and a change to none of the paths starting nothing; and, in a
-second repository, its workflow restoring the first one's packages. **Not
-yet verified:** the three workflows as they are now, each calling the
-shared steps; the removal of a version, which first happens when a package
-has more `ci` versions than are kept; a deploy run a second time; an
-organization's repository; a package kept private while its repository
-goes public, and a deploy to it afterwards.
+Verified on a repository of a personal account, with two packages, private
+and then public: the three workflows, a pull request that shows the one
+check of `dev` and no deploy, a merge that deploys, a deploy run a second
+time, the listing of versions, a restore of a published package on a
+developer's machine, a change to none of the paths starting nothing, the
+packages staying private when the repository was made public, and a deploy
+to them afterwards; and, in a second repository, its `dev` pipeline
+restoring the first one's packages, before that change and after it. **Not
+yet verified:** a merge of a change to a tool or a test alone starting no
+`ci` run; the removal of a version, which first happens when a package has
+more `ci` versions than are kept; a package first published from a
+repository that is public; an organization's repository.
 
 ## Adding the pipelines
 
@@ -56,10 +57,9 @@ None of it is needed for the pipeline itself to build and publish.
 ## What the workflow does, and why
 
 - **The steps are written once**, in `build.yml`, which the other two call
-  with the kind of build they want. A check is then named by three parts,
-  the workflow, the job that calls and the job called: *Dev / Build and
-  test / Solutions* on a pull request, as far as the host documents it;
-  it has not been seen.
+  with the kind of build they want. A check is then named by the job that
+  calls and the job called, *Build and test / Solutions*, under the
+  workflow's name, *Dev*.
 - **The kind of build is set once**, as the environment variables
   `BuildKind` and `BuildNumber`, the second from the run's number. MSBuild
   reads its properties from the environment, so every `dotnet` command of the
@@ -127,45 +127,81 @@ the token is gone when the run ends. Nothing is added under the repository's
 secrets, and no person's token is in a pipeline.
 
 A package pushed with that token, from a build whose `Packaging.props` sets
-`PublishRepositoryUrl`, belongs to the repository that pushed it: it is
-private while the repository is, and the repository's workflows may
-administer it.
+`PublishRepositoryUrl`, belongs to the repository that pushed it: the repository's workflows may
+administer it. Who else may see it is *A package's visibility is its own*
+below.
 
-## Before the repository goes public
+## A package's visibility is its own
 
-A package takes its access from its repository unless it is told not to,
-so the day a private repository is made public its `ci` packages are
-public with it. They are what a pipeline leaves on its way, not something
-to offer: a visitor who finds `0.1.0-ci.42` beside the code takes it for
-what the repository publishes.
+A NuGet package on GitHub belongs to the account, not to the repository
+that publishes it, and has a visibility of its own. Three things follow,
+each as the host documents it
+([access and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility),
+[the NuGet registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry)):
 
-**Check before the visibility is changed**, whoever asks for the change
-and for whatever reason; the ruleset of
-[`../source-control/github.md`](../source-control/github.md), *Repository
-settings*, is one such reason:
+- **A package is private when it is first published**, whatever its
+  repository is.
+- **Making the repository public does not make its packages public.** Seen:
+  two packages stayed private, their pages gave a visitor who was not
+  signed in a 404, and neither was listed beside the repository.
+- **A package made public cannot be made private again.** So no agent
+  changes a package's visibility, and none asks for it as a step on the
+  way to something else.
+
+**The setting that sounds as if it decided this does not.** *Inherit access
+from source repository*, on a package's settings page, is about who has
+access: on, whoever may read or write the repository may read or write
+the package; off, only those the page lists. It gives the public nothing
+either way. It was tried both ways on a public repository, and the
+packages were as private with it on as with it off. Leave it as it is; no
+command changes it, and nothing here needs it changed.
+
+`ci` packages are meant to stay private: they are what a pipeline leaves
+on its way, removed after the newest few, and a visitor who found
+`0.1.0-ci.42` beside the code would take it for what the repository
+publishes. A repository that wants them seen says so, and the change is
+its owner's to make on each package's page.
+
+**Check, when the repository's visibility is about to change and when a
+package has first been published:**
 
     gh api --paginate "users/<owner>/packages?package_type=nuget" \
       --jq '.[] | select(.repository.full_name == "<owner>/<name>") | "\(.name) \(.visibility)"'
 
 An organization's are under `orgs/<owner>`. The stored login needs
-`read:packages`, *Reading a package* below. Where the list is empty there
-is nothing to do.
+`read:packages`, *Reading a package* below. Every line is to end in
+`private`. One that does not is told to the user at once and changes
+nothing else: it cannot be undone, and the repository's visibility is
+still theirs to decide. A scrub asks the same,
+[`../scrub.md`](../scrub.md), *The host's packages are as private as they
+are meant to be*.
 
-**Where it is not, the step is the user's and no agent's.** Name each
-package and its settings page,
-`https://github.com/users/<owner>/packages/nuget/<package>/settings`, with
-`orgs` for `users` in an organization, and ask the user to turn off
-*Inherit access from source repository* on every one. The setting is on
-by default, and no command changes it. Wait until the user says it is
-done; the repository is not made public before that.
+### When a package is first published
 
-- The packages then stay private, each with the access its own page
-  lists, and the repository's pipeline goes on publishing to them.
-- A package first published after the repository is public is public
-  from its first version. The same step is taken for it then, and what was
-  downloaded in between cannot be taken back.
-- A repository that wants its `ci` packages seen leaves the setting as it
-  is. That is the user's choice to state, never the default.
+A package the pipeline has not published before needs little, and one
+thing of it is the user's. In order, the day the change that adds it is
+merged:
+
+1. **Run the check above.** The new package is to be there, `private`.
+   This is what the host documents and has not been seen for a repository
+   that is public; where it reads `public`, say so at once.
+2. **Nothing for the repository that publishes it.** A package a workflow
+   publishes gives that repository's workflows leave to administer it.
+3. **For each repository whose pipeline is to restore it, the user gives
+   read access**, on the package's page: *Package settings*, *Manage
+   Actions access*, *Add repository*, role *Read*. No command does this.
+   Name the package, its page,
+   `https://github.com/users/<owner>/packages/nuget/<package>/settings`,
+   and the repositories; *Another repository's pipeline* below has what a
+   restore without it looks like.
+4. **In each such repository**, the pattern of packages its two ignored
+   files and its pipeline read from the registry is to match the new
+   name, and its `TODO.md` entry on reading the registry names the
+   package. A machine that restores it needs nothing new: the token reads
+   every package its owner can.
+
+The same list serves a package that is renamed, which the host takes for
+a new one.
 
 ## Limits to know
 

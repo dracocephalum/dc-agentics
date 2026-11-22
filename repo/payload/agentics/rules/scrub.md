@@ -318,3 +318,30 @@ beside the change request's.
 
 The entries are matched as git matches a glob, which agrees with the host
 for a name, a folder and `**`. The check reads the first list of each file.
+
+### 12. The host's packages are as private as they are meant to be
+
+Skipped where `.agentics.yaml` says `delivery.pipeline: none`, where the
+repository has no remote, and where the stored login cannot read
+packages; say which. A pipeline's `ci` packages are meant to stay private
+([`delivery/delivery.md`](delivery/delivery.md), *Two registries, one kind
+each*), and a package that has been made public cannot be made private
+again, so this is looked at while there is still nothing to regret.
+
+    repo="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
+    owner="${repo%%/*}"
+    case "$(gh api "users/$owner" --jq .type)" in Organization) scope="orgs/$owner" ;; *) scope="users/$owner" ;; esac
+    gh api --paginate "$scope/packages?package_type=nuget" \
+      --jq ".[] | select(.repository.full_name == \"$repo\") | \"\(.name) \(.visibility)\""
+
+Every line is to end in `private`. A line that ends otherwise is a
+finding, and never one to fix: it is the user's to say whether the
+package was meant to be seen. A package the list has and no project of
+the repository packs any more is a second finding, a name left behind by
+a rename, for the user to remove.
+
+The host has no command that says which repositories may read a package,
+so that is not checked here. It shows where it matters, as a restore
+refused in the pipeline of the repository that was not given leave;
+[`delivery/github.md`](delivery/github.md), *When a package is first
+published*, is the list that keeps it from being forgotten.

@@ -57,24 +57,31 @@ request and reaches nothing; `ci` builds, tests, packs, and publishes `ci`
 packages to the host's registry. These are the pieces they do not have yet,
 each decided on the local side and needing its server-side half:
 
-- [ ] **The pipelines as three files have not run.** What is verified was
-      one workflow of two jobs. Split by kind, a pipeline calls the shared
-      steps as a called workflow, with its permissions and its outputs
-      passed across, and that is written from what the host documents.
-      Close by: both seen in a repository, a pull request that shows one
-      check and no deploy, with the check's name as the host gives it
-      written into `github.md`, a merge that deploys, a merge
-      of a change to a tool or a test alone that starts no `ci` run, and
-      the *Not yet verified* note in `github.md` reworded to what was
-      seen.
+- [ ] **One thing of the pipelines as three files has not been seen.**
+      Seen in two repositories: a pull request with the one check of
+      `dev` and no deploy, a merge that deploys, the shared steps called
+      with permissions and outputs passed across, and another
+      repository's packages restored through them. Not seen: a merge of a
+      change to a tool or a test alone starting no `ci` run. Close by:
+      that, and the note in `github.md` reworded.
+- [ ] **A monorepo's `ci` list has to take its tests away by hand.** The
+      template leaves tests off the list for a standalone repository,
+      where they have a folder of their own. In a monorepo they lie under
+      each component, inside a category that is on the list, and the one
+      repository that has the pipeline added an entry of its own for it,
+      `'!libraries/*/test/**'`. Close by: the template's comment and
+      `github.md` saying so, and the scrub's check 11 knowing the entry.
+- [ ] **A package first published from a public repository has not been
+      seen.** The host documents that it is private, and `github.md`,
+      *When a package is first published*, has it checked the day it
+      happens. Close by: that day, with what was seen written there.
 - [ ] **The delivery rule is verified on one repository.** One personal
-      account, one private repository, one solution, two packages, a
-      restore of them on Windows through the two ignored files, and a
-      second repository's workflow restoring them on Linux. Not yet seen: a
-      change outside the workflow's list of paths starting no run, the
-      removal of an old `ci` version, an organization's repository, a
-      repository with several solutions or with no package, and the
-      ignored files on macOS or in an editor's restore. Close by:
+      account, one repository, private and then public, one solution,
+      two packages, a restore of them on Windows through the two ignored
+      files, and a second repository's workflow restoring them on Linux.
+      Not yet seen: the removal of an old `ci` version, an organization's
+      repository, a repository with several solutions or with no package,
+      and the ignored files on macOS or in an editor's restore. Close by:
       each seen once, and the *Not yet verified* notes in
       `repo/payload/agentics/rules/delivery/github.md` removed as they are.
 - [ ] **The exception for a package with no release is tried, and no
