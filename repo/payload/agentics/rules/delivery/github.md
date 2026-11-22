@@ -18,7 +18,9 @@ repository that is public; an organization's repository.
 
 ## Adding the pipelines
 
-Three files go to `.github/workflows/`, from `agentics/templates/`:
+Three files go to `.github/workflows/`: `build.yml` from
+`agentics/templates/dotnet/`, the toolchain's, and the other two from
+`agentics/templates/`:
 
 | File | Is | Taken by |
 |---|---|---|

@@ -276,14 +276,25 @@ Two questions, and the first decides more than the second.
   consumers' project files names verbatim, and gains `layout/dotnet.md`.
   `coding/csharp/` stays, named for the language because its rules are the
   language's. Templates go under `templates/dotnet/`.
-- **In the toolkit**, where a sync copies them from: one payload tree as
-  now, or one tree for the general files and one per toolchain, each a
-  mirror of a repository's root and laid over one another. The rules do
-  not need the second: a folder named for a toolchain is enough for a sync
-  to leave it out. The root files do, since nothing in `nuget.config` says
-  whose it is. `toolkit.payload-path` in the settings exists for a move of
-  this kind. It is the last step and not the first: it is mechanical, and
-  it proves nothing until a second tree has something in it.
+- **Shipped is not deployed.** A sync brings every toolchain's rules and
+  templates into `agentics/`, listed or not, so a repository that adds a
+  toolchain later has its files already and adopts it without the toolkit
+  at hand. What is listed decides two things only: which rows the index in
+  `AGENTS.md` carries, and which files stand at the root. A repository of
+  Go alone has no `Directory.Build.props`.
+- **A toolchain's root files are templates.** They move from the payload's
+  root to `templates/<toolchain>/` and are copied out when the toolchain is
+  adopted, at initialization or later, as `Version.props` is today. The
+  three files every repository gets stay at the payload's root.
+- **Each toolchain has a manifest**, a file under its templates that lists
+  its rule files, its templates and the root files it deploys. Folder names
+  alone will not do: `coding/csharp/` is named for a language. Adoption
+  copies what it lists, the scrub reports a root file of a toolchain that
+  is not listed, and a later sync can leave out by it.
+- **Leaving out comes later, if at all.** With many toolchains a
+  repository may not want all of them under `agentics/`, and the sync then
+  skips those it does not list, by the manifest. Adopting one of those
+  needs the toolkit at hand, which is the next entry.
 
 ### Order
 
@@ -293,17 +304,36 @@ Each step leaves every initialized repository syncing clean.
    toolchain each scrub check is skipped without. It moved nothing.
 2. **Done.** `repository.toolchains`, with a sync renaming `framework` to
    it, and the scrub's check 6 comparing it with the tree.
-3. `layout.md` and `delivery.md` cut in two; the .NET templates moved; the
-   links, the index rows and the shims that name them. **`layout.md` is
-   done**, as `layout/dotnet.md` beside it; `delivery.md` and the templates
-   are not.
-4. `root-AGENTS.md` as a frame and a block per toolchain, and the sync
-   leaving out a toolchain's rules and rows where it is not listed. Proved
-   by a sync of a .NET repository that changes only the paths that moved,
-   and by an initialization with an empty list.
-5. The payload as trees laid over one another, once a second toolchain
-   has files of its own to put in one.
-6. The Go files, against the first Go repository.
+3. **Done.** `layout.md` and `delivery.md` cut in two, as `layout/dotnet.md`
+   and `delivery/dotnet.md`; `Version.props`, `Packaging.props` and the
+   pipelines' shared `build.yml` moved to `templates/dotnet/`; the links
+   and the index rows that name them.
+4. The .NET root files moved to `templates/dotnet/` with a manifest, and
+   an initialization copying them out by it. Proved by an initialization
+   that ends with the same root as today.
+5. `root-AGENTS.md` as a frame and a block per toolchain, and the sync
+   writing the rows of the toolchains listed and no others. Proved by a
+   sync of a .NET repository that changes nothing but paths that moved.
+6. The scrub reporting a root file of a toolchain that is not listed, and
+   *adopting a toolchain* as an operation of `/upgrade`.
+7. The Go files, against the first Go repository.
+
+### Beside it: a sync without a checkout
+
+A sync runs from a toolkit checkout, and the procedure only says to ask
+where one is. A repository whose machine has none is offered two ways to
+get one, from `toolkit.url` in its settings:
+
+- **A clone for this once**, removed when the sync is done.
+- **A clone that is kept**, at a place the user names, pulled and used
+  again by every later sync.
+
+Three things to settle with it. The kept clone's path is a local path and
+goes in no tracked file: an environment variable or a `git config` entry,
+asked for once. The sync is a script run from what was fetched, so the
+address and the commit are shown and confirmed before it runs. And the
+clone needs history back to the commit the repository recorded, or the
+list of what changed cannot be made, so it is not a shallow one.
 
 ### Beside it: a component that follows an upstream
 

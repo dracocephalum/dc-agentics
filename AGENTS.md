@@ -24,7 +24,7 @@ them.
 | Add or upgrade a package; judge a licence | [`repo/payload/agentics/rules/dependencies.md`](repo/payload/agentics/rules/dependencies.md) |
 | Create or find a ticket, or ask which ticket a change is for (`/change-tracking`) | [`repo/payload/agentics/rules/change-tracking/change-tracking.md`](repo/payload/agentics/rules/change-tracking/change-tracking.md), then the tracker file it names |
 | Start work on a ticket, name a branch, publish a repository, commit, or open / update / merge a pull request, set merge behaviour (`/source-control`) | [`repo/payload/agentics/rules/source-control/source-control.md`](repo/payload/agentics/rules/source-control/source-control.md), then the host file it names |
-| Give a repository a version, add its pipeline, publish packages, or change how versions and registries work | [`repo/payload/agentics/rules/delivery/delivery.md`](repo/payload/agentics/rules/delivery/delivery.md), then the host file it names — opt-in: offered at initialization with later as the default, and adopted when a repository has something to publish |
+| Give a repository a version, add its pipeline, publish packages, or change how versions and registries work | [`repo/payload/agentics/rules/delivery/delivery.md`](repo/payload/agentics/rules/delivery/delivery.md), then the toolchain's file and the host file it names — opt-in: offered at initialization with later as the default, and adopted when a repository has something to publish |
 | Review a PR, a diff, or changes — including changes to this toolkit (`/review`) | [`repo/payload/agentics/rules/coding/code-review.md`](repo/payload/agentics/rules/coding/code-review.md), then the C# or markdown checklist |
 | Scrub, sweep, or audit a repository for drift or inconsistency (`/scrub`) | [`repo/scrub.md`](repo/scrub.md) here; [`repo/payload/agentics/rules/scrub.md`](repo/payload/agentics/rules/scrub.md) is the part every target gets |
 | Measure what a repository's documents cost to read, or compact them (`/optimize`) | [`repo/optimize.md`](repo/optimize.md) here; [`repo/payload/agentics/rules/optimize.md`](repo/payload/agentics/rules/optimize.md) is the part every target gets |
@@ -81,7 +81,7 @@ Three kinds of file, told apart by location:
         security-reminders.md      privacy & data-security checklist; the review's security pass
         change-tracking/         change-tracking.md - the ticket rule, the yes/no setting, boards as views; github.md - issues, linked branches
         source-control/          source-control.md - the rules, host-neutral; github.md - reaching GitHub, publishing, PRs, review, settings
-        delivery/                delivery.md - versions, kinds of build, registries, adopting them; github.md - the workflow, its token, the registry
+        delivery/                delivery.md - versions, kinds of build, registries, adopting them; dotnet.md - the .NET files and steps; github.md - the workflow, its token, the registry
         coding/code-review.md
         coding/architecture.md     boundaries: the core, its adapters, what crosses a seam; language-neutral
         coding/where-facts-live.md one home per fact: doc comment, body, design document, README; language-neutral
@@ -91,7 +91,7 @@ Three kinds of file, told apart by location:
                                    component-README.md, category-README.md - filled by /new
                                    rules-AGENTS.md - copied to docs/rules/AGENTS.md with the target's first own
                                    rule; the one file the sync reads from outside agentics/ and never writes
-                                   Version.props, Packaging.props, build.yml, dev.yml, ci.yml - copied out when a repository
+                                   dev.yml, ci.yml, and under dotnet/ Version.props, Packaging.props, build.yml - copied out when a repository
                                    adopts versioning and a pipeline, agentics/rules/delivery/delivery.md; at initialization only
                                    when asked for there
                                    all of them stay in the target, both modes; repo/documents.md says why
