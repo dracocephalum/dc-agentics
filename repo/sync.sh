@@ -96,6 +96,10 @@ new_skills=$(ls "$toolkit/.claude/skills")
 # --- replace what the toolkit owns -----------------------------------------------------
 excluded=$(yaml_list "$target/.agentics.yaml" excluded)
 local_dirs=$(yaml_list "$target/.agentics.yaml" local)
+# The toolchains the repository lists, one a line: repository.toolchains, or the framework key it replaced.
+toolchains=$(awk '{ sub(/\r$/, "") }
+  /^  toolchains:/ { v = $0; sub(/^[^:]*:[ \t]*/, "", v); sub(/[ \t]*#.*$/, "", v); gsub(/[][ "]/, "", v); gsub(/,/, "\n", v); print v; exit }
+  /^  framework:/ { print $2; exit }' "$target/.agentics.yaml")
 if [ $plan = 1 ]; then
   say "== plan: replace agentics/ and the toolkit's shims ($(echo $new_skills | tr ' ' ','))"
   [ -z "$excluded" ] || say "== plan: exclude $(echo $excluded | tr ' ' ',')"
@@ -118,6 +122,17 @@ block=$target/.sync-block~
 awk -v o="$open" -v c="$close" '{ sub(/\r$/, "") } $0 == o { f = 1; next } $0 == c { f = 0 } f' "$template" > "$block"
 for p in $excluded; do
   grep -v -F "(agentics/rules/$p)" "$block" > "$block.x" && mv "$block.x" "$block" || true
+done
+# A toolchain the repository does not list keeps its rules under agentics/ and has no row. Its manifest names
+# them, and a row is the toolchain's when it links into one of those paths.
+for m in "$payload"/agentics/templates/*/manifest; do
+  [ -f "$m" ] || continue
+  tc=$(basename "$(dirname "$m")")
+  if echo "$toolchains" | grep -qx "$tc"; then continue; fi
+  tr -d '\r' < "$m" | grep '^agentics/rules/' | while read -r p; do
+    grep -v -F "]($p" "$block" > "$block.x" && mv "$block.x" "$block" || true
+  done
+  say "toolchain not listed: $tc - its rules stay under agentics/ and have no row in the block"
 done
 rows=$target/.sync-rows~
 : > "$rows"
