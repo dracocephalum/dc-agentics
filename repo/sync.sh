@@ -77,13 +77,14 @@ if git -C "$toolkit" cat-file -e "$base" 2> /dev/null; then
   git -C "$toolkit" log --oneline "$base..HEAD" -- repo/payload .claude/skills
   say "== root files that changed - yours to apply by intent; a toolchain's are in agentics/templates/<toolchain>/root/ to compare with (repo/upgrade.md, 'The rest of the payload')"
   # A root file is the payload's own, or a toolchain's under its templates. One that only moved between the
-  # two is not a change, and is passed over.
+  # two is not a change, and is passed over; one that moved and changed is a change where it stands.
   git -C "$toolkit" diff --name-status -M "$base..HEAD" -- repo/payload | awk -F '\t' '
     { p = $NF }
     p !~ /^repo\/payload\/agentics\// || p ~ /^repo\/payload\/agentics\/templates\/[^\/]+\/root\// {
       if ($1 == "R100") next
       sub(/^repo\/payload\/agentics\/templates\/[^\/]+\/root\//, "", p); sub(/^repo\/payload\//, "", p)
-      print substr($1, 1, 1) "\t" p
+      s = substr($1, 1, 1); if (s == "R" || s == "C") s = "M"
+      print s "\t" p
     }' || true
   old_skills=$(git -C "$toolkit" ls-tree --name-only "$base:.claude/skills" 2> /dev/null || true)
 else
