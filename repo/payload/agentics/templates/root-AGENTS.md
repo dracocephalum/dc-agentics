@@ -100,6 +100,7 @@ makes it selectable from a plain-language request.
 | Adding a project, component, or test project | [`agentics/rules/coding/csharp/csharp-new-project.md`](agentics/rules/coding/csharp/csharp-new-project.md) |
 | Asking where something goes, how it should be named, or what the other layout looks like | [`agentics/rules/layout.md`](agentics/rules/layout.md) — both modes, so this repository can describe a shape it does not currently have; then the file it names for the toolchain |
 | Asking how a solution, a project, a namespace or a test project is named, where build configuration lives, or how the test stack is kept current | [`agentics/rules/layout/dotnet.md`](agentics/rules/layout/dotnet.md) — the .NET half of the layout |
+| Starting to build with a toolchain this repository does not list yet | [`agentics/rules/layout.md`](agentics/rules/layout.md), *Adopting a toolchain* — its files are already under `agentics/` |
 | Checking a change for secrets, personal data, or local paths — or anything before a first push | [`agentics/rules/security-reminders.md`](agentics/rules/security-reminders.md) |
 | Adding, upgrading, or replacing a package (any ecosystem) | [`agentics/rules/dependencies.md`](agentics/rules/dependencies.md) |
 | Creating or finding a ticket, or asking which ticket a change is for | [`agentics/rules/change-tracking/change-tracking.md`](agentics/rules/change-tracking/change-tracking.md), then the tracker file it names |

@@ -333,3 +333,49 @@ puts at the repository root, each at the path it has there. Every
 toolchain's files are under `agentics/`, listed in `repository.toolchains`
 or not; only a listed one has its files at the root and its rows in
 `AGENTS.md`.
+
+### Adopting a toolchain
+
+Applies when a repository starts to build with a toolchain it does not
+list: a first Go module in a repository of .NET components, say. It needs
+no toolkit at hand, since the files are already under `agentics/`, and it is
+a change of its own, from a clean tree.
+
+1. **The toolchain has a folder**, `agentics/templates/<toolchain>/`, with a
+   `manifest`. Where it has none, the toolkit this repository was last
+   synced to did not have the toolchain: sync first, as a change of its own,
+   and where the toolkit still has none, say that the toolchain is not
+   supported and stop.
+2. **Its root files**, never over one that is there:
+
+       (cd agentics/templates/<toolchain>/root && find . -type f) | sed 's|^\./||' \
+         | while read -r f; do [ -e "$f" ] && echo "exists: $f" || echo "to copy: $f"; done
+
+   Copy each that is to copy, to the same path under the root. One that
+   exists is the repository's: compare the two, take across what the
+   toolchain needs, and say what was done.
+3. **The list**: add the toolchain to `repository.toolchains` in
+   `.agentics.yaml`.
+4. **Its rows in `AGENTS.md`**: the rows of the block in
+   `agentics/templates/root-AGENTS.md` that link into a path the manifest
+   names, added to the block of `AGENTS.md` where the template has them. A
+   later sync writes the same rows.
+5. **Its parts in `AGENTS.md`**, outside the block. The template has a line
+   `toolchain: <name>` wherever a toolchain's text belongs, and the
+   toolchain's own `root-AGENTS.md` has the part of each name:
+
+       awk -v name=<name> '{ sub(/\r$/, "") }
+         /^<!-- ==== part: / { on = ($0 == "<!-- ==== part: " name " ==== -->"); next }
+         on' agentics/templates/<toolchain>/root-AGENTS.md
+
+   Put each part where the template's line stands between the text
+   `AGENTS.md` already has, after the part of a toolchain that is there, and
+   fill its placeholders.
+6. **The first component**, by the toolchain's procedure, *Creating a
+   component* above.
+7. **Verify**: the toolchain's build and tests, and a scrub, whose checks 6
+   and 13 compare the list with the code and with the root.
+
+Dropping a toolchain is the same in reverse and is never done in passing:
+its code first, then its root files, its rows, its parts and its place on
+the list, each named to the user before it goes.
