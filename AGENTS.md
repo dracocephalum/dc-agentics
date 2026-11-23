@@ -30,7 +30,7 @@ them.
 | Measure what a repository's documents cost to read, or compact them (`/optimize`) | [`repo/optimize.md`](repo/optimize.md) here; [`repo/payload/agentics/rules/optimize.md`](repo/payload/agentics/rules/optimize.md) is the part every target gets |
 | Add a project, a test project, or a whole component to an initialized repo (`/new`) | [`repo/payload/agentics/rules/coding/csharp/csharp-new-project.md`](repo/payload/agentics/rules/coding/csharp/csharp-new-project.md) — from a toolkit checkout, [`repo/version-check.md`](repo/version-check.md) first |
 | Initialize / scaffold / set up a repo at a path | [`repo/initialize.md`](repo/initialize.md) |
-| Upgrade this toolkit's pinned versions, sync an initialized repo to the current toolkit (`sh repo/sync.sh --plan <target>`, then `--apply`), or convert one from standalone to monorepo (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — three operations; the sync is a script, the conversion needs no toolkit checkout |
+| Upgrade this toolkit's pinned versions, sync an initialized repo to the current toolkit (`sh repo/sync.sh --plan <target>`, then `--apply`), convert one from standalone to monorepo, or add a toolchain to one (`/upgrade`) | [`repo/upgrade.md`](repo/upgrade.md) — four operations; the sync is a script, and the conversion and the adoption of a toolchain need no toolkit checkout |
 | Change a StyleCop severity, or asked why a rule is set the way it is | [`repo/stylecop.md`](repo/stylecop.md) — the ruleset's own header carries the principle |
 | Check privacy/security before a first push | [`repo/payload/agentics/rules/security-reminders.md`](repo/payload/agentics/rules/security-reminders.md) |
 | Asked what a term here means — payload, baseline, component, toolkit upgrade, drift | [`GLOSSARY.md`](GLOSSARY.md) — an index to the document that owns each term, never a second definition |
@@ -55,7 +55,7 @@ Three kinds of file, told apart by location:
       copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
       scrub.md                     consistency + drift pass for THIS repo; extends the payload checklist
       optimize.md                  what THIS repo's documents cost to read; extends the payload document
-      upgrade.md                   toolkit pins, a target up to the toolkit, standalone -> monorepo
+      upgrade.md                   toolkit pins, a target up to the toolkit, standalone -> monorepo, a toolchain adopted
       sync.sh                      the sync: replaces agentics/ and the shims in a target whole, regenerates its
                                    guidelines block, records the commit, verifies; POSIX sh, never commits
       version-check.md             does a target agree with this toolkit; used by /upgrade and /new
@@ -109,7 +109,7 @@ Three kinds of file, told apart by location:
       source-control/SKILL.md      /source-control - ticket-linked branch, commit, draft PR, merge settings
       scrub/SKILL.md               /scrub   - consistency + drift pass; reports, does not fix
       optimize/SKILL.md            /optimize - what documents cost to read; measures unless asked for more
-      upgrade/SKILL.md             /upgrade - toolkit pins, a target to the toolkit, or standalone -> monorepo
+      upgrade/SKILL.md             /upgrade - toolkit pins, a target to the toolkit, standalone -> monorepo, or a toolchain adopted
 
 Three payload files are forked from `dotnet new` templates - `.editorconfig`,
 `.gitignore`, `.gitattributes` - and each carries a `agentics-baseline:`

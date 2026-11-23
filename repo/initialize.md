@@ -53,6 +53,8 @@ the worse question.
                                  the pipelines dev.yml and ci.yml, and under dotnet/ Version.props, Packaging.props
                                  and the pipelines' shared build.yml — copied out when versioning and a pipeline are adopted, now or
                                  later (agentics/rules/delivery/delivery.md)
+                                 dotnet/manifest — the rules and templates that are .NET's; dotnet/root/ — its root files,
+                                 listed below; dotnet/root-AGENTS.md — its parts of AGENTS.md (documents.md)
                                  all of them kept in both modes (documents.md)
     .editorconfig                editor conventions (root = true)
     .gitattributes               line-ending normalization  (dotnet new)

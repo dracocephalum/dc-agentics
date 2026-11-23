@@ -18,8 +18,9 @@ adjustments, because it is not a target:
   `repo/payload/agentics/rules/...` path; that path is what its own reverse check
   must resolve.
 - The settings-truth check has less to do here. This repository's
-  `.agentics.yaml` has no `repository:` block at all — no licence, layout,
-  StyleCop or CPM rows — because it is the toolkit, not a target. What remains
+  `.agentics.yaml` has a `repository:` block of two keys, `publish-safe` and
+  an empty `toolchains` — no licence, layout or namespace — because it is
+  the toolkit, not a target, and is built with no toolchain. What remains
   to check is `change-tracking`, `source-control` and `guidelines`.
 - **`payload/.agentics.yaml` is unfilled on purpose**, so the placeholder
   check finds eight `{{…}}` tokens in it every time. That file is a template
@@ -47,9 +48,9 @@ So sweep every file, not one extension:
 
 Run it after **any** move or rename, and again once the rewrite is done — the
 second run is the one that catches what the first rewrite missed. Also check
-`.agentics.yaml` comments, the payload's `.editorconfig`, `.gitignore`,
-`Directory.Build.props` and `Directory.Packages.props`, and the root
-`.gitignore`: all of them name toolkit paths in prose.
+`.agentics.yaml` comments, the payload's `.editorconfig` and `.gitignore`,
+`Directory.Build.props` and `Directory.Packages.props` under
+`payload/agentics/templates/dotnet/root/`, and the root `.gitignore`: all of them name toolkit paths in prose.
 
 ## 2. `.original` files still hash to their markers
 
@@ -108,8 +109,11 @@ This repository runs on its own payload, through two files that claim to follow
 the shipped shape:
 
 - `.agentics.yaml` — same keys as `payload/.agentics.yaml`, minus the
-  provenance, repository and rules blocks (the toolkit has no `agentics/` to
-  sync). A key added to the payload and not considered here is a divergence.
+  provenance and rules blocks (the toolkit has no `agentics/` to sync), the
+  keys of the repository block an initialization fills (licence, layout,
+  namespace, host and holder), and `coverage`, which is read only where a
+  toolchain has tests. A key added to the payload and not
+  considered here is a divergence.
 - `.markdownlint.yaml` — one line, extending the payload copy, so the two
   cannot drift. If it has grown rules of its own, that is the finding.
 

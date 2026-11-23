@@ -19,7 +19,7 @@ when they have a closing condition.
       source-control host file pointing at it.
 - [ ] **`ModelConventions.cs` as a real file.** The verified check lives as a
       snippet in `csharp-ef-core-rules.md`; the authoring rule prefers a real
-      file. Close by: `agentics/templates/ModelConventions.cs` in the payload plus
+      file. Close by: `agentics/templates/dotnet/ModelConventions.cs` in the payload plus
       the test, and the rules file pointing at them. Ship `dotnet-ef` in
       `.config/dotnet-tools.json` at the same time, pinned to the EF version
       in `Directory.Packages.props`.
@@ -41,17 +41,75 @@ when they have a closing condition.
       format-as-repair, MIT and `none` licences, Serena absent, `webapi`,
       `worker` and a second category through `/new`, standalone→monorepo, and
       both convergence proofs; the sync script against a target with local
-      rows, an exclusion, and a second run that changes nothing. What has no
-      test yet: a component removed from a category map; the sync on a
-      platform other than Windows, which needs the runner matrix in the CI
-      group below. Close by: run each on a throwaway repository and record the
-      result here or as a ticket.
+      rows, an exclusion, and a second run that changes nothing; the sync
+      against a target that lists no toolchain, which loses the .NET rows
+      and no other. What has no test yet: an initialization and the
+      adoption of a toolchain as they are now, each with an entry of its
+      own under *Toolchains* below; a component removed from a category
+      map; the sync on a platform other than Windows, which needs the
+      runner matrix in the CI group below. Close by: run each on a
+      throwaway repository and record the result here or as a ticket.
+
+## Toolchains
+
+The toolkit is cut so that a repository lists its toolchains, and .NET is
+the one there is. [`PLAN.md`](PLAN.md), *Toolchains*, has what is not
+decided; these are decided:
+
+- [ ] **An initialization has not been run end to end since it changed.**
+      The copy is two commands, the payload and then each listed
+      toolchain's `root/`, and `AGENTS.md` is put together by the command
+      in `repo/documents.md`. Each was run by itself and gives what the old
+      procedure gave. Close by: a trial from an empty folder to the last
+      stage, standalone and monorepo, and `guidelines.verified` in
+      `.agentics.yaml` moved to its date.
+- [ ] **Adopting a toolchain has not been followed whole.**
+      `repo/payload/agentics/rules/layout.md`, *Adopting a toolchain*, has
+      seven steps, and each of its commands was run for .NET, the only
+      toolchain there is to adopt. Close by: the first repository that adds
+      a second one, with what it met written there.
+- [ ] **The Go files**, against the first Go repository and not ahead of
+      it. Close by: `layout/go.md`, the Go rows of the delivery rule or
+      the rule reworded where Go cannot do as it says, coding rules for the
+      language, `templates/go/` with its manifest, its `root/` and its
+      parts of `AGENTS.md`, and the Go column of the table in `PLAN.md`
+      checked against what the repository showed.
+- [ ] **A component that follows an upstream has no rule.** The first Go
+      candidates are forks that are to stop merging their upstream and
+      review its changes instead. It is no toolchain's rule: the last
+      upstream release looked at is recorded in the component; each new
+      release is read as a diff from that one; every change is sorted into
+      what does not concern the component, what is taken by hand, and what
+      is a security fix; nothing is merged, so the component's paths are
+      its own. Close by: a section in the layout rule or a file beside it,
+      and a scrub check that says how far behind the record is.
+- [ ] **A sync needs a toolkit checkout and offers no way to get one.**
+      The procedure only says to ask where one is. Close by:
+      `repo/upgrade.md` and the shim offering two, from `toolkit.url` in
+      the settings: a clone for this once, removed when the sync is done,
+      and a clone that is kept at a place the user names and pulled by
+      every later sync. With it: the kept clone's path is a local path and
+      goes in no tracked file, so an environment variable or a `git config`
+      entry, asked for once; the address and the commit are shown and
+      confirmed before the script runs; and the clone has history back to
+      the commit the repository recorded, so it is not a shallow one.
+- [ ] **The settings file still words three things for .NET.**
+      `repository.namespace` is a PascalCase prefix and does not say whose;
+      `coverage` names the C# rule and one collector; `delivery.versioning`
+      is "true once `Version.props` and `Packaging.props` are at the
+      root". Close by: each reworded so that a second toolchain has a place
+      in it, with the second toolchain in hand.
+- [ ] **The stages of an initialization are .NET's.** `repo/build.md` is
+      the .NET build stage whole, `repo/copy.md` and `repo/verify.md` have
+      .NET steps in a general frame, and `/new` names the C# procedure.
+      Close by: a stage document per toolchain, the frames naming none, and
+      `/new` asking which toolchain where a repository lists more than one.
 
 ## CI — deferred as a group
 
 Two pipelines exist, as templates a repository adopts, with the steps they
-share: `dev.yml`, `ci.yml` and `build.yml` under
-`repo/payload/agentics/templates/`, described in
+share: `dev.yml` and `ci.yml` under `repo/payload/agentics/templates/` and
+`build.yml` under `dotnet/` there, described in
 `repo/payload/agentics/rules/delivery/`. `dev` builds and tests a change
 request and reaches nothing; `ci` builds, tests, packs, and publishes `ci`
 packages to the host's registry. These are the pieces they do not have yet,
@@ -108,11 +166,14 @@ each decided on the local side and needing its server-side half:
       third pipeline, `release`, which calls the same shared steps. Close
       by: `release.yml`, the checks before it publishes, and the rule's
       section on nuget.org.
-- [ ] **A sync does not say that a template changed.** A repository that
-      copied a pipeline or `Packaging.props` out of `agentics/templates/`
-      keeps its copy when the template moves on. Close by: the sync's plan
-      listing the templates that changed since the recorded commit, beside
-      the payload files it already lists.
+- [ ] **A sync does not say that a pipeline or a version template
+      changed.** A repository that copied a pipeline, `Version.props` or
+      `Packaging.props` out of `agentics/templates/` keeps its copy when
+      the template moves on. A toolchain's root files are covered: the
+      sync lists those that changed, and each can be compared with its
+      template under `agentics/templates/<toolchain>/root/`. Close by: the
+      sync's plan listing the other templates that changed since the
+      recorded commit, beside the root files it already lists.
 - [ ] **Adopting it has no shim, and the offer at initialization has not
       been tried.** Initialization asks, and an opt-out leaves an entry in
       the target's `TODO.md`; the adoption itself is a procedure in the
