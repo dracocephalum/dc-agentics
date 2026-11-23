@@ -314,9 +314,9 @@ Each step leaves every initialized repository syncing clean.
 5. `root-AGENTS.md` as a frame and a block per toolchain, and the sync
    writing the rows of the toolchains listed and no others. **The rows are
    done**: the sync leaves out a row that links into the rules of a
-   toolchain not listed, by its manifest. What is outside the generated
-   block — the layout variants, *Conventions*, *Code intelligence*,
-   *Building and testing* — is still .NET's text in the one template.
+   toolchain not listed, by its manifest. **The rest is done too**: the
+   template is a frame, each toolchain's text is in named parts of its own
+   file, and an initialization puts them together with one command.
 6. The scrub reporting a root file of a toolchain that is not listed, and
    *adopting a toolchain* as an operation of `/upgrade`.
 7. The Go files, against the first Go repository.
