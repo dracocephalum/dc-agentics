@@ -308,9 +308,9 @@ Each step leaves every initialized repository syncing clean.
    and `delivery/dotnet.md`; `Version.props`, `Packaging.props` and the
    pipelines' shared `build.yml` moved to `templates/dotnet/`; the links
    and the index rows that name them.
-4. The .NET root files moved to `templates/dotnet/` with a manifest, and
-   an initialization copying them out by it. Proved by an initialization
-   that ends with the same root as today.
+4. **Done.** The .NET root files moved to `templates/dotnet/root/`, with
+   a manifest of the toolchain's rules and templates beside it, and an
+   initialization copying them out.
 5. `root-AGENTS.md` as a frame and a block per toolchain, and the sync
    writing the rows of the toolchains listed and no others. Proved by a
    sync of a .NET repository that changes nothing but paths that moved.

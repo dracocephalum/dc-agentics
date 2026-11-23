@@ -146,7 +146,7 @@ Details, and the two choices behind the machine-level wiring, are in
 ## 3. Dependency licence policy
 
 `allowed-licenses.json`, `license-overrides.json` and
-`.config/dotnet-tools.json` arrive with the payload copy. Then:
+`.config/dotnet-tools.json` arrive in stage 1. Then:
 
     dotnet tool restore
 

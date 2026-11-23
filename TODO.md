@@ -26,7 +26,7 @@ when they have a closing condition.
 - [ ] **`python-new-project.md`** when the first Python component arrives —
       shape already decided in `machine/python.md`.
 - [ ] **`dotnet-outdated-tool`** as a further entry in
-      `repo/payload/.config/dotnet-tools.json` (4.8.1 at time of writing), so
+      `repo/payload/agentics/templates/dotnet/root/.config/dotnet-tools.json` (4.8.1 at time of writing), so
       "keep the stack current" in `agentics/rules/layout/dotnet.md` becomes one command. Verify it
       respects central package management before shipping.
 - [ ] **Meziantou.Analyzer** (MIT, 3.0.204) — overlaps the CancellationToken

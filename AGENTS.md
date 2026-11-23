@@ -68,10 +68,7 @@ Three kinds of file, told apart by location:
       .agentics.yaml            settings agents read: source-control mode, init choices, toolkit commit; placeholders filled at init
       TODO.md                      the target's open-items file; init writes anything unresolved into it
       .editorconfig  .gitignore  .gitattributes   (forked; baselines live in repo/baselines/)
-      stylecop.ruleset  stylecop.json  StyleCop.props
-      Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props  BannedSymbols.txt
-      nuget.config  allowed-licenses.json  license-overrides.json
-      .config/dotnet-tools.json  .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
+      .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
       agentics/rules/                  every rules document, exactly where it lands; the toolkit's, replaced whole by a sync
         dependencies.md
         layout.md                  the component, standalone + monorepo, categories, naming of folders, whose rules are whose
@@ -94,6 +91,12 @@ Three kinds of file, told apart by location:
                                    dev.yml, ci.yml, and under dotnet/ Version.props, Packaging.props, build.yml - copied out when a repository
                                    adopts versioning and a pipeline, agentics/rules/delivery/delivery.md; at initialization only
                                    when asked for there
+                                   dotnet/root/ - the files .NET needs at a repository's root, each at its path there:
+                                   Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props
+                                   StyleCop.props  stylecop.ruleset  stylecop.json  BannedSymbols.txt  nuget.config  global.json
+                                   allowed-licenses.json  license-overrides.json  .config/dotnet-tools.json
+                                   copied out at init for a repository that lists the toolchain, repo/copy.md
+                                   dotnet/manifest - the rules and templates that are the toolchain's
                                    all of them stay in the target, both modes; repo/documents.md says why
 
     (2) the one thing copied from OUTSIDE payload/

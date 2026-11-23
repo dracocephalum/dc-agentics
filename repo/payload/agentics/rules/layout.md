@@ -326,3 +326,10 @@ tests are set up belong to the toolchain that builds it:
 
 A section that was once in this document and is one toolchain's is in that
 file under the heading it had.
+
+**What a toolchain owns is listed.** `agentics/templates/<toolchain>/manifest`
+names its rules and its templates, and `root/` beside it holds the files it
+puts at the repository root, each at the path it has there. Every
+toolchain's files are under `agentics/`, listed in `repository.toolchains`
+or not; only a listed one has its files at the root and its rows in
+`AGENTS.md`.

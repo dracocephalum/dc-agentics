@@ -83,7 +83,7 @@ session can tell a known-good combination from an untested one:
 
 | Marker | Lives in | Update when |
 |---|---|---|
-| `agentics-verified: sdk= date=` | `payload/Directory.Packages.props` | the test stack was moved and verified |
+| `agentics-verified: sdk= date=` | `payload/agentics/templates/dotnet/root/Directory.Packages.props` | the test stack was moved and verified |
 | `agentics-baseline: sdk= sha256=` | each forked file | that file was re-baselined |
 | `guidelines.model-baseline` | `.agentics.yaml` | the model line these rules target has changed |
 | `guidelines.verified` | `.agentics.yaml` | a full initialization trial completed on that line |
@@ -141,11 +141,18 @@ hand instead is undone by the next sync.
 
 ### The rest of the payload
 
-Everything the payload ships outside `agentics/` is the target's once copied:
-`.editorconfig`, `.gitignore`, `.gitattributes`, the `Directory.*` files,
-`Tests.props`, `nuget.config`, the StyleCop files, the licence lists,
-`.config/dotnet-tools.json`, `.github/` and `.markdownlint.yaml`. The script
-lists which of them changed between the two
+Every file at the target's root is the target's once copied: what the
+payload ships outside `agentics/` — `.editorconfig`, `.gitignore`,
+`.gitattributes`, `.github/` and `.markdownlint.yaml` — and what a toolchain
+puts there from its templates, for .NET the `Directory.*` files,
+`Tests.props`, `nuget.config`, `global.json`, the StyleCop files, the licence
+lists and `.config/dotnet-tools.json`. A sync brings the new template of each
+of a toolchain's files to `agentics/templates/<toolchain>/root/`, so the file
+at the root can be compared with it where it stands:
+
+    git diff --no-index agentics/templates/dotnet/root/nuget.config nuget.config
+
+The script lists which of them changed between the two
 commits; apply each **by intent** — the severity it raised, the version it
 pinned, the key it added — rather than by text merge. A target edits these
 files attribute by attribute while the toolkit rewrites them wholesale, and a
