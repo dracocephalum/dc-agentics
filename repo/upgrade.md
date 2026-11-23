@@ -1,7 +1,7 @@
 # Upgrading
 
 Applies when asked to upgrade, update, or bring current — the toolkit's own
-pinned versions, or a repository it initialized. Three operations share the
+pinned versions, or a repository it initialized. Four operations share the
 verb.
 
 | # | Operation | Runs against | Status |
@@ -9,6 +9,7 @@ verb.
 | 1 | Bring the toolkit's own pins current | this repository | below |
 | 2 | Upgrade a target repository to the current toolkit | a target, with a toolkit checkout | below |
 | 3 | Convert a target from standalone to monorepo | a target, no toolkit needed | below |
+| 4 | Adopt a toolchain a target does not list yet | a target, no toolkit needed | [`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md), *Adopting a toolchain* — the target's own copy is the one it follows |
 
 Operation 2 needs both repositories present: its script runs from the toolkit
 checkout, copies from it, and reads the recorded commit against its history.
@@ -18,7 +19,7 @@ ask for its path rather than guessing.
 **The tree must be clean before anything is applied.** Every operation
 rewrites many files at once, so it starts only from a repository where
 `git status --porcelain` prints nothing — no modified, no staged, and no
-untracked files. For operation 1 that is the toolkit's own tree; for 2 and 3,
+untracked files. For operation 1 that is the toolkit's own tree; for the others,
 the target's. If it is not clean, **decline** with that one line and let the
 user commit or stash; never stash on their behalf, since unstashing over
 files the upgrade rewrote is exactly the conflict this rule exists to prevent.

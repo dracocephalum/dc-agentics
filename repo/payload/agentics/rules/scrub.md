@@ -360,3 +360,37 @@ so that is not checked here. It shows where it matters, as a restore
 refused in the pipeline of the repository that was not given leave;
 [`delivery/github.md`](delivery/github.md), *When a package is first
 published*, is the list that keeps it from being forgotten.
+
+### 13. A toolchain's root files are where the list says
+
+Skipped where `agentics/templates/` holds no toolchain's folder. Every
+toolchain's files are shipped under `agentics/`, and only one that
+`repository.toolchains` lists has its files at the root
+([`layout.md`](layout.md), *A toolchain's own layout*). Nothing fails when
+the two part: a file of a toolchain that was dropped goes on being read by
+whatever looks for it, and a file that was deleted is missed only by the
+build that needed it.
+
+    toolchains=$(awk '{ sub(/\r$/, "") } /^  toolchains:/ {
+      v = $0; sub(/^[^:]*:[ \t]*/, "", v); sub(/[ \t]*#.*$/, "", v)
+      gsub(/[][ "]/, "", v); gsub(/,/, "\n", v); print v; exit }' .agentics.yaml)
+    for m in agentics/templates/*/manifest; do
+      [ -f "$m" ] || continue
+      tc=$(basename "$(dirname "$m")"); root="agentics/templates/$tc/root"
+      [ -d "$root" ] || continue
+      listed=$(echo "$toolchains" | grep -cx "$tc")
+      (cd "$root" && find . -type f) | sed 's|^\./||' | while read -r f; do
+        if [ "$listed" = 0 ] && [ -e "$f" ]; then echo "$f: a root file of $tc, which is not listed"; fi
+        if [ "$listed" != 0 ] && [ ! -e "$f" ]; then echo "$f: missing, and $tc is listed"; fi
+      done
+    done
+
+It prints nothing when they agree. What it prints is one of two:
+
+| Line | Means |
+|---|---|
+| `a root file of <toolchain>, which is not listed` | the toolchain was dropped and its files left, or its code is here and the list was never told. Check 6 says which: it compares the list with the code |
+| `missing, and <toolchain> is listed` | a file the toolchain puts at the root was removed or never copied. A finding where a build needs it; the user's to say where it was removed on purpose |
+
+A root file that differs from its template is not a finding: the file is
+the repository's, and the template is what it started from.

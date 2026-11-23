@@ -317,8 +317,9 @@ Each step leaves every initialized repository syncing clean.
    toolchain not listed, by its manifest. **The rest is done too**: the
    template is a frame, each toolchain's text is in named parts of its own
    file, and an initialization puts them together with one command.
-6. The scrub reporting a root file of a toolchain that is not listed, and
-   *adopting a toolchain* as an operation of `/upgrade`.
+6. **Done.** The scrub's check 13 reports a root file of a toolchain that
+   is not listed and one a listed toolchain lacks, and *Adopting a
+   toolchain* is in `layout.md`, reached as operation 4 of `/upgrade`.
 7. The Go files, against the first Go repository.
 
 ### Beside it: a sync without a checkout
