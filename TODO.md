@@ -129,15 +129,20 @@ each decided on the local side and needing its server-side half:
       repository that has the pipeline added an entry of its own for it,
       `'!libraries/*/test/**'`. Close by: the template's comment and
       `github.md` saying so, and the scrub's check 11 knowing the entry.
-- [ ] **A package first published from a public repository has not been
-      seen.** The host documents that it is private, and `github.md`,
-      *When a package is first published*, has it checked the day it
-      happens. Close by: that day, with what was seen written there.
+- [ ] **A public repository's new package is public until its owner acts.**
+      Seen on 2026-11-23, and made private by hand the same day. The rule
+      now has it said in the change request and asked after the deploy,
+      and the user makes it private on the package's page; between the
+      deploy and that step anyone signed in can restore it. Close by: a
+      way to publish it private from the first, tried and written into
+      `github.md`, *When a package is first published*, or a decision that
+      the window is accepted and this entry removed.
 - [ ] **The delivery rule is verified on one repository.** One personal
       account, one repository, private and then public, one solution,
       two packages, a restore of them on Windows through the two ignored
       files, and a second repository's workflow restoring them on Linux.
-      Not yet seen: the removal of an old `ci` version, an organization's
+      Seen since: the removal of old `ci` versions, the oldest kept being
+      the twentieth newest. Not yet seen: an organization's
       repository, a repository with several solutions or with no package,
       and the ignored files on macOS or in an editor's restore. Close by:
       each seen once, and the *Not yet verified* notes in
