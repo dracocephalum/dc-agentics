@@ -44,72 +44,50 @@ so rather than improvising.
 Three kinds of file, told apart by location:
 
     (3) workspace - about this repo; never copied
-    README.md  AGENTS.md  TODO.md  PLAN.md  LICENSE  NOTICE  .gitignore  .gitattributes
-    GLOSSARY.md                    index of terms to the document that owns each; never a second definition
-    .agentics.yaml              this repository's own settings (source-control mode); same shape as the payload's
-    .markdownlint.yaml             one line: extends the payload copy (so it cannot drift)
-    machine/                       setting up a machine (README.md, then github/gitleaks/python/serena/lsp)
-                                   Windows and interactive today; platforms.md for other platforms
+    README.md  AGENTS.md  TODO.md  PLAN.md  GLOSSARY.md  LICENSE  NOTICE  .gitignore  .gitattributes
+    .agentics.yaml  .markdownlint.yaml   this repository's own settings, in the payload's shape; the lint
+                                   configuration is one line that extends the payload's, so it cannot drift
+    machine/                       setting up a machine: README.md first; Windows and interactive today,
+                                   platforms.md for other platforms
     repo/                          acting on a target repository
-      initialize.md                repo initialization: inputs, what lands, the five stages
+      initialize.md                initialization: inputs, what lands, the five stages
       copy.md  build.md  documents.md  settings.md  verify.md   one stage each, in that order
-      scrub.md                     consistency + drift pass for THIS repo; extends the payload checklist
-      optimize.md                  what THIS repo's documents cost to read; extends the payload document
-      upgrade.md                   toolkit pins, a target up to the toolkit, standalone -> monorepo, a toolchain adopted
-      sync.sh                      the sync: replaces agentics/ and the shims in a target whole, regenerates its
-                                   guidelines block, records the commit, verifies; POSIX sh, never commits
+      scrub.md  optimize.md        for THIS repo; each extends the payload document of its name
+      upgrade.md                   the four operations of /upgrade
       version-check.md             does a target agree with this toolkit; used by /upgrade and /new
+      sync.sh                      the sync, POSIX sh: replaces agentics/ and the shims in a target whole,
+                                   regenerates its guidelines block, records the commit, verifies; never commits
       stylecop.md                  the ruleset: what each severity means, how to change one, the wiring
       baselines/                   pristine `dotnet new` output, NEVER copied to a target
                                    path mirrors payload/; .original suffix keeps them inert
 
     (1)+(2) payload - an EXACT mirror of a target repository root; copied verbatim
     repo/payload/
-      .agentics.yaml            settings agents read: source-control mode, init choices, toolkit commit; placeholders filled at init
-      TODO.md                      the target's open-items file; init writes anything unresolved into it
+      .agentics.yaml  TODO.md      a target's settings and open items; at init the placeholders are filled,
+                                   and anything unresolved is written into the second
       .editorconfig  .gitignore  .gitattributes   (forked; baselines live in repo/baselines/)
-      .github/PULL_REQUEST_TEMPLATE.md  .github/rulesets/protect-main.json  .markdownlint.yaml
-      agentics/rules/                  every rules document, exactly where it lands; the toolkit's, replaced whole by a sync
-        dependencies.md
-        layout.md                  the component, standalone + monorepo, categories, naming of folders, whose rules are whose
-        layout/dotnet.md           the .NET half: solutions, projects, namespaces, build files, test projects, stack currency
-        scrub.md                   the consistency + drift checks every target gets
-        optimize.md                what the documents cost to read: measure, compact, defaults
-        security-reminders.md      privacy & data-security checklist; the review's security pass
-        change-tracking/         change-tracking.md - the ticket rule, the yes/no setting, boards as views; github.md - issues, linked branches
-        source-control/          source-control.md - the rules, host-neutral; github.md - reaching GitHub, publishing, PRs, review, settings
-        delivery/                delivery.md - versions, kinds of build, registries, adopting them; dotnet.md - the .NET files and steps; github.md - the workflow, its token, the registry
-        coding/code-review.md
-        coding/architecture.md     boundaries: the core, its adapters, what crosses a seam; language-neutral
-        coding/where-facts-live.md one home per fact: doc comment, body, design document, README; language-neutral
-        coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
-        coding/markdown/markdown-review.md
-      agentics/templates/              root-AGENTS.md, root-README.md - transformed at init, and kept
-                                   component-README.md, category-README.md - filled by /new
-                                   rules-AGENTS.md - copied to docs/rules/AGENTS.md with the target's first own
-                                   rule; the one file the sync reads from outside agentics/ and never writes
-                                   dev.yml, ci.yml, and under dotnet/ Version.props, Packaging.props, build.yml - copied out when a repository
-                                   adopts versioning and a pipeline, agentics/rules/delivery/delivery.md; at initialization only
-                                   when asked for there
-                                   dotnet/root/ - the files .NET needs at a repository's root, each at its path there:
-                                   Directory.Build.props  Directory.Build.targets  Directory.Packages.props  Tests.props
-                                   StyleCop.props  stylecop.ruleset  stylecop.json  BannedSymbols.txt  nuget.config  global.json
-                                   allowed-licenses.json  license-overrides.json  .config/dotnet-tools.json
-                                   copied out at init for a repository that lists the toolchain, repo/copy.md
-                                   dotnet/manifest - the rules and templates that are the toolchain's
-                                   dotnet/root-AGENTS.md - the .NET parts of a target's AGENTS.md, put into the frame
-                                   root-AGENTS.md is, by the command in repo/documents.md
-                                   all of them stay in the target, both modes; repo/documents.md says why
+      .github/  .markdownlint.yaml
+      agentics/rules/              every rules document, exactly where it lands; the toolkit's, replaced whole by a sync
+        dependencies.md  layout.md  scrub.md  optimize.md  security-reminders.md
+        change-tracking/  source-control/  delivery/   a rule, and beside it a file for each host or toolchain
+        layout/                    each toolchain's half of the layout rule
+        coding/                    code-review.md, architecture.md, where-facts-live.md; csharp/, markdown/
+      agentics/templates/          all of them stay in the target, both modes; repo/documents.md says why
+        root-AGENTS.md  root-README.md   a target's two root documents, transformed at init; the first is a
+                                   frame that takes each toolchain's parts
+        component-README.md  category-README.md   filled by /new
+        rules-AGENTS.md            the start of a target's own rules index, docs/rules/AGENTS.md
+        dev.yml  ci.yml            the pipelines, copied out when a repository adopts delivery
+        <toolchain>/               manifest - the rules and templates that are the toolchain's
+                                   root/ - its files for a target's root, each at its path there, copied out
+                                   for a repository that lists the toolchain
+                                   root-AGENTS.md - its parts of a target's AGENTS.md
+                                   and what else it has to copy out: for dotnet, the version files and
+                                   the pipelines' shared steps
 
     (2) the one thing copied from OUTSIDE payload/
-    .claude/skills/                skill shims; live here, copied to a target's .claude/skills/
-      new/SKILL.md                 /new     - a project, or a whole component
-      review/SKILL.md              /review  - PR, branch, files, or comment triage; post/print/report
-      change-tracking/SKILL.md     /change-tracking - create or find a ticket
-      source-control/SKILL.md      /source-control - ticket-linked branch, commit, draft PR, merge settings
-      scrub/SKILL.md               /scrub   - consistency + drift pass; reports, does not fix
-      optimize/SKILL.md            /optimize - what documents cost to read; measures unless asked for more
-      upgrade/SKILL.md             /upgrade - toolkit pins, a target to the toolkit, standalone -> monorepo, or a toolchain adopted
+    .claude/skills/<name>/SKILL.md   the shims, live here and copied to a target's .claude/skills/:
+                                   new, review, change-tracking, source-control, scrub, optimize, upgrade
 
 Three payload files are forked from `dotnet new` templates - `.editorconfig`,
 `.gitignore`, `.gitattributes` - and each carries a `agentics-baseline:`
