@@ -18,8 +18,44 @@ Claude Code loses nothing by skipping the shims.
 Then generate the repository's own `AGENTS.md` at its root from
 [`payload/agentics/templates/root-AGENTS.md`](payload/agentics/templates/root-AGENTS.md).
 It arrived with the copy at `<repo>/agentics/templates/`, and **it stays there** —
-copy it to the root as `AGENTS.md` and transform the copy, leaving the template
-untouched.
+the root's `AGENTS.md` is put together from it and transformed, leaving the
+template untouched.
+
+**The template is a frame, and each toolchain has its parts.** What any
+repository's `AGENTS.md` says is in `root-AGENTS.md`. What one toolchain's
+says — its folders, its build files, its names, its commands — is in
+`agentics/templates/<toolchain>/root-AGENTS.md`, cut into named parts, and
+the frame has a line for each name where the part belongs. From the target's
+root, with the toolchains of `repository.toolchains` in `tcs`, separated by
+spaces:
+
+    awk -v dir=agentics/templates -v tcs="dotnet" '
+      function part(name,   n, t, i, f, l, on, any, sep) {
+        n = split(tcs, t, " "); any = 0; sep = (name !~ /-rows$/)
+        for (i = 1; i <= n; i++) {
+          f = dir "/" t[i] "/root-AGENTS.md"; on = 0
+          while ((getline l < f) > 0) {
+            sub(/\r$/, "", l)
+            if (l ~ /^<!-- ==== part: /) { on = (l == "<!-- ==== part: " name " ==== -->"); if (on && any && sep) print ""; continue }
+            if (on) { print l; any = 1 }
+          }
+          close(f)
+        }
+        return any
+      }
+      { sub(/\r$/, "") }
+      skip && /^$/ { skip = 0; next }
+      { skip = 0 }
+      /^ *<!-- ==== toolchain: .* ==== -->$/ {
+        name = $0; sub(/^ *<!-- ==== toolchain: /, "", name); sub(/ ==== -->$/, "", name)
+        if (!part(name) && name !~ /-rows$/) skip = 1
+        next
+      }
+      { print }' agentics/templates/root-AGENTS.md > AGENTS.md
+
+A name no listed toolchain has a part for leaves nothing behind, and a
+repository with no toolchain gets the frame alone. Parts that are rows of a
+table follow one another; the others are a blank line apart.
 
 **Why the template stays.** A standalone repository that later converts to a
 monorepo needs the monorepo layout variant, and that text exists nowhere else.

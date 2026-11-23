@@ -24,6 +24,12 @@
   rule indexes: nothing inside it may carry a placeholder, and nothing outside
   it is the toolkit's to change afterwards.
 
+  A line that reads "toolchain: <name>" between four equals signs stands for
+  the part of that name in agentics/templates/<toolchain>/root-AGENTS.md, of
+  each toolchain the repository lists. The command in the toolkit's
+  repo/documents.md puts them in and takes the lines out; none is left in a
+  generated file.
+
   A row of that table is one toolchain's when it links into a path the
   toolchain's manifest names (agentics/templates/<toolchain>/manifest), and a
   sync leaves it out of a repository that does not list the toolchain. So a
@@ -35,7 +41,7 @@
 
 {{ONE_LINE_PURPOSE}}
 
-Toolchain: .NET. Namespace prefix: `{{PREFIX}}`.
+<!-- ==== toolchain: intro ==== -->
 
 ## Repository layout
 
@@ -43,21 +49,21 @@ Toolchain: .NET. Namespace prefix: `{{PREFIX}}`.
 
 | Path | Purpose |
 |---|---|
-| `src/` | production code |
-| `test/` | test projects, one per project under test |
 | `agentics/` | the toolkit's — `rules/` this repository is held to, see *Agent guidelines* below, and `templates/`; replaced whole by a sync, never edited in place |
 | `docs/rules/` | this repository's own rules, once it has any, and `AGENTS.md` there is their index — started from `agentics/templates/rules-AGENTS.md`; the sync copies its rows into the table below |
 | `.claude/skills/` | Claude Code shims; the toolkit's are replaced whole by a sync, a shim of the same name included |
-| `{{SOLUTION_NAME}}.slnx` | the solution — this repository is a single component |
+<!-- ==== toolchain: layout-standalone-rows ==== -->
 
 <!-- ==== MONOREPO variant - delete if this is standalone ==== -->
 
-Each component is a kebab-case folder holding its own `.slnx` — named after its
-main project — plus `src/`, `test/` and `README.md`. There is deliberately **no
-solution at the repository root**, and no component list here: **each category's
-`README.md` is the map** of what it contains, kept current by the new-project
-procedure. Read the category map before assuming a component does or does not
-exist.
+Each component is a kebab-case folder under its category, with a `README.md`
+and, inside, what its toolchain lays a component out as. Nothing at the
+repository root builds them all, and there is no component list here: **each
+category's `README.md` is the map** of what it contains, kept current by the
+new-project procedure. Read the category map before assuming a component does
+or does not exist.
+
+<!-- ==== toolchain: layout-monorepo ==== -->
 
 | Path | Purpose |
 |---|---|
@@ -75,17 +81,7 @@ exist.
 
 <!-- ==== end variants ==== -->
 
-Build configuration lives **once, at the repository root** — `Directory.Build.props`,
-`Directory.Build.targets`, `Directory.Packages.props`, `Tests.props`,
-`StyleCop.props`, `stylecop.ruleset`, `stylecop.json`, `.editorconfig`. Every
-project inherits it. The targets file stamps every assembly's informational
-version with the short commit hash (`1.2.3+abcdef12`, `-dirty` when the tree
-is not clean); it never fails the build.
-
-Never add a `Directory.Build.props`, `Directory.Build.targets`, or
-`Directory.Packages.props` inside a subfolder — a nested copy silently severs
-that subtree from everything above, with a green build and no warning.
-[`agentics/rules/layout/dotnet.md`](agentics/rules/layout/dotnet.md), *Config lives at the root only*.
+<!-- ==== toolchain: layout ==== -->
 
 ## Agent guidelines
 
@@ -148,12 +144,9 @@ by saying so in the document — *Precedence* in
 | Thing | Convention | Example |
 |---|---|---|
 | Directories | lowercase, hyphenated | `proxy-gateway` |
-| Projects, assemblies, namespaces | PascalCase, prefixed | `{{PREFIX}}.ProxyGateway` |
-| Test projects | `test/<Project>.Tests/` mirrors `src/<Project>/` | `{{PREFIX}}.ProxyGateway.Tests` |
+<!-- ==== toolchain: conventions-rows ==== -->
 
-A trailing `.Core` names the assembly, not the namespace — `{{PREFIX}}.Core` has
-namespace `{{PREFIX}}` — applied by `Directory.Build.props`; the full rule and
-its edge cases are in [`agentics/rules/layout/dotnet.md`](agentics/rules/layout/dotnet.md).
+<!-- ==== toolchain: conventions ==== -->
 
 ## Code intelligence — use what is connected, fall back when it is not
 
@@ -170,16 +163,8 @@ is required, and neither is recorded in `.agentics.yaml`.
   then: from a folder of several repositories it loads the largest solution
   of any of them.
 
-  **Several solutions:** the C# server holds one — the one listing the most
-  projects — and answers for that one only, without saying so. A local
-  solution of every project makes it hold them all. Write it before the first
-  question of a session and again after adding a project; it is ignored by
-  git, never built, and safe to rewrite at any time:
+  <!-- ==== toolchain: code-intelligence-lsp ==== -->
 
-      mkdir -p .lsp && { echo '<Solution>'; git ls-files -co --exclude-standard '*.csproj' | sed 's|.*|  <Project Path="../&" />|'; echo '</Solution>'; } > .lsp/All.slnx
-
-  A type the workspace symbol search does not find is in a project the server
-  does not hold; references are then confirmed with Serena or a text search.
 - **[Serena](https://github.com/oraios/serena)**, for which this repository
   carries a project file (`.serena/project.yml`). Reads the same and also
   edits by symbol. **Connected:** call `initial_instructions` once per coding
@@ -192,44 +177,12 @@ is required, and neither is recorded in `.agentics.yaml`.
 - **Neither connected:** use the ordinary tools; do not stop, install, or ask
   about it mid-task.
 
-Both read the solution's projects — `dotnet restore` first if references look
-incomplete.
+<!-- ==== toolchain: code-intelligence ==== -->
 
 ## Building and testing
 
-    dotnet build <solution> --nologo -v:q
-    dotnet test  <solution>
+<!-- ==== toolchain: building ==== -->
 
-**If the build fails only on spacing rules** — `SA1009`, `SA1011`, `SA1111`,
-`SA1028`, `SA1518` — do not fix them by hand:
-
-    dotnet format analyzers <solution>
-
-corrects every one at once; rebuild. Run the same command once before a
-pull request is opened, and again before its last push if C# changed in
-between. It is a repair and a step of the pull request, not of every commit
-or every build: the build fails on the same rules, so a commit that builds
-is already clean of them, and the pass is slow. It was measured at a minute
-on a solution that builds in eight seconds, and `--include` does not make
-it cheaper.
-
-**Keep build output out of context.** Build with `--nologo -v:q` and grep for
-`error|warning`. Test output is already terse, so grep it for
-`total:|failed:|error` and report those lines, never a full log. **Never pass
-`--nologo` to `dotnet test`**: the platform's test host rejects it, and not
-with a message about the flag — it reports `Zero tests ran` and exit code 5,
-which reads as a flake and is not one.
-
-**Warnings are errors.** StyleCop rules set to `Warning` fail the build; rules
-at `Info` never surface at build time and appear only in the editor.
-
-A `*.Tests` project inherits the whole test stack from `Tests.props`, so its
-`.csproj` holds only `TargetFramework` and a `ProjectReference` —
-[`agentics/rules/coding/csharp/csharp-unit-tests-rules.md`](agentics/rules/coding/csharp/csharp-unit-tests-rules.md).
-It holds unit tests only. A `*.Tests.Integration` project holds tests that
-need a live dependency; a plain `dotnet test` builds it and runs none of it —
-pass `-p:RunIntegrationTests=true` to run them.
-
-Do not report work as complete until `dotnet build` and `dotnet test` both pass,
-with the test count you expect: zero tests and a green exit is a misconfigured
+Do not report work as complete until the build and the tests both pass, with
+the test count you expect: zero tests and a green exit is a misconfigured
 runner, not success.

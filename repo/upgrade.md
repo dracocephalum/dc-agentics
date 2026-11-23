@@ -292,8 +292,10 @@ false statement about the repository.
 
 `AGENTS.md` was generated with the standalone variant kept and the monorepo one
 deleted. Take the monorepo variant from `agentics/templates/root-AGENTS.md`,
-fill its placeholders from `.agentics.yaml`, and replace the standalone
-table with it — trimming the folder rows to categories that now exist.
+with the part named `layout-monorepo` from each listed toolchain's
+`agentics/templates/<toolchain>/root-AGENTS.md` where the variant has that
+name's line, fill its placeholders from `.agentics.yaml`, and replace the
+standalone table with it — trimming the folder rows to categories that now exist.
 
 Also revert `<solution>` under *Building and testing* to the generic form.
 Initialization replaced it with the solution file name because there was

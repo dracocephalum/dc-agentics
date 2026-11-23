@@ -97,6 +97,8 @@ Three kinds of file, told apart by location:
                                    allowed-licenses.json  license-overrides.json  .config/dotnet-tools.json
                                    copied out at init for a repository that lists the toolchain, repo/copy.md
                                    dotnet/manifest - the rules and templates that are the toolchain's
+                                   dotnet/root-AGENTS.md - the .NET parts of a target's AGENTS.md, put into the frame
+                                   root-AGENTS.md is, by the command in repo/documents.md
                                    all of them stay in the target, both modes; repo/documents.md says why
 
     (2) the one thing copied from OUTSIDE payload/
