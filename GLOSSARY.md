@@ -44,6 +44,8 @@ Each is a distinct verb, so a refusal can name exactly which one it means.
 | **component** | what builds and versions together, in a folder of its own, and may produce more than one deliverable; for .NET one solution and one `src/` + `test/` pair | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
 | **standalone** | a single-component repository; the component *is* the repository | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
 | **monorepo** | many components, each under a category folder, each built by itself | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
+| **toolchain** | what builds a component, named for the build and not the language — `dotnet`, `go`; a repository lists its own in `repository.toolchains` | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md), *A toolchain's own layout* |
+| **manifest** | the file under a toolchain's templates that names the rules and templates that are its own; its root files are what `root/` beside it holds | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md), *A toolchain's own layout* |
 | **category** | a root folder grouping components by kind — `services/`, `libraries/`, `jobs/`, `tools/`, `ui/`, `infrastructure/` | [`repo/payload/agentics/rules/layout.md`](repo/payload/agentics/rules/layout.md) |
 | **solution** | the `.slnx`, named after its component's **main project**, never after the folder | [`repo/payload/agentics/rules/layout/dotnet.md`](repo/payload/agentics/rules/layout/dotnet.md), *Naming rules* |
 

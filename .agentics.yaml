@@ -1,5 +1,6 @@
 # Settings that agents read before acting in this repository - the toolkit
-# itself, so no provenance, and a repository block holding only publish-safe.
+# itself, so no provenance, no rules block and no coverage, and a repository
+# block holding only what is true of a repository with no code of its own.
 # The shipped shape is repo/payload/.agentics.yaml.
 
 repository:
@@ -8,6 +9,10 @@ repository:
   # repositories the procedures are tested against included - are referred to
   # by role, never by name.
   publish-safe: true
+  # What builds here: nothing. The toolkit ships every toolchain's files and
+  # is built with none of them, which makes it the one repository that lists
+  # no toolchain - repo/payload/agentics/rules/layout.md, "A toolchain's own layout".
+  toolchains: []
 
 change-tracking:
   # repo/payload/agentics/rules/change-tracking/change-tracking.md
@@ -17,6 +22,13 @@ source-control:
   # auto | local | manual - agentics/rules/source-control/source-control.md
   # (here: repo/payload/agentics/rules/source-control/source-control.md), "For an agent".
   mode: auto
+
+delivery:
+  # repo/payload/agentics/rules/delivery/delivery.md. The toolkit has no version of
+  # its own and nothing builds it: a target records the commit it was synced to.
+  versioning: false
+  pipeline: none                      # github | none
+  packages-token-variable: "GITHUB_PACKAGES_TOKEN"   # a name, never a token; nothing here reads a package
 
 support:
   # The oldest toolkit commit an upgrade will take a repository FROM. A target
