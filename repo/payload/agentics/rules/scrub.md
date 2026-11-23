@@ -363,9 +363,8 @@ published*, is the list that keeps it from being forgotten.
 
 ### 13. A toolchain's root files are where the list says
 
-Skipped where `agentics/templates/` holds no toolchain's folder. Every
-toolchain's files are shipped under `agentics/`, and only one that
-`repository.toolchains` lists has its files at the root
+Skipped where `agentics/templates/` holds no toolchain's folder. Only a
+toolchain that `repository.toolchains` lists has its files at the root
 ([`layout.md`](layout.md), *A toolchain's own layout*). Nothing fails when
 the two part: a file of a toolchain that was dropped goes on being read by
 whatever looks for it, and a file that was deleted is missed only by the
