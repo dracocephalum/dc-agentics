@@ -123,17 +123,13 @@ so create it before copying into it:
     mkdir -p <target>/.claude
     cp -r .claude/skills <target>/.claude/
 
-**A toolchain's root files are templates.** The payload ships every
-toolchain's files under `agentics/`, and puts at the root only what any
-repository has. What a toolchain needs at the root — for .NET the
-`Directory.*` files, `Tests.props`, the StyleCop files, `BannedSymbols.txt`,
-`nuget.config`, `global.json`, the licence lists and `.config/` — is under
-`agentics/templates/<toolchain>/root/`, each file at the path it has under the
-root, and the second line above copies it out. It is run once for each
-toolchain in `repository.toolchains` and for no other, so a repository never
-has at its root the files of a toolchain it does not build with. The copies
-are the repository's from then on; the templates stay, and a sync replaces
-them.
+**A toolchain's root files are templates.** What a toolchain needs at the
+root is under `agentics/templates/<toolchain>/root/`, each file at the path it
+has under the root, and the second line above copies it out: once for each
+toolchain in `repository.toolchains`, and for no other. The copies are the
+repository's from then on; the templates stay, and a sync replaces them.
+[`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md), *A
+toolchain's own layout*, has the rule.
 
 Everything from here on is what to *verify* or *edit* in what just landed:
 the build files ([`build.md`](build.md)), then the documents, settings, and
