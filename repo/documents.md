@@ -57,7 +57,11 @@ Transform the copy:
    the root table —
    [`payload/agentics/rules/layout.md`](payload/agentics/rules/layout.md),
    *The toolkit's rules and the repository's*. At initialization there is no
-   index, so the block is the template's, unchanged.
+   index, so the block is the template's, with one thing taken out: the rows
+   of a toolchain the repository does not list. A row is a toolchain's when
+   it links into a path `agentics/templates/<toolchain>/manifest` names. For
+   a repository that lists `dotnet`, the only toolchain today, nothing is
+   taken out.
 6. In standalone mode, replace `<solution>` under *Building and testing* with
    the solution file name. In a monorepo it stays: there is no single solution
    there, and the command is generic on purpose.

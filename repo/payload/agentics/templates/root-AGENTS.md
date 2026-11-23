@@ -23,6 +23,12 @@
   generated copy by every sync, from this file and from the repository's own
   rule indexes: nothing inside it may carry a placeholder, and nothing outside
   it is the toolkit's to change afterwards.
+
+  A row of that table is one toolchain's when it links into a path the
+  toolchain's manifest names (agentics/templates/<toolchain>/manifest), and a
+  sync leaves it out of a repository that does not list the toolchain. So a
+  row that every repository is to have links into no toolchain's rules; it
+  says "the toolchain's file" and lets the rule it links name it.
 -->
 
 # {{REPO_NAME}}
@@ -96,13 +102,14 @@ makes it selectable from a plain-language request.
 | Writing a comment or a document, or unsure whether something belongs in the code or in a document | [`agentics/rules/coding/where-facts-live.md`](agentics/rules/coding/where-facts-live.md) — one home per fact; language-neutral |
 | Touching an entity, a `DbContext`, or a migration | [`agentics/rules/coding/csharp/csharp-ef-core-rules.md`](agentics/rules/coding/csharp/csharp-ef-core-rules.md) |
 | Adding a project, component, or test project | [`agentics/rules/coding/csharp/csharp-new-project.md`](agentics/rules/coding/csharp/csharp-new-project.md) |
-| Asking where something goes, how it should be named, or what the other layout looks like | [`agentics/rules/layout.md`](agentics/rules/layout.md) — both modes, so this repository can describe a shape it does not currently have; then [`agentics/rules/layout/dotnet.md`](agentics/rules/layout/dotnet.md) for what is .NET's: solutions, projects, namespaces, the build files, test projects and their stack |
+| Asking where something goes, how it should be named, or what the other layout looks like | [`agentics/rules/layout.md`](agentics/rules/layout.md) — both modes, so this repository can describe a shape it does not currently have; then the file it names for the toolchain |
+| Asking how a solution, a project, a namespace or a test project is named, where build configuration lives, or how the test stack is kept current | [`agentics/rules/layout/dotnet.md`](agentics/rules/layout/dotnet.md) — the .NET half of the layout |
 | Checking a change for secrets, personal data, or local paths — or anything before a first push | [`agentics/rules/security-reminders.md`](agentics/rules/security-reminders.md) |
 | Adding, upgrading, or replacing a package (any ecosystem) | [`agentics/rules/dependencies.md`](agentics/rules/dependencies.md) |
 | Creating or finding a ticket, or asking which ticket a change is for | [`agentics/rules/change-tracking/change-tracking.md`](agentics/rules/change-tracking/change-tracking.md), then the tracker file it names |
 | Starting work on a ticket, naming a branch, publishing the repository, committing, or opening / updating / merging a pull request | [`agentics/rules/source-control/source-control.md`](agentics/rules/source-control/source-control.md), then the host file it names |
 | Giving the repository a version, adding or changing a pipeline, publishing a package, changing a version number, or referring to a package built here by a `-ci.` or `-dev` version | [`agentics/rules/delivery/delivery.md`](agentics/rules/delivery/delivery.md), then the toolchain's file and the host file it names — opt-in: a repository has no version file and no pipeline until it adopts them |
-| Reviewing a pull request, a diff, or a set of changes | [`agentics/rules/coding/code-review.md`](agentics/rules/coding/code-review.md) — then the C# or markdown checklist it names |
+| Reviewing a pull request, a diff, or a set of changes | [`agentics/rules/coding/code-review.md`](agentics/rules/coding/code-review.md) — then the checklist it names for the language of the change |
 | Scrubbing, sweeping or auditing this repository for drift or inconsistency — or after any move, rename or restructure | [`agentics/rules/scrub.md`](agentics/rules/scrub.md) |
 | Measuring what this repository's documents cost an agent to read, or compacting them | [`agentics/rules/optimize.md`](agentics/rules/optimize.md) — measures unless asked for more |
 | Bringing this repository up to a newer version of the toolkit it was initialized with | the toolkit's own `repo/upgrade.md`, operation 2 — its script replaces `agentics/` and the toolkit's shims whole and regenerates this block, so a checkout of dc-agentics must be present; `.agentics.yaml` records which commit this repository came from |

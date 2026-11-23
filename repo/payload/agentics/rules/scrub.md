@@ -155,7 +155,9 @@ silently, because nothing enforces it:
 ### 7. `AGENTS.md` index is complete in both directions
 
 Every document under `agentics/rules/` is **reachable** from the table, and every
-row's link resolves. A document nobody can arrive at will not be read, and a row
+row's link resolves. The documents of a toolchain the repository does not
+list are the exception: they are shipped and have no row, and its manifest,
+`agentics/templates/<toolchain>/manifest`, names them. A document nobody can arrive at will not be read, and a row
 pointing at nothing teaches an agent to distrust the table.
 
     find agentics/rules -name '*.md' | sort
