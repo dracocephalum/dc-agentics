@@ -198,6 +198,33 @@ last three are where the rules differ most, and they are all in
   all under `agentics/`, and adopting one that was left out would then
   need the toolkit at hand.
 
+## Coding rules
+
+### Command-line design
+
+The rule is [`command-line.md`](repo/payload/agentics/rules/coding/command-line.md),
+language-neutral: how commands, options, settings keys and a tool's files
+are named. Its *Not settled* is what is open, for a design session of its
+own:
+
+- Commands: how deep they nest.
+- Options: full names, and the short forms a prompt accepts and how they
+  are shortened.
+- Flags: when one is enough, and what its absence means.
+- Exit codes, what goes to standard output and what to standard error, and
+  messages in the form a build reads as an error with a file and a line.
+- Help text: its order, its alignment, and the example in it.
+
+### Naming in other languages
+
+The rules for choosing a name are in the C# coding rules, *Choosing a
+name*, because every case behind them was a C# name, and some do not carry
+to another language as they stand: C# reaches for `OrderType`, which does
+not carry to F#, where a union names such a choice. Whether a
+language-neutral core can be drawn out of them, with each language's file
+keeping its own spelling and exceptions, is for when a second language's
+code has names to test it on.
+
 ## Machines
 
 `machine/` is named for its subject, so it has room for more than one kind of

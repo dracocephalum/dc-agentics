@@ -85,6 +85,7 @@ the worse question.
       coding/code-review.md
       coding/architecture.md     boundaries: the core, its adapters, what crosses a seam
       coding/where-facts-live.md one home per fact: doc comment, body, design document, README
+      coding/command-line.md     a tool's commands, options, settings keys and files
       coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
       coding/markdown/markdown-review.md
     .claude/skills/

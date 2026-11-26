@@ -71,7 +71,7 @@ Three kinds of file, told apart by location:
         dependencies.md  layout.md  scrub.md  optimize.md  security-reminders.md
         change-tracking/  source-control/  delivery/   a rule, and beside it a file for each host or toolchain
         layout/                    each toolchain's half of the layout rule
-        coding/                    code-review.md, architecture.md, where-facts-live.md; csharp/, markdown/
+        coding/                    code-review.md, architecture.md, where-facts-live.md, command-line.md; csharp/, markdown/
       agentics/templates/          all of them stay in the target, both modes; repo/documents.md says why
         root-AGENTS.md  root-README.md   a target's two root documents, transformed at init; the first is a
                                    frame that takes each toolchain's parts
