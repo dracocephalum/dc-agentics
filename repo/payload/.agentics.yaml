@@ -59,6 +59,16 @@ delivery:
   packages-token-variable: "GITHUB_PACKAGES_TOKEN"   # the environment variable a developer's machine keeps its token for
                                       # reading packages in; a name, never a token; confirmed with the user at adoption
 
+derived-work:
+  # What is made from another's code or data under terms that are not a permissive licence -
+  # agentics/rules/derived-work.md. Empty in a repository that holds none. One entry for each
+  # component that holds such files, and a scrub reads it:
+  #   - path: libraries/kit                  the component's folder
+  #     terms: libraries/kit/LICENSE.md      its terms file, which is the package's licence
+  #     tag: LicenseRef-Contoso-Rules        the SPDX-License-Identifier of a derived file
+  #     tagged: "*.cs"                       the files that carry a tag, as patterns with a space between
+  components: []
+
 rules:
   # What the toolkit owns and what this repository adds - agentics/rules/layout.md,
   # "The toolkit's rules and the repository's". agentics/ and the toolkit's shims under

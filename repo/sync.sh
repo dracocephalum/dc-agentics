@@ -86,6 +86,19 @@ if git -C "$toolkit" cat-file -e "$base" 2> /dev/null; then
       s = substr($1, 1, 1); if (s == "R" || s == "C") s = "M"
       print s "\t" p
     }' || true
+  # A pipeline or a packaging file is copied out of the templates once and is the target's from then on,
+  # so nothing puts a later change to its template in front of whoever owns the copy but this list.
+  copied=$(git -C "$toolkit" diff --name-status -M "$base..HEAD" -- repo/payload/agentics/templates | awk -F '\t' '
+    { p = $NF }
+    p ~ /\.(yml|props)$/ && p !~ /^repo\/payload\/agentics\/templates\/[^\/]+\/root\// {
+      if ($1 == "R100") next
+      sub(/^repo\/payload\//, "", p); s = substr($1, 1, 1); if (s == "R" || s == "C") s = "M"
+      print s "\t" p
+    }' || true)
+  if [ -n "$copied" ]; then
+    say "== templates that changed, of files a repository copies out - compare each with the copy, where there is one (repo/upgrade.md, 'The rest of the payload')"
+    echo "$copied"
+  fi
   old_skills=$(git -C "$toolkit" ls-tree --name-only "$base:.claude/skills" 2> /dev/null || true)
 else
   say "== the recorded commit $recorded does not resolve in this checkout (a squashed branch, or shallow); no change list"

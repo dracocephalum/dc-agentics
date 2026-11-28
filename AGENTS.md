@@ -22,6 +22,7 @@ them.
 | Set up or troubleshoot secret scanning / git hooks | [`machine/gitleaks.md`](machine/gitleaks.md) |
 | Set up a machine that is **not Windows** (Linux, macOS, FreeBSD) | [`machine/platforms.md`](machine/platforms.md) — untested, read first |
 | Add or upgrade a package; judge a licence | [`repo/payload/agentics/rules/dependencies.md`](repo/payload/agentics/rules/dependencies.md) |
+| Build, commit or publish what is made from another's code or data under terms that are not a permissive licence | [`repo/payload/agentics/rules/derived-work.md`](repo/payload/agentics/rules/derived-work.md) |
 | Create or find a ticket, or ask which ticket a change is for (`/change-tracking`) | [`repo/payload/agentics/rules/change-tracking/change-tracking.md`](repo/payload/agentics/rules/change-tracking/change-tracking.md), then the tracker file it names |
 | Start work on a ticket, name a branch, publish a repository, commit, or open / update / merge a pull request, set merge behaviour (`/source-control`) | [`repo/payload/agentics/rules/source-control/source-control.md`](repo/payload/agentics/rules/source-control/source-control.md), then the host file it names |
 | Give a repository a version, add its pipeline, publish packages, or change how versions and registries work | [`repo/payload/agentics/rules/delivery/delivery.md`](repo/payload/agentics/rules/delivery/delivery.md), then the toolchain's file and the host file it names — opt-in: offered at initialization with later as the default, and adopted when a repository has something to publish |
@@ -68,22 +69,23 @@ Three kinds of file, told apart by location:
       .editorconfig  .gitignore  .gitattributes   (forked; baselines live in repo/baselines/)
       .github/  .markdownlint.yaml
       agentics/rules/              every rules document, exactly where it lands; the toolkit's, replaced whole by a sync
-        dependencies.md  layout.md  scrub.md  optimize.md  security-reminders.md
+        dependencies.md  derived-work.md  layout.md  scrub.md  optimize.md  security-reminders.md
         change-tracking/  source-control/  delivery/   a rule, and beside it a file for each host or toolchain
         layout/                    each toolchain's half of the layout rule
-        coding/                    code-review.md, architecture.md, where-facts-live.md, command-line.md; csharp/, markdown/
+        coding/                    code-review.md, architecture.md, where-facts-live.md, command-line.md, measuring-speed.md; csharp/, markdown/
       agentics/templates/          all of them stay in the target, both modes; repo/documents.md says why
         root-AGENTS.md  root-README.md   a target's two root documents, transformed at init; the first is a
                                    frame that takes each toolchain's parts
         component-README.md  category-README.md   filled by /new
+        component-LICENSE.md       the terms file of a component that holds derived work
         rules-AGENTS.md            the start of a target's own rules index, docs/rules/AGENTS.md
         dev.yml  ci.yml            the pipelines, copied out when a repository adopts delivery
         <toolchain>/               manifest - the rules and templates that are the toolchain's
                                    root/ - its files for a target's root, each at its path there, copied out
                                    for a repository that lists the toolchain
                                    root-AGENTS.md - its parts of a target's AGENTS.md
-                                   and what else it has to copy out: for dotnet, the version files and
-                                   the pipelines' shared steps
+                                   and what else it has to copy out: for dotnet, the version files, the
+                                   pipelines' shared steps and a package's own page
 
     (2) the one thing copied from OUTSIDE payload/
     .claude/skills/<name>/SKILL.md   the shims, live here and copied to a target's .claude/skills/:

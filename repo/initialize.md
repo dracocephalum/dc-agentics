@@ -53,6 +53,8 @@ the worse question.
                                  the pipelines dev.yml and ci.yml, and under dotnet/ Version.props, Packaging.props
                                  and the pipelines' shared build.yml — copied out when versioning and a pipeline are adopted, now or
                                  later (agentics/rules/delivery/delivery.md)
+                                 dotnet/package-page.md — a package's own page, copied beside a project as PACKAGE.md
+                                 component-LICENSE.md — the terms file of a component that holds derived work
                                  dotnet/manifest — the rules and templates that are .NET's; dotnet/root/ — its root files,
                                  listed below; dotnet/root-AGENTS.md — its parts of AGENTS.md (documents.md)
                                  all of them kept in both modes (documents.md)
@@ -75,6 +77,7 @@ the worse question.
     stylecop.json                StyleCop settings
     agentics/rules/                  exactly as in payload/agentics/rules/; the toolkit's, replaced whole by a sync
       dependencies.md
+      derived-work.md            what is made from another's code or data, and their terms
       layout.md                  the component, standalone + monorepo, categories, naming of folders
       layout/dotnet.md           the .NET half: solutions, projects, build files, test projects
       scrub.md                   the recurring consistency + drift checks
@@ -86,6 +89,7 @@ the worse question.
       coding/architecture.md     boundaries: the core, its adapters, what crosses a seam
       coding/where-facts-live.md one home per fact: doc comment, body, design document, README
       coding/command-line.md     a tool's commands, options, settings keys and files
+      coding/measuring-speed.md  a change made for speed, and the measurement that shows it
       coding/csharp/             coding rules, EF Core rules, unit-test rules, new-project, code-review
       coding/markdown/markdown-review.md
     .claude/skills/
