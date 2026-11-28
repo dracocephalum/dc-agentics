@@ -132,6 +132,11 @@ Left for later, which is the default, the block stays as shipped, and
 An agent asked later to add a pipeline, publish a package or set a version
 finds the entry and the rule, and asks the same questions then.
 
+The `derived-work:` block is not asked about and stays as shipped, empty.
+A repository fills it the day it gains a component made from another's
+work, by
+[`derived-work.md`](payload/agentics/rules/derived-work.md), step 3.
+
 Then `TODO.md`: by now the earlier stages have added their entries — a skipped
 Serena config, a refused or not-yet-applicable ruleset, the licence decision.
 Anything else that was not finished, could not be verified, or was left for

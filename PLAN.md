@@ -100,6 +100,25 @@ version is one pipeline setting and no dependency, but it lives outside the
 repository, cannot be reproduced by building locally, and has to be
 reimplemented on every CI host. Deciding this belongs with *Pipelines* below.
 
+### Files attached to a release
+
+The rule is written and the mechanism is not:
+[`delivery.md`](repo/payload/agentics/rules/delivery/delivery.md), *What is
+not a package goes to the host's releases*, says what the `release`
+pipeline is to attach, and no pipeline does it. Owed with the pipeline: the
+step that builds a program for each system and processor, how a file is
+named, how the terms and the notice travel with one that is not an archive,
+and the host's half in `github.md`.
+
+### Derived work, checked by the build
+
+[`derived-work.md`](repo/payload/agentics/rules/derived-work.md) leaves a
+file that is made as the project builds to the test of the tool that
+writes it, since a scrub reads only what git does not ignore. A target in
+`Packaging.props` that refuses to pack a generated source without its tag
+would hold it in the toolkit and not in each tool. Not written: one
+repository has the case, and its tool's own test covers it.
+
 ### Code signing
 
 Three artifact kinds, and they do not share an answer:

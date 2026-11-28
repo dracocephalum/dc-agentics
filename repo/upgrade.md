@@ -163,6 +163,15 @@ take the change across and verify it landed. `.editorconfig`, `.gitignore` and
 `.gitattributes` carry baseline markers, and a mismatch there is the drift
 procedure's business, not this one's.
 
+**A file copied out of the templates is listed apart.** A pipeline, and a
+toolchain's packaging and version files, are copied to the target when it
+adopts delivery and are its own from then on; their templates lie outside
+`root/`. The script lists each such template that changed, under
+*templates that changed*, and the same rule holds: compare it with the
+copy where the target has one, and take the change across by intent.
+
+    git diff --no-index agentics/templates/dotnet/Packaging.props Packaging.props
+
 `.agentics.yaml` is never replaced: it carries the target's choices. The script
 merges a new top-level block and names a dead one; a new key *inside* an
 existing block is in the change list for you to add by hand, with the
